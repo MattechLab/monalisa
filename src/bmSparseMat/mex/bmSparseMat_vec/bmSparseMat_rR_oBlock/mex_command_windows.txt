@@ -1,0 +1,1 @@
+mex -largeArrayDims COMPFLAGS="$COMPFLAGS /openmp" bmSparseMat_rR_oBlock_mex.cpp

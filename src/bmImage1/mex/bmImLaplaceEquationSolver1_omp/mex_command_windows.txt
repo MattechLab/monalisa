@@ -1,0 +1,1 @@
+mex -largeArrayDims COMPFLAGS="$COMPFLAGS /openmp" bmImLaplaceEquationSolver1_omp_mex.cpp

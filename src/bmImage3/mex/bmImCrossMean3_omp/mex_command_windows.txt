@@ -1,0 +1,1 @@
+mex -largeArrayDims COMPFLAGS="$COMPFLAGS /openmp" bmImCrossMean3_omp_mex.cpp

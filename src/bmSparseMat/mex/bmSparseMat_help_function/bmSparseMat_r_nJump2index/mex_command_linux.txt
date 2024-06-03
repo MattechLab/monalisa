@@ -1,0 +1,1 @@
+mex -largeArrayDims bmSparseMat_r_nJump2index_mex.cpp

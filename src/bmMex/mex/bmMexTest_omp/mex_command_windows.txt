@@ -1,0 +1,1 @@
+mex -largeArrayDims COMPFLAGS="$COMPFLAGS /openmp" bmMexTest_omp_mex.cpp
