@@ -4,6 +4,11 @@
 % bmVolumeElement_blablabla for each type of trajectory. For special
 % trejectories you may have to implement your own volumeElement,function. 
 % In the present case, we have a 2D radial trajectory. 
+srcPath = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'src');
+disp(srcPath)
+addpath(genpath(srcPath)); 
+
+load('data.mat')
 
 ve = bmVolumeElement(t, 'voronoi_full_radial2'); 
 
