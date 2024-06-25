@@ -20,9 +20,6 @@ ARG MATLAB_PRODUCT_LIST="MATLAB Statistics_and_Machine_Learning_Toolbox"
 # Specify MATLAB Install Location.
 ARG MATLAB_INSTALL_LOCATION="/opt/matlab/${MATLAB_RELEASE}"
 
-# Specify license server information using the format: port@hostname 
-ARG LICENSE_SERVER
-
 # When you start the build stage, this Dockerfile by default uses the Ubuntu-based matlab-deps image.
 # To check the available matlab-deps images, see: https://hub.docker.com/r/mathworks/matlab-deps
 FROM mathworks/matlab-deps:${MATLAB_RELEASE}
@@ -31,7 +28,6 @@ FROM mathworks/matlab-deps:${MATLAB_RELEASE}
 ARG MATLAB_RELEASE
 ARG MATLAB_PRODUCT_LIST
 ARG MATLAB_INSTALL_LOCATION
-ARG LICENSE_SERVER
 
 # Install mpm dependencies.
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -75,11 +71,11 @@ RUN wget -q https://www.mathworks.com/mpm/glnxa64/mpm \
 # is the preferred option. You can either use a build variable, like this: 
 # --build-arg LICENSE_SERVER=27000@MyServerName or you can specify the license server 
 # directly using: ENV MLM_LICENSE_FILE=27000@flexlm-server-name
-ENV MLM_LICENSE_FILE=$LICENSE_SERVER
 
 # Option 2. Alternatively, you can put a license file into the container.
 # Enter the details of the license server in this file and uncomment the following line.
-# COPY network.lic ${MATLAB_INSTALL_LOCATION}/licenses/
+
+COPY /license_info.xml ${MATLAB_INSTALL_LOCATION}/licenses/
 
 # The following environment variables allow MathWorks to understand how this MathWorks 
 # product (MATLAB Dockerfile) is being used. This information helps us make MATLAB even better. 
@@ -87,7 +83,7 @@ ENV MLM_LICENSE_FILE=$LICENSE_SERVER
 # To opt out of this service, delete the environment variables defined in the following line. 
 # To learn more, see the Help Make MATLAB Even Better section in the accompanying README: 
 # https://github.com/mathworks-ref-arch/matlab-dockerfile#help-make-matlab-even-better
-ENV MW_DDUX_FORCE_ENABLE=true MW_CONTEXT_TAGS=MATLAB:DOCKERFILE:V1
+# ENV MW_DDUX_FORCE_ENABLE=true MW_CONTEXT_TAGS=MATLAB:DOCKERFILE:V1
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
