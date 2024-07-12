@@ -1,30 +1,37 @@
 # monalisa
-(initial to change) This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT) accelerated by GPUs. This implementation is designed to handle non-uniformly sampled data points, which is a common scenario in advanced MRI techniques. 
+This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT). This implementation is designed to handle non-uniformly sampled data points, which is a common scenario in some advanced MRI techniques. 
 
-# INITIAL: TO CHANGE
-
-
-# MRI Reconstruction with Non-Uniform GPU-NUFFT
+## MRI Reconstruction with Non-Uniform Fast Fourier Transform (NUFFT)
 
 ## Overview
-This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT) accelerated by GPUs. This implementation is specifically designed to handle non-uniformly sampled data points, which is a common scenario in advanced MRI techniques.
+This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT). This implementation is specifically designed to handle non-uniformly sampled data points, which is a common scenario in some advanced MRI techniques.
 
-## Features (examples)
-- **Non-Uniform Sampling**: Efficiently reconstruct MRI images from non-uniformly sampled k-space data.
-- **GPU Acceleration**: Leverages GPU-NUFFT for high-performance computations, significantly speeding up the reconstruction process.
-
-## Technologies Used
-- **EXAMPLE1**: Description
-- **EXAMPLE2**: Description
-
-
-## Installation
+## Usage and installation
 To get started with the MRI reconstruction code, follow these steps:
 1. Clone the repository:
-   ```sh
+
+```sh
    git clone https://github.com/smth/smth.git
    cd monalisa
-2. Other instructions
+```
+
+3. Make sure you have a compiler that is recognized by matlab. To check that you can run:
+
+```sh
+mex -setup C++
+```
+
+Depending on your configuaration you should install a cpp compiler. (if you see a message like No supported compiler or SDK was found.
+For options, visit https://www.mathworks.com/support/compilers.) 
+
+If you have to install a compiler we reccomend:
+gpp for linux,
+Xcode Clang++ for macOS,
+Visual studio c++ for windows.
+
+3. Compile the cpp code using the script https://github.com/MattechLab/monalisa/blob/main/src/bmMex/m/compileScript.m. On macOS you should change the libomp_dirs directory here: https://github.com/MattechLab/monalisa/blob/5febe05d39f822f6c3b5c830fbc99311d195e237/src/bmMex/m/compileScript.m#L61. If you are using brew for the installations, you can find the path by running: brew --prefix libomp. (you need libomp as explained here: https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x)
+4. Test your compilation step worked successfully using the example script: https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m
+   
 # Getting started: 
 Link to initial tutorials.
 
