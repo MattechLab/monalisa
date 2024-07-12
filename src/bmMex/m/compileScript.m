@@ -14,10 +14,10 @@ function compileScript()
     % Determine the operating system and get compilation script dir
      % Get the path of the current script
     currentScriptPath = mfilename('fullpath');
-    argDir = fileparts(fileparts(currentScriptPath));
+    argDir = fileparts(fileparts(fileparts(currentScriptPath)));
     % Add the root directory and all its subdirectories to the MATLAB search path
     addpath(genpath(fileparts(argDir)));
-    mex_dir_file = fullfile(argDir, 'txt', 'bmMex_dir_blanc.txt');
+    mex_dir_file = fullfile(argDir, 'bmMex', 'txt', 'bmMex_dir_blanc.txt');
     
     cuda_I_dir = [];
     cuda_L_dir = [];
@@ -33,7 +33,8 @@ function compileScript()
     
     
     myCurrentDir = cd;
-    
+
+    disp(argDir)
     myDirList = cat(1, argDir, bmDirList(argDir, true));
     for i = 1:length(myDirList)
         cd(myDirList{i});
@@ -64,7 +65,7 @@ function compileScript()
                     error('libomp not found. Install libomp or adjust path accordingly.');
                 end
                 
-                LIBOMP_ROOT = fullfile(libomp_dirs(1).folder, libomp_dirs(1).name);
+                LIBOMP_ROOT = libomp_dirs(1).folder;
                 % Replace $LIBOMP_ROOT with actual value of LIBOMP_ROOT
                 myCommand = strrep(myCommand, '$LIBOMP_ROOT', LIBOMP_ROOT);
             end
