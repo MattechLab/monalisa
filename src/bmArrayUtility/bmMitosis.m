@@ -1,9 +1,33 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
 function varargout = bmMitosis(varargin)
+% bmMitosis - Process multiple input tables and masks, and return filtered tables.
+%
+% Usage:
+%   [outTable1, outTable2, ..., outTableN] = bmMitosis(table1, table2, ..., tableN, mask1, mask2, ..., maskM)
+%   [outTable1, outTable2, ..., outTableN] = bmMitosis(table1, table2, ..., tableN, maskCellArray)
+%
+% Inputs:
+%   table1, table2, ..., tableN : Input tables (arrays) where N is the number of output tables requested.
+%   mask1, mask2, ..., maskM    : Individual mask matrices (optional if masks are provided in a cell array).
+%   maskCellArray               : A cell array containing all the mask matrices.
+%
+% Outputs:
+%   outTable1, outTable2, ..., outTableN : Output tables after processing with the masks.
+%
+% The function expects:
+%   - The first N arguments are the input tables.
+%   - The remaining arguments are either individual mask matrices or a single cell array containing all masks.
+%   - All input tables must have the same number of columns (last dimension).
+%   - Masks must be 2-dimensional matrices with the same number of columns as the input tables.
+%
+% Example 1 - Using individual masks:
+%   out1, out2 = bmMitosis(table1, table2, mask1, mask2);
+%
+% Example 2 - Using a cell array of masks:
+%   masks = {mask1, mask2};
+%   out1, out2 = bmMitosis(table1, table2, masks);
+%
+% Author:
+%   Bastien Milani, CHUV and UNIL, Lausanne, Switzerland, May 2023
 
 nTable = nargout; 
 nMask  = nargin - nTable; 
