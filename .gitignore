@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# compiled cpp in matlab
+*.mexmaca64
+
 # Executables
 *.exe
 *.out
