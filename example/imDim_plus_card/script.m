@@ -1,16 +1,36 @@
-%% volume_elements
+%% SOME VARIABLES EXPLANATION TO BETTER FOLLOW WHAT IS GOING ON
+% This script assumes that some preprocessing phase has already taken place
+% previously. For what I understand the trajectory generation and binning
+% masks are already selected and a coil sensitivity estimation has taken
+% place. The result of all the preprocessing are several variables stated
+% below
+
+% t is the trajectory evaluated in the bins
+% y = data mask, Is the data evaluated in the bins (nchannels) 
+% C = colis sensitivity map. 
+
+% Correctly setup searchpaths
+srcPath = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'src');
+disp(srcPath)
+addpath(genpath(srcPath)); 
+
+% Load the data provided by Bastien (here we load the variables stated before)
+load('data.mat')
+
+
+%% volume_elements: we compute ve = volume elements from t and knowing the trajectory
 
 % This depends only on the trajectory. There is a function
 % bmVolumeElement_blablabla for each type of trajectory. For special
 % trejectories you may have to implement your own volumeElement,function. 
 % In the present case, we have a 2D radial trajectory. 
-srcPath = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'src');
-disp(srcPath)
-addpath(genpath(srcPath)); 
 
-load('data.mat')
+
+% t is a Nx1 cell array, containing values of dimention 2xvariable double
 
 ve = bmVolumeElement(t, 'voronoi_full_radial2'); 
+% the result of this function are the volume elements, that is still a Nx1
+% cell array, containing values of dimention 1xvariable doubles
 
 %% gridding_matrices
 
@@ -54,7 +74,7 @@ bmImage(x0);
 % is important because it has a very important geometrical meaning in the
 % theory of reconstruction and it has some application for some special
 % cases. I have put a demo of reconstruciton here for the sake of
-% completeness. 
+% completeness.     
 
 
 x = cell(nFr, 1); 
