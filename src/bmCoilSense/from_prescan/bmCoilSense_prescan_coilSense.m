@@ -1,22 +1,31 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
-%
-% x_body is bodyCoil prescan image. 1 or 2 or 3 dimensional. 
-%
-% x_surface is surface(array)Coil prescan image. 1 or 2 or 3 dimensional. 
-%
-% m is the mask segmenting the non-zero signal volume. 
-% Dimension accorded to image.  
-%
-% n_u is the image size (channel not inlcuded). For example [96, 96] or 
-% [64, 56, 32]. 
-
-
-
 function C = bmCoilSense_prescan_coilSense(x_body, x_surface, m, n_u)
+% bmCoilSense_prescan_coilSense - Estimate coil sensitivity maps from pre-scan images.
+%
+% Usage:
+%   C = bmCoilSense_prescan_coilSense(x_body, x_surface, m, n_u)
+%
+% Inputs:
+%   x_body    : Body coil prescan image (1D, 2D, or 3D).
+%   x_surface : Surface (array) coil prescan image (1D, 2D, or 3D).
+%   m         : Mask segmenting the non-zero signal volume, with dimensions matching the images.
+%   n_u       : Image size excluding channels (e.g., [96, 96] or [64, 56, 32]).
+%
+% Outputs:
+%   C         : Estimated coil sensitivity maps (complex single).
+%
+% Description:
+%   This function estimates the sensitivity maps of MRI coils using pre-scan images from body and surface coils.
+%   It normalizes the coil images, estimates sensitivity maps using pseudo-diffusion, and refines them using
+%   the Laplace equation solver.
+%
+% Steps:
+%   1. Reshape and normalize the body and surface coil images.
+%   2. Compute an initial estimate of the body coil sensitivity.
+%   3. Refine the sensitivity map using pseudo-diffusion and the Laplace equation solver.
+%   4. Estimate and refine sensitivity maps for each surface coil.
+%
+% Author:
+%   Bastien Milani, CHUV and UNIL, Lausanne, Switzerland, May 2023
 
 L_nIter             = 1000; % ------------------------------------------------------ magic number
 L_th                = 1e-4; % ------------------------------------------------------ magic number
