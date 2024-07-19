@@ -8,7 +8,14 @@ Welcome to Monalisa's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Quick Start
+
+   installation
+   hello_monalisa
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
 
    coil_sensitivity_map
    mythosis_prepare_data
