@@ -1,1 +1,1 @@
-mex -largeArrayDims COMPFLAGS="$COMPFLAGS /openmp" bmImCrossMean2_omp_mex.cpp
+mex -largeArrayDims CXXFLAGS="-fopenmp" LDFLAGS="-fopenmp" bmImCrossMean2_omp_mex.cpp
