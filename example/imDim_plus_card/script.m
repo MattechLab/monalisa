@@ -38,11 +38,6 @@ ve = bmVolumeElement(t, 'voronoi_full_radial2');
 
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 
-%% KFC and KFC_conj
-
-KFC         = bmKF(C,               N_u, n_u, dK_u, nCh);
-KFC_conj    = bmKF_conj(conj(C),    N_u, n_u, dK_u, nCh);
-
 
 %% Mathilda_per_cell
 
