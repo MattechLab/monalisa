@@ -56,12 +56,12 @@ z = reshape(R.*cos(theta),           [1, N_n, nSeg, nShot]);
 myTraj = cat(1, x, y, z)*N_n*dK_n; 
 
 
-% if flagSelfNav
-%    myTraj(:, :, 1, :) = [];  
-% end
-% if nShot_off > 0
-%    myTraj(:, :, :, 1:nShot_off) = [];  
-% end
+if flagSelfNav
+   myTraj(:, :, 1, :) = [];  
+end
+if nShot_off > 0
+   myTraj(:, :, :, 1:nShot_off) = [];  
+end
 
 
 mySize = size(myTraj); 

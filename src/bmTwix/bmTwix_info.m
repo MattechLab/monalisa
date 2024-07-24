@@ -6,7 +6,7 @@
 function bmTwix_info(myArg)
 
 if isa(myArg, 'char')
-    myTwix = mapVBVD_JH_in_bmToolBox(myArg);
+    myTwix = mapVBVD_JH_for_monalisa(myArg);
     if iscell(myTwix)
         myTwix = myTwix{end};
     end

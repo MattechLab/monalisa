@@ -41,10 +41,12 @@ while convCond.check()
     c = convCond.nIter_curr; 
     
     res_next            = y - bmShanna(x, Gu, KFC, n_u, 'MATLAB');
+    % compute the adjoint. 
     dagM_res_next       = (1/HX)*bmNakatsha(HY.*res_next, Gut, KFC_conj, true, n_u, 'MATLAB');
+    % Initialization of the gradient descent
     sqn_dagM_res_next   = real(   dagM_res_next(:)'*(HX*dagM_res_next(:))   );
     p_next              = dagM_res_next;
-    
+    % Do many gradient descent. Note that you 
     for i = 1:nCGD
         
         res_curr    = res_next;
