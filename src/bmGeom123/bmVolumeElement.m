@@ -8,37 +8,57 @@ function varargout = bmVolumeElement(argTraj, argType, varargin)
 %             representing trajectories.
 %   argType - Type of volume element computation. Supported types are:
 %             - 'voronoi_center_out_radial2': Computes volume using Voronoi
-%               method for 2D trajectories.
+%               method for 2D trajectories. It's for 2D radial trajectory
+%               UTE, which means that the first sampled point is in the
+%               center, for each spoke.
 %             - 'voronoi_center_out_radial3': Computes volume using Voronoi
-%               method for 3D trajectories.
+%               method for 3D trajectories. It's for 3D radial trajectory
+%               UTE, which means that the first sampled point is in the
+%               center, for each spoke.
+%             - 'center_out_radial3': Computes volume using center-out radial
+%               method for 3D trajectories. It is not using Voronoi but 
+%               assumes the trajectory is uniformly distributed on
+%                the sphere. Faster but less precise.
 %             - 'voronoi_full_radial2': Computes volume using full radial
-%               method for 2D trajectories.
+%               method for 2D trajectories. It's for radial 2D
+%               trajectories, where the spokes are full radial (diameters),
+%               instead of half radial.
 %             - 'voronoi_full_radial3': Computes volume using full radial
-%               method for 3D trajectories.
+%               method for 3D trajectories. It's for radial 3D
+%               trajectories, where the spokes are full radial (diameters),
+%               instead of half radial.
 %             - 'voronoi_full_radial2_nonUnique': Computes volume using full
 %               radial method for 2D trajectories with non-unique points.
+%               This is for trajectory that have duplicates, but not only
+%               the center. 
 %             - 'voronoi_full_radial3_nonUnique': Computes volume using full
-%               radial method for 3D trajectories with non-unique points.
+%               radial method for 3D trajectories with non-unique points. 
+%               This is for trajectory that have duplicates, but not only
+%               the center.
 %             - 'voronoi_box2': Computes volume using box method for 2D
-%               trajectories.
+%               trajectories. Cannot have duplicate. Any type of
+%               trajectory. 
 %             - 'voronoi_box3': Computes volume using box method for 3D
-%               trajectories.
-%             - 'imDeformField2': Computes volume for 2D image deformation
+%               trajectories. Cannot have duplicate. Any type of
+%               trajectory. Not computationally feasible with realistic 3D
+%               acquisitions.
+%             - 'imDeformField2': Computes efficiently volume elements for 2D deformation
+%               field.
+%             - 'imDeformField3': Computes efficiently volume elements for 3D image deformation
 %               fields.
-%             - 'imDeformField3': Computes volume for 3D image deformation
-%               fields.
-%             - 'cartesian2': Computes volume using Cartesian method for 2D
-%               trajectories.
-%             - 'cartesian3': Computes volume using Cartesian method for 3D
-%               trajectories.
-%             - 'randomPartialCartesian2_x': Computes volume using random
-%               partial Cartesian method for 2D trajectories.
+%             - 'cartesian2': Computes volume elements for 2D Cartesian
+%               trajectories. Assumes that along each edge the point in
+%               position N/2 + 1 is zero.
+%             - 'cartesian3': Computes volume elements for 3D Cartesian acquisition 
+%               trajectories. Assumes that along each edge the point in
+%               position N/2 + 1 is zero.
+%             - 'randomPartialCartesian2_x': Computes volume elements for 2D Cartesian
+%               trajectories. Some points can be missing from the grid.
 %             - 'randomPartialCartesian3_x': Computes volume using random
 %               partial Cartesian method for 3D trajectories.
-%             - 'full_radial3': Computes volume using full radial method for
-%               3D trajectories.
-%             - 'center_out_radial3': Computes volume using center-out radial
-%               method for 3D trajectories.
+%             - 'full_radial3': Computes volume elements using full radial method for
+%               3D trajectories. Some points can be missing from the grid.
+
 %   varargin - Additional arguments required depending on the argType:
 %              - For 'voronoi_full_radial2_nonUnique': Number of averages.
 %              - For 'imDeformField2' and 'imDeformField3': Parameters for
@@ -99,6 +119,11 @@ t = bmPointReshape(argTraj);
 % function. 
 switch argType
     case 'voronoi_box2'
+        % the bmTraj_formatTraj is finding points in the center and only
+        % consider one in the center. The voronoi fails with duplicates,
+        % and therefore you remove them before running the voronoi
+        % function, and compute a weigth pretending there was a single
+        % center, then we 
         [formatedTraj, ~, formatedIndex, formatedWeight] = bmTraj_formatTraj(t);
         v = bmVolumeElement_voronoi_box2(formatedTraj, N_u, dK_u);
         v = v(:)';
@@ -154,6 +179,7 @@ switch argType
         v = bmVolumeElement_center_out_radial3(t);
         
     otherwise
+        % Here we can put a general case function in the future
         error('Trajectory type is unknown: check the possible inputs, or implement you new custom Volume Element function');
 end
 

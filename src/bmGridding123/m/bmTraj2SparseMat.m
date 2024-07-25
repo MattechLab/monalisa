@@ -10,7 +10,10 @@
 
 
 function varargout = bmTraj2SparseMat(t, v, N_u, dK_u, varargin)
-
+% t is the trajectory (3, nPt)
+% v is the volume elements (1,nPt)
+% N_u the matrix size of the cartesian grid in the k-space (1), (2), (3)
+% dK_U the same size as N_u, reconstruction 1./FoV in the three dimentions
 % argin initial -----------------------------------------------------------
 
 [sparseType, kernelType, nWin, kernelParam] = bmVarargin(varargin);
@@ -47,7 +50,6 @@ if iscell(t)
         return;
     else
         error('wrong list of arguments. ');
-        return;
     end
 end
 
@@ -65,14 +67,19 @@ kernelParam = double(single(kernelParam(:)'));
 imDim       = double(size(t, 1));
 nPt         = double(size(t, 2));
 
-if  not(strcmp(sparseType, 'bmSparseMat')) && not(strcmp(sparseType, 'matlabSparseMat'))
+% check that the types are sparse
+if  not(strcmp(sparseType, 'bmSparseMat'))
     error('The given sparseType is not recognized');
-    return;
 end
 % END_argin initial -------------------------------------------------------
 
 
 % preparing Nu and t and Du -----------------------------------------------
+% Rescale the fourier grid to make it one in each direction
+% Dn is the volume elements
+% dK_u is the grid in the fourier space, and those dimention represent the 
+% grid on which we regridd the data. This are in the phisical sense like (1/reconFoV)
+% N_u is the amount of points in the cartesian grids.
 Nx_u = 0;
 Ny_u = 0;
 Nz_u = 0;

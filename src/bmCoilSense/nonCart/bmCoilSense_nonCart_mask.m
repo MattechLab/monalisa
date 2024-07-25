@@ -4,7 +4,11 @@
 % May 2023
 
 function m = bmCoilSense_nonCart_mask(y, Gn, varargin)
-
+% This is rerunnable multiple times therefore you can have as inputs the outputs
+% y 
+% Gn
+% thresholds x_min ... z_max
+% 
 colorMax = 100; % ------------------------------------------------------------------- magic number
 
 [   x_min, x_max, ...

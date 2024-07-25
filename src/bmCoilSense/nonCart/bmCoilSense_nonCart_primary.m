@@ -4,7 +4,12 @@
 % May 2023
 
 function C = bmCoilSense_nonCart_primary(y, y_ref, C_ref, Gn, ve, m)
-
+% y (nPt,nCh)
+% y_ref data of the selected body coil (nPt,1)
+% C_ref Csensitivity of the selected body coil (same size as image)
+% Gn
+% ve size of (1, nPt)
+% m size of the image
 nIter_smooth = 2; % ----------------------------------------------------------- magic number
 L_nIter = 1000; % ------------------------------------------------------------- magic number
 L_th = 1e-4; % ---------------------------------------------------------------- magic number
@@ -32,15 +37,16 @@ anat_ref(m_neg) = 1;
 z = zeros([N_u, nCh], 'single'); 
 C = complex(z, z); 
 
-
-for i = 1:nCh
-    
-    i
-    
+% For each (surface coil)
+% channel compute the coil sensitivity (in and out of the mask)
+for i = 1:nCh    
     if imDim == 1
-        temp_im = x(:, i); 
+        temp_im = x(:, i);
+        % Smoothing with masked (only good pixel contributes) Pseudodiffusion
         temp_im = bmImPseudoDiffusion_inMask(temp_im./anat_ref, m, nIter_smooth); 
-        temp_im(m_neg) = 0; 
+        temp_im(m_neg) = 0;
+        % Solve a laplacian solver to estimate the coil sensitivity outside
+        % of the mask
         C(:, i) = bmImLaplaceEquationSolver(temp_im, m, L_nIter, L_th, 'omp');
         
     elseif imDim == 2
