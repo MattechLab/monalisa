@@ -3,19 +3,21 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [C, varargout] = bmCoilSense_nonCart_secondary(y, C, y_ref, C_ref, Gn, Gu, Gut, ve, convCond, display_flag)
-
+function [C, varargout] = bmCoilSense_nonCart_secondary(y, C, y_ref, C_ref, Gn, Gu, Gut, ve, nIter, display_flag)
+% Setting C evaluated before, try to find a better Coil sensiticity
+% estimate by
+% Alternating gradient descent considering C or X as variables
+% Solving modulus (FXC - y) Is to enhance C estimate
+% euristic method.
 % initial -----------------------------------------------------------------
 
 nIterSmooth = 2; % ----------------------------------------------------------- magic number
 
 if not(strcmp(class(y), 'single'))
     error('y must be of class ''single'' .');
-    return; 
 end
 if not(strcmp(class(y_ref), 'single'))
     error('y must be of class ''single'' .');
-    return; 
 end
 
 N_u     = double(Gn.N_u(:)'); 
@@ -44,8 +46,10 @@ KF_conj     = bmKF_conj([], N_u, N_u, dK_u, nCh, Gu.kernel_type, Gu.nWin, Gu.ker
 myZero      = zeros(prod(N_u(:)), 1); 
 % END_initial -------------------------------------------------------------
 
-
-while convCond.check()
+% Alternating gradient descent considering C or X as variables
+% Solving modulus (FXC - y) Is to enhance C estimate
+% euristic method.
+for i=1:nIter
     
     % image iteration
     v = bmShanna(x, Gu, KF.*C, N_u, 'MATLAB') - y;
@@ -70,7 +74,6 @@ while convCond.check()
     C = C - lambda_C*d_C; 
     % END coil iteration 
   
-    convCond.disp_info('bmCoilSense_nonCart_secondary'); 
 end
 
 % final -------------------------------------------------------------------
@@ -92,12 +95,6 @@ end
 
 C = C*nCh_array; 
 
-if nargout > 1
-    varargout{1} = convCond; 
-end
-if nargout > 2
-    varargout{2} = x; 
-end
 % END_final ---------------------------------------------------------------
 
 end
