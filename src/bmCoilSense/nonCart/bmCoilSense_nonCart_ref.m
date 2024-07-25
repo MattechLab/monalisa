@@ -4,6 +4,13 @@
 % May 2023
 
 function [y_ref, C_ref] = bmCoilSense_nonCart_ref(y, Gn, m, nSmooth_phi)
+% We need to chose the data of one of the body coils, the scope of this
+% function is to select one of the body coil data, and estimate the coil
+% sensitivity of that body coil.
+% y (complex) in col shape (nPt, nCh)
+% Gn (Sparse matrix)
+% m (_,_),(_,_,_) size of one frame
+% nSmooth_phi (1)
 
 L_nIter = 1000; % ----------------------------------------------------------- magic number
 L_th    = 1e-4; % ----------------------------------------------------------- magic number
