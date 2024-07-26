@@ -1,9 +1,9 @@
-
+reconDir = '/Users/mauroleidi/Desktop/recon_eva';
 
 bodyCoilFile     = [reconDir, '/C/meas_MID00539_FID154917_BEAT_LIBREon_eye_BC_BC.dat'];
 arrayCoilFile    = [reconDir, '/C/meas_MID00540_FID154918_BEAT_LIBREon_eye_SC_BC.dat'];
 
-%% Read metadata from the twi
+%% Read metadata from the twix
 bmTwix_info(bodyCoilFile)
 bmTwix_info(arrayCoilFile)
 
@@ -16,16 +16,20 @@ bmTwix_info(arrayCoilFile)
 N            = 128; 
 nSeg         = 22; 
 nShot        = 419; 
-FoV          = [480, 480, 480]; 
+FoV          = [480, 480, 480];
+% This number (nShotOff) has to be adapted based on the observation of the 
+% stedy-state graph l
 nShotOff     = 10; 
 N_u          = [48, 48, 48];
 dK_u         = [1, 1, 1]./480; 
 
 nCh_array    = 42; 
 nCh_body     = 2; 
-%% We will need to ask for a predefined format. Hence we need to read the data outside and
+% We will need to ask for a predefined format. Hence we need to read the data outside and
 % pass the y_body, t has to be computed by the user.  
 % We use trajectory in using the phisical dimentions without convention [-0.5,0.5]
+% You have to see how much data needs to be discarded by looking at the
+% graph, you don't want to keep data if you are not in stedy-state.
 [y_body, t, ve] = bmCoilSense_nonCart_dataFromTwix( bodyCoilFile, ...
                                                     N_u, ...
                                                     N, ...
