@@ -18,6 +18,7 @@ Welcome to Monalisa's documentation!
    :caption: Contents
 
    coil_sensitivity_map
+   coil_sensitivity_map_yj
    mythosis_prepare_data
    writing_reconstruction_script
 
