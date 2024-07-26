@@ -18,7 +18,7 @@ nSeg         = 22;
 nShot        = 419; 
 FoV          = [480, 480, 480];
 % This number (nShotOff) has to be adapted based on the observation of the 
-% stedy-state graph l
+% stedy-state graph
 nShotOff     = 10; 
 N_u          = [48, 48, 48];
 dK_u         = [1, 1, 1]./480; 
@@ -52,7 +52,11 @@ y_array         = bmCoilSense_nonCart_dataFromTwix( arrayCoilFile, ...
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 
 
 % You need to Reassign the xmin, xmax & ymin, ymax & zmin, zmax 
-% 
+% To do it you need to run the function below
+% control + E: to change the tresholds
+% shift + E: to set the constast chosen
+
+% Box excluding coordinates
 x_min = 2; 
 x_max = 39;
 
@@ -62,8 +66,10 @@ y_max = 41;
 z_min = 4; 
 z_max = 48;
 
+% Two thresholds
 th_RMS = 14; 
 th_MIP = 10; 
+
 
 close_size = []; 
 open_size  = []; 
