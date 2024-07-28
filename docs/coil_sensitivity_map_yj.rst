@@ -1,8 +1,6 @@
 Coil Sensitivity Map Estimation YJ
 ================================
 
-Certainly! Here is a refined version of your documentation point:
-
 After obtaining the body coil pre-scan and the selected coil pre-scan data, we first extract and read the metadata from these pre-scan files.
 
 .. code-block:: matlab
