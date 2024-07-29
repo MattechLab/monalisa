@@ -5,11 +5,11 @@ y   = bmMitosius_load(m, 'y');
 t   = bmMitosius_load(m, 't'); 
 ve  = bmMitosius_load(m, 've'); 
 
-N_u     = [80, 80, 80]; 
-n_u     = [80, 80, 80];
-dK_u    = [1, 1, 1]./480; 
+N_u     = [80, 80, 80]; % Size of the Virtual cartesian grid in the fourier space (regridding)
+n_u     = [80, 80, 80]; % Image size (output)
+dK_u    = [1, 1, 1]./480; % Spacing of the virtual cartesian grid
 nFr     = 20; 
-
+% best achivable resolution is 1/ N_u*dK_u If you have enogh coverage
 
 load('/Users/mauroleidi/Desktop/recon_eva/C/C.mat'); 
 C = bmImResize(C, [48, 48, 48], N_u);
@@ -28,7 +28,7 @@ bmImage(x0);
 
 %% tevaMorphosia_no_deformField
 
-nIter = 30;
+nIter = 30; % iterations before stopping
 witness_ind = [];
 
 delta     = 0.1;
@@ -43,7 +43,7 @@ x = bmTevaMorphosia_chain(  x0, ...
                             [], [], ...
                             delta, rho, 'normal', ...
                             nCGD, ve_max, ...
-                            bmConvergeCondition(nIter), ...
+                            nIter, ...
                             bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
 
 bmImage(x)
