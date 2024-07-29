@@ -1,6 +1,6 @@
 ## Setting Up the Virtual Environment for the documentation
 ```bash
-# Clone the repository
+# Clone the repository (Only if you didn't do it before)
 git clone https://github.com/MattechLab/monalisa.git
 cd monalisa
 
