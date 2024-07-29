@@ -6,7 +6,8 @@
 *.lo
 *.o
 *.obj
-docs/_build/
+/doc/_build/
+
 
 # Precompiled Headers
 *.gch
