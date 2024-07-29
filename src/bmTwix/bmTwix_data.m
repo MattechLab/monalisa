@@ -1,9 +1,27 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
 function y_raw = bmTwix_data(myTwix, myMriAcquisition_node)
+% bmTwix_data returns raw MRI data from a Twix object based on acquisition parameters.
+%
+% Authors:
+%   Bastien Milani
+%   CHUV and UNIL
+%   Lausanne - Switzerland
+%   May 2023
+%
+% Parameters:
+%   myTwix (struct): Struct containing Twix MRI data.
+%   myMriAcquisition_node (struct): Struct containing acquisition parameters.
+%
+% Returns:
+%   y_raw (array): Raw MRI data in the [nCh, N, nSeg*nShot] shape.
+%
+% Notes:
+%   This function reshapes and processes the raw data based on the
+%   acquisition parameters such as the number of segments, shots,
+%   channels, and echoes. It also handles optional flags for self
+%   navigation and ROOSK.
+%
+% Example:
+%   y_raw = bmTwix_data(myTwix, myMriAcquisition_node);
 
 N               = myMriAcquisition_node.N; 
 nSeg            = myMriAcquisition_node.nSeg;  
@@ -20,30 +38,27 @@ y_raw   = myTwix.image.unsorted();
 if nEcho == 1
     y_raw   = permute(y_raw, [2, 1, 3]);
     y_raw   = reshape(y_raw, [nCh, N, nSeg, nShot]);
-    
-    if selfNav_flag
+    % if a navigation was acquired it should be removed from the rawdata
+    if selfNav_flag 
         y_raw(:, :, 1, :) = [];
         nSeg = nSeg - 1;
     end
+    % remove all shots that were not in steady state
     if nShot_off > 0
         y_raw(:, :, :, 1:nShot_off) = [];
         nShot = nShot - nShot_off;
     end
+    % ask Bastien?
     if roosk_flag
         y_raw = y_raw(:, 1:2:end, :, :);
         N = N/2;
     end
+    % reshape the output to [nCh, N, nSeg*nShot]
     y_raw  = reshape(y_raw, [nCh, N, nSeg*nShot]);
 elseif nEcho == 2
     error('bmTwix_data : nEcho == 2, case not implemented, yet. But we have to do it for Giulia''s data ! ');
-    return; 
 else
     error('bmTwix_data : case not implemented. ');
-    return; 
 end
-
- 
-
-
 
 end
