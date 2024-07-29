@@ -1,6 +1,6 @@
 Coil Sensitivity Map Estimation YJ
-================================
-
+===================================
+This section explains how to extract the coil sensitivity map with our implementation. 
 After obtaining the body coil pre-scan and the selected coil pre-scan data, we first extract and read the metadata from these pre-scan files.
 
 .. code-block:: matlab
@@ -75,6 +75,21 @@ We use the same function to calculate the raw data for the selected array coils.
                                                 FoV, ...
                                                 nShotOff)
 
+
+Note that two plots will appear:
+
+.. image:: images/Steady-state-determination.png
+   :width: 600px
+   :alt: Steady state is determined by looking at the evolution of the magnitude of the SI projection.
+
+You should change the value of the nShotOff = ?; parameters, by looking at the index where the magnitude starts to be constant. For example in this case:
+
+.. image:: images/Steady-state-determination2.png
+   :width: 600px
+   :alt: Example of steady state is determination.
+
+nShotOff = 10 is a good value for steady state. (You could even argue 7 or 8).
+
 Then we compute the gridding matrices:
 
 .. code-block:: matlab
@@ -88,12 +103,27 @@ We now compute the mask using two thresholds to exclude artifacts from regions w
 - Root Mean Square (RMS)
 - Maximum Intensity Projection (MIP)
 
-First, we run the function bmCoilSense_nonCart_mask to generate an initial mask.
+First, we run the function bmCoilSense_nonCart_mask to generate an initial mask. Note that you can adjust the RMS threshold and MIP threshold to find a good tradeoff between signal and noise. A good choice is a threshold value that only leaves some noise in the corners, and that minimize information loss in the ROI. To adjust the threshold value you can use: SHIFT + E, and set the width to zero then move it till you are happy with the result. For example here:
 
-The variables `x_min`, `x_max`, `y_min`, `y_max`, `z_min`, and `z_max` should be adjusted to constrain the range of the Region of Interest (ROI) based on the displayed map. (Ideally, an illustrative coil image should be provided here for clarity.)
+.. image:: images/filtering.png
+   :width: 100 %
+
+A filter value of 10 is a good choice. 
+
+The variables `x_min`, `x_max`, `y_min`, `y_max`, `z_min`, and `z_max` should be adjusted to constrain the range of the Region of Interest (ROI) based on the displayed map. The ROI should be a box surrounding your signal area. For example in this case of a brain image:
+
+.. image:: images/setXmax.png
+   :width: 100 %
+.. image:: images/setYmax.png
+   :width: 100 %
+
+
+The values x_max = 42 and y_max = 40 are good choices. To switch across dimentions you can use CTRL + SHIFT + x, or CTRL + SHIFT + y, or CTRL + SHIFT + z.
+
 Next, we iteratively rerun the function `bmCoilSense_nonCart_mask`, adjusting `x_min`, `x_max`, `y_min`, `y_max`, `z_min`, `z_max`, and the thresholds until the optimal mask is achieved.
 
 For reference, we use one body coil to compute its sensitivity and then estimate the coil sensitivity for each selected surface coil using the image from the body coil.
+
 .. math::
 
    C_c = \frac{X_c}{x_{ref}}
@@ -107,11 +137,11 @@ For reference, we use one body coil to compute its sensitivity and then estimate
 With this initial coil sensitivity ``C_array_prime``, we estimate a better coil sensitivity by using gradient descent. This process alternately updates the coil sensitivity map ``C`` and the reconstructed image ``X`` to solve :math:`||FXC - y||`.
 
 For this example, we set ``nIter=5``.
+
 .. code-block:: matlab
 
    nIter = 5;
    [C, convCond_out, x] = bmCoilSense_nonCart_secondary(y_array, C_array_prime, y_ref, C_ref, Gn, Gu, Gut, ve, nIter, true);
 
 We can save the coil sensitivity ``C`` as a MATLAB data file for further reconstruction.
-.. 
  

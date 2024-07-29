@@ -18,11 +18,8 @@ t = [];
 if strcmp(traj_type, 'full_radial3_phylotaxis')
     t = bmTraj_fullRadial3_phyllotaxis_lineAssym2(mriAcquisition_node); 
 else
-    
-    error('bmTraj : traj_type is unknown. ');
-   return; 
+    error(['bmTraj : traj_type is unknown. This probably means your ' ...
+        'trajectory is not implemented, you need to implement it yourself']);
 end
-
-
 
 end
