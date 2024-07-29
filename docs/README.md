@@ -1,8 +1,8 @@
 ## Setting Up the Virtual Environment for the documentation
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/MattechLab/monalisa.git
+cd monalisa
 
 # Create and activate the virtual environment
 conda create --name monalisadoc python=3.8
