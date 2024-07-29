@@ -11,7 +11,7 @@ To get started with the MRI reconstruction code, follow these steps:
 1. Clone the repository:
 
 ```sh
-   git clone https://github.com/smth/smth.git
+   git clone https://github.com/MattechLab/monalisa.git
    cd monalisa
 ```
 
