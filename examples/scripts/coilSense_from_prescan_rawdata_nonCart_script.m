@@ -52,7 +52,7 @@ y_array         = bmCoilSense_nonCart_dataFromTwix( arrayCoilFile, ...
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 
 
 % You need to Reassign the xmin, xmax & ymin, ymax & zmin, zmax 
-% To do it you need to run the function below
+% To do it you need to run the function below (bmCoilSense_nonCart_mask)
 % control + E: to change the tresholds
 % shift + E: to set the constast chosen
 
