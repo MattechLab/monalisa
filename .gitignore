@@ -38,3 +38,6 @@
 
 # DS_STORE for mac users
 .DS_Store
+
+# MatLab autosave files
+*.asv
