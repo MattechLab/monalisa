@@ -1,11 +1,19 @@
+function bmTwix_info(myArg)
+% bmTwix_info(myArg) prints information included in the Siemens' raw data 
+% file's twix object used in the reconstruction process of the image.
+%
+% Arguments:
+%   - myArg: either the path to the Siemens' raw data file or the already
+%   extracted twix object
+%
 % Bastien Milani
 % CHUV and UNIL
 % Lausanne - Switzerland
 % May 2023
 
-function bmTwix_info(myArg)
 
 if isa(myArg, 'char')
+    % Read the twix object if path is given
     myTwix = mapVBVD_JH_for_monalisa(myArg);
     if iscell(myTwix)
         myTwix = myTwix{end};
@@ -108,25 +116,35 @@ end
 
 
 % data --------------------------------------------------------------------
+% unsorted() returns the unsorted data [N, nCh, nLine]
 y_raw = myTwix.image.unsorted();
+% Change structure to [nCh, N, nLine]
 y_raw = permute(y_raw, [2, 1, 3]);  
 
 y_raw_size = size(y_raw); 
 y_raw_size = y_raw_size(:)'; 
 nCh        = y_raw_size(1, 1);  
+% Seperate nLine into nSeg and nShot (nSeg = nLine / nShot)
 y_raw      = reshape(y_raw, [nCh, N, nSeg, nShot]); 
 
+% Reduce the array to a 3D array, only containing the values for the first segment
 mySI = squeeze(y_raw(:, :, 1, :));
+% Calculate the inverse discret Fourier transform
 mySI = bmIDF(mySI, 1, [], 2);
+% Calculate the RMS along the first dimension (Coils) 
+% -> magnitude spectrum of the signal
 mySI = squeeze(  sqrt(sum(abs(mySI).^2, 1))  ); 
+% Normalize the magnitude
 mySI = mySI - min(mySI(:)); 
 mySI = mySI/max(mySI(:)); 
 
+% Create 2D array of size N x nShot with each column being [1; 2; ...; N]
 mySize_1 = size(mySI, 1);
 mySize_2 = size(mySI, 2);
 x_SI = 1:mySize_1;
 x_SI = repmat(x_SI(:), [1, mySize_2]);
 
+% Calculate the weighted arithmetic mean and the weighted mean (COM)
 s_mean = mean(x_SI.*mySI, 1);
 s_center_mass = sum(x_SI.*mySI, 1)./sum(mySI, 1);
 % END_data ----------------------------------------------------------------
@@ -242,14 +260,24 @@ end
 fprintf('\n');
 
 
-
-figure
-hold on
-imagesc(mySI); 
+% Plotting heatmap of magnitude for the first segment of each shot
+figure('Name', 'TwixInfo Magnitude')
+imagesc(mySI, [0, 3*mean(mySI(:))]); 
+set(gca,'YDir','normal');
+colorbar
 colormap gray
-plot(s_center_mass, 'y.-')
+
+% Plotting the mean and COM of each shot
+hold on
+plot(s_center_mass, 'g.-')
 plot(s_mean, 'r.-')
-caxis([0, 3*mean(mySI(:))])
+legend('Center of Mass', 'Mean', 'Location', 'best')
+
+% Adding title and labels
+xlabel('nShot')
+ylabel('N','Rotation',0)
+title(sprintf(['Magnitude spectrum for first segment of each shot\n(shows ' ...
+    'which shots should be excluded)']))
 
 % END_display -------------------------------------------------------------
 
