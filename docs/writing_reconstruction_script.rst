@@ -90,6 +90,94 @@ Take a look at your resulting image. Are you happy with your result?
 
     bmImage(x)
 
+Iterative-SENSE reconstruction method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+After the initial guess, you can use the iterative-SENSE reconstruction method `bmSensa` instead of `bmTevaMorphosia_chain`. Iterative-SENSE is a reconstruction method for non-Cartesian data, performed frame by frame without sharing information between frames. Consequently, it performs poorly with heavily undersampled data. However, despite its limitations, this method is important in the theoretical framework of reconstruction and finds applications in specific cases.  
+We include a demonstration of the reconstruction here for completeness.
+
+.. code-block:: matlab
+
+    x = cell(nFr, 1); 
+    for i = 1:nFr
+
+        nIter       = 30;
+        witness_ind = []; % 1:nIter;
+        witnessInfo = bmWitnessInfo(['sensa_frame_', num2str(i)], witness_ind);
+        convCond    = bmConvergeCondition(nIter);
+
+        nCGD    = 4;
+        ve_max  = 10*prod(dK_u(:));
+
+        x{i} = bmSensa( x0{i}, y{i}, ve{i}, C, Gu{i}, Gut{i}, n_u,
+                        nCGD, ve_max, 
+                        convCond, witnessInfo);
+    end
+
+Check out the reconstructed image here:
+
+.. code-block:: matlab
+
+    bmImage(x)
+
+More information inside the function `bmSensa`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The function `bmSensa` is a wrapper for the iterative-SENSE reconstruction method. It is a frame-by-frame reconstruction method that uses the iterative conjugate gradient descent (CGD) algorithm. 
+First of all, it estimates the initial guess for the gradient descent. 
+
+.. code-block:: matlab
+
+    res_next            = y - bmShanna(x, Gu, KFC, n_u, 'MATLAB');
+    % where bmShanna
+    % x-> KFC-> fft -> gridding -> y
+    % compute the adjoint. 
+    dagM_res_next       = (1/HX)*bmNakatsha(HY.*res_next, Gut, KFC_conj, true, n_u, 'MATLAB');
+    % where bmNakatsha
+    % gridding HY*res_next -GuT->X domain -> KFC_conj
+    % (1/Hx)*bmNakatsha -> gradient direction
+
+    % Initialization of the gradient descent
+    sqn_dagM_res_next   = real(   dagM_res_next(:)'*(HX*dagM_res_next(:))   );
+    % square norm of the gradient
+    p_next              = dagM_res_next;
+
+Then, it continues performing gradient descent iteratively until the step size reaches the minimum threshold.
+
+.. code-block:: matlab
+
+    for i = 1:nCGD
+
+        res_curr    = res_next;
+        sqn_dagM_res_curr = sqn_dagM_res_next; 
+        p_curr      = p_next;
+
+        if (sqn_dagM_res_curr < myEps) 
+            break;
+        end
+
+        Mp_curr  = bmShanna(p_curr, Gu, KFC, n_u, 'MATLAB');
+        % x-> KFC-> fft -> gridding -> y
+        sqn_Mp_curr      = real(   Mp_curr(:)'*(HY(:).*Mp_curr(:))   );
+
+        a   = sqn_dagM_res_curr/sqn_Mp_curr;
+
+        x = x + a*p_curr;
+
+        if (i == nCGD)
+           break;  
+        end
+
+        res_next            = res_curr - a*Mp_curr;
+        dagM_res_next       = (1/HX)*bmNakatsha(HY.*res_next, Gut, KFC_conj, true, n_u, 'MATLAB');
+        sqn_dagM_res_next   = real(   dagM_res_next(:)'*(HX*dagM_res_next(:))   );
+
+        b = sqn_dagM_res_next/sqn_dagM_res_curr; 
+
+        p_next              = dagM_res_next + b*p_curr;
+
+    end % end CGD
+
+
+
 5D Recons
 ---------
 
