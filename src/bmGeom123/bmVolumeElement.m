@@ -58,7 +58,7 @@ function varargout = bmVolumeElement(argTraj, argType, varargin)
 %               partial Cartesian method for 3D trajectories.
 %             - 'full_radial3': Computes volume elements using full radial method for
 %               3D trajectories. Some points can be missing from the grid.
-
+%
 %   varargin - Additional arguments required depending on the argType:
 %              - For 'voronoi_full_radial2_nonUnique': Number of averages.
 %              - For 'imDeformField2' and 'imDeformField3': Parameters for

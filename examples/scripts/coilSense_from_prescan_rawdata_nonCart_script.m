@@ -1,35 +1,46 @@
-reconDir = '/Users/mauroleidi/Desktop/recon_eva';
+reconDir = 'C:\Users\helbi\Documents\MattechLab\recon_eva';
 
 bodyCoilFile     = [reconDir, '/C/meas_MID00539_FID154917_BEAT_LIBREon_eye_BC_BC.dat'];
 arrayCoilFile    = [reconDir, '/C/meas_MID00540_FID154918_BEAT_LIBREon_eye_SC_BC.dat'];
 
-%% Read metadata from the twix
+%% Read and print metadata from the twix
 bmTwix_info(bodyCoilFile)
 bmTwix_info(arrayCoilFile)
 
 %% The input initialization is not automatizable, since the name/content of
 % the variables depends on the sequence programmed. For the moment we just
-% read and print the twixinfo and you need to adjut the parameters yourself
+% read and print the twixinfo and you need to adjust the parameters yourself
 
 %% Maybe: write a function for automate ISMR rawData format(Standard) reading.
 % All trajectory information, to generate the trajectory. 
-N            = 128; 
+N            = 128;
 nSeg         = 22; 
 nShot        = 419; 
-FoV          = [480, 480, 480];
-% This number (nShotOff) has to be adapted based on the observation of the 
-% stedy-state graph
-nShotOff     = 10; 
-N_u          = [48, 48, 48];
-dK_u         = [1, 1, 1]./480; 
 
+% This is the FoV set during the acquisition
+FoV          = [240, 240, 240]; 
+
+% nShotOff depends on magnitude shown in figure "TwixInfo Magnitude"
+nShotOff     = 10; 
+
+% Matrix size of the cartesian grid in the k-space
+N_u          = [48, 48, 48]; 
+
+% K-space resolution for the reconstruction (has to be the same as the
+% final reconstruction)
+reconFoV = 480; % magic number
+dK_u         = [1, 1, 1]./reconFoV;
+
+% Number of coils (channels)
 nCh_array    = 42; 
-nCh_body     = 2; 
-% We will need to ask for a predefined format. Hence we need to read the data outside and
-% pass the y_body, t has to be computed by the user.  
-% We use trajectory in using the phisical dimentions without convention [-0.5,0.5]
+nCh_body     = 2;
+
+% We will need to ask for a predefined format. Hence we need to read the 
+% data outside and pass the y_body, t has to be computed by the user.  
+% We use trajectory in using the physical dimensions without convention 
+% [-0.5, 0.5]
 % You have to see how much data needs to be discarded by looking at the
-% graph, you don't want to keep data if you are not in stedy-state.
+% graph, you don't want to keep data if you are not in steady-state.
 [y_body, t, ve] = bmCoilSense_nonCart_dataFromTwix( bodyCoilFile, ...
                                                     N_u, ...
                                                     N, ...
@@ -38,7 +49,8 @@ nCh_body     = 2;
                                                     nCh_body, ...
                                                     FoV, ...
                                                     nShotOff);
-% same for arraycoil 
+
+% Same for array coils 
 y_array         = bmCoilSense_nonCart_dataFromTwix( arrayCoilFile, ...
                                                     N_u, ...
                                                     N, ...
@@ -47,6 +59,7 @@ y_array         = bmCoilSense_nonCart_dataFromTwix( arrayCoilFile, ...
                                                     nCh_array, ...
                                                     FoV, ...
                                                     nShotOff);
+
 % compute the gridding matrices (Gn = approximation of inverse, Gu = Forward,
 % Gut = transposed of Gu) Gn and Gut are both backward
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 
@@ -73,6 +86,7 @@ th_MIP = 10;
 
 close_size = []; 
 open_size  = []; 
+
 % Mask computation, the two thresholds to exclude artifacts from the region
 % where there is no signal, like air in the lungs: 
 % 1 for the Root mean square

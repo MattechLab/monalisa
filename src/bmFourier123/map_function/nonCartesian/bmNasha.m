@@ -3,16 +3,16 @@
 % Lausanne - Switzerland
 % May 2023
 
-function x = bmNasha(y, G, n_u, varargin)
+function x = bmNasha(y, G, n_u, varargin) 
 
 % argin_initial -----------------------------------------------------------
-[C, K, fft_lib_flag] = bmVarargin(varargin); 
+[C, K, fft_lib_flag] = bmVarargin(varargin); % Extract optional arguments
 
 if isempty(n_u)
-    n_u = N_u; 
+    n_u = N_u; % Why is this here ??? Maybe G.N_u?
 end
 
-y           = single(y); 
+y           = single(y); % Convert inputs to correct formats
 N_u         = double(   int32(G.N_u(:)')    );
 n_u         = double(   int32(n_u(:)')      );
 dK_u        = double(   single(G.d_u(:)')   );
@@ -23,7 +23,7 @@ nCh         = size(y, 2);
 
 
 if isempty(K)
-    K = bmK(N_u, dK_u, nCh, G.kernel_type, G.nWin, G.kernelParam);
+    K = bmK(N_u, dK_u, nCh, G.kernel_type, G.nWin, G.kernelParam); % Create kernel matrix for interpolation and gridding
 end
 K = single(bmBlockReshape(K, N_u));
 
@@ -32,19 +32,19 @@ if isempty(fft_lib_flag)
 end
 
 C_flag = false;
-if not(isempty(C))
+if not(isempty(C)) % Convert C to correct format if not empty
     C_flag = true;
     C = single(bmColReshape(C, n_u));
 end
 C = single(C); 
 
-private_check(y, G, K, C, N_u, n_u, nCh, nPt); 
+private_check(y, G, K, C, N_u, n_u, nCh, nPt); % Check format and 
 % END_argin_initial -------------------------------------------------------
 
 % gridding
-x = bmSparseMat_vec(G, y, 'omp', 'complex');
+x = bmSparseMat_vec(G, y, 'omp', 'complex'); % Do sparse matrix multiplication to map the data (y) onto the grid defined by G.N_u 
 
-% fft
+% Calculate the inverse fast Fourier transform
 x = bmBlockReshape(x, N_u); 
 
 if imDim == 1
@@ -73,7 +73,7 @@ elseif imDim == 3
     end
 end
 
-% deapotization
+% Deapodization
 x = x.*K;
 
 % eventual croping
@@ -93,6 +93,20 @@ end
 
 
 function private_check(y, G, K, C, N_u, n_u, nCh, nPt)
+% private_check(y, G, K, C, N_u, n_u, nCh, nPt)
+%
+% This function checks that all inputs have the correct type, size and
+% values needed for the computation to work. Throws errors if something is
+% found.
+%
+% Authors:
+%   Bastien Milani
+%   CHUV and UNIL
+%   Lausanne - Switzerland
+%   May 2023
+%
+% Parameters:
+%   See bmNasha(...)
 
 if not(isa(y, 'single'))
     error('The data''y'' must be of class single. ');
