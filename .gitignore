@@ -30,6 +30,7 @@
 
 # compiled cpp in matlab
 *.mexmaca64
+*.mexw64
 
 # Executables
 *.exe
