@@ -1,15 +1,18 @@
 function bmTwix_info(myArg)
-% bmTwix_info(myArg) prints information included in the Siemens' raw data 
-% file's twix object used in the reconstruction process of the image.
+% bmTwix_info(myArg) 
+% 
+% Prints information included in the Siemens' raw data 
+% file's Twix object used in the reconstruction process of the image.
 %
-% Arguments:
-%   - myArg: either the path to the Siemens' raw data file or the already
-%   extracted twix object
+% Authors:
+%   Bastien Milani
+%   CHUV and UNIL
+%   Lausanne - Switzerland
+%   May 2023
 %
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
+% Parameters:
+%   myArg (struct/char): Either the path to the Siemens' raw data file or 
+%    a Twix object
 
 
 if isa(myArg, 'char')
@@ -50,7 +53,7 @@ hdr_Protocol_PeFOV      = [];
 hdr_Protocol_PhaseFoV   = []; 
 
 
-% header ------------------------------------------------------------------
+%% header
 N           = myTwix.image.NCol;
 nShot       = myTwix.image.NSeg;
 nLine       = myTwix.image.NLin;
@@ -109,31 +112,33 @@ if isfield(myTwix.hdr, 'Protocol')
 end
 
 
-% END_header --------------------------------------------------------------
 
 
-
-
-
-% data --------------------------------------------------------------------
-% unsorted() returns the unsorted data [N, nCh, nLine]
+%% data 
+% unsorted() returns the unsorted data as an array [N, nCh, nLine]
 y_raw = myTwix.image.unsorted();
+
 % Change structure to [nCh, N, nLine]
 y_raw = permute(y_raw, [2, 1, 3]);  
 
+% Get nCh
 y_raw_size = size(y_raw); 
 y_raw_size = y_raw_size(:)'; 
 nCh        = y_raw_size(1, 1);  
+
 % Seperate nLine into nSeg and nShot (nSeg = nLine / nShot)
 y_raw      = reshape(y_raw, [nCh, N, nSeg, nShot]); 
 
 % Reduce the array to a 3D array, only containing the values for the first segment
 mySI = squeeze(y_raw(:, :, 1, :));
+
 % Calculate the inverse discret Fourier transform
 mySI = bmIDF(mySI, 1, [], 2);
+
 % Calculate the RMS along the first dimension (Coils) 
 % -> magnitude spectrum of the signal
-mySI = squeeze(  sqrt(sum(abs(mySI).^2, 1))  ); 
+mySI = squeeze(  sqrt(sum(abs(mySI).^2, 1))  );
+
 % Normalize the magnitude
 mySI = mySI - min(mySI(:)); 
 mySI = mySI/max(mySI(:)); 
@@ -147,13 +152,19 @@ x_SI = repmat(x_SI(:), [1, mySize_2]);
 % Calculate the weighted arithmetic mean and the weighted mean (COM)
 s_mean = mean(x_SI.*mySI, 1);
 s_center_mass = sum(x_SI.*mySI, 1)./sum(mySI, 1);
-% END_data ----------------------------------------------------------------
 
+% Estimate shotOff (how many shots to be dropped)
+window_size = 10;  % Define the size of the sliding window
+threshold = std(s_mean)*0.1; %0.01 % Define a threshold for the std to consider steady state
 
+% Compute the running standard deviation
+running_std = movstd(s_mean, window_size);
 
+% Find the shot where the standard deviation falls below the threshold
+shotOff = find(running_std < threshold, 1);
 
-% display -----------------------------------------------------------------
-
+%% Display information
+% Print values 
 fprintf('\n'); 
 if isempty(N)
     fprintf('N     is empty. \n');
@@ -192,6 +203,8 @@ else
 end
 fprintf('\n');
 
+
+% Print FoV (Meas)
 if isempty(hdr_Meas_ReadFoV)
     fprintf('hdr_Meas_ReadFoV       is empty. \n');
 else
@@ -205,7 +218,7 @@ end
 fprintf('\n');
 
 
-
+% Print FoV (Config)
 if isempty(hdr_Config_ReadFoV)
     fprintf('hdr_Config_ReadFoV       is empty. \n');
 else
@@ -229,6 +242,7 @@ end
 fprintf('\n');
 
 
+% Print FoV (Dicom)
 if isempty(hdr_Dicom_dPhaseFOV)
     fprintf('hdr_Dicom_dPhaseFOV      is empty. \n');
 else
@@ -242,6 +256,7 @@ end
 fprintf('\n');
 
 
+% Print FoV (Protocol)
 if isempty(hdr_Protocol_ReadFoV)
     fprintf('hdr_Protocol_ReadFoV   is empty. \n');
 else
@@ -260,6 +275,16 @@ end
 fprintf('\n');
 
 
+% Print shotOff value if found
+if ~isempty(shotOff)
+    fprintf('Steady state reached at shot %d\n', shotOff);
+else
+    fprintf('Steady state not reached within the data range.\n');
+end
+fprintf('\n');
+
+
+
 % Plotting heatmap of magnitude for the first segment of each shot
 figure('Name', 'TwixInfo Magnitude')
 imagesc(mySI, [0, 3*mean(mySI(:))]); 
@@ -271,15 +296,21 @@ colormap gray
 hold on
 plot(s_center_mass, 'g.-')
 plot(s_mean, 'r.-')
-legend('Center of Mass', 'Mean', 'Location', 'best')
 
-% Adding title and labels
+% Plotting vertical line for shotOff
+if ~isempty(shotOff)
+    xline(shotOff, 'c--');  % Add vertical line at steady state index
+    text(shotOff+5, floor(N*0.75), sprintf('shot = %i', ...
+        shotOff), "HorizontalAlignment", "left", ...
+        'Color', 'black', 'BackgroundColor', 'white', 'Margin', 0.5);
+end
+
+% Adding legend, title and labels
+legend('Center of Mass', 'Mean', 'Steady State', 'Location', 'best')
 xlabel('nShot')
 ylabel('N','Rotation',0)
-title(sprintf(['Magnitude spectrum for first segment of each shot\n(shows ' ...
+title(sprintf(['Magnitude spectrum for first segment of each shot\n(estimates ' ...
     'which shots should be excluded)']))
-
-% END_display -------------------------------------------------------------
 
 
 end
