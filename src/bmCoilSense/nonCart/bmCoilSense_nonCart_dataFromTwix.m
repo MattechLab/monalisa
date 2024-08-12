@@ -1,19 +1,42 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
 function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nShot, nCh, FoV, nShotOff)
-% The result of this function is the rawdata, the trajectory point t=(x,y,z) (3,Npoints) and the volume elements 
-% Maybe we can input as argument the trajectory to avoid the call
-% bmTraj_fullRadial3_phyllotaxis_lineAssym2 that assumes a trajectory type
+% varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, ...
+%                                              nShot, nCh, FoV, nShotOff)
+%
+% This function constraints data from a non cartesian trajectory to fit 
+% into the given grid, adapting the resolution of the image.
+%
+% Authors:
+%   Bastien Milani
+%   CHUV and UNIL
+%   Lausanne - Switzerland
+%   May 2023
+%
+% Parameters:
+%   argFile (char): String containing the path to the file which contains
+%    the Twix object.
+%   N_u (1D array): Contains the size of the grid for every dimension
+%   N (int): Number of points per segment
+%   nSeg (int): Number of segments per shot
+%   nShot (int): Number of shots per acquisition
+%   nCh (int): Number of channels / coils
+%   FoV (1D array): Contains acquisition FoV (image space)
+%   nShotOff (int): Number of shots to be discarded from the start
+%
+% Returns (optional):
+%   y (2D array): Raw MRI data from the Twix object [#points, nCh]
+%   t (2D array): Array containing points of the trajectory in the k-space
+%    [3, #points]
+%   ve (1D array): Array containing the volume elements for every point in
+%    the trajectory.
+
 % We can have a general function bmCoilSense_nonCart_dataFromTwix that can
 % be called for several trajectory types.
 
+% Extract twix object
 myTwix      = bmTwix(argFile);  
 dK_u_raw    = [1, 1, 1]./FoV;  
 
-
+% Create object to better transfer the variables
 myMriAcquisition_node                = bmMriAcquisitionParam([]); 
 myMriAcquisition_node.N              = N; 
 myMriAcquisition_node.nSeg           = nSeg; 
@@ -26,23 +49,27 @@ myMriAcquisition_node.selfNav_flag   = true;
 myMriAcquisition_node.nShot_off      = nShotOff; 
 myMriAcquisition_node.roosk_flag     = false; 
 
-% extract rawdata
+% Extract rawdata
 y = bmTwix_data(myTwix, myMriAcquisition_node);
-% compute trajectory
-t = bmPointReshape(bmTraj_fullRadial3_phyllotaxis_lineAssym2(myMriAcquisition_node));
 
-% compute volume elements
+% Compute trajectory and express it as points in 3 dimensions [3, #points]
+% Maybe we can input as argument the trajectory to avoid the call
+% bmTraj_fullRadial3_phyllotaxis_lineAssym2 that assumes a trajectory type
+t = bmPointReshape(...
+    bmTraj_fullRadial3_phyllotaxis_lineAssym2(myMriAcquisition_node));
+
+% Compute volume elements if third output is required
 if (nargout ==  1) || (nargout == 2)
     ve      = ones(1, size(t, 2));
 elseif nargout == 3
     ve      = bmVolumeElement(t, 'voronoi_full_radial3');
 end
 
-% keep only data in a box to keep the frequencies for lower resolution 
+% Only keep data in a box to keep the frequencies for lower resolution 
 [y, t, ve]  = bmLowRes(y, t, ve, N_u, dK_u_raw);
 y           = bmPermuteToCol(y); 
 
-    
+% Return data if required
 if nargout > 0 
     varargout{1}    = y;
 end
