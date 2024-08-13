@@ -102,8 +102,7 @@ WORKDIR /usr/src/app
 # Copy the entire local monalisa directory into the container
 COPY . /usr/src/app
 # Set the working directory to the folder containing your script
-WORKDIR /usr/src/app/src/bmMex/m
-
+WORKDIR /usr/src/app/examples/scripts
 # DEBUG LOGGING: Check if the directory /usr/src/app/src/bmFourierN exists
 RUN if [ -d "/usr/src/app/src/bmFourierN" ]; then \
         echo "Directory /usr/src/app/src/bmFourierN exists"; \
@@ -117,4 +116,4 @@ ENTRYPOINT ["matlab"]
 # I am using root otherwise I encountered permission errors, not sure it's safe (INITIAL)
 USER root
 # Compile c++ code
-CMD ["matlab", "-batch", "compileScript"]
+CMD ["matlab", "-batch", "testDocker"]
