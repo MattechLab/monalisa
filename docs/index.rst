@@ -23,7 +23,7 @@ Welcome to Monalisa's documentation!
    coil_sensitivity_map
    mythosis_prepare_data
    writing_reconstruction_script
-
+   using_docker
 Indices and tables
 ==================
 
