@@ -79,13 +79,13 @@ We use the same function to calculate the raw data for the selected array coils.
 Note that two plots will appear:
 
 .. image:: images/Steady-state-determination.png
-   :width: 600px
+   :width: 100 %
    :alt: Steady state is determined by looking at the evolution of the magnitude of the SI projection.
 
 You should change the value of the nShotOff = ?; parameters, by looking at the index where the magnitude starts to be constant. For example in this case:
 
 .. image:: images/Steady-state-determination2.png
-   :width: 600px
+   :width: 100 %
    :alt: Example of steady state is determination.
 
 nShotOff = 10 is a good value for steady state. (You could even argue 7 or 8).
@@ -122,12 +122,6 @@ The values x_max = 42 and y_max = 40 are good choices. To switch across dimentio
 
 Next, we iteratively rerun the function `bmCoilSense_nonCart_mask`, adjusting `x_min`, `x_max`, `y_min`, `y_max`, `z_min`, `z_max`, and the thresholds until the optimal mask is achieved.
 
-For reference, we use one body coil to compute its sensitivity and then estimate the coil sensitivity for each selected surface coil using the image from the body coil.
-
-.. math::
-
-   C_c = \frac{X_c}{x_{ref}}
-
 .. code-block:: matlab
 
    [y_ref, C_ref] = bmCoilSense_nonCart_ref(y_body, Gn, m, []);
@@ -145,3 +139,25 @@ For this example, we set ``nIter=5``.
 
 We can save the coil sensitivity ``C`` as a MATLAB data file for further reconstruction.
  
+For reference, we use one body coil to compute its sensitivity and then estimate the coil sensitivity for each selected surface coil using the image from the body coil. We know that the image seen by coil c is:
+
+.. math::
+
+   X_c = C_c.*x_{ref}
+
+Unfortunately we do not have access to the true image x_ref. However since the body coil are far from the ROI, we can assume that inside the ROI, their coil sensitivity is constant. Hence:
+
+.. math::
+
+   X_body = k*x_{ref}
+   x_{ref} = frac{X_body}{k}
+
+Given our assumption we can simply estimate the coil sensitiviy for coil_c:
+
+.. math::
+
+   X_c = C_c.*x_{ref} \approx C_c.*frac{X_body}{k}
+   frac{C_c}{k} \approx X_c./X_body
+
+In any case the coil sensitivities are normalized, so the k factor is not relevant.
+We then apply some smoothing by imposing that the laplacian of the coil sensitivity is zero outside the ROI.

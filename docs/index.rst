@@ -6,6 +6,9 @@
 Welcome to Monalisa's documentation!
 ====================================
 
+.. image:: images/Bastien.jpeg
+   :width: 100 %
+
 .. toctree::
    :maxdepth: 2
    :caption: Quick Start
