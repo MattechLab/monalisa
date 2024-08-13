@@ -18,7 +18,7 @@ release = '0.1.0'
 
 extensions = [
     'sphinxcontrib.matlab',
-]
+    'sphinx.ext.mathjax']
 
 
 # Define the relative path to the source directory
