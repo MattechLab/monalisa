@@ -9,8 +9,8 @@ First, clone the repository and navigate into the directory:
 
 .. code-block:: bash
 
-   git clone https://github.com/smth/smth.git
-   cd smth
+   git clone https://github.com/MattechLab/monalisa.git
+   cd monalisa
 
 ## Set Up a Compiler
 
@@ -106,4 +106,4 @@ Test your compilation step worked successfully using the example script:
 - **macOS**: You need libomp as explained in this StackOverflow post: `How to include omp.h in OS X <https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>`_.
 - **Windows**: Ensure that the Visual Studio C++ compiler is set up correctly and recognized by MATLAB.
 
-Follow these steps to set up your environment and compile the necessary code for MRI reconstruction. If you encounter any issues, refer to the documentation or seek help from the community.
+Follow these steps to set up your environment and compile the necessary code for MRI reconstruction. If you encounter any issues, consider opening an issue on our github repository.
