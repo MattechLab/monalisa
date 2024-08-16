@@ -24,6 +24,13 @@ Welcome to Monalisa's documentation!
    mythosis_prepare_data
    writing_reconstruction_script
    using_docker
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Theory behind monalisa
+
+   theory
+
 Indices and tables
 ==================
 

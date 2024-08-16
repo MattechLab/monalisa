@@ -20,6 +20,20 @@ extensions = [
     'sphinxcontrib.matlab',
     'sphinx.ext.mathjax']
 
+mathjax3_config = {
+    'tex': {
+        'inlineMath': [['$', '$'], ['\\(', '\\)']],
+        'displayMath': [['$$', '$$'], ['\\[', '\\]']],
+    },
+    "TeX": {
+        "Macros": {
+            "coloneqq": r"\mathrel{\mathpalette\coloneqq@{}}",
+            "parallel": r"\parallel",
+            # Add other macros if needed
+        
+        }
+    },
+}
 
 # Define the relative path to the source directory
 matlab_src_dir = '../src'
