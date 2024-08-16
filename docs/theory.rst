@@ -242,19 +242,19 @@ For the gridding porcess we do a discrete convolution of the non uniform measure
 
 The term :math:`\frac{1}{\mathcal{F}^{-1}\{h(\cdot)\}}` is often forgotten in implementations. We define  :math:`k(\cdot) := \frac{1}{\mathcal{F}^{-1}\{h(\cdot)\}}`.
 
-We define :math:`G` as the gridding matrix, where :math:`G_{i,j} = \frac{h(k_i - k_j)}{\sum_{l} h_{i,l}}`.
+We define :math:`G` as the gridding matrix, where:
 
 .. math::
+    G_{i,j} = \frac{h(k_i - k_j)}{\sum_{l} h_{i,l}}
 
-   G_{u,t} = G_u^\text{T}
+    G_{u,t} = G_u^\text{T}
 
-.. math::
+    G_u = N(W) \cdot W 
 
-   G_u = N(W) \cdot W it's the gridding from non-unifrom to  uniform.
+    G_n = N(W^\text{T}) \cdot W^\text{T} 
 
-.. math::
 
-   G_n = N(W^\text{T}) \cdot W^\text{T} it's the gridding from uniform to non-unifrom.
+$G_u$ is the gridding from non-unifrom to uniform, while $G_n$ is the gridding from uniform to non-unifrom.
 
 
 Reconstruction Algorithms
