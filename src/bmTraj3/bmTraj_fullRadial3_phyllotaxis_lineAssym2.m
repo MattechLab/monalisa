@@ -26,7 +26,6 @@ function myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 
 if length(varargin) == 0
    error('Wrong list of arguments. '); 
-   return; 
    
 elseif length(varargin) == 1
     % Read variables from the bmMriAcquisitionParam object if given
@@ -55,7 +54,6 @@ end
 
 if fix(N_n/2) ~= N_n/2
    error('N_n must be even in ''bm3DimRadialTraj_phyllotaxis_2'' ! '); 
-   return; 
 end
 
 % Calculate spherical coordinates of phyllotaxis spiral given nSeg and
