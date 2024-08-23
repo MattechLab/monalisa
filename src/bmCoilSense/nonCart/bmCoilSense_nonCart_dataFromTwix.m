@@ -2,14 +2,20 @@ function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nSh
 % varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, ...
 %                                              nShot, nCh, FoV, nShotOff)
 %
-% This function constraints data from a non cartesian trajectory to fit 
-% into the given grid, adapting the resolution of the image.
+% This function constraints data from a non cartesian 3D radial trajectory 
+% to fit into the given cartesian grid, adapting the resolution of the 
+% image. The data is read from a a Siemens' raw data file. It is assumed 
+% that the acquisition is done with self navigation
 %
 % Authors:
 %   Bastien Milani
 %   CHUV and UNIL
 %   Lausanne - Switzerland
 %   May 2023
+%
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
 %
 % Parameters:
 %   argFile (char): String containing the path to the file which contains
@@ -23,11 +29,12 @@ function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nSh
 %   nShotOff (int): Number of shots to be discarded from the start
 %
 % Returns (optional):
-%   y (2D array): Raw MRI data from the Twix object [#points, nCh]
-%   t (2D array): Array containing points of the trajectory in the k-space
-%    [3, #points]
-%   ve (1D array): Array containing the volume elements for every point in
-%    the trajectory.
+%   varargout{1} (y): 2D array containing the raw MRI data from the twix 
+%    object. The size is [#points, nCh].
+%   varargout{2} (t): 2D array containing points of the trajectory in the 
+%    k-space. The size is [3, #points].
+%   varargout{3} (ve): Array containing the volume elements for every point 
+%    of the trajectory.
 
 % We can have a general function bmCoilSense_nonCart_dataFromTwix that can
 % be called for several trajectory types.
