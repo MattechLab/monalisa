@@ -1,9 +1,26 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
 classdef bmImageViewerParam < handle
+    % bmImageViewerParam < handle
+    %
+    % This class only has properties and a constructor to fill the
+    % properties. This class contains the parameters used to create and
+    % manage an interactive figure that visualizes data as an image.
+    %
+    % Authors:
+    %   Bastien Milani
+    %   CHUV and UNIL
+    %   Lausanne - Switzerland
+    %   May 2023
+    %
+    % Contributors:
+    %   Dominik Helbing (Documentation)
+    %   MattechLab 2024
+    %
+    % Constructor Parameters:
+    %   argIn: Either an object of this class to create a copy, or an
+    %    integer from 2 to 5 defining the dimension of the image.
+    %   varargin{1}: The image data that should be displayed by a figure
+    %    with these parameters. Required if argIn is only an integer.
+
     properties (Access = public)
         
         class_type          = 'bmImageViewerParam';
