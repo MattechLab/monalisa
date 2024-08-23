@@ -9,6 +9,10 @@ function y_raw = bmTwix_data(myTwix, myMriAcquisition_node)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation)
+%   MattechLab 2024
+%
 % Parameters:
 %   myTwix (struct): Struct containing Twix MRI data.
 %   myMriAcquisition_node (struct): Struct containing acquisition 
@@ -40,7 +44,10 @@ roosk_flag      = myMriAcquisition_node.roosk_flag;
 
 % unsorted() returns the unsorted data as an array [N, nCh, nSeg*nShot]
 y_raw   = myTwix.image.unsorted();
+
 if nEcho == 1
+    % Change structure to [nCh, N, nLine] and seperate nLine into nSeg and
+    % nShot
     y_raw   = permute(y_raw, [2, 1, 3]);
     y_raw   = reshape(y_raw, [nCh, N, nSeg, nShot]);
 

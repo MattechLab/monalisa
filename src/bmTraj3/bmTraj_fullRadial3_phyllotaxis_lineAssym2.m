@@ -9,6 +9,10 @@ function myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   varargin: This input is either an bmMriAcquisitionParam object
 %   containing the needed variables or the 6 variables seperatly:
