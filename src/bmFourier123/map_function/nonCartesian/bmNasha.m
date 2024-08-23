@@ -1,18 +1,53 @@
-% Bastien Milani
-% CHUV and UNIL
-% Lausanne - Switzerland
-% May 2023
-
 function x = bmNasha(y, G, n_u, varargin) 
+% x = bmNasha(y, G, n_u, varargin) 
+%
+% This function grids data from a non-uniform trajectory onto a uniform 
+% grid given by the sparse matrix in G. The data is transformed from the 
+% k-space to the image space, after which this function accounts for the 
+% blurring introduced in the gridding (Deapodization).
+%
+% Authors:
+%   Bastien Milani
+%   CHUV and UNIL
+%   Lausanne - Switzerland
+%   May 2023
+%
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
+% Parameters:
+%   y (array): The data that should be gridded from a non-uniform
+%    trajectory onto a uniform grid.
+%   G (bmSparseMat): Object containing the sparse matrix that grids the
+%    non-uniform trajectory onto a uniform grid.
+%   n_u (list): The size of the grid that the returned data should have.
+%    This can be smaller, but not bigger, than the grid given by G.
+%   varargin{1}: DON'T KNOW YET, SOMETHING ABOUT COIL COMBINE. SEE
+%    BMCOILSENSE_NONCART_SECONDARY FOR EXAMPLE.  
+%   varargin{2}: Array containing the kernel matrix used for deapodization
+%    after gridding the data onto the new grid.
+%   varargin{3}: Char containing which fast Fourier transform algorithm
+%    should be used. Options are 'MATLAB' using the MATLAB intern FFT
+%    algorithm, 'FFTW' using the fastest Fourier transform in the west
+%    software library or 'CUFFT' using the CUDA fast Fourier transform
+%    library.
+%
+% Results:
+%   x (array): The data regridded onto the uniform grid of size n_u, given 
+%    in the image space and in the block format.
 
-% argin_initial -----------------------------------------------------------
-[C, K, fft_lib_flag] = bmVarargin(varargin); % Extract optional arguments
+%% Initialize arguments
+% Extract optional arguments
+[C, K, fft_lib_flag] = bmVarargin(varargin); 
 
+% Use G.N_u if n_u is empty
 if isempty(n_u)
-    n_u = N_u; % Why is this here ??? Maybe G.N_u?
+    n_u = G.N_u;
 end
 
-y           = single(y); % Convert inputs to correct formats
+% Convert inputs to correct formats
+y           = single(y); 
 N_u         = double(   int32(G.N_u(:)')    );
 n_u         = double(   int32(n_u(:)')      );
 dK_u        = double(   single(G.d_u(:)')   );
@@ -21,32 +56,41 @@ nPt         = double(G.r_size);
 nCh         = size(y, 2);
 
 
-
+% Create kernel matrix for interpolation and gridding if not given
 if isempty(K)
-    K = bmK(N_u, dK_u, nCh, G.kernel_type, G.nWin, G.kernelParam); % Create kernel matrix for interpolation and gridding
+    K = bmK(N_u, dK_u, nCh, G.kernel_type, G.nWin, G.kernelParam); 
 end
+
+% Transfrom K into the right format (important if given as argument)
 K = single(bmBlockReshape(K, N_u));
 
+% Set flag if empty
 if isempty(fft_lib_flag)
     fft_lib_flag = 'MATLAB'; 
 end
 
+% Convert C to correct format if not empty
 C_flag = false;
-if not(isempty(C)) % Convert C to correct format if not empty
+if not(isempty(C)) 
     C_flag = true;
     C = single(bmColReshape(C, n_u));
 end
 C = single(C); 
 
-private_check(y, G, K, C, N_u, n_u, nCh, nPt); % Check format and 
-% END_argin_initial -------------------------------------------------------
+% Check format and throw errors if something is found
+private_check(y, G, K, C, N_u, n_u, nCh, nPt); 
 
-% gridding
-x = bmSparseMat_vec(G, y, 'omp', 'complex'); % Do sparse matrix multiplication to map the data (y) onto the grid defined by G.N_u 
 
-% Calculate the inverse fast Fourier transform
+%% Data calculation
+% Do sparse matrix multiplication to map the data (y) onto the grid defined 
+% by G.N_u (gridding)
+x = bmSparseMat_vec(G, y, 'omp', 'complex'); 
+
+% Make sure the size is correct
 x = bmBlockReshape(x, N_u); 
 
+% Calculate the inverse fast Fourier transform, depends on flag (only
+% MATLAB is used as of 08/2024)
 if imDim == 1
     if strcmp(fft_lib_flag, 'MATLAB')
         x = bmIDF1(x, int32(N_u), single(dK_u) );
@@ -73,10 +117,13 @@ elseif imDim == 3
     end
 end
 
-% Deapodization
+
+%% Modify data
+% Reduce smoothing effect introduced by gridding using a window to grid the 
+% data -> deapodization
 x = x.*K;
 
-% eventual croping
+% Crop data if needed (N_u > n_u)
 if ~isequal(N_u, n_u)
    x = bmImCrope(x, N_u, n_u);  
 end
