@@ -1,15 +1,19 @@
 function varargout = bmVarargin(varargin)
 % varargout = bmVarargin(varargin)
 %
-% This function is replacing ungiven input parameters for a function with
-% empty vectors []. This is a custom way to handle default valued, variable
-% sizeinput parameters
+% This function is returning given optional arguments and returning empty 
+% arrays [] for missing optional paramters. This is a custom way to handle 
+% default valued, variable size input parameters.
 %
 % Authors:
 %   Bastien Milani
 %   CHUV and UNIL
 %   Lausanne - Switzerland
 %   May 2023
+%
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
 %
 % Parameters:
 %   varargin (cell array): Contains any kind of arguments which are to 

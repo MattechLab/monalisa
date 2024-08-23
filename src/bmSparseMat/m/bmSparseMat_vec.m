@@ -10,6 +10,10 @@ function w = bmSparseMat_vec(s, v, varargin)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   s (bmSparseMat): Sparse matrix object that contains the left matrix of 
 %    the matrix multiplication.

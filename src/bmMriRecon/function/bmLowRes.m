@@ -12,6 +12,10 @@ function varargout = bmLowRes(c, t, ve, N_u, dK_u)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   c (array): Contains the data from the channels corresponding to the
 %    points in the trajectory t.
