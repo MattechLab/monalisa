@@ -10,6 +10,10 @@ function K = bmK(N_u, dK_u, nCh, varargin)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   N_u (list): Contains the size of the grid.
 %   dK_u (list): Contains th distances between grid points in every
