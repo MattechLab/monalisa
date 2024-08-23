@@ -10,6 +10,10 @@ function out = bmPointReshape(t, varargin)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   t (array or cell array): Contains the points (ex. of a trajectory) and
 %    should be reshaped

@@ -12,6 +12,10 @@ function out = bmBlockReshape(argIn, N_u)
 %   Lausanne - Switzerland
 %   May 2023
 %
+% Contributors:
+%   Dominik Helbing (Documentation & Comments)
+%   MattechLab 2024
+%
 % Parameters:
 %   argIn (array): The data that should be reshaped into block from.
 %   N_u (list): Contains the size for the blocks (same for all).
