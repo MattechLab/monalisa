@@ -95,6 +95,10 @@ end
 
 C = C*nCh_array; 
 
+if nargout > 1
+    varargout{1} = x;
+end
+
 % END_final ---------------------------------------------------------------
 
 end
