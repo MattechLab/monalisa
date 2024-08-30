@@ -4,9 +4,9 @@ function myIm = bmImPseudoDiffusion_inMask(argIm, argMask, varargin)
 % This function performes smoothing on data by averaging the data over its
 % direct neighbors (not diagonal), by diffusing the data. The edge cases 
 % take as neighbors the edges on the other side as a circular shift is 
-% used. This operation is constraint to only modify and consider the 
-% unmasked data (where argMask is 1) and can be applied to 1D, 2D and 3D 
-% data.
+% used. This operation is restricted to only modify and consider the 
+% unmasked data (where argMask is 1). The masked data keeps the values of
+% the original data. This function can be applied to 1D, 2D and 3D data.
 %
 % Authors:
 %   Bastien Milani
