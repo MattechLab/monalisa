@@ -62,7 +62,7 @@ return;
         switch get(gcf,'selectiontype')
             case 'normal'% left mouse button click
                 show_imVal_in_title;
-            case 'alt'% right mouse button click
+            case 'alt'% right or ctrl + left mouse button click
                 if controlFlag
                     set_control_point;
                     controlFlag = 0;
@@ -70,7 +70,7 @@ return;
                     set_point;
                     controlFlag = 0;
                 end
-            case 'extend'% right mouse button click
+            case 'extend'% shift + left or middle mouse button click
                 delete_point;         
         end
     end

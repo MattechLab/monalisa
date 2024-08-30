@@ -2,7 +2,8 @@ function varargout = bmImage(argImage, varargin)
 % varargout = bmImage(argImage, varargin)
 %
 % This function creates an interactive figure displaying data from a 2D,
-% 3D, 4D or 5D array.
+% 3D, 4D or 5D array. If the data is complex, the absolute value will be
+% used.
 %
 % Authors:
 %   Bastien Milani
