@@ -41,7 +41,8 @@ function varargout = bmTraj2SparseMat(t, v, N_u, dK_u, varargin)
 %    each row represents a grid point, and the entries represent the 
 %    weighted contribution of trajectory points to each grid point. The 
 %    size is [Nu_tot, nPt], where Nu_tot is prod(N_u) and nPt the number of
-%    trajectory points. Gn is the approximation of the inverse gridding.
+%    trajectory points. Gn is the approximation of the inverse gridding. It
+%    grids the trajectory to the grid.
 %   Gu as varargout{1} or {2}: Gu is a normalized sparse matrix or a 
 %    bmSparseMat, depending on the sparseType (varargin{1}). If Gu is a 
 %    sparse matrix, each row represents a trajectory point, and the entries 
