@@ -1,7 +1,7 @@
 function K = bmK(N_u, dK_u, nCh, varargin)
 % K = bmK(N_u, dK_u, nCh, varargin)
 %
-% This function generates a kernel matrix K of size N_u to deapodization 
+% This function generates a kernel matrix K of size N_u to deapodizate 
 % data that was gridded to a uniform grid using windows. 
 %
 % Authors:
@@ -16,7 +16,7 @@ function K = bmK(N_u, dK_u, nCh, varargin)
 %
 % Parameters:
 %   N_u (list): Contains the size of the grid.
-%   dK_u (list): Contains th distances between grid points in every
+%   dK_u (list): Contains the distances between grid points in every
 %    dimension. Same size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
 %    channel.
@@ -51,7 +51,6 @@ nCh         = double(single(nCh));
 % Check that all dimensions in N_u are even
 if sum(mod(N_u(:), 2)) > 0 
    error('N_u must have all components even for the Fourier transform. ');
-   return; 
 end
 
 
