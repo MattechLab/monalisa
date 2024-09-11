@@ -4,7 +4,7 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
 %
 % This function plots the magnitude spectrum which shows at which shot the
 % steady state is reached. It also opens an interactive figure showing the
-% extracted metadata that will be used and allowing modifications.
+% extracted metadata that will be used, and allowing modifications.
 % This function should only be called when the automatic flag is set to
 % true and will interrupt code execution.
 %
@@ -25,7 +25,6 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
 %    possibly modified by the user.
 %   reconFoV (int): The extracted reconstruction FoV, possibly modified by
 %    the user.
-    
     
     %% Initialize arguments
     % Test if myMriAcquisition_node is a bmMriAcquisitionParam
@@ -52,8 +51,9 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     
     %% Show plot (magnitude spectrum)
     % Create figure
-    figure('Name', 'DataInfo Magnitude')
+    figSI = figure('Name', 'DataInfo Magnitude');
     imagesc(mySI, [0, 3*mean(mySI(:))]); 
+    imgax = gca;
     set(gca,'YDir','normal');
     colorbar
     colormap gray
@@ -66,10 +66,13 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     % Plotting vertical line for shotOff
     shotOff = myMriAcquisition_node.nShot_off;
     if ~isempty(shotOff)
-        xline(shotOff, 'c--');  % Add vertical line at steady state index
-        text(shotOff+5, floor(myMriAcquisition_node.N*0.75), ...
+        % Add vertical line at steady state index
+        sLine = xline(shotOff, 'c--');
+        xCord = shotOff/imgax.XLim(2) + 0.02;
+        txt = text(xCord, 0.85, ...
              sprintf('shot = %i', shotOff), "HorizontalAlignment", "left", ...
-             'Color', 'black', 'BackgroundColor', 'white', 'Margin', 0.5);
+             'Color', 'black', 'BackgroundColor', 'white', ...
+             'Units', 'normalized', 'Margin', 0.5);
     end
     
     % Adding legend, title and labels
@@ -79,6 +82,11 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     title(sprintf(['Magnitude spectrum for first segment of each ' ...
         'shot\n(estimates which shots should be excluded)']))
     hold off
+
+    % Make shotOff line dragable
+    isDragging = false;
+    maxShot = length(s_mean);
+    set(figSI, 'WindowButtonDownFcn', @(src, event) startDragFcn(figSI));
     
     
     %% Show interactive figure
@@ -134,8 +142,6 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     if ~myMriAcquisition_node.selfNav_flag
         dd_self.Value = 'Other';
     end
-
-    dropDown_self = dd_self.Value;
     
     % Add a checkbox for roosk_flag
     cbx_rooks = uicheckbox(g2, 'Text', 'Remove oversampling', 'Value', ...
@@ -151,6 +157,10 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     
     % Handle figure close request to resume execution
     fig.CloseRequestFcn = @(src, event) closeFigure(fig);
+
+    % Make dragable line update table
+    set(figSI, 'WindowButtonUpFcn', @(src, event) stopDragFcn(figSI, ...
+        uit, paramNames));
     
     % Wait for the user to close the figure or press confirm
     uiwait(fig);
@@ -170,6 +180,11 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     
         % Close the figure
         close(fig);  
+    end
+
+    % Close SI figure
+    if ishandle(figSI)
+        close(figSI);
     end
     
 
@@ -199,16 +214,19 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
     % End of function
 
 
-    %% Callback functions
-    % Callback function to handle the confirmation
+    %% Nested callback functions
     function confirmCallback(fig)
-        uiresume(fig);  % Resume execution
+        % Callback function to handle the confirmation
+        
+        % Resume execution
+        uiresume(fig);  
     end
     
-    % Callback function to handle a dropdown change NOT IN USE YET
+    
     function updateTable(src, uit)
-        % Change the background color of the columns depending on the drop down.
-        % This is only as an example on how to use it.
+        % Callback function to handle a dropdown change NOT IN USE YET
+        % Change the background color of the columns depending on the drop
+        % down. This is only as an example on how to use it.
         cols = uistyle('BackgroundColor', [0.9290 0.6940 0.1250]);
         removeStyle(uit);
         switch src.Value
@@ -224,10 +242,71 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
         addStyle(uit, cols, "column", col);
     end
     
-    % Callback function to handle figure close event
+    
     function closeFigure(fig)
-        uiresume(fig);  % Resume execution
-        delete(fig);  % Close the figure
+        % Callback function to handle figure close event
+
+        % Resume execution and close the figure
+        uiresume(fig);  
+        delete(fig);
+    end
+
+
+    function startDragFcn(fig)
+        % This function checks if a line is clicked and starts the dragging
+        % function if this is the case
+
+        % Check if the click is close to either line
+        cp = get(gca, 'CurrentPoint');
+        x_click = cp(1,1);
+        
+        % Test if line was clicked
+        if abs(x_click - sLine.Value) < 10  % Adjust as needed
+            isDragging = true;
+        end
+        
+        if isDragging
+            % Activate dragging function if line is clicked
+            set(fig, 'WindowButtonMotionFcn', @(src, event) draggingFcn());
+        end
+    end
+
+
+    function draggingFcn()
+        % This function updates the line and the images when a line is
+        % dragged
+
+        % Test if dragginFcn is correctly called
+        if isDragging
+            % Get current point and extract x values for redrawing the 
+            % active line
+            cp = get(gca, 'CurrentPoint');
+
+            % clip data and round to integer
+            nshOff = min(round(cp(1,1)), floor(imgax.XLim(2)));
+            nshOff = max(nshOff, ceil(imgax.XLim(1)));
+            % Redraw line and text
+            set(sLine, 'Value', nshOff);
+            newPos = (nshOff - imgax.XLim(1)) / ...
+                     (imgax.XLim(2) - imgax.XLim(1)) + 0.02;
+            txt.Position(1) = newPos;
+            txt.String = sprintf('shot = %i', nshOff);
+            drawnow;
+        end
+    end
+
+
+    function stopDragFcn(fig, uit, params)
+        % This function resets the motion function and updates the table 
+        % when the mouse button is let go and upd
+        
+        % Reset dragging
+        isDragging = false;
+        set(fig, 'WindowButtonMotionFcn', '');
+
+        % Update nShotOff
+        rowIdx = strcmp(params, 'nShotOff');
+        uit.Data{rowIdx,3} = sLine.Value;
     end
 
 end
