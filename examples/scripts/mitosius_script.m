@@ -1,7 +1,15 @@
-reconDir = '/Users/mauroleidi/Desktop/recon_eva';
-
+%% Paths - Replace for your own case
 % path to the rawdatafile (in this case Siemens raw data)
-f = [reconDir, '/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat']; 
+filePath = ['C:\Users\helbi\Documents\MattechLab\recon_eva' ...
+     '\raw_data\meas_MID00530_FID154908_BEAT_LIBREon_eye.dat'];
+CMatPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\C\C.mat';
+CMaskPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\other\cMask.mat';
+mitosiusPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\mitosius';
+
+
+f = filePath;
+% These functions use a function not written by Bastien so they are outside the repo
+addpath('..\..\..\twix_for_monalisa\')
 % Display infos
 bmTwix_info(f); 
 % read raw data
@@ -54,8 +62,7 @@ n_u     = [480, 480, 480]/2;
 dK_u    = [1, 1, 1]./480;
 
 % Load the coil sensitivity previously measured
-load('/Users/mauroleidi/Desktop/recon_eva/C/C.mat');
-
+load(CMatPath); 
 C = bmImResize(C, [48, 48, 48], N_u); 
 
 
@@ -75,7 +82,7 @@ y_tot = y_tot/normalize_val;
 
 
 % Load the masked coil sensitivity 
-load('/Users/mauroleidi/Desktop/recon_eva/other/cMask.mat'); 
+load(CMaskPath); 
 
 cMask = reshape(cMask, [20, 22, 2055]); 
 cMask(:, 1, :) = []; 
@@ -92,7 +99,7 @@ ve  = bmVolumeElement(t, 'voronoi_full_radial3' );
 
 % Save all the resulting datastructures on the disk. You are now ready
 % to run your reconstruction
-m = '/Users/mauroleidi/Desktop/recon_eva/mitosius'; 
+m = mitosiusPath;
 bmMitosius_create(m, y, t, ve); 
 
 
