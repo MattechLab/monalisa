@@ -3,8 +3,7 @@ function KF = bmKF(C, N_u, n_u, dK_u, nCh, varargin)
 %
 % This function generates a kernel matrix K used for deapodization of the
 % data that was gridded to a uniform grid using windows, considering the
-% coil sensitivity (if given) and scaled by a factor F (I DON'T YET
-% UNDERSTAND WHY) THIS NEEDS SOME MORE WORK DONE ON
+% coil sensitivity (if given) and Fourier factor F.
 %
 % Authors:
 %   Bastien Milani
@@ -17,11 +16,10 @@ function KF = bmKF(C, N_u, n_u, dK_u, nCh, varargin)
 %   MattechLab 2024
 %
 % Parameters:
-%   C (array): The coil sensitivity? Can give as [] if not used. (NOT YET
-%    ENCOUNTERED) 
+%   C (array): The coil sensitivity.  Can be given as [] if the coil
+%    sensitvity should not be included.
 %   N_u (list): The size of the grid for which K should be generated.
-%   n_u (list): The size of the grid that the returned data should have.
-%    This can be smaller, but not bigger, than the grid given by N_u.
+%   n_u (list): The size of the grid in the image space.
 %   dK_u (list): The distances between grid points in every dimension. Same
 %    size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
@@ -57,10 +55,7 @@ K = single(bmK(N_u, dK_u, nCh, kernelType, nWin, kernelParam));
 K = bmImCrope(K, N_u, n_u);
 K = single(bmColReshape(K, n_u));
 
-% Calculate some scaling factor (NOT YET SURE WHAT IT IS EXACTLY) that is
-% calculated by multiplying the grid size by its spacing and deviding by
-% it. Could also be seen as the mutliplication of FOV with the resolution
-% in image space.
+% Fourier factor -> scaling needed due to MATLAB FFT implementation
 F = single(1/prod(N_u(:))/prod(dK_u(:))); 
 
 % Mutliply K with F, and with C if C is not empty

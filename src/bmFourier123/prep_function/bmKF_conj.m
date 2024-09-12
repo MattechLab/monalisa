@@ -3,8 +3,8 @@ function KF_conj = bmKF_conj(C_conj, N_u, n_u, dK_u, nCh, varargin)
 %
 % This function generates a kernel matrix K used for deapodization of the
 % data that was gridded to a uniform grid using windows, considering the
-% conjugate of the coil sensitivity (if given) and scaled by a factor F (I
-% DON'T YET UNDERSTAND WHY) THIS NEEDS SOME MORE WORK DONE ON
+% conjugate of the coil sensitivity (if given) and the conjugate Fourier
+% factor F_conj.
 %
 % Authors:
 %   Bastien Milani
@@ -17,12 +17,11 @@ function KF_conj = bmKF_conj(C_conj, N_u, n_u, dK_u, nCh, varargin)
 %   MattechLab 2024
 %
 % Parameters:
-%   C_conj (array): The conjugate of the coil sensitivity? Has to be given
-%    as the conjugate (conj(C)) and will not be changed in this function.
-%    Can give as [] if not used. (NOT YET ENCOUNTERED)
+%   C_conj (array): The conjugate of the coil sensitivity. Has to be given
+%    as the conjugate (conj(C)). Can be given as [] if the coil sensitvity
+%    should not be included.
 %   N_u (list): The size of the grid for which K should be generated.
-%   n_u (list): The size of the grid that the returned data should have.
-%    This can be smaller, but not bigger, than the grid given by N_u.
+%   n_u (list): The size of the grid in the image space.
 %   dK_u (list): The distances between grid points in every dimension. Same
 %    size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
@@ -62,8 +61,7 @@ K       = single(bmK(N_u, dK_u, nCh, kernelType, nWin, kernelParam));
 K       = bmImCrope(K, N_u, n_u);
 K       = single(bmColReshape(K, n_u));
 
-% Calculate some scaling factor (NOT YET SURE WHAT IT IS EXACTLY) that is
-% different from F as it is not devided by N_u
+% Fourier factor -> scaling needed due to MATLAB iFFT implementation
 F_conj  = single(1/prod(dK_u(:))); 
 
 % Mutliply K with F_conj, and with C_conj if C_conj is not empty

@@ -37,8 +37,7 @@ x = fftshift(ifft(ifftshift(x, n), [], n), n);
 n = 3; 
 x = fftshift(ifft(ifftshift(x, n), [], n), n);
 
-% The scaling factor accounts for the total number of points and the 
-% spacing between points in the transformed domain.
+% Fourier factor -> scaling needed due to MATLAB FFT implementation
 F = single(  prod(N_u(:))*prod(dK_u(:))  ); 
 
 % Scale x by the factor F to properly normalize the iFFT result

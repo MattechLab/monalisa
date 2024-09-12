@@ -5,6 +5,8 @@ function x = bmNasha(y, G, n_u, varargin)
 % grid given by the sparse matrix in G. The data is transformed from the 
 % k-space to the image space, after which this function accounts for the 
 % blurring introduced in the gridding (Deapodization).
+% If the optional coil sensitivity is given, the images of all coils are
+% combined into one reconstructed image.
 %
 % Authors:
 %   Bastien Milani
@@ -23,8 +25,8 @@ function x = bmNasha(y, G, n_u, varargin)
 %    non-uniform trajectory onto a uniform grid.
 %   n_u (list): The size of the grid that the returned data should have.
 %    This can be smaller, but not bigger, than the grid given by G.
-%   varargin{1}: DON'T KNOW YET, SOMETHING ABOUT COIL COMBINE. SEE
-%    BMCOILSENSE_NONCART_SECONDARY FOR EXAMPLE.  
+%   varargin{1}: Array containing the coil sensitivity of each coil for
+%    which the data is given in y. Has the same amount of points as y.
 %   varargin{2}: Array containing the kernel matrix used for deapodization
 %    after gridding the data onto the new grid.
 %   varargin{3}: Char containing which fast Fourier transform algorithm
@@ -46,7 +48,7 @@ if isempty(n_u)
     n_u = G.N_u;
 end
 
-% Convert inputs to correct formats
+% Convert variables to the correct format
 y           = single(y); 
 N_u         = double(   int32(G.N_u(:)')    );
 n_u         = double(   int32(n_u(:)')      );
@@ -128,9 +130,11 @@ if ~isequal(N_u, n_u)
    x = bmImCrope(x, N_u, n_u);  
 end
 
-% eventual coil_combine
+% Reconstruct image from the data of all coils if the coil sensitivity is
+% given 
 if not(isempty(C))
-    C = bmBlockReshape(C, n_u);
+    % Reconstruct the image from different coils using a pseudoinverse
+    % multiplication
     x = bmCoilSense_pinv(C, x, n_u);
 end
 
@@ -140,35 +144,22 @@ end
 
 
 function private_check(y, G, K, C, N_u, n_u, nCh, nPt)
-% private_check(y, G, K, C, N_u, n_u, nCh, nPt)
-%
 % This function checks that all inputs have the correct type, size and
-% values needed for the computation to work. Throws errors if something is
-% found.
-%
-% Authors:
-%   Bastien Milani
-%   CHUV and UNIL
-%   Lausanne - Switzerland
-%   May 2023
-%
-% Parameters:
-%   See bmNasha(...)
+% values needed for the computation to work. Throws errors if something
+% amiss is found.
+
 
 if not(isa(y, 'single'))
     error('The data''y'' must be of class single. ');
-    return; 
 end
 
 if not(isa(K, 'single'))
     error('The matrix ''K'' must be of class single. ');
-    return; 
 end
 
 if not(isempty(C))
     if not(isa(C, 'single'))
         error('The data''C'' must be of class single. ');
-        return;
     end
 end
 
@@ -177,18 +168,15 @@ end
 
 if not(isequal( size(y), [nPt, nCh] ))
     error('The data matrix ''y'' is not in the correct size. ');
-    return;
 end
 
-if not(  isequal( size(K), [N_u, nCh] )  || isequal( size(K), [N_u] ) )
+if not(  isequal( size(K), [N_u, nCh] )  || isequal( size(K), N_u ) )
     error('The matrix ''K'' is not in the correct size. ');
-    return;
 end
 
 if not(isempty(C))
     if not(isequal( size(C), [prod(n_u(:)), nCh] ))
         error('The matrix ''C'' has not the correct size. ');
-        return;
     end
 end
 
@@ -197,17 +185,14 @@ end
 
 if sum(mod(N_u(:), 2)) > 0
     error('N_u must have all components even for the Fourier transform. ');
-    return;
 end
 
 if not(strcmp(G.block_type, 'one_block'))
     error('The block type of G must be ''one_block''. ');
-    return;
 end
 
 if not(strcmp(G.type, 'cpp_prepared')) && not(strcmp(G.type, 'l_squeezed_cpp_prepared'))
     error('G is not cpp_prepared. ');
-    return;
 end
 
 end
