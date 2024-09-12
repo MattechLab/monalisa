@@ -60,6 +60,7 @@ colorMax = 100;
 N_u     = double(Gn.N_u(:)');
 imDim   = size(N_u(:), 1);
 
+
 %% Calculate RMS and MIP
 % Grid y onto the uniform grid of size N_u, given in block format and image
 % space
@@ -105,6 +106,7 @@ if display_flag
     bmImage(myMIP)
     title('MIP')
 end
+
 
 %% Create mask
 % Create mask for valid RMS and MIP values
