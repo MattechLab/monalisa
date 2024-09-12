@@ -48,13 +48,35 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
 
     %% Guess threshold
     % Get initial values for MIP and RMS thresholds
-    thRMS = detectThreshold_GMM2(dataRMS);
-    thMIP = detectThreshold_GMM2(dataMIP);
+    [thRMS, pdf1R, pdf2R] = detectThreshold_GMM2(dataRMS);
+    [thMIP, pdf1M, pdf2M] = detectThreshold_GMM2(dataMIP);
     
     % Return out of function if threshold is only detected automatically
     if autoFlag
         return
     end
+
+    %% Optionally show histogram (can only be set true here)
+    showHistogram = false;
+    if showHistogram
+        figure;
+        tiledlayout('vertical');
+        nexttile;
+        hold on
+        histogram(dataRMS, 'Normalization', 'pdf');
+        xVal = linspace(min(dataRMS(:)), max(dataRMS(:)), 1000);
+        plot(xVal, pdf1R(xVal), '--', 'LineWidth', 2);
+        plot(xVal, pdf2R(xVal), '--', 'LineWidth', 2);
+        hold off
+        nexttile;
+        hold on
+        histogram(dataMIP, 'Normalization', 'pdf');
+        xVal = linspace(min(dataMIP(:)), max(dataMIP(:)), 1000);
+        plot(xVal, pdf1M(xVal), '--', 'LineWidth', 2);
+        plot(xVal, pdf2M(xVal), '--', 'LineWidth', 2);
+        hold off
+    end
+
 
     %% Prepare figure for threshold selection
     % Get number of points of x
@@ -134,13 +156,15 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
     if ishandle(fig)
         thRMS = lineRMS.XData(1);
         thMIP = lineMIP.XData(1);
+        delete(fig);
     end
 
     return;
 
-    %% Nested functions - Threshold selection
 
-    function threshold = detectThreshold_GMM2(data)
+
+    %% Nested functions - Threshold selection
+    function [threshold, pdf1, pdf2] = detectThreshold_GMM2(data)
         % This function fits two Gaussians to the data by fitting a
         % gaussian mixture model with two components. This is done with the
         % assumption that the data contains noise and actual data, both of
@@ -171,6 +195,7 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
         % Find the crossing point and return it as the threshold
         threshold = round(fzero(diff_pdf, (mu1 + mu2)/2));
     end
+
 
     function startDragFcn(fig)
         % This function checks if a line is clicked and starts the dragging
@@ -237,7 +262,6 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
     end
 
     %% Nested functions - RMS/MIP image view
-
     function changeView(src)
         % This function permutes the data to show different views when
         % another view is selected from the dropdown menu.
