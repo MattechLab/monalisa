@@ -23,22 +23,41 @@ function m = bmCoilSense_nonCart_mask_automatic(y, Gn, autoFlag, varargin)
 %   Gn (bmSparseMat): Sparse Matrix defining the new uniform grid.
 %   autoFlag (Logical): Flag; Automatically decide on thresholds and 
 %    borders for mask if true.
-%   varargin{1}: Value (not yet commented). Default value is empty.
-%   varargin{2}: Value (not yet commented). Default value is empty.
+%   varargin{1}: Double containing the voxel intensity threshold for RMS
+%    value. If this is kept empty, the value will be decided in this
+%    function. 
+%   varargin{2}: Double containing the voxel intensity threshold for MIP
+%    value. If this is kept empty, the value will be decided in this
+%    function. 
+%   varargin{3}: Array containing the min and max values for the 3
+%    dimensions. Has the structure [xMin, xMax; yMin, yMax; zMin, zMax]. If
+%    this is kept empty, the value will be decided in this function.
+%   varargin{4}: Value (not yet commented). Default value is empty.
+%   varargin{5}: Value (not yet commented). Default value is empty.
 %
 % Returns:
 %   m (array): Mask for grid defined by Gn masking all pixels outside the
 %    ROI and below threshold values, by setting their points in the mask to
 %    0
+%
+% Examples:
+%   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag);
+%   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag, [], ...
+%                                          [], borders);
+%   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag, thRMS, ...
+%                                          thMIP, borders, open_size, ...
+%                                          close_size);
 
 %% Initialize arguments
-% magic number
+% Magic number
 colorMax = 100; 
 
 % Extract optional arguments
-[   open_size, ...
-    close_size]    = bmVarargin(varargin); 
-
+[   th_RMS, ...
+    th_MIP, ...
+    borders, ...
+    open_size, ...
+    close_size,]    = bmVarargin(varargin); 
 
 N_u     = double(Gn.N_u(:)');
 imDim   = size(N_u(:), 1);
@@ -60,30 +79,34 @@ myMIP = colorMax*(myMIP - min(myMIP(:)))/max(myMIP(:));
 
 
 %% Compute threshold values
-% Maybe show binary image and allow to switch view
-[th_RMS, th_MIP] = thresholdRMS_MIP(colorMax, myRMS, myMIP, N_u, autoFlag);
+% If neither given as argument
+if isempty(th_RMS) | isempty(th_MIP)
+    [th_RMS, th_MIP] = thresholdRMS_MIP(colorMax, myRMS, myMIP, N_u, autoFlag);
+end
 
 
 %% Compute region of interest
-% Apply threshold to temporary data
-tempRMS = myRMS;
-tempRMS(tempRMS <= th_RMS) = 0;
-tempMIP = myMIP;
-tempMIP(tempMIP <= th_MIP) = 0;
+% If borders is not given
+if isempty(borders)
+    % Apply threshold to temporary data
+    tempRMS = myRMS;
+    tempRMS(tempRMS <= th_RMS) = 0;
+    tempMIP = myMIP;
+    tempMIP(tempMIP <= th_MIP) = 0;
 
-% Call function with temporary data
+    % Call function with temporary data
+    bordersRMS = detectROI(tempRMS, N_u);
+    bordersMIP = detectROI(tempMIP, N_u);
 
-bordersRMS = detectROI(tempRMS, N_u);
-bordersMIP = detectROI(tempMIP, N_u);
+    % Borders are [xMin, xWidth; yMin, yWidth; zMin, zWidth]
+    bordersMin = min(bordersRMS(:,1), bordersMIP(:,1));
+    bordersMax = max(bordersRMS(:,2), bordersMIP(:,2));
 
-% Borders are [xMin, xWidth; yMin, yWidth; zMin, zWidth]
-bordersMin = min(bordersRMS(:,1), bordersMIP(:,1));
-bordersMax = max(bordersRMS(:,2), bordersMIP(:,2));
+    borders = cat(2, bordersMin, bordersMax);
 
-borders = cat(2, bordersMin, bordersMax);
-
-% Semiautomatic selection of ROI
-borders = selectROI(tempRMS, tempMIP, N_u, borders);
+    % Semiautomatic selection of ROI
+    borders = selectROI(tempRMS, tempMIP, N_u, autoFlag, borders);
+end
 
 if ~autoFlag
     % Create interactive figures to display RMS and MIP values
