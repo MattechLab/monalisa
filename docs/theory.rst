@@ -2,7 +2,8 @@
 Theory and Algorithms of the Monalisa Framework
 ==================================================
 
-.. contents:: Table of Contents
+.. contents::
+   :local:
 
 Introduction
 ============
@@ -130,6 +131,32 @@ The matrix :math:`C_c` is defined as:
                          0 & 0 & \dots & C_c(\vec{r_n}) \end{pmatrix}
 
 The product :math:`C_c(\vec{r_i}) \cdot X(\vec{r_i})` is denoted as :math:`(C_c X)_i`.
+
+For one coil, the image recorded can be seen as:
+
+.. math::
+
+   X_c = C_c * x_{ref}
+
+But as the true image :math:`x_{ref}` is not accessible, an estimation has to be made. 
+The body coil of the MRI scanner are large and far from the region of interest (ROI), which allows for the assumption that inside the ROI, their coil sensitivity is constant.
+Hence:
+
+.. math::
+
+   X_{body} = k \cdot x_{ref}
+
+   x_{ref} = \frac{X_{body}}{k}
+
+Given the assumption, and disregarding the factor `k` using normalization, the coil sensitivity can be estimated:
+
+.. math::
+
+   \begin{gather*}
+   X_c = C_c * x_{ref} \approx C_c * \frac{X_{body}}{k} \\
+   C_c \approx \frac{X_c}{X_{body}}
+   \end{gather*}
+
 
 **4. Fourier Transform, DFT & FFT**
 
