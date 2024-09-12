@@ -1,7 +1,7 @@
 function myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 % myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 %
-% This function creates and returns a phyllotaxis trajectory
+% This function creates and returns a phyllotaxis trajectory.
 %
 % Authors:
 %   Bastien Milani
