@@ -1,0 +1,10 @@
+{% extends "!layout.html" %}
+
+{% block document %}
+  <div role="main">
+    {{ super() }}  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+{% endblock %}
