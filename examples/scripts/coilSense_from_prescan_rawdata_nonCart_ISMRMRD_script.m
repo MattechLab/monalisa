@@ -5,13 +5,13 @@
 autoFlag = true;
 
 % Flag; saves the coil sensitivity map if true
-doSave = true;
+doSave = false;
 
 % Path to prescan files
 bodyCoilFile = [];
 arrayCoilFile = [];
 
-% reconDir = 'C:\Users\helbi\Documents\MattechLab\recon_eva';
+% reconDir = '../../..';
 % 
 % bodyCoilFile     = [reconDir, '/C/ismrmrd_testfile_body.mdr'];
 % arrayCoilFile    = [reconDir, '/C/ismrmrd_testfile_array.mdr'];
@@ -39,9 +39,8 @@ if isempty(saveFolder) & doSave
         'coil sensitivity map']);
 end
 
-
 %% Read parameters
-[myMriAcquisition_node, ~] = ISMRMRD_readParam(bodyCoilFile, autoFlag); % Maybe make true always (only change values for array?, but then steady state could be a problem)
+myMriAcquisition_node = ISMRMRD_readParam(bodyCoilFile, autoFlag);
 nCh_body = myMriAcquisition_node.nCh;
 
 % Assuming the acquisition parameters are the same, they are overriden
@@ -64,17 +63,14 @@ nShotOff = myMriAcquisition_node.nShot_off;
 % final reconstruction)
 dK_u         = [1, 1, 1]./reconFoV;
 
-
-%% Grid (how to make this automatic? Maybe give options when automatic and allow choosing when manual)
 % Matrix size of the cartesian grid in the k-space
 N_u          = [48, 48, 48]; 
 
 
-%% How to handle the trajectory?
-% We will need to ask for a predefined format. Hence we need to read the 
-% data outside and pass the y_body, t has to be computed by the user.  
-% We use trajectory in using the physical dimensions without convention 
-% [-0.5, 0.5]
+%% Read data and calculate trajectory and volume elements
+% We can read the trajectory from the ismrmrd file if existing or give an
+% option for different trajectories. This could also be done for the volume
+% elemnt calculation.
 
 % Prepare myMriAcquisition_node.nCh for body
 myMriAcquisition_node.nCh = nCh_body;
@@ -88,20 +84,17 @@ y_array         = bmCoilSense_nonCart_dataFromISMRMRD( arrayCoilFile, ...
                                                     N_u, ...
                                                     myMriAcquisition_node);
 
-% compute the gridding matrices (Gn = approximation of inverse, Gu = Forward,
-% Gut = transposed of Gu) Gn and Gut are both backward
+% compute the gridding matrices (Gn = approximation of inverse, Gu =
+% Forward, Gut = transpose of Gu) Gn and Gut are both backward
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 
 
 
-%% Make some work to try to automate it. Define two scripts.
-% (Automatic and Advanced)
-close_size = []; 
-open_size  = []; 
-m = bmCoilSense_nonCart_mask_automatic( y_body, Gn, autoFlag, close_size, ...
-                                        open_size, false);
+%% Create mask
+m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag);
 
 
-% Select one body coil and compute its sensitivity
+%% Estimate coil sensitivity
+% Select one body coil as reference coil and compute its sensitivity
 [y_ref, C_ref] = bmCoilSense_nonCart_ref(y_body, Gn, m, []); 
 
 
@@ -113,13 +106,15 @@ C_array_prime = bmCoilSense_nonCart_primary(y_array, y_ref, C_ref, Gn, ve, m);
 
 % Do a recon, predending the selected body coil is one channel among the
 % others, and optimize the coil sensitivity estimate by alternating steps
-% Of gradient descent (X,C)
+% of gradient descent (X,C)
 nIter = 5; 
-[C, x] = bmCoilSense_nonCart_secondary(y_array, C_array_prime, y_ref, C_ref, Gn, Gu, Gut, ve, nIter, true); 
+[C, x] = bmCoilSense_nonCart_secondary(y_array, C_array_prime, y_ref, ...
+                                       C_ref, Gn, Gu, Gut, ve, nIter, ...
+                                       ~autoFlag); 
 
-% Close all figures
-all_fig = findall(0, 'type', 'figure');
-close(all_fig)
+% Show the result
+bmImage(C);
+
 
 %% Save data
 if doSave
@@ -133,8 +128,9 @@ if doSave
         minute(currentDateTime));
 
     % Set file name
-    saveName = ['coil_sensitivity_',formattedString,'.mat'];
+    saveName = ['coil_sensitivity_map_',formattedString,'.mat'];
     savePath = fullfile(saveFolder, saveName);
-
+    
+    % Save matrix
     save(savePath, 'C');
 end
