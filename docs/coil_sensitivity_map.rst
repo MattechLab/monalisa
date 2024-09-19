@@ -12,7 +12,7 @@ This section explains how to generate an estimate of the coil sensitivity map us
    The data has to be stored in ISMRM raw data files.
 
 The process of extracting the acquisition metadata and the parameters for the generation of the ROI mask can either be done automatically or controlled by the user.
-Which is mode used can be changed by setting the corresponding flag at the start of the `coilSense_from_prescan_rawdata_nonCart_ISMRMRD_script` script.
+The used mode can be changed using the dedicated flag at the start of the `coilSense_from_prescan_rawdata_nonCart_ISMRMRD_script` script.
 
 .. code-block:: matlab
 
@@ -20,27 +20,27 @@ Which is mode used can be changed by setting the corresponding flag at the start
    autoFlag = true;
 
 At the start of the script, the paths to the files and to the folder where the map should be saved can be set.
-The resulting map is only saved if the save flag is set to true at the start of the script.
+The resulting map is only saved if the save flag is set to true.
 
 .. code-block:: matlab
 
    % Flag; saves the coil sensitivity map if true
    doSave = true;
 
-Are the paths not set in the script, a file selection dialog box will pop up during run time, where the user has to select the pre-scan .mdr files.
-First for the body coil, then for the surface coils and lastly the folder where the result is saved (if the flag is set to true).
+If the paths aren't set in the script, a file selection dialog box will pop up at run time, where the user has to select the pre-scan .mdr files.
+In order the body coil file,  the surface coil file and the directory where the result is saved (if the flag is set to true).
 
 .. _automatedEstimation:
 
 Automated Estimation
 --------------------
-While using the automated mode, only one more input is required by the user. This input is to confirm the selection of the ROI of the reconstruction.
-This region is used to create the estimate of the coil sensitivity. Pixels outside this region are estimated by solving the Laplace equation.
+In automated mode, the user only needs to provide one additional input: confirming the selection of the region of interest (ROI) for reconstruction. 
+This region is essential for estimating the coil sensitivity. Ensure that the blue box completely encompasses the area you wish to image, but select the smallest possible bounding box. Pixels outside this region are estimated by solving the Laplace equation:
 
 .. math::
    \Delta f = 0
 
-The selection can be modified by dragging the vertices of the boxes. The values are updated either after releasing the vertex or, if the "Update on move" option is ticked, while dragging the vertex.
+The blue selection can be modified by dragging the vertices of the boxes. The values are updated either after releasing the vertex or, if the "Update on move" option is ticked, while dragging the vertex.
 Two of these figures will open, during which the code execution is interrupted until confirmation, one for Root Mean Square (RMS) values and one for the Maximum Intensity Projection (MIP):
 
 .. image:: images/ROI-selection.png
@@ -55,7 +55,7 @@ Two of these figures will open, during which the code execution is interrupted u
 
 After checking that the ROI is correct, the selction has to be confirmed by pressing on the "Confirm Selection" button.
 
-Is this done, the rest of the estimation is done automatically and the resulting matrix is saved in the given folder with the following naming convention:
+The rest of the estimation is done automatically and the resulting matrix is saved in the given folder with the following naming convention:
 
    ``coil_sensitivity_map_yyyy-mm-dd-hh-mm.mat``
 
@@ -66,7 +66,7 @@ There will be more figures shown that allow to check the region of interest in m
 
 Acquisition Parameters
 ^^^^^^^^^^^^^^^^^^^^^^
-The acquisition parameters are automatically extracted from the ISMRM raw data files and presented in the following figure.
+The acquisition parameters are automatically extracted from the ISMRM raw data files and presented in the following figure. Make sure that the values displayed are correct.
 
 .. image:: images/acquisition_parameters.png
    :width: 90 %
@@ -159,7 +159,10 @@ Here is an example:
    By pressing the key "h", the help information for the figure is written in the Matlab console. 
    This information explains all the possible options to manipulated the visualization of the data.
 
-The third figure allows visual confirmation of the accuracy of the created mask.
+The third figure allows visual confirmation of the accuracy of the created mask. 
+Keep in mind that the goal of the tresholding is to remove as much noise as possible, 
+but to keep most of the information intact to achieve the best coil sensivity estimation. 
+The example shown, give you an idea of a correct thresholding, with most of the brain data mantained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.
 
 Sensitivity Approximation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
