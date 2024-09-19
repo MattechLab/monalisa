@@ -39,6 +39,7 @@ ARG MATLAB_RELEASE
 ARG MATLAB_PRODUCT_LIST
 ARG MATLAB_INSTALL_LOCATION
 ARG LICENSE_SERVER
+ARG OUTPUT_DIR="/usr/src/app/output"
 
 # Install mpm dependencies.
 RUN export DEBIAN_FRONTEND=noninteractive \
