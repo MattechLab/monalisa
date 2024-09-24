@@ -36,7 +36,7 @@ mathjax3_config = {
 }
 
 # Define the relative path to the source directory
-matlab_src_dir = '../src'
+matlab_src_dir = '../../src'
 
 # Print for verification (optional)
 print(f"matlab_src_dir set to: {matlab_src_dir}")
