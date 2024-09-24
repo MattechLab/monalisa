@@ -261,7 +261,7 @@ For the gridding porcess we do a discrete convolution of the non uniform measure
 
 .. math::
 
-   \mathcal{F}\{z(\cdot)\}(\cdot) = \mathcal{F}\left(\frac{\mathcal{F}^{-1}\{h(\cdot)\} \ast z(\cdot)}{\mathcal{F}^{-1}\{h(\cdot)\}}\right)(\cdot)
+   \mathcal{F}\{z(\cdot)\}(\cdot) = \mathcal{F}\left(\frac{\mathcal{F}^{-1}\{h(\cdot)\} \cdot z(\cdot)}{\mathcal{F}^{-1}\{h(\cdot)\}}\right)(\cdot)
    = \mathcal{F}\{\mathcal{F}^{-1}\{h(\cdot)\}\} \ast \mathcal{F}\left(\frac{z(\cdot)}{\mathcal{F}^{-1}\{h(\cdot)\}}\right)
 
    = h(\cdot) \ast \mathcal{F}\left(\frac{z(\cdot)}{\mathcal{F}^{-1}\{h(\cdot)\}}\right)
