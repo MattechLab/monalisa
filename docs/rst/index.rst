@@ -6,7 +6,7 @@
 Welcome to Monalisa's documentation!
 ====================================
 
-.. image:: images/Bastien.jpeg
+.. image:: ../images/Bastien.jpeg
    :width: 100 %
 
 .. toctree::

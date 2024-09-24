@@ -43,7 +43,7 @@ This region is essential for estimating the coil sensitivity. Ensure that the bl
 The blue selection can be modified by dragging the vertices of the boxes. The values are updated either after releasing the vertex or, if the "Update on move" option is ticked, while dragging the vertex.
 Two of these figures will open, during which the code execution is interrupted until confirmation, one for Root Mean Square (RMS) values and one for the Maximum Intensity Projection (MIP):
 
-.. image:: images/ROI-selection.png
+.. image:: ../images/ROI-selection.png
    :width: 100 %
    :alt: The region of interest selection has to be confirmed.
 
@@ -68,7 +68,7 @@ Acquisition Parameters
 ^^^^^^^^^^^^^^^^^^^^^^
 The acquisition parameters are automatically extracted from the ISMRM raw data files and presented in the following figure. Make sure that the values displayed are correct.
 
-.. image:: images/acquisition_parameters.png
+.. image:: ../images/acquisition_parameters.png
    :width: 90 %
    :align: center
    :alt: Modify and confirm the acquisition parameters.
@@ -86,7 +86,7 @@ The figure indicates which number was selected automatically.
 
 Here is the figure for the SI navigation together with the same figure zoomed into the first few shots:
 
-.. image:: images/Steady-state-determination.png
+.. image:: ../images/Steady-state-determination.png
    :width: 100 %
    :alt: Steady state is determined by looking at the evolution of the magnitude of the SI projection.
 
@@ -107,7 +107,7 @@ To ensure that the estimation is only done for voxels that contain meaningful da
 One threshold is for the RMS value of the voxels, which is calculated over all the body coils and the other is for the MIP value.
 Both of them are set seperately by dragging the two lines in the figure below:
 
-.. image:: images/thresholdRMSMIP.png
+.. image:: ../images/thresholdRMSMIP.png
    :width: 70 %
    :align: center
    :alt: The thresholds are determined by looking at the images and dragging the lines.
@@ -134,7 +134,7 @@ This can be used to more precisely find the ROI and threshold values.
 To get more precise values for the ROI, the MATLAB figure's "Data Tips" tool can be used, while scrolling through the different views.
 Alternatively, the left mouse button can be used to click on a pixel, which shows its coordinates in the title.
 
-.. image:: images/setXmax.png
+.. image:: ../images/setXmax.png
    :width: 60 %
    :align: center
    :alt: Showing the max value of the x coordinates.
@@ -145,7 +145,7 @@ Using Shift + e before changing the image allows to apply the adjusted contrast 
 
 Here is an example:
 
-.. image:: images/filtering.png
+.. image:: ../images/filtering.png
    :width: 90 %
    :align: center
    :alt: Changing the contrast of the image.
