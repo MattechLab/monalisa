@@ -10,26 +10,14 @@ Welcome to Monalisa's documentation!
    :width: 100 %
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Quick Start
+   :maxdepth: 3
+   :caption: Documentation Overview
+   :glob:
+   :includehidden:
 
-   installation
-   hello_monalisa
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
-
-   coil_sensitivity_map
-   mythosis_prepare_data
-   writing_reconstruction_script
-   using_docker
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Theory behind monalisa
-
-   theory
+   quick_start
+   contents
+   theory_and_algorithms
 
 Indices and tables
 ==================
