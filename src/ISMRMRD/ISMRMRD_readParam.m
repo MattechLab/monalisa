@@ -137,17 +137,16 @@ s_center_mass = sum(x_SI.*mySI, 1)./sum(mySI, 1);
 
 % Estimate shotOff (how many shots to be dropped)
 % Define the size of the sliding window
-window_size = 10;  
-
-% Define a threshold for the std to consider steady state
-threshold = std(s_mean)*0.1; %0.01 
+window_size = 5;
 
 % Compute the running standard deviation
-running_std = movstd(s_mean, window_size);
+running_std = movstd(s_mean, window_size, 'Endpoints', 'discard');
+
+% Define a threshold for the std to consider steady state
+threshold = prctile(running_std, 15);  % 10th percentile of std
 
 % Find the shot where the standard deviation falls below the threshold
 myMriAcquisition_node.nShot_off = find(running_std < threshold, 1);
-
 
 %% Set flags in myMriAcquisition_node (Maybe other way to handle them?)
 myMriAcquisition_node.selfNav_flag = true;
