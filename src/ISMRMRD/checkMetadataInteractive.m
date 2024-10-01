@@ -1,4 +1,4 @@
-function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center_mass, myMriAcquisition_node, reconFoV)
+function [myMriAcquisition_node, reconFoV] = checkMetadataInteractive(mySI, s_mean, s_center_mass, myMriAcquisition_node, reconFoV)
 % [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean,
 %                       s_center_mass, myMriAcquisition_node, reconFoV)
 %
@@ -47,7 +47,6 @@ function [myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean, s_center
                        myMriAcquisition_node.nShot_off, ...
                        mode(myMriAcquisition_node.FoV), ...
                        mode(reconFoV)];
-    
     
     %% Show plot (magnitude spectrum)
     % Create figure
