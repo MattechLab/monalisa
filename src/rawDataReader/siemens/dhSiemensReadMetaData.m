@@ -33,7 +33,7 @@ function varargout = dhSiemensReadMetaData(obj)
     nLine       = myTwix.image.NLin;
     nSeg        = nLine/nShot;
     nEcho       = myTwix.image.NEco;
-    
+
     FoV = [-1,-1,-1];
     if isfield(myTwix.hdr, 'Meas')
         if isfield(myTwix.hdr.Meas, 'ReadFoV')
@@ -42,7 +42,8 @@ function varargout = dhSiemensReadMetaData(obj)
         if isfield(myTwix.hdr.Meas, 'FOV')
             FoV = myTwix.hdr.Meas.FOV*2;
         end
-    elseif isfield(myTwix.hdr, 'Protocol')
+    end
+    if isfield(myTwix.hdr, 'Protocol')
         if isfield(myTwix.hdr.Protocol, 'ReadFoV')
             FoV    = myTwix.hdr.Protocol.ReadFoV*2;
         end
@@ -52,7 +53,8 @@ function varargout = dhSiemensReadMetaData(obj)
         if isfield(myTwix.hdr.Protocol, 'PhaseFoV')
             FoV   = myTwix.hdr.Protocol.PhaseFoV*2;
         end
-    elseif isfield(myTwix.hdr, 'Config')
+    end
+    if isfield(myTwix.hdr, 'Config')
         if isfield(myTwix.hdr.Config, 'ReadFoV')
             FoV      = myTwix.hdr.Config.ReadFoV*2;
         end
@@ -65,7 +67,8 @@ function varargout = dhSiemensReadMetaData(obj)
         if isfield(myTwix.hdr.Config, 'RoFOV')
             FoV        = myTwix.hdr.Config.RoFOV*2;
         end
-    elseif isfield(myTwix.hdr, 'Dicom')
+    end
+    if isfield(myTwix.hdr, 'Dicom')
         if isfield(myTwix.hdr.Dicom, 'dPhaseFOV')
             FoV     = myTwix.hdr.Dicom.dPhaseFOV*2;
         end
