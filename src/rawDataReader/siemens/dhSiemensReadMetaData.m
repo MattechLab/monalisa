@@ -28,11 +28,12 @@ function varargout = dhSiemensReadMetaData(obj)
     end
     
     %% header
-    N      = getattr(myTwix.image, 'NCol', -1);
-    nShot  = getattr(myTwix.image, 'NSeg', -1);
-    nLine  = getattr(myTwix.image, 'NLin', -1);
-    nEcho  = getattr(myTwix.image, 'NEco', -1);
-
+    N           = myTwix.image.NCol;
+    nShot       = myTwix.image.NSeg;
+    nLine       = myTwix.image.NLin;
+    nSeg        = nLine/nShot;
+    nEcho       = myTwix.image.NEco;
+    
     FoV = [-1,-1,-1];
     if isfield(myTwix.hdr, 'Meas')
         if isfield(myTwix.hdr.Meas, 'ReadFoV')
