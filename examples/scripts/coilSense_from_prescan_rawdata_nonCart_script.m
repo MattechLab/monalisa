@@ -1,7 +1,7 @@
-reconDir = 'C:\Users\helbi\Documents\MattechLab\recon_eva';
+reconDir = '/Users/mauroleidi/Desktop/20240923_Data/Mauro/';
 
-bodyCoilFile     = [reconDir, '/C/meas_MID00539_FID154917_BEAT_LIBREon_eye_BC_BC.dat'];
-arrayCoilFile    = [reconDir, '/C/meas_MID00540_FID154918_BEAT_LIBREon_eye_SC_BC.dat'];
+bodyCoilFile     = [reconDir, '/Raw_Data/meas_MID00292_FID175175_BEAT_LIBREoff_BOLD_BC.dat'];
+arrayCoilFile    = [reconDir, '/Raw_Data/meas_MID00294_FID175177_BEAT_LIBREoff_BOLD_HC.dat'];
 
 %% Read and print metadata from the twix
 bmTwix_info(bodyCoilFile)
@@ -13,7 +13,7 @@ bmTwix_info(arrayCoilFile)
 
 %% Maybe: write a function for automate ISMR rawData format(Standard) reading.
 % All trajectory information, to generate the trajectory. 
-N            = 128;
+N            = 480;
 nSeg         = 22; 
 nShot        = 419; 
 
@@ -32,7 +32,7 @@ reconFoV = 480; % magic number
 dK_u         = [1, 1, 1]./reconFoV;
 
 % Number of coils (channels)
-nCh_array    = 42; 
+nCh_array    = 58; 
 nCh_body     = 2;
 
 % We will need to ask for a predefined format. Hence we need to read the 
@@ -70,17 +70,17 @@ y_array         = bmCoilSense_nonCart_dataFromTwix( arrayCoilFile, ...
 % shift + E: to set the constast chosen
 
 % Box excluding coordinates
-x_min = 2; 
-x_max = 39;
+x_min = 21; 
+x_max = 30;
 
-y_min = 10; 
-y_max = 41;
+y_min = 21; 
+y_max = 30;
 
-z_min = 4; 
-z_max = 48;
+z_min = 21; 
+z_max = 32;
 
 % Two thresholds
-th_RMS = 14; 
+th_RMS = 10; 
 th_MIP = 10; 
 
 
