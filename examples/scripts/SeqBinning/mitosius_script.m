@@ -1,61 +1,33 @@
-windowSizeSeconds = 10;
-reconDir = '/Users/mauroleidi/Desktop/recon_eva';
+windowSizeSeconds = 150;
+%path where to save mitosius
+mitosius_savepath = '/Users/mauroleidi/Desktop/20240923_Data/JB/mitosius/'; 
+savefolder = [mitosius_savepath, num2str(windowSizeSeconds), 'seconds_PSF'];
 
 % path to the rawdatafile (in this case Siemens raw data)
-f = [reconDir, '/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat']; 
-% Display infos
-bmTwix_info(f); 
-% read raw data
-myTwix = bmTwix(f); 
+f = '/Users/mauroleidi/Desktop/20240923_Data/JB/Raw_Data/rawdata/meas_MID00485_FID176652_BEAT_LIBREoff_RS_GoldenStep.dat'; 
+autoFlag = false;             % Set whether the validation UI is shown
+% Create the appropriate reader based on the file extension
+reader = createRawDataReader(f, autoFlag);
+p = reader.acquisitionParams;
+p.selfNav_flag = true;
+p.traj_type = 'full_radial3_phylotaxis_chris';
 
-% Initialize and fill in the parameters: This in theory can be automated;
-% However Bastien told us that it can lead to errors. In addition we should
-% be indipendent from the specific file format used.
-p = bmMriAcquisitionParam([]); 
-p.name            = [];
-p.mainFile_name   = 'meas_MID00530_FID154908_BEAT_LIBREon_eye.dat';
-
-p.imDim           = 3;
-p.N     = 480;  
-p.nSeg  = 22;  
-p.nShot = 2055;  
-p.nLine = 45210;  
-p.nPar  = 1;  
-
-p.nLine           = double([]);
-p.nPt             = double([]);
-p.raw_N_u         = [480, 480, 480];
-p.raw_dK_u        = [1, 1, 1]./480;
-
-p.nCh   = 42;  
-p.nEcho = 1; 
-
-p.selfNav_flag    = true;
-% This was estimated in the coil sensitivity computation
-p.nShot_off       = 10; 
-p.roosk_flag      = false;
-% This is the full FOV not the half FOV
-p.FoV             = [480, 480, 480];
-% This sets the trajectory used
-p.traj_type       = 'full_radial3_phylotaxis';
-
-% Fill in missing parameters that can be deduced from existing ones.
-p.refresh; 
-
-% read rawdata
-y_tot   = bmTwix_data(myTwix, p);
 % compute trajectory points. This function is really wird. ASK BASTIEN.
-t_tot   = bmTraj(p); 
+y_tot = reader.readRawData(true,true); % get raw data without nshotoff and SI
+y_tot = ones(size(y_tot)); % get raw data without nshotoff and SI
+
+t_tot   = bmTraj(p); % get trajectory without nshotoff and SI
 % compute volume elements
 ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3' ); 
 
-
-N_u     = [480, 480, 480]/2;
-n_u     = [480, 480, 480]/2;
-dK_u    = [1, 1, 1]./480;
+FoV = p.FoV;
+matrix_size = FoV/3;
+N_u     = [matrix_size, matrix_size, matrix_size];
+n_u     = [matrix_size, matrix_size, matrix_size];
+dK_u    = [1, 1, 1]./384;
 
 % Load the coil sensitivity previously measured
-load('/Users/mauroleidi/Desktop/recon_eva/C/C.mat');
+load('/Users/mauroleidi/Desktop/20240923_Data/JB/coil_sensitivity_map_2024-09-28_21-13.mat');
 
 C = bmImResize(C, [48, 48, 48], N_u); 
 
@@ -74,18 +46,21 @@ normalize_val = mean(temp_im(temp_roi(:)));
 %% only once !!!!
 y_tot = y_tot/normalize_val; 
 
-% compute nshotoff
-bmTwix_info(f);
+nshotoff = p.nShot_off;
+% Compute binning
+cMask = mleGenerateSequentialBinningMasks(windowSizeSeconds, f, nshotoff,true);
+disp(size(cMask))
+cMask = reshape(cMask, [size(cMask,1), p.nSeg, size(cMask,2)/p.nSeg]); %MAGIC NUMBERS
+cMask(:, 1, :) = [];  % remove the SI projection
+cMask(:, :, 1:p.nShot_off) = []; % remove non steady state
+disp(size(cMask))
 
-nshotoff = 10;
+if size(cMask, 1) > 10
+    cMask = cMask(1:10, :, :);  % Keep only the first 10 images
+end
 
-% Load the masked coil sensitivity 
-cMask = generateSequentialBinningMasks(windowSizeSeconds, f, nshotoff,true);
-
-cMask = reshape(cMask, [size(cMask,1), 22, 2055]); 
-cMask(:, 1, :) = []; 
-cMask(:, :, 1:p.nShot_off) = []; 
 cMask = bmPointReshape(cMask); 
+
 
 
 % Run the mitosis function and compute volume elements
@@ -97,8 +72,8 @@ ve  = bmVolumeElement(t, 'voronoi_full_radial3');
 
 % Save all the resulting datastructures on the disk. You are now ready
 % to run your reconstruction
-m = '/Users/mauroleidi/Desktop/recon_eva/mitosius_sequential'; 
-bmMitosius_create(m, y, t, ve); 
+
+bmMitosius_create(savefolder, y, t, ve); 
 
 
 

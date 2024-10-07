@@ -1,20 +1,26 @@
 % This script creates a coil sensitivity map for non cartesian data.
+%% SET YOUR PARAMETERS FOR THE COIL SENSITIVITY ESTIMATION
+
+% K-space resolution for the reconstruction (has to be the same as the
+% final reconstruction)
+reconFoV = 384;
+
+dK_u         = [1, 1, 1]./reconFoV;
+
+% Matrix size of the cartesian grid in the k-space
+N_u          = [48, 48, 48]; 
+%% END: SET YOUR PARAMETERS
 
 %% Setup paths and flags
 % Flag; decide on values automatically if true, require user input if false
-autoFlag = true;
+autoFlag = false;
 
 % Flag; saves the coil sensitivity map if true
-doSave = false;
+doSave = true;
 
 % Path to prescan files
 bodyCoilFile = [];
 arrayCoilFile = [];
-
-% reconDir = '../../..';
-% 
-% bodyCoilFile     = [reconDir, '/C/ismrmrd_testfile_body.mdr'];
-% arrayCoilFile    = [reconDir, '/C/ismrmrd_testfile_array.mdr'];
 
 % Path to folder where the coil sensitivity map is saved
 saveFolder = [];
@@ -22,14 +28,16 @@ saveFolder = [];
 
 % If paths are not set in this script, create explorer window
 pathOutside = fileparts(fileparts(fileparts(fileparts(mfilename('fullpath')))));
+
 if isempty(bodyCoilFile)
-    [fileName, fileDir] = uigetfile(  {'*.mdr'; '*.h5'}, ...
+    [fileName, fileDir] = uigetfile({'*.mrd;*.dat;*.h5', 'Supported Files (*.mrd, *.dat, *.h5)'}, ...
     'Pick the body coil prescan', 'MultiSelect', 'off', pathOutside);
     bodyCoilFile = fullfile(fileDir, fileName);
 end
 
+
 if isempty(arrayCoilFile)
-    [fileName, fileDir] = uigetfile(  {'*.mdr';'*.h5'}, ...
+    [fileName, fileDir] = uigetfile({'*.mrd;*.dat;*.h5', 'Supported Files (*.mrd, *.dat, *.h5)'}, ...
     'Pick the surface coil prescan', 'MultiSelect', 'off', fileDir);
     arrayCoilFile = fullfile(fileDir, fileName);
 end
@@ -40,50 +48,32 @@ if isempty(saveFolder) & doSave
 end
 
 %% Read parameters
-myMriAcquisition_node = ISMRMRD_readParam(bodyCoilFile, autoFlag);
-nCh_body = myMriAcquisition_node.nCh;
+bodyreader = createRawDataReader(bodyCoilFile, autoFlag);
+bodyreader.acquisitionParams.traj_type = 'full_radial3_phylotaxis';
+bodyreader.acquisitionParams.selfNav_flag = true;
+arrayreader = createRawDataReader(arrayCoilFile, autoFlag);
+arrayreader.acquisitionParams.traj_type = 'full_radial3_phylotaxis';
+arrayreader.acquisitionParams.selfNav_flag = true;
 
-% Assuming the acquisition parameters are the same, they are overriden
-[myMriAcquisition_node, reconFoV] = ISMRMRD_readParam(arrayCoilFile, autoFlag);
-nCh_array = myMriAcquisition_node.nCh;
-
-% All trajectory information, to generate the trajectory. 
-N = myMriAcquisition_node.N;
-nSeg = myMriAcquisition_node.nSeg;
-nShot = myMriAcquisition_node.nShot;
-
-% This is the FoV set during the acquisition
-FoV = myMriAcquisition_node.FoV;
-
-% nShotOff depends on magnitude shown in figure "DataInfo Magnitude" if
-% automatic_flag = 0;
-nShotOff = myMriAcquisition_node.nShot_off;
-
-% K-space resolution for the reconstruction (has to be the same as the
-% final reconstruction)
-dK_u         = [1, 1, 1]./reconFoV;
-
-% Matrix size of the cartesian grid in the k-space
-N_u          = [48, 48, 48]; 
-
-
+% MAKE SURE THE Number of shot off is consistent between the two acquisitions.
+nShotOff = max(bodyreader.acquisitionParams.nShot_off,arrayreader.acquisitionParams.nShot_off);
+bodyreader.acquisitionParams.nShot_off = nShotOff;
+arrayreader.acquisitionParams.nShot_off = nShotOff;
 %% Read data and calculate trajectory and volume elements
 % We can read the trajectory from the ismrmrd file if existing or give an
 % option for different trajectories. This could also be done for the volume
 % elemnt calculation.
 
 % Prepare myMriAcquisition_node.nCh for body
-myMriAcquisition_node.nCh = nCh_body;
-[y_body, t, ve] = bmCoilSense_nonCart_dataFromISMRMRD( bodyCoilFile, ...
-                                                    N_u, ...
-                                                    myMriAcquisition_node);
+[y_body, t, ve] = bmCoilSense_nonCart_data( bodyreader, ...
+                                                    N_u);
 
 % Same for array coils 
-myMriAcquisition_node.nCh = nCh_array;
-y_array         = bmCoilSense_nonCart_dataFromISMRMRD( arrayCoilFile, ...
-                                                    N_u, ...
-                                                    myMriAcquisition_node);
-
+y_array         = bmCoilSense_nonCart_data( arrayreader, ...
+                                                    N_u);
+disp(size(t))
+disp(size(y_body))
+disp(size(y_array))
 % compute the gridding matrices (Gn = approximation of inverse, Gu =
 % Forward, Gut = transpose of Gu) Gn and Gut are both backward
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 

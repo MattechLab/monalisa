@@ -16,7 +16,9 @@ nShot_off       = mriAcquisition_node.nShot_off;
 
 t = []; 
 if strcmp(traj_type, 'full_radial3_phylotaxis')
-    t = bmTraj_fullRadial3_phyllotaxis_lineAssym2(mriAcquisition_node); 
+    t = bmTraj_fullRadial3_phyllotaxis_lineAssym2(mriAcquisition_node);
+elseif strcmp(traj_type, 'full_radial3_phylotaxis_chris')
+    t = bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2(mriAcquisition_node);
 else
     error(['bmTraj : traj_type is unknown. This probably means your ' ...
         'trajectory is not implemented, you need to implement it yourself']);
