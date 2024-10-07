@@ -1,7 +1,5 @@
-function varargout = bmCoilSense_nonCart_dataFromISMRMRD(argFile, N_u, myMriAcquisition_node)
-% varargout = bmCoilSense_nonCart_dataFromISMRMRD(argFile, N_u, N, ... 
-%                                                 nSeg, nShot, nCh, ...
-%                                                 FoV, nShotOff)
+function varargout = bmCoilSense_nonCart_data(reader, N_u)
+% varargout = bmCoilSense_nonCart_data(reader, N_u)
 %
 % This function constraints data from a non cartesian 3D radial trajectory 
 % to fit into the given cartesian grid, adapting the resolution of the 
@@ -16,13 +14,12 @@ function varargout = bmCoilSense_nonCart_dataFromISMRMRD(argFile, N_u, myMriAcqu
 %
 % Contributors:
 %   Dominik Helbing (Documentation & Comments)
+%   Mauro Leidi
 %
 % Parameters:
-%   argFile (char): String containing the path to the ISMRMRD file which 
+%   reader (RawDataReader): Object to parse the file which 
 %    contains the data.
 %   N_u (List): Contains the size of the grid for every dimension.
-%   myMriAcquisition_node (bmMriAcquisitionParam): Object containing the
-%    acquisition parameters from argFile.
 %
 % Returns (optional):
 %   varargout{1} (y): 2D array containing the raw MRI data from the ISMRMRD 
@@ -36,14 +33,12 @@ function varargout = bmCoilSense_nonCart_dataFromISMRMRD(argFile, N_u, myMriAcqu
 % be called for several trajectory types.
 
 %% Get raw data
-% Read struct containing the data from ISMRMRD file
-myData = h5read(argFile, '/dataset/data');
-
+myMriAcquisition_node = reader.acquisitionParams;
 % Define grid spaceing from acquisition FoV
 dK_u_raw    = [1, 1, 1]./myMriAcquisition_node.FoV;
 
 % Extract rawdata
-y = bmISMRMRD_data(myData, myMriAcquisition_node);
+y = reader.readRawData(true,true);
 
 % Compute trajectory and express it as points in 3 dimensions [3, #points]
 % Maybe we can input as argument the trajectory to avoid the call
