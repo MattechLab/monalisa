@@ -33,7 +33,7 @@ function varargout = dhSiemensReadMetaData(obj)
     nLine       = myTwix.image.NLin;
     nSeg        = nLine/nShot;
     nEcho       = myTwix.image.NEco;
-
+    timestamp   = myTwix.image.timestamp;
     FoV = [-1,-1,-1];
     if isfield(myTwix.hdr, 'Meas')
         if isfield(myTwix.hdr.Meas, 'ReadFoV')
@@ -138,7 +138,7 @@ function varargout = dhSiemensReadMetaData(obj)
     myMriAcquisition_node.nCh = nCh;
     myMriAcquisition_node.nEcho = nEcho;
     myMriAcquisition_node.FoV = FoV;
-
+    myMriAcquisition_node.timestamp = timestamp;
     % Find the shot where the standard deviation falls below the threshold
     myMriAcquisition_node.nShot_off = find(running_std < threshold, 1);
     

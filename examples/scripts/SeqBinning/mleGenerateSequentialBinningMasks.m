@@ -1,27 +1,21 @@
-function cMask = mleGenerateSequentialBinningMasks(temporalWindowSec, filepathRawdata, nShotOff, debug)
+function cMask = mleGenerateSequentialBinningMasks(temporalWindowSec, reader, debug)
     % PARAMS:
     % temporalWindowSec: Temporal window size in seconds
-    % filepathRawdata: the path to the Siemens rawdata file
-    % nShotOff: number of non-steady-state lines
+    % reader: the RawDataReader object.
     % debug: (Optional) boolean flag for enabling debug mode, default is false
     % Author: Mauro Leidi
-
-    if nargin < 4  % Check if the debug flag was provided
+    acquisitionParams = reader.acquisitionParams;
+    if nargin < 3  % Check if the debug flag was provided
         debug = false;  % Set default value to false if not provided
     end
-
-    % Read twix object
-    mytwix = mapVBVD_JH_for_monalisa(filepathRawdata);
-    if iscell(mytwix)
-        myTwix = mytwix{end};
-    end
-
+    
     % Extract nMeasures: Total number of measures.
-    nMeasures = myTwix.image.NLin;
-    nseg = nMeasures/myTwix.image.NSeg;
+    nMeasures   = acquisitionParams.nLine;
+    nseg        = acquisitionParams.nSeg;
+    nShotOff    = acquisitionParams.nShot_off;
     % Extract timestampMs: Vector of timestamps in milliseconds.
     costTime = 2.5; % This is not magic, is siemens dependent do not change
-    timeStamp = double(myTwix.image.timestamp);
+    timeStamp = double(acquisitionParams.timestamp);
     timeStamp = timeStamp - min(timeStamp);
     timestampMs = timeStamp * costTime;
     
