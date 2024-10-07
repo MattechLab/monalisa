@@ -1,8 +1,10 @@
 %% Paths - Replace for your own case
-% path to the rawdatafile (in this case Siemens raw data)
+% Path to the rawdatafile (Siemens raw data or ISMRMRD)
 filePath = '/Users/mauroleidi/Desktop/recon_eva/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat';
+% Previously generated coil sensitivity and binmasks
 CMatPath = '/Users/mauroleidi/Desktop/recon_eva/C/C.mat';
 CMaskPath = '/Users/mauroleidi/Desktop/recon_eva/other/cMask.mat';
+% Mitosius save path
 mitosiusPath = '/Users/mauroleidi/Desktop/recon_eva/mitosius';
 
 
@@ -58,10 +60,11 @@ normalize_val = mean(temp_im(temp_roi(:)));
 y_tot = y_tot/normalize_val; 
 
 
-% Load the masked coil sensitivity 
+% Load the binning mask
 load(CMaskPath); 
-
-cMask = reshape(cMask, [20, 22, 2055]); 
+% Get the bin number and remove non steady state and SI
+nMasks = size(cMask,1);
+cMask = reshape(cMask, [nMasks, p.nSeg, p.nShot]); 
 cMask(:, 1, :) = []; 
 cMask(:, :, 1:p.nShot_off) = []; 
 cMask = bmPointReshape(cMask); 
