@@ -37,6 +37,9 @@ xmlDoc = parseString(Parser,myXML);
 % Node for trajectory
 myMriAcquisition_node = bmMriAcquisitionParam([]); 
 
+% parse timestamp
+myMriAcquisition_node.timestamp = h.acquisition_time_stamp;
+
 % Number of samples per channel and acquisition
 N = double(unique(h.number_of_samples));
 myMriAcquisition_node.N = N;

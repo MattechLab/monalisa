@@ -14,7 +14,6 @@ p.traj_type = 'full_radial3_phylotaxis_chris';
 
 % compute trajectory points. This function is really wird. ASK BASTIEN.
 y_tot = reader.readRawData(true,true); % get raw data without nshotoff and SI
-y_tot = ones(size(y_tot)); % get raw data without nshotoff and SI
 
 t_tot   = bmTraj(p); % get trajectory without nshotoff and SI
 % compute volume elements
@@ -48,7 +47,7 @@ y_tot = y_tot/normalize_val;
 
 nshotoff = p.nShot_off;
 % Compute binning
-cMask = mleGenerateSequentialBinningMasks(windowSizeSeconds, f, nshotoff,true);
+cMask = mleGenerateSequentialBinningMasks(windowSizeSeconds, reader,true);
 disp(size(cMask))
 cMask = reshape(cMask, [size(cMask,1), p.nSeg, size(cMask,2)/p.nSeg]); %MAGIC NUMBERS
 cMask(:, 1, :) = [];  % remove the SI projection
