@@ -30,6 +30,7 @@ classdef bmMriAcquisitionParam < handle
         
         FoV             = double([]); 
         
+        timestamp       = double([]); 
         traj_type       = 'void';  
         
         check_flag  = true;  
