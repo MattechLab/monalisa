@@ -1,65 +1,42 @@
 %% Paths - Replace for your own case
 % path to the rawdatafile (in this case Siemens raw data)
-filePath = ['C:\Users\helbi\Documents\MattechLab\recon_eva' ...
-     '\raw_data\meas_MID00530_FID154908_BEAT_LIBREon_eye.dat'];
-CMatPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\C\C.mat';
-CMaskPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\other\cMask.mat';
-mitosiusPath = 'C:\Users\helbi\Documents\MattechLab\recon_eva\mitosius';
+filePath = '/Users/mauroleidi/Desktop/recon_eva/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat';
+CMatPath = '/Users/mauroleidi/Desktop/recon_eva/C/C.mat';
+CMaskPath = '/Users/mauroleidi/Desktop/recon_eva/other/cMask.mat';
+mitosiusPath = '/Users/mauroleidi/Desktop/recon_eva/mitosius';
 
 
 f = filePath;
 % These functions use a function not written by Bastien so they are outside the repo
 addpath('..\..\..\twix_for_monalisa\')
-% Display infos
-bmTwix_info(f); 
-% read raw data
-myTwix = bmTwix(f); 
+
+autoFlag = false;             % Set whether the validation UI is shown
+% Create the appropriate reader based on the file extension
+reader = createRawDataReader(f, autoFlag);
+
+p = reader.acquisitionParams;
+p.selfNav_flag = true;
+p.traj_type = 'full_radial3_phylotaxis';
 
 % Initialize and fill in the parameters: This in theory can be automated;
-% However Bastien told us that it can lead to errors. In addition we should
-% be indipendent from the specific file format used.
-p = bmMriAcquisitionParam([]); 
-p.name            = [];
-p.mainFile_name   = 'meas_MID00530_FID154908_BEAT_LIBREon_eye.dat';
-
-p.imDim           = 3;
-p.N     = 480;  
-p.nSeg  = 22;  
-p.nShot = 2055;  
-p.nLine = 45210;  
-p.nPar  = 1;  
-
-p.nLine           = double([]);
-p.nPt             = double([]);
 p.raw_N_u         = [480, 480, 480];
 p.raw_dK_u        = [1, 1, 1]./480;
+ 
 
-p.nCh   = 42;  
-p.nEcho = 1; 
+% Read raw data
+y_tot = reader.readRawData(true,true); % get raw data without nshotoff and SI
 
-p.selfNav_flag    = true;
-% This was estimated in the coil sensitivity computation
-p.nShot_off       = 10; 
-p.roosk_flag      = false;
-% This is the full FOV not the half FOV
-p.FoV             = [480, 480, 480];
-% This sets the trajectory used
-p.traj_type       = 'full_radial3_phylotaxis';
-
-% Fill in missing parameters that can be deduced from existing ones.
-p.refresh; 
-
-% read rawdata
-y_tot   = bmTwix_data(myTwix, p);
-% compute trajectory points. This function is really wird. ASK BASTIEN.
-t_tot   = bmTraj(p); 
+% compute trajectory points
+t_tot   = bmTraj(p); % get trajectory without nshotoff and SI
 % compute volume elements
 ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3' ); 
 
 
-N_u     = [480, 480, 480]/2;
-n_u     = [480, 480, 480]/2;
-dK_u    = [1, 1, 1]./480;
+FoV = p.FoV;
+matrix_size = 80;
+N_u     = [matrix_size, matrix_size, matrix_size];
+n_u     = [matrix_size, matrix_size, matrix_size];
+dK_u    = [1, 1, 1]./FoV;
 
 % Load the coil sensitivity previously measured
 load(CMatPath); 
