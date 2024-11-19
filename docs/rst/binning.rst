@@ -1,7 +1,10 @@
 Binning: Flexible Readout Rearrangement
 =======================================
 
-In this section, we discuss how to flexibly rearrange readouts to select which ones will contribute to the reconstructed images. There are many possible ways to rearrange the measurements, depending on the goal of the study. Here, we present some examples to showcase the flexibility of this framework.
+In this section, we discuss how to flexibly partition readouts into several groups (or bins) to select which ones will contribute to each reconstructed image frame. 
+This operation is often called "binning". In addition to the partitioning, we also include the exclusion of some data-lines, if needed, as part of the binning operation. 
+
+There are many possible ways to rearrange the measurements, depending on the goal of the study. Here, we present some examples to showcase the flexibility of this framework.
 
 Monalisa requires the binning to be a logical array of size `nBins x nLines`, where the element `cMask(i, j)` is true if we want to include the spoke number `j` in the `i-th` output image generation. `nLines` is the total number of sampled spokes.
 
