@@ -17,7 +17,6 @@ Welcome to Monalisa's documentation!
 
    quick_start
    contents
-   theory_and_algorithms
 
 Indices and tables
 ==================
