@@ -105,13 +105,28 @@ Normalize the raw data by selecting the average value of the region of interest 
     temp_im = getimage(gca);
     bmImage(temp_im);
     temp_roi = roipoly;
+    
+
+Here an images of reconstruction estimation will be shown and you can select the ROI based on it. 
+
+.. image:: ../images/mitosius/select_roi.png
+
+We selected the left eye globe as the ROI in our example below.
+
+- Left Click: Adds a vertex at the clicked position.
+- Right Click/Double Click: Completes the polygon and closes it automatically.
+
+.. image:: ../images/mitosius/select_roi_2.png
+
+.. code-block:: matlab
+
     normalize_val = mean(temp_im(temp_roi(:)));
     % normalize it only once
     y_tot = y_tot / normalize_val;
 
-.. image:: ../images/mitosius/select_roi.png
 
-.. image:: ../images/mitosius/select_roi_2.png
+
+
 
 Load the binning mask
 ~~~~~~~~~~~~~~~~~~~~~
