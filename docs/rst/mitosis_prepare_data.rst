@@ -1,13 +1,13 @@
 Mitosius: Prepare Your Data for Reconstruction
 ==============================================
 
-Preparing the Mitosius is the last fundamental step before the reconstruction. This section covers how to prepare the mitosius.
+Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
-You already need to run the coil sensitivity estimation or have an estimate of coil sensitivity and masked coil sensitivity. You need to have access to the raw data of the acquisition (of course :) ).
+You have already run the coil sensitivity estimation or had an estimate of coil sensitivity and masked coil sensitivity (see the :doc:`Coil Sensitivity Map Estimation <coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions. The script performs several operations, including loading raw data, initializing parameters, computing trajectory points and volume elements, normalizing the data, and generating the output "mitosius". The mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
-Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory.
+Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`Using a Custom Acquisition Trajectory <custom_acquisition>`).
 
 
 Prerequisites
@@ -19,7 +19,8 @@ Ensure you have the following files and paths correctly set up:
 - Precomputed binning mask (Mask.mat)
 
 Additionally, the required functions (e.g., `bmTwix_info`, `bmTwix`, `bmTraj`, etc.) should be available in your MATLAB environment, as these functions are internal functions in the monalisa toolkit.
-A tip: you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
+
+A tip: you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
 
 Usage instructions
 ------------------
@@ -49,7 +50,7 @@ The raw data reader will check the first segment of each shot and estimate the s
 
 .. image:: ../images/mitosius/SI_of_each_shot.png
 
-The acquisition parameters will be extracted automatically.
+The acquisition parameters will be extracted automatically, if possible.
 
 .. image:: ../images/mitosius/param_extract.png
 
@@ -68,8 +69,8 @@ Save the acquisition parameters into `p` and add other parameters you may need.
 
     % Initialize and fill in the parameters:
     % p.raw_N_u: acquisition matrix size (identified from your acquisition protocol)
-    p.raw_N_u         = [480, 480, 480];
-    p.raw_dK_u        = [1, 1, 1]./480;
+    p.raw_N_u         = [480, 480, 480]; % optional, just for records
+    p.raw_dK_u        = [1, 1, 1]./480; % optional, just for records
 
 Read the raw data and compute trajectory points, volume elements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,19 +99,20 @@ Load the Coil Sensitivity Matrix
 Resize the coil sensitivity matrix to match the reconstruction matrix size.
 Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
 
-- Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol, which can be determined from the scanner. 
-    
-    - It can be calculated as: `Acquisition_matrix_size = reconFov/Voxel_size`
-    
-    - For example, if the reconFov is 240mm, the voxel size is 0.5mm, the acquisition matrix size equal to 480.
+- Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. For example, if Fov is 240mm, the acquisition matrix size equal to 480, we can calculate `voxel_size = Fov/Acquisition_matrix_size`
 
-- Reconstruction matrix size `Matrix_size`: This is set by the user based on the desired resolution of reconstructed images. We recommend setting the "Reconstruction matrix size" equal to the "Acquisition matrix size" for consistency.
+- Reconstruction matrix size `Matrix_size`: This is set by the user based on the desired resolution of reconstructed images, i.e. the size of the reconstructed image. 
 
-- N_u: The size of reconstruction grid in Fourier space. We can set `N_u = Acquisition_matrix_size`
+- N_u: The size of reconstruction grid in Fourier space. For example, we can set `N_u = Matrix_size`.
 
-- n_u: The size of reconstruction in image space. It can be determined as `n_u = Matrix_size`. It is recommended to set `n_u = N_u`
+    - :math:`N_u = [N_x, N_y, N_z]` 
 
-- dK_u: The interval between the grids in Fourier space, calculated as `dK_u = 1/reconFov`
+- n_u: The size of reconstruction in image space. It is possible to be determined as `n_u ≤ N_u`. We recommend setting `n_u = N_u` for achieving the optimal image quality.
+
+    - :math:`n_u = [n_x, n_y, n_z]` 
+
+- dK_u: The step size of the grids in Fourier space, calculated as `dK_u = 1/Fov`.
+    - :math:`dK_u = [dK_x, dK_y, dK_z]` 
 
 
 .. code-block:: matlab
@@ -122,15 +124,13 @@ Here we want to clarify the distinction of the concepts between "Reconstruction 
 Normalize the data
 ~~~~~~~~~~~~~~~~~~
 
-Normalize the raw data by selecting the average value of the region of interest (ROI). The goal is to adjust the intensity values of the ROI so that they are centered around a mean of 1.
+Normalize the raw data by the average value of a region of interest (ROI). The goal is to adjust the intensity values of the image so that they are centered around a mean of 1 in the ROI.
 
-Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly, as normalization can affect convergence.
+Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly. Our normalization helps to standardize the regularization weight.
 
 .. code-block:: matlab
 
-    % n_u: Reconstruction matrix size
-    % N_u: Acquisition matrix size
-    x_tot = bmMathilda(y_tot, t_tot, ve_tot, C, [N_u, N_u, N_u], [n_u, n_u, n_u], dK_u);
+    x_tot = bmMathilda(y_tot, t_tot, ve_tot, C, N_u, n_u, dK_u);
     bmImage(x_tot);
     temp_im = getimage(gca);
     bmImage(temp_im);
@@ -158,7 +158,7 @@ We selected the left eye globe as the ROI in our example below, you can also sel
 
 Cleaning of the mask
 ~~~~~~~~~~~~~~~~~~~~~
-For some trajectories, such as the 3D radial trajectory, it is necessary to clean the SI projection and remove the first unsteady shots. Therefore, we also need to clean the binning mask accordingly to ensure that the size of `Mask` matches the size of `y_tot`.
+For some trajectories, such as the 3D radial trajectory, it is necessary to clean the SI projection and remove the first unsteady shots from the acquired readouts. Therefore, we also need to clean the binning mask accordingly to ensure that the size of `Mask` matches the size of `y_tot`.
 
 .. code-block:: matlab
 
@@ -196,8 +196,9 @@ Notes
 
 - Ensure all paths are correctly set according to your system.
 - If you encounter issues with function calls (e.g., `bmTwix`, `bmTraj`), verify that the necessary scripts or external toolboxes are added to the MATLAB path.
-- The raw data normalization step ensures that the average value in the selected ROI ranges around the mean of 1 in the reconstructed images. This allows a xxx of the regularization weights.
+- The raw data normalization step ensures that the average value in the selected ROI ranges around the mean of 1 in the reconstructed images. This allows the standardization of the regularization weights.
 
+.. _custom_acquisition:
 
 Using a Custom Acquisition Trajectory
 -------------------------------------
