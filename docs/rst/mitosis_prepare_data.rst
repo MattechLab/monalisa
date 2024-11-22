@@ -3,9 +3,9 @@ Mitosius: Prepare Your Data for Reconstruction
 
 Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
-You have already run the coil sensitivity estimation or had an estimate of coil sensitivity and masked coil sensitivity (see the :doc:`Coil Sensitivity Map Estimation <coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
+You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
 
-This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions. The script performs several operations, including loading raw data, initializing parameters, computing trajectory points and volume elements, normalizing the data, and generating the output "mitosius". The mitosius contains raw data, the computed trajectory and the volume elements for each bin.
+This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
 Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`Using a Custom Acquisition Trajectory <custom_acquisition>`).
 
@@ -20,7 +20,7 @@ Ensure you have the following files and paths correctly set up:
 
 Additionally, the required functions (e.g., `bmTwix_info`, `bmTwix`, `bmTraj`, etc.) should be available in your MATLAB environment, as these functions are internal functions in the monalisa toolkit.
 
-A tip: you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
+A tip: If you use a 3D radial trajectory, you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
 
 Usage instructions
 ------------------
@@ -45,7 +45,9 @@ Load the Raw Data
     % Create the appropriate reader based on the file extension
     reader = createRawDataReader(f, autoFlag);
 
-The raw data reader will check the first segment of each shot and estimate the steady state to determine the shots that should be excluded.
+In our examples, we often use 3D radial trajectory. In that case, the raw data reader will check the first segment of each shot to estimate after how many nLines, steady state is reached.
+For your own trajectory, you can find your own way. 
+
 (The image title is yet to change)
 
 .. image:: ../images/mitosius/SI_of_each_shot.png
@@ -54,7 +56,7 @@ The acquisition parameters will be extracted automatically, if possible.
 
 .. image:: ../images/mitosius/param_extract.png
 
-You can also modify the parameters manually in the "User Value" column (in yellow), for example: adjusting `nShotOff` according to your needs. Then click the "Confirm" button.
+You can also modify the parameters manually in the "User Value" column (in yellow), for example: adjusting `nShotOff` according to your needs. If you want to include all the lines for reconstruction, set `nShotOff = 0`. Then click the "Confirm" button.
 
 Add MRI Acquisition Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,12 +83,13 @@ Read the raw data and compute trajectory points, volume elements
     % get raw data without nshotoff and SI
     flagSS = true
     flagExcludeSI = true
-    % flagSS: if true, filter out the non steady state shots (obj.acquisitionParams.nShot_off)
+    % flagSS: if true, filter out the non steady state shots 
     % flagExcludeSI: if true, filter out the SI projections 
     y_tot = reader.readRawData(flagSS, flagExcludeSI);
 
     % compute trajectory points
-    t_tot = bmTraj(p); % get 'full_radial3_phylotaxis' trajectory without nshotoff and SI
+    % get 'full_radial3_phylotaxis' trajectory without nshotoff and SI
+    t_tot = bmTraj(p); 
     % alternatively you can compute your own trajectory
     % more details in "Using a Custom Acquisition Trajectory"
 
@@ -99,7 +102,7 @@ Load the Coil Sensitivity Matrix
 Resize the coil sensitivity matrix to match the reconstruction matrix size.
 Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
 
-- Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. For example, if Fov is 240mm, the acquisition matrix size equal to 480, we can calculate `voxel_size = Fov/Acquisition_matrix_size`
+- Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. 
 
 - Reconstruction matrix size `Matrix_size`: This is set by the user based on the desired resolution of reconstructed images, i.e. the size of the reconstructed image. 
 
@@ -107,11 +110,11 @@ Here we want to clarify the distinction of the concepts between "Reconstruction 
 
     - :math:`N_u = [N_x, N_y, N_z]` 
 
-- n_u: The size of reconstruction in image space. It is possible to be determined as `n_u ≤ N_u`. We recommend setting `n_u = N_u` for achieving the optimal image quality.
+- n_u: The size of reconstruction in image space. It is possible to set `n_u ≤ N_u`. However, we recommend setting `n_u = N_u` for achieving the optimal image quality.
 
     - :math:`n_u = [n_x, n_y, n_z]` 
 
-- dK_u: The step size of the grids in Fourier space, calculated as `dK_u = 1/Fov`.
+- dK_u: The step size of the grid in Fourier space, calculated as `dK_u = 1/Fov`.
     - :math:`dK_u = [dK_x, dK_y, dK_z]` 
 
 
@@ -137,7 +140,7 @@ Keep in mind that whether or not normalization is applied, the regularization we
     temp_roi = roipoly;
     
 
-Here an images of reconstruction estimation will be shown and you can select the ROI based on it. 
+Here an estimation of the reconstructed image will be shown and you can select the ROI based on it. 
 
 .. image:: ../images/mitosius/select_roi.png
 
@@ -169,7 +172,8 @@ For some trajectories, such as the 3D radial trajectory, it is necessary to clea
     Mask(:, :, 1:p.nShot_off) = [];
     % after cleaning, the size of Mask: [nBin, nSeg-1, nShot-p.nShot_off]
     Mask = bmPointReshape(Mask);
-    % after the reshape, the size of Mask: [nBin, nLines], where nLines=(nSeg-1)*(nShot-p.nShot_off)
+    % after the reshape, the size of Mask: [nBin, nLines]
+    % where nLines=(nSeg-1)*(nShot-p.nShot_off)
 
 Compute Final Data Structures for Reconstruction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
