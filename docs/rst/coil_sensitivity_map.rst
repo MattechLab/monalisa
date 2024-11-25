@@ -17,6 +17,7 @@ Coil sensitivity from pre-scan images
 
 Computing coil senstivity from pre-scan images is simpler but yields a worst estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.  
 .. warning::
+   
    The FOV position and orientation of the images should be the same.
 
 This script https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m illustrates how to run the coilsensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:

@@ -42,8 +42,8 @@ matlab_src_dir = '../../src'
 print(f"matlab_src_dir set to: {matlab_src_dir}")
 matlab_src_dir = '/path/to/your/matlab/code'  # Adjust this path
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+templates_path = ['../_templates']
+exclude_patterns = ['../_build', 'Thumbs.db', '.DS_Store']
 
 primary_domain = "mat"
 
@@ -51,9 +51,9 @@ primary_domain = "mat"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'alabaster'
-html_static_path = ['_static']
+html_static_path = ['../_static']
 
 # Add custom CSS and JavaScript files
-html_css_files = ['custom-navigation.css', 'custom-button.css']
+html_css_files = ['custom-navigation.css', 'custom-button.css','important.css', 'takehomemessage.css']
 
 html_js_files = ['custom.js']
