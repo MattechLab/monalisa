@@ -15,8 +15,9 @@ Welcome to Monalisa's documentation!
    :glob:
    :includehidden:
 
-   quick_start
+   quick_startc
    contents
+   functions_and_classes
 
 Indices and tables
 ==================
