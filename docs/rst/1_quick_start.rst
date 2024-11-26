@@ -3,7 +3,8 @@ Quick Start
 
 .. toctree::
    :maxdepth: 3
+   :glob:
    :includehidden:
    
-   installation
-   hello_monalisa
+   1-1_installation
+   1-2_hello_monalisa
