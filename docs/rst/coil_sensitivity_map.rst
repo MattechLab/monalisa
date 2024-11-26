@@ -33,6 +33,7 @@ The process of extracting the acquisition metadata and the parameters for the ge
 The used mode can be changed using the dedicated flag at the start of the `coilSense_from_prescan_rawdata_nonCart_ISMRMRD_script` script.
 
 .. warning::
+   
    The FOV position and orientation of the raw-data pre-scans should be the same.
 
 .. code-block:: matlab
