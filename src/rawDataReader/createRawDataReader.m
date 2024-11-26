@@ -1,8 +1,8 @@
 function reader = createRawDataReader(filepath, autoFlag)
 % Factory patterns for RawDataReader. 
 % Example usage:
-% myreader = mlecreateRawDataReader('my/path/to/file.ext', false)
-% metadata = myreader.mleReadMetaData() to get metadata
+% myreader = createRawDataReader('my/path/to/file.ext', false)
+% metadata = myreader.ReadMetaData() to get metadata
 % y = myreader.mleReadRawData() to get the rawdata
 % Supported file formats: Siemens (.dat), ISMRMRD (.mrd).
 % Author: Mauro Leidi
@@ -22,3 +22,4 @@ function reader = createRawDataReader(filepath, autoFlag)
             error('Unsupported file extension: %s', ext);
     end
 end
+

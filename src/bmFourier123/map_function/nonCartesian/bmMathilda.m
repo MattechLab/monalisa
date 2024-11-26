@@ -12,6 +12,11 @@
 % varargin : [C, N_u, n_u, dK_u, kernelType, nWin, kernelParam, fft_lib_flag, leight_flag]
 
 function x = bmMathilda(y, t, v, varargin)
+% Performs the gridded reconstruction. First data is regridded to a virtual
+% cartesian grid, then the image is created via fft. Finally a
+% deapotization step is peformed.
+% If no coil sensitivity C is in the input, then the coil images are
+% returned
 
 % initial -----------------------------------------------------------------
 [C, N_u, n_u, dK_u, kernelType, nWin, kernelParam, fft_lib_flag, leight_flag] = bmVarargin(varargin);
@@ -29,7 +34,6 @@ end
 
 if sum(mod(N_u(:), 2)) > 0
    error('N_u must have all components even for the Fourier transform. ');
-   return; 
 end
 
 if size(y, 1) >= size(y, 2)
