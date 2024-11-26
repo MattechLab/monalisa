@@ -5,7 +5,7 @@ classdef mleRawDataReader
 % the rest of the code. For each file format a subclass is defined. To
 % initialize a reader you need to use the createRawDataReader() that acts
 % as a Factory Pattern to initiate the correct subclass based on the raw
-% data file extension. Refear to createRawDataReader() for usage examples.
+% data file extension. Refer to createRawDataReader() for usage examples.
 % Author: Mauro Leidi
     properties
         argFile   % Filepath to the raw data
@@ -27,7 +27,7 @@ classdef mleRawDataReader
             error('readMetaData must be implemented by the subclass');
         end
 
-         % Abstract method to be implemented by subclasses
+        % Abstract method to be implemented by subclasses
         function readouts = readRawData(obj, flagSS, flagNoSI)
             error('readRawData must be implemented by the subclass');
         end

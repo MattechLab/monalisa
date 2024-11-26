@@ -8,7 +8,7 @@ ve  = bmMitosius_load(m, 've');
 N_u     = [80, 80, 80]; % Size of the Virtual cartesian grid in the fourier space (regridding)
 n_u     = [80, 80, 80]; % Image size (output)
 dK_u    = [1, 1, 1]./480; % Spacing of the virtual cartesian grid
-nFr     = 20; 
+nFr     = 20; % amount of frames
 % best achivable resolution is 1/ N_u*dK_u If you have enogh coverage
 
 load('/Users/mauroleidi/Desktop/recon_eva/C/C.mat'); 
