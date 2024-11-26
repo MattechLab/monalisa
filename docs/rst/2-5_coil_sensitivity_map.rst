@@ -349,4 +349,4 @@ How many iteration of the gradient descent should be performed can be set using 
 The coil sensitivity ``C`` is saved as a matrix in a MATLAB data file for the next step.
 The code can be modified to save the reconstructed image ``x`` as well.
 
-For an explanation of the math behind it, see :doc:`theory`.
+.. For an explanation of the math behind it, see :doc:`3-1_theory`.
