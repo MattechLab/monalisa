@@ -3,6 +3,7 @@ Theory and Algorithms
 
 .. toctree::
    :maxdepth: 3
+   :glob:
    :includehidden:
 
-   theory
+   3-1_theory
