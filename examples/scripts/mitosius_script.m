@@ -1,11 +1,12 @@
 %% Paths - Replace for your own case
 % Path to the rawdatafile (Siemens raw data or ISMRMRD)
-filePath = '/Users/mauroleidi/Desktop/recon_eva/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat';
+filePath = '/Users/cag/Documents/Dataset/1_Pilot_MREye_Data/Sub001/230928_anatomical_MREYE_study/MR_EYE_Subj01/RawData/meas_MID00453_FID57919_BEAT_LIBREon_eye.dat';
+
 % Previously generated coil sensitivity and binmasks
-CMatPath = '/Users/mauroleidi/Desktop/recon_eva/C/C.mat';
-CMaskPath = '/Users/mauroleidi/Desktop/recon_eva/other/cMask.mat';
+CMatPath = '/Users/cag/Documents/Dataset/241017_T1/Sub001/T1_LIBRE_Binning/C/C.mat';
+MaskPath = '/Users/cag/Documents/Dataset/241017_T1/Sub001/T1_LIBRE_Binning/other/eMask_th0.75.mat';
 % Mitosius save path
-mitosiusPath = '/Users/mauroleidi/Desktop/recon_eva/mitosius';
+mitosiusPath = '/Users/cag/Documents/Dataset/241017_T1/Sub001/T1_LIBRE_Binning/mitosius';
 
 
 f = filePath;
@@ -25,9 +26,8 @@ p.raw_N_u         = [480, 480, 480];
 p.raw_dK_u        = [1, 1, 1]./480;
  
 
-% Read raw data
+%% Read raw data
 y_tot = reader.readRawData(true,true); % get raw data without nshotoff and SI
-
 % compute trajectory points
 t_tot   = bmTraj(p); % get trajectory without nshotoff and SI
 % compute volume elements
@@ -49,6 +49,7 @@ C = bmImResize(C, [48, 48, 48], N_u);
 % Note you can normalize the rawdata and the image will be normalized
 % This is because the Fourier transform is linear
 % F(f(.)/a) =  F(f(.))/a
+%%
 x_tot = bmMathilda(y_tot, t_tot, ve_tot, C, N_u, n_u, dK_u); 
 bmImage(x_tot)
 temp_im = getimage(gca); 
@@ -58,21 +59,21 @@ normalize_val = mean(temp_im(temp_roi(:)));
 
 %% only once !!!!
 y_tot = y_tot/normalize_val; 
-
+%%
 
 % Load the binning mask
-load(CMaskPath); 
+load(MaskPath); 
 % Get the bin number and remove non steady state and SI
-nMasks = size(cMask,1);
-cMask = reshape(cMask, [nMasks, p.nSeg, p.nShot]); 
-cMask(:, 1, :) = []; 
-cMask(:, :, 1:p.nShot_off) = []; 
-cMask = bmPointReshape(cMask); 
+nMasks = size(Mask,1);
+Mask = reshape(Mask, [nMasks, p.nSeg, p.nShot]); 
+Mask(:, 1, :) = []; 
+Mask(:, :, 1:p.nShot_off) = []; 
+Mask = bmPointReshape(Mask); 
 
 
 % Run the mitosis function and compute volume elements
 
-[y, t] = bmMitosis(y_tot, t_tot, cMask); 
+[y, t] = bmMitosis(y_tot, t_tot, Mask); 
 y = bmPermuteToCol(y); 
 
 ve  = bmVolumeElement(t, 'voronoi_full_radial3' ); 

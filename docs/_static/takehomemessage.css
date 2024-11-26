@@ -1,0 +1,5 @@
+.admonition.takehomemessage {
+    background-color: hsla(103, 84%, 76%, 0.537); /* Light green background */
+    border-left: 5px solid hwb(130 0% 48%); /* Green border */
+    padding: 10px;
+}

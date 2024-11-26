@@ -7,12 +7,35 @@ Coil Sensitivity Map Estimation
 This section explains how to generate an estimate of the coil sensitivity map using this framework.
 
 .. warning::
-   For this an acquisition of the body coil pre-scan and the selected surface coil pre-scan data is required.
+   For this an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw datas.
+   For the moment we only support ISMRMRD (.mrd) and Siemens raw data (.dat) files.
 
-   The data has to be stored in ISMRM raw data files.
+
+
+Coil sensitivity from pre-scan images
+--------------------------------------
+
+Computing coil senstivity from pre-scan images is simpler but yields a worst estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.  
+
+.. warning::
+   
+   The FOV position and orientation of the images should be the same.
+
+This script https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m illustrates how to run the coilsensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:
+1. In the first step the user should define a pre-scan mask on the ROI using the body coil image, this helps to estimate the coil sensitivity excluding the noise.
+2. In the secon step the function bmCoilSense_prescan_coilSense is called, to estimate the acquisition coils sentitivities.
+
+The images are required to be 3D matlab arrays.
+
+Coil sensitivity from raw data pre-scans                      
+-----------------------------------------
 
 The process of extracting the acquisition metadata and the parameters for the generation of the ROI mask can either be done automatically or controlled by the user.
 The used mode can be changed using the dedicated flag at the start of the `coilSense_from_prescan_rawdata_nonCart_ISMRMRD_script` script.
+
+.. warning::
+
+   The FOV position and orientation of the raw-data pre-scans should be the same.
 
 .. code-block:: matlab
 
