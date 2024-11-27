@@ -1,4 +1,5 @@
 %% SOME VARIABLES EXPLANATION TO BETTER FOLLOW WHAT IS GOING ON
+
 % This script assumes that some preprocessing phase has already taken place
 % previously. For what I understand the trajectory generation and binning
 % masks are already selected and a coil sensitivity estimation has taken
@@ -9,10 +10,8 @@
 % y = data mask, Is the data evaluated in the bins (nchannels) 
 % C = colis sensitivity map. 
 
-% Correctly setup searchpaths
-srcPath = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'src');
-disp(srcPath)
-addpath(genpath(srcPath)); 
+% In /monalisa:
+addpath(genpath(pwd));
 
 % Load the data provided by Bastien (here we load the variables stated before)
 load('data.mat')
@@ -25,7 +24,6 @@ load('data.mat')
 % trejectories you may have to implement your own volumeElement,function. 
 % In the present case, we have a 2D radial trajectory. 
 
-
 % t is a Nx1 cell array, containing values of dimention 2xvariable double
 
 ve = bmVolumeElement(t, 'voronoi_full_radial2'); 
@@ -37,7 +35,6 @@ ve = bmVolumeElement(t, 'voronoi_full_radial2');
 % This depends on the trajectory, FoV and matrix-size (N_u). 
 
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
-
 
 %% Mathilda_per_cell
 
@@ -69,8 +66,7 @@ bmImage(x0);
 % is important because it has a very important geometrical meaning in the
 % theory of reconstruction and it has some application for some special
 % cases. I have put a demo of reconstruciton here for the sake of
-% completeness.     
-
+% completeness.
 
 x = cell(nFr, 1); 
 for i = 1:nFr
@@ -142,6 +138,7 @@ bmImage(x)
 
 
 %% deform_field evaluation with imReg Demon 
+
 reg_file                        = 'C:\main\temp\demo_sion\reg_file';
 [DF_to_prev, imReg_to_prev]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_prev', 500, 1, reg_file, reg_mask); 
 [DF_to_next, imReg_to_next]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_next', 500, 1, reg_file, reg_mask); 
