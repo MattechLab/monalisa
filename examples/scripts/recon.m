@@ -9,7 +9,7 @@ N_u     = [80, 80, 80]; % Size of the Virtual cartesian grid in the fourier spac
 n_u     = [80, 80, 80]; % Image size (output)
 dK_u    = [1, 1, 1]./480; % Spacing of the virtual cartesian grid
 nFr     = 20; % amount of frames
-% best achivable resolution is 1/ N_u*dK_u If you have enogh coverage
+% best achivable resolution is 1/(N_u*dK_u) If you have enough coverage
 
 load('/Users/mauroleidi/Desktop/recon_eva/C/C.mat'); 
 C = bmImResize(C, [48, 48, 48], N_u);
@@ -23,7 +23,6 @@ for i = 1:nFr
     x0{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, n_u, dK_u, [], [], [], []);
 end
 bmImage(x0);
-
 
 %% tevaMorphosia_no_deformField
 nIter = 30; % iterations before stopping
