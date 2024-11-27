@@ -37,7 +37,7 @@ Ensure you have a compiler that is recognized by MATLAB. Run the following comma
 If you see a message like "No supported compiler or SDK was found," you will need to install a compiler. Refer to the following sections based on your operating system.
 
 Linux
------
+~~~~~
 
 1. **Install g++**:
 
@@ -56,7 +56,7 @@ Linux
       compileScript
 
 macOS
------
+~~~~~
 
 1. **Install Xcode Command Line Tools**:
 
@@ -94,7 +94,7 @@ macOS
       compileScript
 
 Windows
--------
+~~~~~~~
 
 1. **Install Visual Studio with C++ components**:
 
