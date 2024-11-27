@@ -6,7 +6,7 @@ Contents
    :glob:
    :includehidden:
 
-   2-1_writing_reconstruction_script
+   2-1_reconstruction
    2-2_mitosis_prepare_data
    2-3_binning
    2-4_prescan_acquisition
