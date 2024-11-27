@@ -18,7 +18,6 @@ C = bmImResize(C, [48, 48, 48], N_u);
 [Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 
 %%
-
 x0 = cell(nFr, 1);
 for i = 1:nFr
     x0{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, n_u, dK_u, [], [], [], []);
@@ -27,7 +26,6 @@ bmImage(x0);
 
 
 %% tevaMorphosia_no_deformField
-
 nIter = 30; % iterations before stopping
 witness_ind = [];
 
@@ -47,7 +45,3 @@ x = bmTevaMorphosia_chain(  x0, ...
                             bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
 
 bmImage(x)
-
-
-
-
