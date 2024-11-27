@@ -12,12 +12,14 @@ be performed in a simpler way from those prescan images. But if quality is a pri
 Consider the following when acquiring prescans:
 
 1. One prescan have to be performed with the body coil, while the second have to be performed with the same coils used for the main acquisition. Or inversely.
-2. The Field of View (FOV) of the prescans have to match that of the main acquisition: in position, orientation, and size. 
-But the matrix size can be smaller for the prescans.
-3. For prescans, choose preferably acquisition parameters that result a low image contrast (as low as possible) and a high signal (as high as possible) 
-everywhere tissue are present. We need to get ride of contraste anyway by an image division for coil-sensitivity estimation.
-Maybe a small repetition time (TR) can help. In any case, the remaining presence of a strong contrast should still leads to an acceptable result. 
-4. The flip angle should be adapted to have enough signal. Good contrast is not required. 
+2. The Field of View (FOV) of the prescans have to match that of the main acquisition: in position, orientation, and size.
+    But the matrix size can be smaller for the prescans.
+3. For prescans, choose preferably acquisition parameters that result a low image contrast (as low as possible) and a high signal (as high as possible) everywhere tissue are present. 
+    We need to get ride of contraste anyway by an image division for coil-sensitivity estimation.
+    Maybe a small repetition time (TR) can help.
+    In any case, the remaining presence of a strong contrast should still leads to an acceptable result.
+4. The flip angle should be adapted to have enough signal.
+    Good contrast is not required.
 
 Practical hints for a Siemens scanner:
 1. Try to avoid re-shimming between the two prescans.  
