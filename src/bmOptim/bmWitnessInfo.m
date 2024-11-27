@@ -43,10 +43,10 @@ classdef bmWitnessInfo < handle
             
             myVarargin_1 = [];
             myVarargin_2 = [];
-            if length(varargin) > 0
+            if ~isempty(varargin)
                 myVarargin_1 =  varargin{1};
             end
-            if length(varargin) > 0
+            if ~isempty(varargin)
                 myVarargin_2 =  varargin{2};
             end
             
