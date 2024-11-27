@@ -16,9 +16,14 @@ release = '0.1.0'
 
 # conf.py
 
+suppress_warnings = [
+    'image.not_readable',  # suppress unreadable image warnings
+]
+
 extensions = [
     'sphinxcontrib.matlab',
-    'sphinx.ext.mathjax']
+    'sphinx.ext.mathjax'
+]
 
 mathjax3_config = {
     'tex': {
