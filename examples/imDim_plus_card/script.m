@@ -8,14 +8,13 @@
 
 % t is the trajectory evaluated in the bins
 % y = data mask, Is the data evaluated in the bins (nchannels) 
-% C = colis sensitivity map. 
+% C = coil sensitivity map.
 
 % In /monalisa:
 addpath(genpath(pwd));
 
 % Load the data provided by Bastien (here we load the variables stated before)
 load('data.mat')
-
 
 %% volume_elements: we compute ve = volume elements from t and knowing the trajectory
 
@@ -132,17 +131,11 @@ x = bmTevaDuoMorphosia_chain(   x0, ...
 
 bmImage(x)
 
-
-
-
-
-
 %% deform_field evaluation with imReg Demon 
 
 reg_file                        = 'C:\main\temp\demo_sion\reg_file';
 [DF_to_prev, imReg_to_prev]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_prev', 500, 1, reg_file, reg_mask); 
 [DF_to_next, imReg_to_next]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_next', 500, 1, reg_file, reg_mask); 
-
 
 %%
 
@@ -170,8 +163,6 @@ x = bmTevaMorphosia_chain(  x0, ...
                             bmWitnessInfo('tevaMorphosia_d0p5_r5_nCGD4', witness_ind));
 
 bmImage(x)
-
-
 
 %% tevaDuoMorphosia_with_deformField
 

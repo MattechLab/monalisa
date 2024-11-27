@@ -8,7 +8,7 @@ Before running the reconstruction script, make sure you have the necessary follo
 - ``y``, the raw data evaluated in the bins: a (Nfr x 1) cells
 - ``t``, trajectory evaluated in the bins: a (Nfr x 1) cells
 - ``ve``, the volume elements evaluated in the bins: a (Nfr x 1) cells
-- ``C``, the estimated coil sensitivity: a 4D complex double array of size [Nx Ny Nz nCh]
+- ``C``, the estimated coil sensitivity map: a 4D complex double array of size [Nx Ny Nz nCh]
 
 At the beginning of the script, you also need to define the following parameters:
 
