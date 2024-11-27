@@ -21,8 +21,8 @@ Sequential binning is one of the simplest ways to partition lines, splitting dat
 
 For this example, we assume the unit of time is milliseconds, and that we want to produce a temporal sequence of images, each one containing data acquired over a period of 2 seconds (window size).
 
-Steps for Sequential Binning:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Steps for Sequential Binning
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. **Initialize and Set Parameters**:
    Start by configuring the temporal window size and extracting metadata from the acquisition parameters. The `RawDataReader` object provides the necessary data for binning, such as the number of measures, the number of segments per shot (`nSeg`), and timestamps for each readout.
