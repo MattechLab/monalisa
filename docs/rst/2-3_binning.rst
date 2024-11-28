@@ -1,3 +1,4 @@
+=======================================
 Binning: Flexible Readout Rearrangement
 =======================================
 
@@ -10,7 +11,7 @@ There are many possible ways to rearrange the measurements, depending on the goa
    Monalisa requires the binning to be a logical array of size `[nBins,nLines]`, where the element `Mask(i, j)` is true if we want to include the `j-th` line in the `i-th` reconstructed image. `nLines` is the total number of sampled radial lines.
 
 First Example: Sequential Binning
-----------------------------------
+=================================
 
 Sequential binning is one of the simplest ways to partition lines, splitting data sequentially by acquisition time. This method is particularly useful for imaging modalities that depend on temporal dynamics, such as resting-state fMRI, where we want to monitor the timecourse of the BOLD signal across brain regions. In sequential binning, we aim to generate a sequence of frames as illustrated below:
 
@@ -22,7 +23,7 @@ Sequential binning is one of the simplest ways to partition lines, splitting dat
 For this example, we assume the unit of time is milliseconds, and that we want to produce a temporal sequence of images, each one containing data acquired over a period of 2 seconds (window size).
 
 Steps for Sequential Binning
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 
 1. **Initialize and Set Parameters**:
    Start by configuring the temporal window size and extracting metadata from the acquisition parameters. The `RawDataReader` object provides the necessary data for binning, such as the number of measures, the number of segments per shot (`nSeg`), and timestamps for each readout.
@@ -97,7 +98,7 @@ The reconstructed images result from the contribution of each line within the as
    For example, to estimate rigid motion we are need to apply sequential binning.
 
 Second Example: Task-Based (Hi-Fi) fMRI
-----------------------------------------
+========================================
 
 This section discusses the binning process for task-based fMRI, which focuses on isolating the haemodynamic response to specific stimuli. By averaging multiple trials, this method effectively reduces the contributions of temporally uncorrelated brain activity, resulting in a clearer signal.
 
@@ -111,7 +112,7 @@ For instance, in a visual stimulation study, delayed activation in the brain's v
 To implement this binning strategy, we generate a logical array, `hifiMask`, of size `[nBins, nLines]`, where `hifiMask(i, j)` is true if the j-th measurement corresponds to the i-th bin. The number of bins is determined by the total duration of the trial and the temporal resolution we aim to achieve for the haemodynamic response. Of course you need to have enogh lines in each bin if you want to successfully reconstruct images.
 
 Steps for Hi-Fi Binning:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------------------
 
 1. **Initialize and Set Parameters**:
    
@@ -191,7 +192,7 @@ The resulting `hifiMask` will allow for the reconstruction of images that reflec
 
 
 Third Example: Motion-Resolved Heart MRI
------------------------------------------
+========================================
 
 A third example is binning using a physiological signal, such as heartbeats. The goal is to split the cardiac cycle into several sequential steps, called cardiac phases, and generate one image per phase. The assumption is that heart motion is cyclical, and by grouping data acquired at similar cardiac positions within each bin, we can reduce motion artifacts.
 

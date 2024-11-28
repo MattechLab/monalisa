@@ -1,3 +1,4 @@
+===============================
 Coil Sensitivity Map Estimation
 ===============================
 
@@ -10,10 +11,8 @@ This section explains how to generate an estimate of the coil sensitivity map us
    For this an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw datas.
    For the moment we only support ISMRMRD (.mrd) and Siemens raw data (.dat) files.
 
-
-
 Coil sensitivity from pre-scan images
---------------------------------------
+=====================================
 
 Computing coil senstivity from pre-scan images is simpler but yields a worst estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.  
 
@@ -27,8 +26,8 @@ This script https://github.com/MattechLab/monalisa/blob/main/examples/scripts/co
 
 The images are required to be 3D matlab arrays.
 
-Coil sensitivity from raw data pre-scans                      
------------------------------------------
+Coil sensitivity from raw data pre-scans
+========================================
 
 The process of extracting the acquisition metadata and the parameters for the generation of the ROI mask can either be done automatically or controlled by the user.
 The used mode can be changed using the dedicated flag at the start of the `coilSense_from_prescan_rawdata_nonCart_ISMRMRD_script` script.
@@ -56,7 +55,8 @@ In order the body coil file,  the surface coil file and the directory where the 
 .. _automatedEstimation:
 
 Automated Estimation
---------------------
+====================
+
 In automated mode, the user only needs to provide one additional input: confirming the selection of the region of interest (ROI) for reconstruction. 
 This region is essential for estimating the coil sensitivity. Ensure that the blue box completely encompasses the area you wish to image, but select the smallest possible bounding box. Pixels outside this region are estimated by solving the Laplace equation:
 
@@ -83,12 +83,14 @@ The rest of the estimation is done automatically and the resulting matrix is sav
    ``coil_sensitivity_map_yyyy-mm-dd-hh-mm.mat``
 
 Manual Estimation
------------------
+=================
+
 Using the manual estimation requires some more confirmation from the user. Namely of the parameters extracted and the threshold to differentiate between noise and data.
 There will be more figures shown that allow to check the region of interest in more detail as well as the effect of the secondary coil sensitivity estimation.
 
 Acquisition Parameters
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
+
 The acquisition parameters are automatically extracted from the ISMRM raw data files and presented in the following figure. Make sure that the values displayed are correct.
 
 .. image:: ../images/acquisition_parameters.png
@@ -120,12 +122,14 @@ Note that the number of shots to be discarded can be updated by dragging the ver
    The changes to the other parameters have to be done in the second figure for the surface coils.
 
 Mask Creation
-^^^^^^^^^^^^^
+-------------
+
 The mask is used to select voxels for which valuable data is present. This should exclude artifacts and noise.
 To achieve this, thresholds and a region of interest (ROI) selection are used to create the mask.
 
 Threshold
-"""""""""
+^^^^^^^^^
+
 To ensure that the estimation is only done for voxels that contain meaningful data, a threshold is used to seperate noise from data.
 One threshold is for the RMS value of the voxels, which is calculated over all the body coils and the other is for the MIP value.
 Both of them are set seperately by dragging the two lines in the figure below:
@@ -138,11 +142,11 @@ Both of them are set seperately by dragging the two lines in the figure below:
 The figure allows to change the view of the two images as well as changing between a binary and a continuous representation.
 While dragging the lines in the graph in the top half, the images update the voxels to show which are below the threshold. 
 
-
 .. _roiFigures:
 
 Region of Interest
-""""""""""""""""""
+^^^^^^^^^^^^^^^^^^
+
 The selection of the ROI is done the same way as in the :ref:`Automated Estimation <automatedEstimation>`.
 But additionally, three more figures are shown:
 
@@ -188,20 +192,21 @@ but to keep most of the information intact to achieve the best coil sensivity es
 The example shown, give you an idea of a correct thresholding, with most of the brain data mantained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.
 
 Sensitivity Approximation
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
+
 After the first estimation of the coil sensitivity, a heuretic gradient descent algorithm is applied to improve on this estimation.
 This is done iteratively for a number of iterations that can be set in the script. For further explanation see `ImprovedEstimation`_.
 
 After each gradient descent step, an image is generated that shows the combined image using the coils. This can be used to control the effects of the gradient descent.
 
-
-
 Code Explanation
-----------------
+================
+
 This part goes into a bit more detail of the code, which allows to more easily modify the coil sensitivity estimation process.
 
 Path selection
-^^^^^^^^^^^^^^
+--------------
+
 The script starts out by setting the two flags mentioned above. Afterwards the paths of the files and the destination folder are set.
 These can be set directly in the scrip to skip the selection during execution.
 
@@ -213,7 +218,8 @@ These can be set directly in the scrip to skip the selection during execution.
    saveFolder = [];
 
 Parameters
-^^^^^^^^^^
+----------
+
 The acquisition parameters are then read out in the function call:
 
 .. code-block:: matlab
@@ -240,43 +246,43 @@ The estimation is done on a low resolution image to improve the result. The grid
 This value can be changed to fit the user's needs. Good values range from 48 to 96. A too high resolution reduces the signal to noise ratio and increases execution time drastically.
 
 Data extraction
-^^^^^^^^^^^^^^^
+---------------
+
 In the function `bmCoilSense_nonCart_dataFromISMRMRD`, the raw data is extracted, the trajectory is generated and the volume elements are computed.
 
 .. code-block:: matlab
 
    myMriAcquisition_node.nCh = nCh_body;
-   [y_body, t, ve] = bmCoilSense_nonCart_dataFromISMRMRD( bodyCoilFile, ...
-                                                       N_u, ...
-                                                       myMriAcquisition_node);
+   [y_body, t, ve] = bmCoilSense_nonCart_dataFromISMRMRD(
+                        bodyCoilFile, ...
+                        N_u, ...
+                        myMriAcquisition_node);
 
 .. note::
    Both the trajectory and the volume element computation method have to be changed manually and the trajectory is not yet read out of the ISMRM raw data file.
-
    Later on, the option to choose should be implemented in a gui element.
 
 Within the function `bmCoilSense_nonCart_dataFromTwix`:
-  
+
 - The trajectory is generated using the function `bmTraj_fullRadial3_phyllotaxis_lineAssym2`.
-  
-  - Here, the use of a 3D phyllotaxis trajectory is assumed.
 
-  - This function has to be changed for another if the trajectory required is different.
-    
+   - Here, the use of a 3D phyllotaxis trajectory is assumed.
+
+   - This function has to be changed for another if the trajectory required is different.
+
 - The volume elements are computed using the function `bmVolumeElement`.
-  
-  - Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function.
-    
-    For example, in the following case, the voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).
 
-    .. code-block:: matlab
-    
-        ve      = bmVolumeElement(t, 'voronoi_full_radial3')
-    
-    If none of the provided cases match the acquisition's trajectory, a new volume element calculation function has to be defined.
-    
-- Retain only the raw k-space data within a specified box (defined by N_u and the FoV). 
-  This preserves the lower frequencies, removing any high frequency detail, resulting in a lower resolution.
+   - Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function. For example, in the following case, the voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).
+
+   .. code-block:: matlab
+
+      ve = bmVolumeElement(t, 'voronoi_full_radial3')
+
+   - If none of the provided cases match the acquisition's trajectory, a new volume element calculation function has to be defined.
+
+- Retain only the raw k-space data within a specified box (defined by N_u and the FoV).
+
+   - This preserves the lower frequencies, removing any high frequency detail, resulting in a lower resolution.
 
 The same function is used once again to extract the raw data of the selected array coils. 
 The number of coils are updated to match the selected array coils.
@@ -284,22 +290,25 @@ The number of coils are updated to match the selected array coils.
 .. code-block:: matlab
 
    myMriAcquisition_node.nCh = nCh_array;
-   y_array         = bmCoilSense_nonCart_dataFromISMRMRD( arrayCoilFile, ...
-                                                       N_u, ...
-                                                       myMriAcquisition_node);
+   y_array = bmCoilSense_nonCart_dataFromISMRMRD(
+               arrayCoilFile, ...
+               N_u, ...
+               myMriAcquisition_node);
 
 Gridding Matrices
-^^^^^^^^^^^^^^^^^
+-----------------
+
 The next step is computing the gridding matrices:
 
 .. code-block:: matlab
 
-    [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u)
+   [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u)
 
 Here, `Gn` and `Gut` perform the backward transformation (from non-Cartesian to Cartesian), while `Gu` performs the forward transformation (from Cartesian to non-Cartesian).
 
 Mask Creation
-^^^^^^^^^^^^^
+-------------
+
 The creation of the mask is done using two thresholds to exclude artifacts from regions without signals, such as air in the lungs, and a ROI selection to exlude artifacts outside the ROI.
 This is particularly relevant for the center region of the coil sensitivity plot and is done in the function `bmCoilSense_nonCart_mask_automatic`.
 
@@ -310,7 +319,8 @@ This is particularly relevant for the center region of the coil sensitivity plot
 The function also accepts predefined values for the thresholds and the ROI instead of deciding on them during the execution. See the function documentation for more information.
 
 Coil Sensitivity Estimation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
+
 The first estimation is done using the following to functions:
 
 .. code-block:: matlab
@@ -331,7 +341,8 @@ And the `bmCoilSense_nonCart_primary` function creates an initial estimation of 
 .. _ImprovedEstimation:
 
 Improved Estimation
-^^^^^^^^^^^^^^^^^^^
+-------------------
+
 With the initial coil sensitivity ``C_array_prime``, a better coil sensitivity is estimated using gradient descent in the function `bmCoilSense_nonCart_secondary`. 
 This process alternately updates the coil sensitivity map ``C`` and the reconstructed image ``X`` to solve :math:`||FXC - y|| = 0`.
 The coil sensitivity map of the reference coil remains unchanged to restrict the changes and not have ``C`` and ``X`` diverge.
@@ -341,9 +352,10 @@ How many iteration of the gradient descent should be performed can be set using 
 .. code-block:: matlab
 
    nIter = 5; 
-   [C, x] = bmCoilSense_nonCart_secondary(y_array, C_array_prime, y_ref, ...
-                                          C_ref, Gn, Gu, Gut, ve, nIter, ...
-                                          ~autoFlag); 
+   [C, x] = bmCoilSense_nonCart_secondary(
+               y_array, C_array_prime, y_ref, ...
+               C_ref, Gn, Gu, Gut, ve, nIter, ...
+               ~autoFlag); 
 
 
 The coil sensitivity ``C`` is saved as a matrix in a MATLAB data file for the next step.
