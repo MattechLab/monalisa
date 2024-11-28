@@ -1,4 +1,5 @@
 %% SOME VARIABLES EXPLANATION TO BETTER FOLLOW WHAT IS GOING ON
+
 % This script assumes that some preprocessing phase has already taken place
 % previously. For what I understand the trajectory generation and binning
 % masks are already selected and a coil sensitivity estimation has taken
@@ -7,30 +8,26 @@
 
 % t is the trajectory evaluated in the bins
 % y = data mask, Is the data evaluated in the bins (nchannels) 
-% C = colis sensitivity map. 
+% C = coil sensitivity map.
 
-% Correctly setup searchpaths
-srcPath = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'src');
-disp(srcPath)
-addpath(genpath(srcPath)); 
+% In /monalisa:
+addpath(genpath(pwd));
 
 % Load the data provided by Bastien (here we load the variables stated before)
 load('data.mat')
-
 
 %% volume_elements: we compute ve = volume elements from t and knowing the trajectory
 
 % This depends only on the trajectory. There is a function
 % bmVolumeElement_blablabla for each type of trajectory. For special
-% trejectories you may have to implement your own volumeElement,function. 
+% trajectories you may have to implement your own volumeElement,function. 
 % In the present case, we have a 2D radial trajectory. 
-
 
 % t is a Nx1 cell array, containing values of dimention 2xvariable double
 
 ve = bmVolumeElement(t, 'voronoi_full_radial2'); 
 % the result of this function are the volume elements, that is still a Nx1
-% cell array, containing values of dimention 1xvariable doubles
+% cell array, containing values of dimension 1xvariable doubles
 
 %% gridding_matrices
 
@@ -38,10 +35,10 @@ ve = bmVolumeElement(t, 'voronoi_full_radial2');
 
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 
-
 %% Mathilda_per_cell
 
-% This is the gridded recon for any non-cartesian data-set. 
+% This is the gridded recon for any non-cartesian data-set.
+% Mathilda does the same as nasha mathematically, but without computing the Gn, which takes a lot of time.
 
 x0 = cell(nFr, 1);
 for i = 1:nFr
@@ -69,21 +66,20 @@ bmImage(x0);
 % is important because it has a very important geometrical meaning in the
 % theory of reconstruction and it has some application for some special
 % cases. I have put a demo of reconstruciton here for the sake of
-% completeness.     
-
+% completeness.
 
 x = cell(nFr, 1); 
 for i = 1:nFr
     
-    nIter       = 30;
-    witness_ind = []; % 1:nIter;
-    witnessInfo = bmWitnessInfo(['sensa_frame_', num2str(i)], witness_ind);
-    convCond    = bmConvergeCondition(nIter);
+    nIter         = 30;
+    witness_ind   = []; % 1:nIter;
+    witness_label = 'sensa_frame_'
+    witnessInfo   = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
+    convCond      = bmConvergeCondition(nIter);
     
     nCGD    = 4;
     ve_max  = 10*prod(dK_u(:));
-    
-    
+        
     x{i} = bmSensa( x0{i}, y{i}, ve{i}, C, Gu{i}, Gut{i}, n_u,...
                     nCGD, ve_max, ...
                     convCond, witnessInfo);
@@ -93,13 +89,13 @@ bmImage(x)
 
 %% tevaMorphosia_no_deformField
 
-nIter = 30;
-witness_ind = [];
-
-delta     = 0.1;
-rho       = 10*delta;
-nCGD      = 4;
-ve_max    = 10*prod(dK_u(:));
+nIter         = 30;
+witness_ind   = [];
+witness_label = 'tevaMorphosia_d0p1_r1_nCGD4';
+delta         = 0.1;
+rho           = 10*delta;
+nCGD          = 4;
+ve_max        = 10*prod(dK_u(:));
 
 x = bmTevaMorphosia_chain(  x0, ...
                             [], [], ...
@@ -109,20 +105,19 @@ x = bmTevaMorphosia_chain(  x0, ...
                             delta, rho, 'normal', ...
                             nCGD, ve_max, ...
                             nIter, ...
-                            bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
+                            bmWitnessInfo(witness_label, witness_ind));
 
 bmImage(x)
 
-
 %% tevaDuoMorphosia_no_deformField
 
-nIter = 30;
-witness_ind = [];
-
-delta     = 0.1;
-rho       = 10*delta;
-nCGD      = 4;
-ve_max    = 10*prod(dK_u(:));
+nIter         = 30;
+witness_ind   = [];
+witness_label = 'tevaMorphosia_d0p1_r1_nCGD4';
+delta         = 0.1;
+rho           = 10*delta;
+nCGD          = 4;
+ve_max        = 10*prod(dK_u(:));
 
 x = bmTevaDuoMorphosia_chain(   x0, ...
                                 [], [], [], [], ...
@@ -132,20 +127,15 @@ x = bmTevaDuoMorphosia_chain(   x0, ...
                                 delta, rho, 'normal', ...
                                 nCGD, ve_max, ...
                                 bmConvergeCondition(nIter), ...
-                                bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
+                                bmWitnessInfo(witness_label, witness_ind));
 
 bmImage(x)
 
-
-
-
-
-
 %% deform_field evaluation with imReg Demon 
+
 reg_file                        = 'C:\main\temp\demo_sion\reg_file';
 [DF_to_prev, imReg_to_prev]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_prev', 500, 1, reg_file, reg_mask); 
 [DF_to_next, imReg_to_next]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_next', 500, 1, reg_file, reg_mask); 
-
 
 %%
 
@@ -154,13 +144,13 @@ reg_file                        = 'C:\main\temp\demo_sion\reg_file';
 
 %% tevaMorphosia_with_deformField
 
-nIter = 30;
-witness_ind = [];
-
-delta     = 0.5;
-rho       = 10*delta;
-nCGD      = 4;
-ve_max    = 10*prod(dK_u(:));
+nIter         = 30;
+witness_ind   = [];
+witness_label = 'tevaMorphosia_d0p5_r5_nCGD4';
+delta         = 0.5;
+rho           = 10*delta;
+nCGD          = 4;
+ve_max        = 10*prod(dK_u(:));
 
 x = bmTevaMorphosia_chain(  x0, ...
                             [], [], ...
@@ -170,21 +160,19 @@ x = bmTevaMorphosia_chain(  x0, ...
                             delta, rho, 'normal', ...
                             nCGD, ve_max, ...
                             bmConvergeCondition(nIter), ...
-                            bmWitnessInfo('tevaMorphosia_d0p5_r5_nCGD4', witness_ind));
+                            bmWitnessInfo(witness_label, witness_ind));
 
 bmImage(x)
 
-
-
 %% tevaDuoMorphosia_with_deformField
 
-nIter = 30;
-witness_ind = [];
-
-delta     = 0.5;
-rho       = 10*delta;
-nCGD      = 4;
-ve_max    = 10*prod(dK_u(:));
+nIter         = 30;
+witness_ind   = [];
+witness_label = 'tevaMorphosia_d0p5_r5_nCGD4';
+delta         = 0.5;
+rho           = 10*delta;
+nCGD          = 4;
+ve_max        = 10*prod(dK_u(:));
 
 x = bmTevaDuoMorphosia_chain(   x0, ...
                                 [], [], [], [], ...
@@ -194,8 +182,6 @@ x = bmTevaDuoMorphosia_chain(   x0, ...
                                 delta, rho, 'normal', ...
                                 nCGD, ve_max, ...
                                 bmConvergeCondition(nIter), ...
-                                bmWitnessInfo('tevaMorphosia_d0p5_r5_nCGD4', witness_ind));
+                                bmWitnessInfo(witness_label, witness_ind));
 
 bmImage(x)
-
-

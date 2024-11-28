@@ -44,8 +44,6 @@ Taking the example above, any net magnetization vector can be decomposed in it's
 Lauterbur Signal Equation
 =========================
 
-
-
 The starting point for MRI signal generation is the reciprocal theoreom:
 
 The reciprocal theorem states that if a coil is in the situation of the scanner, e.g: is in a static magnetic field $B_0$ where each voxel has a magnetization M, then there is an induced current in the coil $V_{ind}$
@@ -64,7 +62,7 @@ After a quasi-static approximation among other simplifications. The signal equat
 
 .. math::
 
-    y(k, t) = \int_{\mathbb{R}^3} d^3r \, B_{\perp}^*(r) x(r) e^{-i2\pi k(t) \cdot r} = \int_{\mathbb{R}^3} d^3r \, C(r) x(r) e^{-i2\pi k(t) \cdot r}
+   y(k, t) = \int_{\mathbb{R}^3} d^3r \, B_{\perp}^*(r) x(r) e^{-i2\pi k(t) \cdot r} = \int_{\mathbb{R}^3} d^3r \, C(r) x(r) e^{-i2\pi k(t) \cdot r}
 
 Where:
 
@@ -79,14 +77,13 @@ Where:
    - Its contribution to the measured signal is weigthed by the coil's sensitivity at that position, :math:`B_{\perp}^*(r)`.
    - The value from the voxel, $x(r)$, is modulated by a complex exponential term, :math:`e^{-i2\pi k(t) \cdot r}`. This term represents how the signal from the voxel is transformed in the frequency domain. The term :math:`e^{-i2\pi k(t) \cdot r}` can be interpreted as part of a Fourier transform process.
 
-
 Hence the signal measured is the fourier transform of the Image weighted by the coil sensitivity (also named coil image).
 
 Note however that in practice we measure the signal with many coils, each having a different coil sensitivity :math:`B_{\perp,c}^*(r) := C_c(r)`. Globally we obtain many coil images:
 
 .. math::
 
-    y(k, t)_c = \int_{\mathbb{R}^3} d^3r \, C_c(r) x(r) e^{-i2\pi k(t) \cdot r}
+   y(k, t)_c = \int_{\mathbb{R}^3} d^3r \, C_c(r) x(r) e^{-i2\pi k(t) \cdot r}
 
 To retrieve the Image x(r) we need to estimate the coil sensitivities of each coil $C_c$ and then find the x(r) that best explain the observed values $y(k, t)_c$. 
 
@@ -98,7 +95,7 @@ Hence the signal measured by coil $c$ becomes:
 
 .. math::
 
-    y_c(k, t) = \sum_{i=1}^{N} \Delta R \, C_c(r_i) x(r_i) e^{-i2\pi K_k \cdot r_i}
+   y_c(k, t) = \sum_{i=1}^{N} \Delta R \, C_c(r_i) x(r_i) e^{-i2\pi K_k \cdot r_i}
 
 Where:
 
@@ -109,6 +106,7 @@ Where:
 
 Matrix Formulation
 ==================
+
 **1. Voxel Representation**
 
 Let's consider the locations :math:`\vec{r_i}`, where :math:`i = 1, \dots, N`, represent the number of voxels. As seen previously these are the location of the image pixels, hence they are on a cartesian grid.
@@ -126,9 +124,9 @@ The matrix :math:`C_c` is defined as:
 .. math::
 
    C_c = \begin{pmatrix} C_c(\vec{r_1}) & 0 & \dots & 0 \\ 
-                         0 & C_c(\vec{r_2}) & \dots & 0 \\ 
-                         \vdots & \vdots & \ddots & \vdots \\ 
-                         0 & 0 & \dots & C_c(\vec{r_n}) \end{pmatrix}
+                        0 & C_c(\vec{r_2}) & \dots & 0 \\ 
+                        \vdots & \vdots & \ddots & \vdots \\ 
+                        0 & 0 & \dots & C_c(\vec{r_n}) \end{pmatrix}
 
 The product :math:`C_c(\vec{r_i}) \cdot X(\vec{r_i})` is denoted as :math:`(C_c X)_i`.
 
@@ -192,7 +190,7 @@ The DFT transforms a sequence of :math:`N` complex numbers into another sequence
 
 .. math::
 
-    F = \begin{pmatrix} \tilde{F} & 0 & \dots & 0 \\ 
+   F = \begin{pmatrix} \tilde{F} & 0 & \dots & 0 \\ 
                         0 & \tilde{F} & \dots & 0 \\ 
                         \vdots & \vdots & \ddots & \vdots \\ 
                         0 & 0 & \dots & \tilde{F} \end{pmatrix}
@@ -202,7 +200,6 @@ The DFT transforms a sequence of :math:`N` complex numbers into another sequence
 The Fast Fourier Transform (FFT) is an algorithm to compute the DFT efficiently. While a direct computation of the DFT requires :math:`O(N^2)` operations, the FFT reduces this to :math:`O(N \log N)` by exploiting symmetries in the DFT.
 
 In MRI, the FFT is crucial for reconstructing images from the measured k-space data. The FFT enables us to efficiently transform the measured Fourier coefficients back into the spatial domain, reconstructing the image.
-
 
 **5. Signal Approximation**
 
@@ -228,16 +225,14 @@ Where:
 .. math::
 
    F = \begin{pmatrix} \tilde{F} & 0 & \dots & 0 \\ 
-                       0 & \tilde{F} & \dots & 0 \\ 
-                       \vdots & \vdots & \ddots & \vdots \\ 
-                       0 & 0 & \dots & \tilde{F} \end{pmatrix}, 
+                     0 & \tilde{F} & \dots & 0 \\ 
+                     \vdots & \vdots & \ddots & \vdots \\ 
+                     0 & 0 & \dots & \tilde{F} \end{pmatrix}, 
    \quad C X = \begin{pmatrix} C_1 X_1 \\ \vdots \\ C_n X_n \end{pmatrix}, 
    \quad F C X = \begin{pmatrix} \tilde{F} C_1 X_1 \\ \vdots \\ \tilde{F} C_n X_n \end{pmatrix} 
    \approx \begin{pmatrix} y_1 \\ \vdots \\ y_n \end{pmatrix} = y
 
 Thus, :math:`F C X \approx y` represents the discrete signal equation.
-
-
 
 Gridding
 =========
@@ -272,17 +267,16 @@ The term :math:`\frac{1}{\mathcal{F}^{-1}\{h(\cdot)\}}` is often forgotten in im
 We define :math:`G` as the gridding matrix, where:
 
 .. math::
-    G_{i,j} = \frac{h(k_i - k_j)}{\sum_{l} h_{i,l}}
+   G_{i,j} = \frac{h(k_i - k_j)}{\sum_{l} h_{i,l}}
 
-    G_{u,t} = G_u^\text{T}
+   G_{u,t} = G_u^\text{T}
 
-    G_u = N(W) \cdot W 
+   G_u = N(W) \cdot W 
 
-    G_n = N(W^\text{T}) \cdot W^\text{T} 
+   G_n = N(W^\text{T}) \cdot W^\text{T} 
 
 
 $G_u$ is the gridding from non-unifrom to uniform, while $G_n$ is the gridding from uniform to non-unifrom.
-
 
 Reconstruction Algorithms
 ==========================

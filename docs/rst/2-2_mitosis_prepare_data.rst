@@ -1,17 +1,18 @@
+==============================================
 Mitosius: Prepare Your Data for Reconstruction
 ==============================================
 
 Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
-You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
+You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-5_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
-Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`Using a Custom Acquisition Trajectory <custom_acquisition>`).
+Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`custom_acquisition`).
 
 
 Prerequisites
--------------
+=============
 Ensure you have the following files and paths correctly set up:
 
 - Siemens raw data file. (Or ISMRMRD file)
@@ -23,10 +24,10 @@ Additionally, the required functions (e.g., `bmTwix_info`, `bmTwix`, `bmTraj`, e
 A tip: If you use a 3D radial trajectory, you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
 
 Usage instructions
-------------------
+==================
 
 Define the Paths
-~~~~~~~~~~~~~~~~
+----------------
 
 .. code-block:: matlab
 
@@ -37,7 +38,7 @@ Define the Paths
     mitosiusPath = '/your/path/to/save/mitosius/';
 
 Load the Raw Data
-~~~~~~~~~~~~~~~~~
+-----------------
 
 .. code-block:: matlab
 
@@ -59,7 +60,7 @@ The acquisition parameters will be extracted automatically, if possible.
 You can also modify the parameters manually in the "User Value" column (in yellow), for example: adjusting `nShotOff` according to your needs. If you want to include all the lines for reconstruction, set `nShotOff = 0`. Then click the "Confirm" button.
 
 Add MRI Acquisition Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
 Save the acquisition parameters into `p` and add other parameters you may need.
 
@@ -75,7 +76,7 @@ Save the acquisition parameters into `p` and add other parameters you may need.
     p.raw_dK_u        = [1, 1, 1]./480; % optional, just for records
 
 Read the raw data and compute trajectory points, volume elements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------------------------------
 
 .. code-block:: matlab
 
@@ -93,11 +94,11 @@ Read the raw data and compute trajectory points, volume elements
     % alternatively you can compute your own trajectory
     % more details in "Using a Custom Acquisition Trajectory"
 
-    % compute volume elements
+    % compute volume elements (3D full radial trajectory in this case)
     ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3');
 
 Load the Coil Sensitivity Matrix
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 Resize the coil sensitivity matrix to match the reconstruction matrix size.
 Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
@@ -125,7 +126,7 @@ Here we want to clarify the distinction of the concepts between "Reconstruction 
     C = bmImResize(C, [48, 48, 48], [N_u, N_u, N_u]);
 
 Normalize the data
-~~~~~~~~~~~~~~~~~~
+-----------------
 
 Normalize the raw data by the average value of a region of interest (ROI). The goal is to adjust the intensity values of the image so that they are centered around a mean of 1 in the ROI.
 
@@ -160,7 +161,8 @@ We selected the left eye globe as the ROI in our example below, you can also sel
 
 
 Cleaning of the mask
-~~~~~~~~~~~~~~~~~~~~~
+--------------------
+
 For some trajectories, such as the 3D radial trajectory, it is necessary to clean the SI projection and remove the first unsteady shots from the acquired readouts. Therefore, we also need to clean the binning mask accordingly to ensure that the size of `Mask` matches the size of `y_tot`.
 
 .. code-block:: matlab
@@ -176,7 +178,7 @@ For some trajectories, such as the 3D radial trajectory, it is necessary to clea
     % where nLines=(nSeg-1)*(nShot-p.nShot_off)
 
 Compute Final Data Structures for Reconstruction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------------
 
 Run the `bmMitosis` function and compute the final volume elements.
 
@@ -187,7 +189,7 @@ Run the `bmMitosis` function and compute the final volume elements.
     ve = bmVolumeElement(t, 'voronoi_full_radial3');
 
 Save the Results
-~~~~~~~~~~~~~~~~
+----------------
 
 Save the computed data structures to disk. These will be used for the final reconstruction.
 
@@ -196,7 +198,7 @@ Save the computed data structures to disk. These will be used for the final reco
     bmMitosius_create(mitosiusPath, y, t, ve);
 
 Notes
------
+=====
 
 - Ensure all paths are correctly set according to your system.
 - If you encounter issues with function calls (e.g., `bmTwix`, `bmTraj`), verify that the necessary scripts or external toolboxes are added to the MATLAB path.
@@ -205,6 +207,6 @@ Notes
 .. _custom_acquisition:
 
 Using a Custom Acquisition Trajectory
--------------------------------------
+======================================
 
 Still to do: Discuss how to use a custom trajectory & test it.
