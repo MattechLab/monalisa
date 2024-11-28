@@ -295,6 +295,8 @@ The number of coils are updated to match the selected array coils.
                N_u, ...
                myMriAcquisition_node);
 
+.. _gridding_matrices:
+
 Gridding Matrices
 -----------------
 

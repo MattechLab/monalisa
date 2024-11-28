@@ -25,13 +25,13 @@ end
 bmImage(x0);
 
 %% tevaMorphosia_no_deformField
-nIter = 30; % iterations before stopping
-witness_ind = [];
-
-delta     = 0.1;
-rho       = 10*delta;
-nCGD      = 4;
-ve_max    = 10*prod(dK_u(:));
+nIter         = 30; % iterations before stopping
+witness_ind   = [];
+witness_label = 'tevaMorphosia_d0p1_r1_nCGD4';
+delta         = 0.1;
+rho           = 10*delta;
+nCGD          = 4;
+ve_max        = 10*prod(dK_u(:));
 
 x = bmTevaMorphosia_chain(  x0, ...
                             [], [], ...
@@ -41,6 +41,6 @@ x = bmTevaMorphosia_chain(  x0, ...
                             delta, rho, 'normal', ...
                             nCGD, ve_max, ...
                             nIter, ...
-                            bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
+                            bmWitnessInfo(witness_label, witness_ind));
 
 bmImage(x)
