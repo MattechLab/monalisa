@@ -1,10 +1,11 @@
+===========
 Installation
 ============
 
 To get started with the MRI reconstruction code, follow these steps:
 
 Clone the Repository
---------------------
+====================
 
 Install git lfs (large file storage) to properly clone the repository:
 
@@ -26,7 +27,7 @@ In case you cloned it without lfs installed, install it, initialize it and run t
 (in monalisa directory) to download the large files: ``git lfs pull``.
 
 Set Up a Compiler
------------------
+=================
 
 Ensure you have a compiler that is recognized by MATLAB. Run the following command in MATLAB to check:
 
@@ -37,7 +38,7 @@ Ensure you have a compiler that is recognized by MATLAB. Run the following comma
 If you see a message like "No supported compiler or SDK was found," you will need to install a compiler. Refer to the following sections based on your operating system.
 
 Linux
-~~~~~
+-----
 
 1. **Install g++**:
 
@@ -56,7 +57,7 @@ Linux
       compileScript
 
 macOS
-~~~~~
+-----
 
 1. **Install Xcode Command Line Tools**:
 
@@ -94,7 +95,7 @@ macOS
       compileScript
 
 Windows
-~~~~~~~
+-------
 
 1. **Install Visual Studio with C++ components**:
 
@@ -110,7 +111,7 @@ Windows
       compileScript
 
 Verify Installation
--------------------
+===================
 
 Test your compilation step worked successfully using the example script:
 
@@ -119,7 +120,7 @@ Test your compilation step worked successfully using the example script:
    https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m
 
 Notes
------
+=====
 
 - **Linux**: Ensure that the g++ version is compatible with MATLAB.
 - **macOS**: You need libomp as explained in this StackOverflow post: `How to include omp.h in OS X <https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>`_.

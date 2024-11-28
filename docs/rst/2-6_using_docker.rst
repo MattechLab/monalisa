@@ -1,22 +1,25 @@
+============================
 Running Monalisa with Docker
 ============================
 
 This guide will walk you through the steps to run Monalisa using Docker, enabling you to leverage our library on clusters.
 
 Dockerfile Setup
-----------------
+================
+
 We provide a `Dockerfile` that correctly sets up the container for running our functions. This Dockerfile is a modified version based on the official guidelines provided by MathWorks for generating Dockerfiles for MATLAB. 
 
 - Reference: `MathWorks MATLAB Dockerfile <https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/Dockerfile>`_
 
 License Requirements
----------------------
+====================
+
 To use MATLAB remotely via Docker, you must either have access to a license server or possess a license file. Detailed instructions for setting this up can be found here:
 
 - Reference: `MATLAB Dockerfile Licensing Information <https://github.com/mathworks-ref-arch/matlab-dockerfile?tab=readme-ov-file#use-the-network-license-manager>`_
 
 Steps to Run Monalisa
----------------------
+=====================
 
 1. **Clone the Repository:**
 

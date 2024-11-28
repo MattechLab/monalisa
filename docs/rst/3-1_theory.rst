@@ -44,8 +44,6 @@ Taking the example above, any net magnetization vector can be decomposed in it's
 Lauterbur Signal Equation
 =========================
 
-
-
 The starting point for MRI signal generation is the reciprocal theoreom:
 
 The reciprocal theorem states that if a coil is in the situation of the scanner, e.g: is in a static magnetic field $B_0$ where each voxel has a magnetization M, then there is an induced current in the coil $V_{ind}$
@@ -79,7 +77,6 @@ Where:
    - Its contribution to the measured signal is weigthed by the coil's sensitivity at that position, :math:`B_{\perp}^*(r)`.
    - The value from the voxel, $x(r)$, is modulated by a complex exponential term, :math:`e^{-i2\pi k(t) \cdot r}`. This term represents how the signal from the voxel is transformed in the frequency domain. The term :math:`e^{-i2\pi k(t) \cdot r}` can be interpreted as part of a Fourier transform process.
 
-
 Hence the signal measured is the fourier transform of the Image weighted by the coil sensitivity (also named coil image).
 
 Note however that in practice we measure the signal with many coils, each having a different coil sensitivity :math:`B_{\perp,c}^*(r) := C_c(r)`. Globally we obtain many coil images:
@@ -109,6 +106,7 @@ Where:
 
 Matrix Formulation
 ==================
+
 **1. Voxel Representation**
 
 Let's consider the locations :math:`\vec{r_i}`, where :math:`i = 1, \dots, N`, represent the number of voxels. As seen previously these are the location of the image pixels, hence they are on a cartesian grid.
@@ -203,7 +201,6 @@ The Fast Fourier Transform (FFT) is an algorithm to compute the DFT efficiently.
 
 In MRI, the FFT is crucial for reconstructing images from the measured k-space data. The FFT enables us to efficiently transform the measured Fourier coefficients back into the spatial domain, reconstructing the image.
 
-
 **5. Signal Approximation**
 
 The signal :math:`y_{c,k}` is approximately given by:
@@ -236,8 +233,6 @@ Where:
    \approx \begin{pmatrix} y_1 \\ \vdots \\ y_n \end{pmatrix} = y
 
 Thus, :math:`F C X \approx y` represents the discrete signal equation.
-
-
 
 Gridding
 =========
@@ -282,7 +277,6 @@ We define :math:`G` as the gridding matrix, where:
 
 
 $G_u$ is the gridding from non-unifrom to uniform, while $G_n$ is the gridding from uniform to non-unifrom.
-
 
 Reconstruction Algorithms
 ==========================
