@@ -19,9 +19,6 @@ load('/usr/src/app/recon_eva/C/C.mat');
 C = bmImResize(C, [48, 48, 48], N_u);
 
 %%
-[Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
-
-%%
 
 x0 = cell(nFr, 1);
 for i = 1:nFr

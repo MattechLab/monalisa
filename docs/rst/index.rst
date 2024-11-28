@@ -15,12 +15,13 @@ Welcome to Monalisa's documentation!
    :glob:
    :includehidden:
 
-   quick_start
-   contents
+   1_quick_start
+   2_contents
+   .. 3_theory_and_algorithms
 
-Indices and tables
-==================
+.. Indices and tables
+.. ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`
