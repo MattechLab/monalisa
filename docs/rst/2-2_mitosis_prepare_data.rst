@@ -94,7 +94,7 @@ Read the raw data and compute trajectory points, volume elements
     % alternatively you can compute your own trajectory
     % more details in "Using a Custom Acquisition Trajectory"
 
-    % compute volume elements
+    % compute volume elements (3D full radial trajectory in this case)
     ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3');
 
 Load the Coil Sensitivity Matrix
