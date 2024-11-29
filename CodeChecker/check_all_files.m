@@ -1,7 +1,15 @@
 
-function check_all_files(qcFolder, mainFolder)
+function check_all_files(qcFolder, codeFolder)
     % Check all .m files in a folder and subfolders using checkcode
     % Save the output to a text file
+    % Example use:
+    %   qcFolder = 'path/to/folder/for/saving/reportFolder'
+    %   codeFolder = 'path/to/code_folder/'
+    %   check_all_files(qcFolder, codeFolder)
+    %   For monalisa: 
+    %   codeFolder = '/Users/cag/Documents/forclone/monalisa/src'
+    %   check_all_files(qcFolder, codeFolder)
+    % Author: Yiwei Jia
 
     % Validate the input
     if nargin < 1
@@ -16,7 +24,7 @@ function check_all_files(qcFolder, mainFolder)
     end
 
     % Get a list of all .m files in the folder and subfolders
-    fileList = dir(fullfile(mainFolder, '**', '*.m'));
+    fileList = dir(fullfile(codeFolder, '**', '*.m'));
 
     % Loop through each file and run checkcode
     for k = 1:length(fileList)
@@ -41,24 +49,3 @@ function check_all_files(qcFolder, mainFolder)
 end
 
 
-% % Specify the main folder
-% mainFolder = '/Users/cag/Documents/forclone/monalisa/src/';
-% 
-% % Get a list of all .m files in the folder and subfolders
-% fileList = dir(fullfile(mainFolder, '**', '*.m'));
-% 
-% % Loop through each file and run checkcode
-% for k = 1:length(fileList)
-%     % Construct the full file path
-%     filePath = fullfile(fileList(k).folder, fileList(k).name);
-% 
-%     % Display the file being checked
-%     fprintf('Analyzing: %s\n', filePath);
-% 
-%     % Run checkcode and display issues
-%     checkcode(filePath);
-% end
-% 
-% diary('checkcode_results.txt');
-% check_all_files;
-% diary off;
