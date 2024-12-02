@@ -59,6 +59,6 @@ html_theme = 'alabaster'
 html_static_path = ['../_static']
 
 # Add custom CSS and JavaScript files
-html_css_files = ['custom-navigation.css', 'custom-button.css','important.css', 'takehomemessage.css']
+html_css_files = ['custom-navigation.css', 'custom-button.css','important.css', 'takehomemessage.css', 'tip.css']
 
 html_js_files = ['custom.js']

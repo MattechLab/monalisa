@@ -8,7 +8,8 @@ You have already run the coil sensitivity estimation or had an estimate of coil 
 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
-Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`custom_acquisition`).
+.. important::
+    Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`custom_acquisition`).
 
 
 Prerequisites
@@ -21,7 +22,8 @@ Ensure you have the following files and paths correctly set up:
 
 Additionally, the required functions (e.g., `bmTwix_info`, `bmTwix`, `bmTraj`, etc.) should be available in your MATLAB environment, as these functions are internal functions in the monalisa toolkit.
 
-A tip: If you use a 3D radial trajectory, you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
+.. tip::
+    If you use a 3D radial trajectory, you can use `bmTwix_info` function to help you inspect acquisition parameters by `bmTwix_info('/path/to/raw_data.dat')`. `bmTwix_info` is only a help function which is not part of the recon procedure. Sometimes, `bmTwix_info` may fail to read the raw data file. But there is no need to worry-you can still find your way to identify acquisition parameters.
 
 Usage instructions
 ==================
@@ -101,22 +103,24 @@ Load the Coil Sensitivity Matrix
 -------------------------------
 
 Resize the coil sensitivity matrix to match the reconstruction matrix size.
-Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
 
-- Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. 
+.. takehomemessage::
+    Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
 
-- Reconstruction matrix size `Matrix_size`: This is set by the user based on the desired resolution of reconstructed images, i.e. the size of the reconstructed image. 
+    - Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. 
 
-- N_u: The size of reconstruction grid in Fourier space. For example, we can set `N_u = Matrix_size`.
+    - Reconstruction matrix size `Matrix_size`: This is set by the user based on the desired resolution of reconstructed images, i.e. the size of the reconstructed image. 
 
-    - :math:`N_u = [N_x, N_y, N_z]` 
+    - N_u: The size of reconstruction grid in Fourier space. For example, we can set `N_u = Matrix_size`.
 
-- n_u: The size of reconstruction in image space. It is possible to set `n_u ≤ N_u`. However, we recommend setting `n_u = N_u` for achieving the optimal image quality.
+        - :math:`N_u = [N_x, N_y, N_z]` 
 
-    - :math:`n_u = [n_x, n_y, n_z]` 
+    - n_u: The size of reconstruction in image space. It is possible to set `n_u ≤ N_u`. However, we recommend setting `n_u = N_u` for achieving the optimal image quality.
 
-- dK_u: The step size of the grid in Fourier space, calculated as `dK_u = 1/Fov`.
-    - :math:`dK_u = [dK_x, dK_y, dK_z]` 
+        - :math:`n_u = [n_x, n_y, n_z]` 
+
+    - dK_u: The step size of the grid in Fourier space, calculated as `dK_u = 1/Fov`.
+        - :math:`dK_u = [dK_x, dK_y, dK_z]` 
 
 
 .. code-block:: matlab
@@ -130,7 +134,8 @@ Normalize the data
 
 Normalize the raw data by the average value of a region of interest (ROI). The goal is to adjust the intensity values of the image so that they are centered around a mean of 1 in the ROI.
 
-Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly. Our normalization helps to standardize the regularization weight.
+.. important::
+    Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly. Our normalization helps to standardize the regularization weight.
 
 .. code-block:: matlab
 
