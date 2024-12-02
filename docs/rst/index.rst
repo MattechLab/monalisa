@@ -17,6 +17,7 @@ Welcome to Monalisa's documentation!
 
    1_quick_start
    2_contents
+   functions_and_classes
    .. 3_theory_and_algorithms
 
 .. Indices and tables

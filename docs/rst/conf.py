@@ -1,3 +1,4 @@
+import os
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -22,7 +23,8 @@ suppress_warnings = [
 
 extensions = [
     'sphinxcontrib.matlab',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
+    'sphinx.ext.autodoc',
 ]
 
 mathjax3_config = {
@@ -43,14 +45,18 @@ mathjax3_config = {
 # Define the relative path to the source directory
 matlab_src_dir = '../../src'
 
-# Print for verification (optional)
-print(f"matlab_src_dir set to: {matlab_src_dir}")
-matlab_src_dir = '/path/to/your/matlab/code'  # Adjust this path
+# Convert the relative path to an absolute path
+absolute_path = os.path.abspath(matlab_src_dir)
+
+# Print the absolute path
+print(f"the matlab src absolute_path is: {absolute_path}")
 
 templates_path = ['../_templates']
 exclude_patterns = ['../_build', 'Thumbs.db', '.DS_Store']
 
-primary_domain = "mat"
+matlab_short_links = True  # Use MATLAB-like shorter links in documentation
+matlab_auto_link = "basic"  # Automatically link references to functions/classes
+primary_domain = "mat" # Set MATLAB as the primary domain
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
