@@ -148,14 +148,12 @@ Normalize the raw data by the average value of a region of interest (ROI). The g
 
 Here an estimation of the reconstructed image will be shown and you can select the ROI based on it. 
 
-.. image:: ../images/mitosius/select_roi.png
-
 We selected the left eye globe as the ROI in our example below, you can also select yours with a larger area in the brain. 
 
 - Left Click: Adds a vertex at the clicked position.
 - Right Click/Double Click: Completes the polygon and closes it automatically.
 
-.. image:: ../images/mitosius/select_roi_2.png
+.. image:: ../images/mitosius/select_roi_combined.png
 
 .. code-block:: matlab
 
