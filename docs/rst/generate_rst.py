@@ -1,13 +1,13 @@
 import os
 
 # Path to your src directory
-src_dir = '../../src'
+src_dir = '../src'
 
 # Convert the relative path to an absolute path
 src_dir = os.path.abspath(src_dir)
 
 # Output .rst file
-rst_file_path = './functions_and_classes.rst'
+rst_file_path = './rst/3_api.rst'
 
 # Convert the relative path to an absolute path
 rst_file_path = os.path.abspath(rst_file_path)
