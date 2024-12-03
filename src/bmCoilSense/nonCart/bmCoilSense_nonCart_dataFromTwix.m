@@ -1,6 +1,6 @@
 function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nShot, nCh, FoV, nShotOff)
 % varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, ...
-%                                              nShot, nCh, FoV, nShotOff)
+%   nShot, nCh, FoV, nShotOff)
 %
 % This function constraints data from a non cartesian 3D radial trajectory 
 % to fit into the given cartesian grid, adapting the resolution of the 
@@ -19,7 +19,7 @@ function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nSh
 %
 % Parameters:
 %   argFile (char): String containing the path to the file which contains
-%    the Twix object.
+%   the Twix object.
 %   N_u (1D array): Contains the size of the grid for every dimension
 %   N (int): Number of points per segment
 %   nSeg (int): Number of segments per shot
@@ -30,11 +30,11 @@ function varargout = bmCoilSense_nonCart_dataFromTwix(argFile, N_u, N, nSeg, nSh
 %
 % Returns (optional):
 %   varargout{1} (y): 2D array containing the raw MRI data from the twix 
-%    object. The size is [#points, nCh].
+%   object. The size is [#points, nCh].
 %   varargout{2} (t): 2D array containing points of the trajectory in the 
-%    k-space. The size is [3, #points].
+%   k-space. The size is [3, #points].
 %   varargout{3} (ve): Array containing the volume elements for every point 
-%    of the trajectory.
+%   of the trajectory.
 
 % We can have a general function bmCoilSense_nonCart_dataFromTwix that can
 % be called for several trajectory types.

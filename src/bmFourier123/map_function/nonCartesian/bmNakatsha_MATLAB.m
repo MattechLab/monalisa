@@ -17,19 +17,19 @@ function x = bmNakatsha_MATLAB(y, G, KFC_conj, C_flag, n_u)
 %
 % Parameters:
 %   y (array): The data in the k-space to be gridded and transformed into
-%    the image space.
+%   the image space.
 %   G (bmSparseMat): The backward gridding sparse matrix which is used for
-%    transposing the conjugate. -> Gut
+%   transposing the conjugate. -> Gut
 %   KFC_conj (array): The kernel matrix used for deapodization multiplied
-%    with the conjugate Fourier factor and the conjugate transpose of the
-%    coil sensitivity. Can be missing the conjugate transpose of C.
+%   with the conjugate Fourier factor and the conjugate transpose of the
+%   coil sensitivity. Can be missing the conjugate transpose of C.
 %   C_flag (logical): Indicates if KFC_conj contains the conjugate of C. If
-%    false, the conjugate is not included in KFC_conj.
+%   false, the conjugate is not included in KFC_conj.
 %   n_u (list): The size of the image space grid.
 %
 % Returns:
 %   x (array): The computed image space data (C*F*y = x). Combined into one
-%    image x if C_flag is true, otherwise x has an image for every coil.
+%   image x if C_flag is true, otherwise x has an image for every coil.
 %
 % Notes:
 %   This comes from F(Cx) = y -> x = F*(C*y). If the coil sensitivity is
@@ -42,12 +42,12 @@ function x = bmNakatsha_MATLAB(y, G, KFC_conj, C_flag, n_u)
 %% Initialize arguments
 % Set default value if empty
 if isempty(C_flag) 
-   C_flag = false;  
+    C_flag = false;  
 end
 
 % Use G.N_u if n_u is empty
 if isempty(n_u) 
-   n_u = G.N_u;  
+    n_u = G.N_u;  
 end
 
 % Convert variables to the correct format

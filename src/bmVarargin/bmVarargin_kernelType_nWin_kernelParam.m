@@ -13,9 +13,9 @@ function [kernelType, nWin, kernelParam] = bmVarargin_kernelType_nWin_kernelPara
 % Parameters:
 %   varargin{1}: Char containing the kernel type. Default value is 'gauss'.
 %   varargin{2}: Integer containing the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{3}: List containing the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Returns:
 %   kernelType (char): Kernel type given or default value. Empty if error.

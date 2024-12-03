@@ -16,7 +16,7 @@ function [myMriAcquisition_node, reconFoV] = checkMetadataInteractive(mySI, s_me
 %   mySI (array): The SI magnitude calculated for every shot.
 %   s_mean (list): The mean of mySI calculated for every shot.
 %   s_center_mass (list): The center of mass of mySI calculated for every
-%    shot.
+%   shot.
 %   myMriAcquisition_node (bmMriAcquisitionParam): The extracted meta data.
 %   reconFoV (int): The extracted reconstruction FoV.
 %

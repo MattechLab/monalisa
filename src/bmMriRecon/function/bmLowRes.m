@@ -18,14 +18,14 @@ function varargout = bmLowRes(c, t, ve, N_u, dK_u)
 %
 % Parameters:
 %   c (array): Contains the data from the channels corresponding to the
-%    points in the trajectory t.
+%   points in the trajectory t.
 %   t (array): Contains the trajectory (coordinates).
 %   ve (array): Contains the volume elements for each point in the
-%    trajectory.
+%   trajectory.
 %   N_u (array): Has the same dimension as t and contains the size of the
-%    new grid for each dimension.
+%   new grid for each dimension.
 %   dK_u (array): Has the same dimension as N_u and contains the distance
-%    between every point of the new grid in each dimension.
+%   between every point of the new grid in each dimension.
 %
 % Returns:
 %   varargout{1} (array): Channel data of size [nCh, nPt], where nPt is the
