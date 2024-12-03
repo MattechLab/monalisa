@@ -19,11 +19,11 @@ function [nLine, varargout] = bmTraj_nLine(argTraj)
 % Returns:
 %   nLine (int): Number of lines found
 %   varargout:
-%       {1} : N, the number of points on a line
-%       {2} : inN_integer, bool to show if N is an integer (indicates if
-%       the trajectory can be converted into lines)
-%       {3} : dK_list, the list of the distances between points on each
-%       line
+%   {1} : N, the number of points on a line
+%   {2} : inN_integer, bool to show if N is an integer (indicates if
+%   the trajectory can be converted into lines)
+%   {3} : dK_list, the list of the distances between points on each
+%   line
     
     % Make sure that the trajectory is in point format
     argTraj = bmPointReshape(argTraj); 

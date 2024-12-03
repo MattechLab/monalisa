@@ -8,7 +8,7 @@ function outInd = bmIndex2MultiIndex(argInd, argSize)
     % Parameters:
     %   argInd - The linear index to be converted.
     %   argSize - A vector specifying the size of each dimension of the
-    %             multi-dimensional array.
+    %   multi-dimensional array.
     %
     % Returns:
     %   outInd - A vector containing the multi-dimensional index.

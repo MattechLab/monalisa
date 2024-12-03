@@ -18,14 +18,14 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
 %
 % Parameters:
 %   colorMax (list): The value used to scale the RMS and MIP values. This
-%    gives the possible maximum of the threshold (colorMax-1).
+%   gives the possible maximum of the threshold (colorMax-1).
 %   dataRMS (array): The RMS values of the data over its channels. This is 
-%    a 3D image.
+%   a 3D image.
 %   dataMIP (array): The MIP values of the data over its channels. This is 
-%    a 3D image.
+%   a 3D image.
 %   N_u (list): Size of the data in block format.
 %   autoFlag (logical): flag; Automatically decide on thresholds if true.
-%    Show figure and interrupt code to manually set if false.
+%   Show figure and interrupt code to manually set if false.
 %   
 % Returns:
 %   thRMS (int): The threshold value above which the RMS values are kept.

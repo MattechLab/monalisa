@@ -22,9 +22,9 @@ function y = bmShanna(x, G, KFC, n_u, fft_lib_sFlag)
 %   the fourier factor and the coil sensitivity.
 %   n_u (list): The size of the image space grid.
 %   fft_lib_sFlag (char): The FFT algorithm to be used. The options are
-%    'MATLAB' using the MATLAB intern FFT algorithm, 'FFTW' using the
-%    fastest Fourier transform in the west software library or 'CUFFT'
-%    using the CUDA fast Fourier transform library.
+%   'MATLAB' using the MATLAB intern FFT algorithm, 'FFTW' using the
+%   fastest Fourier transform in the west software library or 'CUFFT'
+%   using the CUDA fast Fourier transform library.
 %
 % Returns:
 %   y (array): The computed k-space data (FXC = y).
@@ -34,15 +34,15 @@ function y = bmShanna(x, G, KFC, n_u, fft_lib_sFlag)
 
 % Use G.N_u if n_u is empty
 if isempty(n_u)
-   n_u =  G.N_u; 
+    n_u =  G.N_u; 
 end
 
 % Throw error if CUFFT or FFTW are used with N_u ~= n_u
 if ~isequal(G.N_u, n_u) & strcmp(fft_lib_sFlag, 'CUFFT') 
-   error('zero_filling is not implemented for Shanna_CUFFT. '); 
+    error('zero_filling is not implemented for Shanna_CUFFT. '); 
 end
 if ~isequal(G.N_u, n_u) & strcmp(fft_lib_sFlag, 'FFTW')
-   error('zero_filling is not implemented for Shanna_FFTW. ');
+    error('zero_filling is not implemented for Shanna_FFTW. ');
 end
 
 % Call correct function to use required FFT implementation

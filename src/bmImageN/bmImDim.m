@@ -23,11 +23,11 @@ function [n, s, varargout] = bmImDim(a)
 %   n (int): The number of dimensions.
 %   s (list): The size of each dimension as a list.
 %   varargout{1}: Integer containing the size of the first dimension. Empty
-%    if n < 1
+%   if n < 1
 %   varargout{1}: Integer containing the size of the second dimension. 
-%    Empty if n < 2
+%   Empty if n < 2
 %   varargout{1}: Integer containing the size of the third dimension. Empty
-%    if n < 3
+%   if n < 3
 
 % Get dimension and size of the input
 n = ndims(a); 
@@ -37,15 +37,15 @@ s = s(:)';
 % Handle cases for n <= 2 (ndims is always >= 2 even for vectors or empty 
 % variables)
 if n == 2    
-    if min(s(:)) == 0
-        % Empty
-        n = 0; 
-    elseif min(s(:)) == 1
-        % Vector
-        n = 1; 
-    else
-        n = 2;
-    end
+   if min(s(:)) == 0
+      % Empty
+      n = 0; 
+   elseif min(s(:)) == 1
+      % Vector
+      n = 1; 
+   else
+      n = 2;
+   end
 end
 
 

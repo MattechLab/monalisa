@@ -22,14 +22,14 @@ function [outIm, imDim, imSize, varargout] = bmImReshape(argIm)
 %
 % Returns:
 %   outIm (array): Same as argIm except if argIm is 1D, then the outIm is
-%    reshaped to a column vector.
+%   reshaped to a column vector.
 %   imDim (int): The number of dimensions.
 %   imSize (list): The size of each dimension as a list.
 %   varargout{1}: Integer containing the size of the first dimension.
 %   varargout{1}: Integer containing the size of the second dimension. 
-%    Empty if imDim < 2
+%   Empty if imDim < 2
 %   varargout{1}: Integer containing the size of the third dimension. 
-%    Empty if imDim < 3
+%   Empty if imDim < 3
 
 % Get number of dimensions of the input
 outIm = argIm; 

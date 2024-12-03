@@ -18,16 +18,16 @@ function varargout = bmCoilSense_nonCart_data(reader, N_u)
 %
 % Parameters:
 %   reader (RawDataReader): Object to parse the file which 
-%    contains the data.
+%   contains the data.
 %   N_u (List): Contains the size of the grid for every dimension.
 %
 % Returns (optional):
 %   varargout{1} (y): 2D array containing the raw MRI data from the ISMRMRD 
-%    file. The size is [#points, nCh].
+%   file. The size is [#points, nCh].
 %   varargout{2} (t): 2D array containing points of the trajectory in the 
-%    k-space. The size is [3, #points].
+%   k-space. The size is [3, #points].
 %   varargout{3} (ve): Array containing the volume elements for every point 
-%    of the trajectory.
+%   of the trajectory.
 
 % We can have a general function bmCoilSense_nonCart_dataFromTwix that can
 % be called for several trajectory types.

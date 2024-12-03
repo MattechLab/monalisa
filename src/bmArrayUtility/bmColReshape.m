@@ -18,11 +18,11 @@ function out = bmColReshape(argIn, argSize)
 % Parameters:
 %   argIn (array / cell array): Data that should be reshaped.
 %   argSize (list): Size of the data of one channel. Used to calculate the
-%    number of channels.
+%   number of channels.
 %
 % Results:
 %   out (array / cell array): The data reshaped into column vectors. The
-%    type depends on the input.
+%   type depends on the input.
 
 
 % Work recursively if argIn is a cell array

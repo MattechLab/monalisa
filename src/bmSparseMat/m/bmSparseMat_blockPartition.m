@@ -26,11 +26,11 @@ function [l_block_start, block_length, nBlock, zero_block_flag] = bmSparseMat_bl
 %
 % Returns:
 %   l_block_start: Integer or row vector containing start index of each 
-%    block.
+%   block.
 %   block_length: Integer or row vector containing length of each block.
 %   nBlock (int): Contains the number of blocks.
 %   zero_block_flag (bool): Is true if the sum of jumps for any block is
-%    zero or negative.
+%   zero or negative.
 
 
 zero_block_flag = false; 

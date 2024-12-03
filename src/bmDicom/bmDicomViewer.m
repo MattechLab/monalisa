@@ -14,13 +14,13 @@ function varargout = bmDicomViewer(varargin)
 %      BMDICOMVIEWER('CALLBACK',hObject,eventData,handles,...) calls the local
 %      function named CALLBACK in BMDICOMVIEWER.M with the given input arguments.
 %
-%      BMDICOMVIEWER('Property','Value',...) creates a new BMDICOMVIEWER or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
+%      BMDICOMVIEWER('Property', 'Value', ...) creates a new BMDICOMVIEWER or raises the
+%      existing singleton (1).  Starting from the left, property value pairs are
 %      applied to the GUI before bmDicomViewer_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
 %      stop.  All inputs are passed to bmDicomViewer_OpeningFcn via varargin.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      (1) See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
