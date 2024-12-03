@@ -21,9 +21,9 @@ function myIm = bmImPseudoDiffusion_inMask(argIm, argMask, varargin)
 % Parameters:
 %   argIm (array): The data that should be diffused.
 %   argMask (array): Of the same size as argIm and masks the regions with 0
-%    that should not be modified and considered in the smoothing.
+%   that should not be modified and considered in the smoothing.
 %   varargin{1}: Integer containing the number of iterations of averaging
-%    applied to smooth the data. The default value is 1.
+%   applied to smooth the data. The default value is 1.
 %
 % Returns:
 %   myIm (data): The data smoothed at the unmasked points and the original

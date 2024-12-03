@@ -20,13 +20,13 @@ function varargout = bmImage3(argImagesTable, varargin)
 % Parameters:
 %   argImagesTable (3D array): The data to be visualized
 %   varargin{1}: bmImageViewerParam object containing the parameters for
-%    the image.
+%   the image.
 %   varargin{2}: Logical (flag) that interrupts the code execution until
-%    the figure is closed if true.
+%   the figure is closed if true.
 %
 % Returns:
 %   varargout{1}: bmImageViewerParam object containing the parameter for
-%    the image. Useful to get the coordinates of placed points.
+%   the image. Useful to get the coordinates of placed points.
 
 %% Initialize arguments
 % Extract optional arguments

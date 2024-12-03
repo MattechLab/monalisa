@@ -13,11 +13,11 @@ function varargout = dhSiemensReadMetaData(obj)
 % Parameters:
 %   argFile (Char): The path to the file.
 %   autoFlag (Logical): Flag; Does allow user modification if false.
-%    Simplifies use if true.
+%   Simplifies use if true.
 %
 % Returns:
 %   varargout{1}: bmMriAcquisitionParam object containing the extracted
-%    meta data.
+%   meta data.
 %   varargout{2}: Double containing the extracted reconstruction FoV.
     argFile = obj.argFile;
     autoFlag = obj.autoFlag;

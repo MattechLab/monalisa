@@ -19,7 +19,7 @@ function myIm = bmImPseudoDiffusion(argIm, varargin)
 % Parameters:
 %   argIm (array): The data that should be diffused.
 %   varargin{1}: Integer containing the number of iterations of averaging
-%    applied to smooth the data. The default value is 1.
+%   applied to smooth the data. The default value is 1.
 %
 % Returns:
 %   myIm (data): The data smoothed.

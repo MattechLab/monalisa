@@ -16,14 +16,14 @@ function x = bmCoilSense_pinv(C, x0, n_u)
 %
 % Parameters:
 %   C (array): The coil sensitivity of each coil. Has the same amount of
-%    points as the data.
+%   points as the data.
 %   x0 (array): The data acquired by each coil. Has the same amount of
-%    points as C.
+%   points as C.
 %   n_u (list): The size of the grid.
 %
 % Returns:
 %   x (array): The reconstructed image by combining the data of all coils.
-%    This is given in the block format.
+%   This is given in the block format.
 % 
 % Notes:
 %   The reconstruction is done by multiplying the pseudoinverse of the coil
@@ -33,14 +33,14 @@ function x = bmCoilSense_pinv(C, x0, n_u)
 %   C is a diagonal matrix (in theory, not matlab implementation) 
 
 % Change to column format
-C       = single(bmColReshape(C, n_u)); 
-x0      = single(bmColReshape(x0, n_u)); 
+C  = single(bmColReshape(C, n_u)); 
+x0 = single(bmColReshape(x0, n_u)); 
 
 % Reconstructing the image -> nominator: (C*) * x0 (sum combines coil
 % images), denominator: (C*C)^-1
-x       = sum(conj(C).*x0, 2)./sum(abs(C).^2, 2);
+x  = sum(conj(C).*x0, 2)./sum(abs(C).^2, 2);
 
 % Change to block format
-x       = bmBlockReshape(x, n_u); 
+x  = bmBlockReshape(x, n_u); 
 
 end

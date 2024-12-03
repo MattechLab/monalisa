@@ -17,19 +17,19 @@ function K = bmK(N_u, dK_u, nCh, varargin)
 % Parameters:
 %   N_u (list): Contains the size of the grid.
 %   dK_u (list): Contains the distances between grid points in every
-%    dimension. Same size as N_u.
+%   dimension. Same size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
-%    channel.
+%   channel.
 %   varargin{1}: Char that contains the kernel type. Either 'gauss' or 
-%    'kaiser' with 'gauss' being the default value.
+%   'kaiser' with 'gauss' being the default value.
 %   varargin{2}: Integer that contains the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{3}: List that contains the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Results:
 %   K (array): Kernel matrix that will be multiplied element-wise to the
-%    gridded data to deapodize it.
+%   gridded data to deapodize it.
 
 %% Initialize arguments
 % Oversampling factor (magic_number) (improve the interpolation accuracy)

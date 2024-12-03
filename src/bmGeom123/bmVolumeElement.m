@@ -18,7 +18,7 @@ function varargout = bmVolumeElement(argTraj, argType, varargin)
 %             - 'center_out_radial3': Computes volume using center-out radial
 %               method for 3D trajectories. It is not using Voronoi but 
 %               assumes the trajectory is uniformly distributed on
-%                the sphere. Faster but less precise.
+%               the sphere. Faster but less precise.
 %             - 'voronoi_full_radial2': Computes volume using full radial
 %               method for 2D trajectories. It's for radial 2D
 %               trajectories, where the spokes are full radial (diameters),
