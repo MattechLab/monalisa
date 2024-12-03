@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function K = bmK(N_u, dK_u, nCh, varargin)
+function K = bmK_old(N_u, dK_u, nCh, varargin)
 
 % argin_initial -----------------------------------------------------------
 [kernelType, nWin, kernelParam] = bmVarargin(varargin); 
@@ -19,8 +19,8 @@ imDim       = double(size(N_u(:), 1));
 nCh         = double(single(nCh)); 
 
 if sum(mod(N_u(:), 2)) > 0
-   error('N_u must have all components even for the Fourier transform. ');
-   return; 
+    error('N_u must have all components even for the Fourier transform. ');
+    return; 
 end
 % END_argin_initial -------------------------------------------------------
 

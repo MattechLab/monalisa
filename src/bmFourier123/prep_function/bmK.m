@@ -50,7 +50,7 @@ nCh         = double(single(nCh));
 
 % Check that all dimensions in N_u are even
 if sum(mod(N_u(:), 2)) > 0 
-   error('N_u must have all components even for the Fourier transform. ');
+    error('N_u must have all components even for the Fourier transform. ');
 end
 
 

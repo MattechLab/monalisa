@@ -18,7 +18,7 @@
 % by the string voronoiVersion given in varargin. 
 
 
-function out = bmVoronoi(x)
+function out = bmVoronoi_with_test(x)
 
 % initial -----------------------------------------------------------------
 x = double(x);
