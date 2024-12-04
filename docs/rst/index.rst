@@ -12,12 +12,17 @@ Welcome to Monalisa's documentation!
 
 .. toctree::
    :maxdepth: 3
-   :caption: Documentation Overview
    :glob:
    :includehidden:
 
    1_quick_start
    2_contents
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+   :includehidden:
+
    3_api
    .. 4_theory_and_algorithms
 
