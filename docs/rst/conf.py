@@ -17,10 +17,6 @@ release = '0.1.0'
 
 # conf.py
 
-suppress_warnings = [
-    'image.not_readable',  # suppress unreadable image warnings (for the cheatsheet.rst)
-]
-
 extensions = [
     'sphinxcontrib.matlab',
     'sphinx.ext.mathjax',
