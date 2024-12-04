@@ -1,7 +1,5 @@
 API
 ===
-src
-===
 bmArrayUtility
 --------------
 .. automodule:: bmArrayUtility
