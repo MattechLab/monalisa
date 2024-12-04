@@ -59,7 +59,8 @@ classdef bmSparseMat < handle
     methods
         
         
-        function l_squeeze(obj) % *******************************
+        function l_squeeze(obj)
+            % Squeeze the left side of the matrix.
             
             if ~strcmp(obj.type, 'matlab_ind')
                 error('The matrix must be of type ''matlab_ind '' ');
@@ -91,17 +92,18 @@ classdef bmSparseMat < handle
             % check
             obj.check;
             
-        end % end l_squeeze_function *************************************
+        end
         
         
         
         
         
         function cpp_prepare(obj, argMode, nJumpPerBlock_factor, blockLengthMax_factor)
+            % Prepare the matrix for C++ processing.
             
             obj.check;
             
-            if ~strcmp(obj.type, 'matlab_ind') && ~strcmp(obj.type, 'l_squeezed_matlab_ind')
+            if !strcmp(obj.type, 'matlab_ind') && !strcmp(obj.type, 'l_squeezed_matlab_ind')
                 error('The matrix must be of type ''matlab_ind '' or  ''l_squeezed_matlab_ind '' ');
                 return;
             end
@@ -185,12 +187,12 @@ classdef bmSparseMat < handle
             
             obj.check;
             
-        end % end cpp_prepare *********************************************
+        end
         
         
         
-        function check(obj) % *********************************************
-            
+        function check(obj)
+            % Check the integrity of the sparse matrix.
             
             if strcmp(obj.type, 'void')
                 return;
@@ -212,7 +214,7 @@ classdef bmSparseMat < handle
                 myType_flag = true;
             end
             
-            if ~myType_flag
+            if !myType_flag
                 myCheck_flag = true;
                 disp('Check 1 failed');
             end
@@ -242,16 +244,16 @@ classdef bmSparseMat < handle
             end
             
             
-            if ~isempty(obj.r_nJump)
+            if !isempty(obj.r_nJump)
                 mySum = sum(obj.r_nJump(:));
                 if mySum == 0
                     myCheck_flag = true;
                     disp('Check 3.1 failed');
-                elseif mySum ~= size(obj.m_val, 2)
+                elseif mySum != size(obj.m_val, 2)
                     myCheck_flag = true;
                     disp('Check 3.2 failed');
                 end
-                if (size(obj.r_nJump, 2) ~= obj.l_nJump)
+                if (size(obj.r_nJump, 2) != obj.l_nJump)
                     myCheck_flag = true;
                     disp('Check 3.3 failed');
                 end
@@ -270,8 +272,8 @@ classdef bmSparseMat < handle
                     disp('Check 4.2 failed');
                 end
                 
-                if ~isempty(mySum)
-                    if mySum ~= size(obj.r_ind, 2)
+                if !isempty(mySum)
+                    if mySum != size(obj.r_ind, 2)
                         myCheck_flag = true;
                         disp('Check 5.1 failed');
                     end
@@ -280,11 +282,11 @@ classdef bmSparseMat < handle
             
             
             if strcmp(obj.type, 'matlab_ind')
-                if obj.l_nJump ~= obj.l_size
+                if obj.l_nJump != obj.l_size
                     myCheck_flag = true;
                     disp('Check 6.1 failed');
                 end
-                if ~isempty(obj.r_jump) || ~isempty(obj.l_jump) || ~isempty(obj.l_ind)
+                if !isempty(obj.r_jump) || !isempty(obj.l_jump) || !isempty(obj.l_ind)
                     myCheck_flag = true;
                     disp('Check 6.2 failed');
                 end
@@ -304,12 +306,12 @@ classdef bmSparseMat < handle
                     disp('Check 7.2 failed');
                 end
                 
-                if obj.l_nJump ~= size(obj.l_ind, 2)
+                if obj.l_nJump != size(obj.l_ind, 2)
                     myCheck_flag = true;
                     disp('Check 7.3 failed');
                 end
                 
-                if ~(obj.l_squeeze_flag)
+                if !(obj.l_squeeze_flag)
                     myCheck_flag = true;
                     disp('Check 7.4 failed');
                 end
@@ -318,7 +320,7 @@ classdef bmSparseMat < handle
             
             
             if strcmp(obj.type, 'cpp_prepared') || strcmp(obj.type, 'l_squeezed_cpp_prepared')
-                if ~isempty(obj.r_ind) || ~isempty(obj.l_ind)
+                if !isempty(obj.r_ind) || !isempty(obj.l_ind)
                     myCheck_flag = true;
                     disp('Check 8.1 failed');
                 end
@@ -329,12 +331,12 @@ classdef bmSparseMat < handle
             end
             
             if strcmp(obj.type, 'cpp_prepared')
-                if ~isempty(obj.l_jump)
+                if !isempty(obj.l_jump)
                     myCheck_flag = true;
                     disp('Check 9.1 failed');
                 end
-                if ~isempty(mySum)
-                    if mySum ~= size(obj.r_jump, 2)
+                if !isempty(mySum)
+                    if mySum != size(obj.r_jump, 2)
                         myCheck_flag = true;
                         disp('Check 9.2 failed');
                     end
@@ -351,11 +353,11 @@ classdef bmSparseMat < handle
                     myCheck_flag = true;
                     disp('Check 10.1 failed');
                 end
-                if size(obj.l_jump, 2) ~= obj.l_nJump
+                if size(obj.l_jump, 2) != obj.l_nJump
                     myCheck_flag = true;
                     disp('Check 10.2 failed');
                 end
-                if ~(obj.l_squeeze_flag)
+                if !(obj.l_squeeze_flag)
                     myCheck_flag = true;
                     disp('Check 10.3 failed');
                 end
@@ -383,15 +385,14 @@ classdef bmSparseMat < handle
                 obj.check_flag = false;
             end
             
-            if ~obj.check_flag
+            if !obj.check_flag
                 error('The sparse matrix did NOT pass the check ! ');
                 return;
             end
             
             
             
-        end % END check function ******************************************
-        
+        end
         
         
     end % END method
