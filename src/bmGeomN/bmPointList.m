@@ -21,18 +21,18 @@ classdef bmPointList < handle
         nPt     = double([]); 
         N       = double([]); 
         nLine   = double([]); 
-        nSeg    = double([]);
-        nShot   = double([]);
+        nSeg    = double([]); 
+        nShot   = double([]); 
         
         % cartesian gridd
-        N_u     = double([]);
+        N_u     = double([]); 
         d_u     = double([]); 
         
         % types
-        x_type      = 'void';
+        x_type      = 'void'; 
         ve_type     = 'void'; 
         f_type      = 'void'; 
-        v_type      = 'void';
+        v_type      = 'void'; 
         check_flag  = true;  
         
     end
@@ -46,47 +46,52 @@ classdef bmPointList < handle
     
     methods
 
-        function obj = bmTraj() % constructor 
+        function obj = bmTraj() 
+            % Constructor for bmPointList.
             
             
-        end % end constructor *********************************************
+        end 
 
         
-        function point_reshape(obj) % *************************************
- 
+        function point_reshape(obj) 
+            % Reshape the points.
+
             obj.x = reshape(obj.x, [obj.xDim, obj.nPt]); 
             
             % check
             obj.check; 
             
-        end % end point_reshape *******************************************
+        end 
         
         
         
-        function line_reshape(obj) % **************************************
+        function line_reshape(obj) 
+            % Reshape the lines.
 
             obj.x = reshape(obj.x, [obj.xDim, obj.N, obj.nLine]);
             
             % check
             obj.check; 
             
-        end % end point_reshape *******************************************
+        end 
         
         
         
         
         
-        function check(obj) % *********************************************
-           
-            
+        function check(obj) 
+            % Check the integrity of the point list.
 
             
-        end % END check function ******************************************
+
+
+            
+        end 
         
                 
         
-    end % END method
-end % END class
+    end 
+end 
 
 
 
