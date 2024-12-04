@@ -134,7 +134,7 @@ Normalize the data
 Normalize the raw data by the average value of a region of interest (ROI). The goal is to adjust the intensity values of the image so that they are centered around a mean of 1 in the ROI.
 
 .. important::
-    Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly. Our normalization helps to standardize the regularization weight.
+    Keep in mind that whether or not normalization is applied, the regularization weight in the final reconstruction step should be adjusted accordingly. Our normalization helps standardize the regularization weight.
 
 .. code-block:: matlab
 
@@ -210,5 +210,10 @@ Notes
 
 Using a Custom Acquisition Trajectory
 ======================================
+There are several trajectories, for example the cartesian and the radial ones.
+
+.. image:: ../images/mitosius/trajectory_ct_radial.png
+
+An example to show how to calculate trajectory.
 
 Still to do: Discuss how to use a custom trajectory & test it.
