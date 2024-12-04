@@ -50,7 +50,8 @@ def generate_rst_for_folder(folder_path, level=0, parent=""):
     if files or subfolders:
         if rst_content:
             rst_content += "\n"  # Ensure there is a blank line before the title
-        rst_content += underline_title(folder_name, level)
+        if level > 0:  # Skip the title for the root 'src' folder
+            rst_content += underline_title(folder_name, level)
     
     if files:
         # Construct the module path
