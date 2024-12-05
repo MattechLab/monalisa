@@ -40,12 +40,14 @@ If you haven't done it already, clone monalisa
     git clone git@github.com:MattechLab/monalisa.git
     
 
-Then Fetch the data needed for tutorial 1
+Download the data needed for tutorial 1, this can take a while depending on your internet connection:
 
 .. code-block:: bash
 
-    cd monalisa
-    fetchtheremotedatasomehow
+    cd monalisa/examples/tutorial1/scripts
+    ./downloadData.sh
+
+Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.
 
 
 Step 1: Compute Coil Sensitivity
