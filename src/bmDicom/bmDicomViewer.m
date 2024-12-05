@@ -50,7 +50,7 @@ end
 
 
 % --- Executes just before bmDicomViewer is made visible.
-function bmDicomViewer_OpeningFcn(hObject, eventdata, handles, varargin)
+function bmDicomViewer_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -70,7 +70,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = bmDicomViewer_OutputFcn(hObject, eventdata, handles) 
+function varargout = bmDicomViewer_OutputFcn(~, ~, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -81,7 +81,7 @@ varargout{1} = handles.output;
 
 
 % --- Executes on selection change in listbox1.
-function listbox1_Callback(hObject, eventdata, handles)
+function listbox1_Callback(hObject, ~, handles)
 % hObject    handle to listbox1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -97,7 +97,7 @@ refresh(hObject, handles);
 
 
 % --- Executes during object creation, after setting all properties.
-function listbox1_CreateFcn(hObject, eventdata, handles)
+function listbox1_CreateFcn(hObject, ~, ~)
 % hObject    handle to listbox1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -112,7 +112,7 @@ end
 
 
 % --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
+function pushbutton1_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -123,7 +123,7 @@ refresh(hObject, handles);
 
 
 % --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
+function pushbutton2_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -134,7 +134,7 @@ guidata(hObject, handles);
 refresh(hObject, handles); 
 
 % --- Executes during object creation, after setting all properties.
-function figure1_CreateFcn(hObject, eventdata, handles, varargin)
+function figure1_CreateFcn(~, ~, ~, varargin)
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -142,7 +142,7 @@ function figure1_CreateFcn(hObject, eventdata, handles, varargin)
 
 
 % --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
+function pushbutton3_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -296,7 +296,7 @@ guidata(hObject, handles);
 
 
 % --- Executes on button press in pushbutton4.
-function pushbutton4_Callback(hObject, eventdata, handles)
+function pushbutton4_Callback(~, ~, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -305,7 +305,7 @@ bmImage(squeeze(handles.series{handles.curSeNum}.imagesTable));
 
 
 % --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
+function pushbutton5_Callback(~, ~, handles)
 % hObject    handle to pushbutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

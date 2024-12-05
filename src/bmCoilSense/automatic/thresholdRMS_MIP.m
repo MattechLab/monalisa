@@ -299,7 +299,7 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
     end
 
 
-    function myWindowScrollWheelFcn(src, evnt)
+    function myWindowScrollWheelFcn(~, evnt)
         % Mousewheel callback function to give interactions to bmImage3
         if evnt.VerticalScrollCount > 0    
             % Scrolling towards body -> reducing slice by one

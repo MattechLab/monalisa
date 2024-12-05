@@ -59,7 +59,7 @@ end
 
 
 
-function private_check(y, C, N_u, n_u, nPt, nCh)
+function private_check(y, C, N_u, ~, nPt, nCh)
 
 if not(isa(y, 'single'))
     error('The data''y'' must be of class single. ');
