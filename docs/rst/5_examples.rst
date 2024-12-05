@@ -5,4 +5,4 @@ Examples
    :maxdepth: 3
    :includehidden:
 
-   example1
+   5-1_example1
