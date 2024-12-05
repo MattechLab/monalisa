@@ -6,7 +6,7 @@
 function varargout = bmTraj_dK_u(t, varargin)
 
 N_u  = []; 
-if length(varargin) > 0
+if ~isempty(varargin)
    N_u = varargin{1};  
 end
 if isempty(N_u)

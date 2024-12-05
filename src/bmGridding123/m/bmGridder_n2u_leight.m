@@ -17,7 +17,7 @@ function data_u = bmGridder_n2u_leight(data_n, t, Dn, N_u, dK_u, varargin)
 % argin initial -----------------------------------------------------------
 
 [kernelType, nWin, kernelParam] = bmVarargin(varargin); 
-[kernelType, nWin, kernelParam] = bmVarargin_kernelType_nWin_kernelParam(kernelType, nWin, kernelParam); 
+[~, nWin, kernelParam] = bmVarargin_kernelType_nWin_kernelParam(kernelType, nWin, kernelParam); 
 
 t           = single(bmPointReshape(t)); 
 data_n      = single(bmPointReshape(data_n)); 

@@ -102,7 +102,7 @@ function [nLine, varargout] = bmTraj_nLine(argTraj)
     dK_count = 0;
     % Create list of dK, ignoring big jumps or other indications of a
     % change in line. Count the number of lines
-    for i = 2:nPt;
+    for i = 2:nPt
         currentMaskVal = outOfLine_mask(1, i); 
         
         if not(currentMaskVal)

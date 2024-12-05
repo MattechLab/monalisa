@@ -18,7 +18,7 @@ if abs(myMean_0) < mySmall
 end
 
 argSize = size(argIm); 
-[argIm, imDim, imSize, Nx, Ny, Nz] = bmImReshape(argIm); 
+[argIm, imDim, ~, Nx, Ny, Nz] = bmImReshape(argIm); 
 
 
 Nx_mid = []; 

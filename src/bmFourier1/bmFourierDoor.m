@@ -24,7 +24,7 @@ if size(argK, 1)~= 1 && size(argK, 2) ~= 1
 end
 
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myCenter = varargin{1};
 else
     myCenter = 0;

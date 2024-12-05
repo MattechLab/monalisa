@@ -39,7 +39,7 @@ nPt = size(x, 2);
 out = zeros(1, nPt); % Row vector for volume / area
 
 dispFlag = true;
-if length(varargin) > 0
+if ~isempty(varargin)
     dispFlag = varargin{1};
 end
 % END_initial -------------------------------------------------------------

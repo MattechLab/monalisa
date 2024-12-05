@@ -8,10 +8,10 @@
 
 function bmMex(argDir, varargin)
 
-if length(varargin) == 0
+if isempty(varargin)
     myOS            = 'windows';
     mex_dir_file    = [argDir, '/bmMex/txt/bmMex_dir_blanc.txt']; 
-elseif length(varargin) == 1
+elseif isscalar(varargin)
     myOS            = varargin{1};
     mex_dir_file    = [argDir, '/bmMex/txt/bmMex_dir_blanc.txt'];
 elseif length(varargin) == 2

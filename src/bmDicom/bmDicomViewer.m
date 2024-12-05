@@ -190,7 +190,7 @@ set(handles.listbox1, 'Value', 1);
 
 for i = 1:N
     
-   if length(num2str(mySerieNumber{i})) == 1
+   if isscalar(num2str(mySerieNumber{i}))
        myString = '0';
    else
        myString = ''; 
@@ -258,7 +258,7 @@ set(handles.pushbutton5,'Enable','off');
 set(handles.listbox1,'Enable','off');
 
 
-function refresh(hObject, handles); 
+function refresh(hObject, handles) 
 
 myNum = get(handles.listbox1, 'value');
 handles.curSeNum = myNum; 
