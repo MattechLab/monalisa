@@ -31,7 +31,7 @@ function varargout = bmVarargin(varargin)
 myCell = [];
 % By default varargin is a cell array
 % if varargin is given then varargin is read into myCell
-if length(varargin) > 0
+if ~isempty(varargin)
     myCell = varargin{1}; 
 end
 

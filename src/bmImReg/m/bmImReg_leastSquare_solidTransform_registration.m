@@ -111,7 +111,7 @@ for i = 1:nLevel
         
         
         % break_condition -----------------------------------------------------
-        d                   = bmImReg_solidTransform_distance(T, T_prev, half_imRadius)
+        d                   = bmImReg_solidTransform_distance(T, T_prev, half_imRadius);
         myBreakCondition    = (d < resolution_level*solidTransform_precision) || (  nIter >= nIter_max_list(i)  );
         if myBreakCondition
             disp(['Breaked at iteration ', num2str(nIter)]);

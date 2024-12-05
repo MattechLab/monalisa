@@ -13,7 +13,7 @@ function out = bmNameList(argDir, varargin)
     if not(bmCheckDir(argDir, false))  
         out = []; 
         return;
-    end; 
+    end 
     
     myList = dir(argDir); 
     myList = myList(3:end);
@@ -25,7 +25,7 @@ function out = bmNameList(argDir, varargin)
     
     N = size(out(:), 1); 
     
-    if length(varargin) > 0
+    if ~isempty(varargin)
        if varargin{1}
            for i = 1:N
                 out = cat(1, out, bmNameList([argDir, '/', out{i}], true)); 

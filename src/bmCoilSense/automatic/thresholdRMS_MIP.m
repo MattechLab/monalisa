@@ -48,8 +48,8 @@ function [thRMS, thMIP] = thresholdRMS_MIP(colorMax, dataRMS, dataMIP, N_u, auto
 
     %% Guess threshold
     % Get initial values for MIP and RMS thresholds
-    [thRMS, pdf1R, pdf2R] = detectThreshold_GMM2(dataRMS);
-    [thMIP, pdf1M, pdf2M] = detectThreshold_GMM2(dataMIP);
+    [thRMS, ~, ~] = detectThreshold_GMM2(dataRMS);
+    [thMIP, ~, ~] = detectThreshold_GMM2(dataMIP);
     
     % Return out of function if threshold is only detected automatically
     if autoFlag

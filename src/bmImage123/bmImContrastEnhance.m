@@ -8,7 +8,7 @@ function out = bmImContrastEnhance(argIm, enhence_factor)
 myPlus = 10;  % -------------------------------------------------------------- magic number
 mySmall = 0.1; % ------------------------------------------------------------- magic number
 
-[argIm, imDim, imSize] = bmImReshape(argIm); 
+[argIm, imDim, ~] = bmImReshape(argIm); 
 
 myMean_0 = mean(argIm(:));
 plus_flag = false; 

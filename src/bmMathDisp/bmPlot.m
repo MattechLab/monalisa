@@ -6,7 +6,7 @@
 function bmPlot(x, y, varargin)
 
 myLineType = '.-';
-if length(varargin) > 0
+if ~isempty(varargin)
     myLineType = varargin{1};
     if isempty(myLineType) || strcmp(myLineType, 'hold')
         myLineType = '.-';
@@ -41,7 +41,7 @@ end
 
 
 notHoldOnFlag = true;
-if length(varargin) > 0
+if ~isempty(varargin)
     if strcmp(varargin{1}, 'hold') || strcmp(varargin{end}, 'hold')
         notHoldOnFlag = false;
     end

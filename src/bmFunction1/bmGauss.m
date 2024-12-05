@@ -6,7 +6,7 @@
 function y = bmGauss(x, mySigma, varargin)
 
 myMean = []; 
-if length(varargin) > 0
+if ~isempty(varargin)
     myMean = varargin{1}; 
 end
 if isempty(myMean)

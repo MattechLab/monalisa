@@ -3,14 +3,14 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [outImagesTable outSlope outOffset outFit] = bmLocalPhaseLift3(argImagesTable, argTime, varargin)
+function [outImagesTable, outSlope, outOffset, outFit] = bmLocalPhaseLift3(argImagesTable, argTime, varargin)
 
 argSize = size(argImagesTable); 
 mySize = [prod(argSize(1:end-1)) argSize(end)];
 
-if length(argTime) == 1
+if isscalar(argTime)
     t = 0:argTime:(mySize(2)-1)*argTime;
-elseif length(argTime > 1)
+elseif ~isempty(argTime > 1)
     t = squeeze(argTime);
     t = reshape(t, [1 length(t)]);
 else
@@ -32,7 +32,7 @@ end
 myImagesTable(:,1) = zeros(mySize(1), 1); 
 
 normFactor = 1;
-if (length(varargin) > 0) && strcmp(varargin{1}, 'Normalize')
+if (~isempty(varargin)) && strcmp(varargin{1}, 'Normalize')
     if length(varargin) > 1
         normFactor = varargin{2};
     else
@@ -50,7 +50,7 @@ end
 myPositiveSign = (mySum >= 0);
 myNegativeSign = (mySum <  0);
 
-for i = 2:mySize(2);
+for i = 2:mySize(2)
     myPositiveMask = (myDiff(:,i-1) >= 0);
     myNegativeMask = (myDiff(:,i-1) <  0); 
     
@@ -65,7 +65,7 @@ for i = 2:mySize(2);
     end
 end
 
-for i = 2:mySize(2);
+for i = 2:mySize(2)
     
     myDiff(:,i-1) = myImagesTable(:,i)-myImagesTable(:,i-1);
     

@@ -8,7 +8,7 @@ function varargout = bmTraj_N_u(t)
 t = bmPointReshape(t); 
 imDim   = size(t, 1);
 
-[nLine, N_u] = bmTraj_nLine(t);
+[~, N_u] = bmTraj_nLine(t);
 if N_u < 8 % ------------------------------------------------------------------ magic number
     N_u = 256; % -------------------------------------------------------------- magic number
 end

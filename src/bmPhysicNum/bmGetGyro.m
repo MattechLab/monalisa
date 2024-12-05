@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [out varargout] = bmGetGyro(argString, varargin)
+function [out, varargout] = bmGetGyro(argString, varargin)
 
 % Arg string is the name of an element. Ex : 'Na' or '23Na'.
 % Varargin accepts 'Hz' or 'Rad' or nothing.
@@ -12,7 +12,7 @@ function [out varargout] = bmGetGyro(argString, varargin)
 
 HzFlag = false;
 
-if length(varargin) > 0
+if ~isempty(varargin)
     if strcmp(varargin{1}, 'Hz')
         HzFlag = true;
     elseif strcmp(varargin{1}, 'Rad')

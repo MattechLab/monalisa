@@ -15,7 +15,7 @@ f = (sin(ratio*alpha)./sin(alpha)).*(1 - cos(alpha)*beta)./(1 - cos(ratio*alpha)
 f(1) = f(2) ;
 f = max(f, -4); 
 
-[myMin, myIndex] = min(abs(f-c));
+[~, myIndex] = min(abs(f-c));
 
 out = alpha(myIndex);
 

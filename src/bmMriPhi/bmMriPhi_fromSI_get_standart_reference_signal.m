@@ -397,7 +397,7 @@ return;
         imagesc( rmsSI, [0, 3*mean(rmsSI(:))]  );
         colormap gray
         set(gca, 'YDir', 'normal');
-        caxis(myColorLimits)
+        clim(myColorLimits)
         hold on
 
         bmMriPhi_fromSI_plot_signal(s1, ind_shot_min, ind_shot_max, ind_SI_min, ind_SI_max, plot_factor); 

@@ -28,10 +28,10 @@ function myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 %   myTraj (array): Containing the trajectory in the shape [3, N, M], where
 %   M = (nShot - nShot_off) * (nSeg - flagSelfNav)
 
-if length(varargin) == 0
+if isempty(varargin)
    error('Wrong list of arguments. '); 
    
-elseif length(varargin) == 1
+elseif isscalar(varargin)
     % Read variables from the bmMriAcquisitionParam object if given
     myMriAcquisParam = varargin{1};
     

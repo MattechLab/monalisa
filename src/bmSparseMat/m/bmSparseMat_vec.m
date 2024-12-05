@@ -73,7 +73,7 @@ end
 
 %% Set flag for using openMP (parallel processing)
 omp_flag = [];
-if length(varargin) > 0
+if ~isempty(varargin)
     if strcmp(varargin{1}, 'omp')
         omp_flag = true;
     elseif islogical(varargin{1})

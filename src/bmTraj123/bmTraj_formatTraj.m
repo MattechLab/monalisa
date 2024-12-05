@@ -61,7 +61,7 @@ myEps = 10*eps; % ------------------------------------------------------------- 
 nPt = size(argTraj, 2);
 imDim = size(argTraj, 1); 
 
-myDataFlag = (length(varargin) > 0);
+myDataFlag = (~isempty(varargin));
 if myDataFlag
     argData = varargin{1};
     argData = bmPointReshape(argData);

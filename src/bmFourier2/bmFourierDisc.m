@@ -21,7 +21,7 @@ end
 myMachineEpsilon = 1e-15; 
 % end_method_parameter ----------------------------------------------------
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myCenter = varargin{1};
     myCenter = reshape(myCenter, [2 1]);
 else

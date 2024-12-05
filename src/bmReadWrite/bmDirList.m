@@ -12,7 +12,7 @@ function out = bmDirList(argDir, recursive_flag)
     if not(bmCheckDir(argDir, false))  
         out = []; 
         return;
-    end; 
+    end 
     
     myList = dir(argDir); 
     myList = myList(3:end);

@@ -262,7 +262,7 @@ function myRefresh_B(hObject, handles)
     imagesc(im_plot); 
     set(gca, 'YDir', 'normal');
     colormap gray
-    caxis(handles.cLim(:)'); 
+    clim(handles.cLim(:)'); 
     hold on
     
     if handles.yellow_flag

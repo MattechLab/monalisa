@@ -20,13 +20,13 @@ end
 myDiff = repmat(t(:, 1), [1, nPt]) - t; 
 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c1 = t(:, myMaxInd); 
 
 
 myDiff = repmat(c1, [1, nPt]) - t; 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c2 = t(:, myMaxInd); 
 
 
@@ -36,7 +36,7 @@ s = e'*p_c1;
 s = repmat(s, [imDim, 1]);
 myDiff = p_c1 - s.*repmat(e, [1, nPt]); 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c3 = t(:, myMaxInd); 
 
 
@@ -45,7 +45,7 @@ c3 = t(:, myMaxInd);
 
 myDiff = repmat(c3, [1, nPt]) - t; 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c4 = t(:, myMaxInd); 
 
 
@@ -60,7 +60,7 @@ s = e'*p_c1;
 s = repmat(s, [imDim, 1]);
 myDiff = p_c1 - s.*repmat(e, [1, nPt]); 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c5_temp3 = t(:, myMaxInd); 
 
 
@@ -71,7 +71,7 @@ s = e'*p_c1;
 s = repmat(s, [imDim, 1]);
 myDiff = p_c1 - s.*repmat(e, [1, nPt]); 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c5_temp4 = t(:, myMaxInd); 
 
 
@@ -101,7 +101,7 @@ end
 
 myDiff = repmat(c5, [1, nPt]) - t; 
 mySquareNorm = bmTraj_squaredNorm(myDiff); 
-[myMax, myMaxInd] = max(mySquareNorm); 
+[~, myMaxInd] = max(mySquareNorm); 
 c6 = t(:, myMaxInd); 
 
 
