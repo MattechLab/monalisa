@@ -17,7 +17,7 @@ Welcome to Monalisa's documentation!
 
    1_quick_start
    2_contents
-   examples
+   5_examples
 
 .. toctree::
    :maxdepth: 2
