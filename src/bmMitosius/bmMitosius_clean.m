@@ -23,7 +23,7 @@ for i = 1:iMax
     
     continue_flag = true; 
     if length(mitosius_nameList{i}) >= length('cell_')
-        if strcmp(mitosius_nameList(i)(1:5), 'cell_')
+        if strcmp(mitosius_nameList{i}(1:5), 'cell_')
             continue_flag = false;  
         end
     end
