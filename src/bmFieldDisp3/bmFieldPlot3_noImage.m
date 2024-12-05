@@ -468,7 +468,7 @@ refresh;
         
         title(myTitle);
         
-        caxis([-1, 0]);
+        clim([-1, 0]);
         xlabel(y_label);
         ylabel(x_label);
         

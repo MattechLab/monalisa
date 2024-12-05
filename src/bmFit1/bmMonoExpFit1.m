@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [a_map varargout] = bmMonoExpFit1(argImagesTable, argX, argR, varargin)
+function [a_map, varargout] = bmMonoExpFit1(argImagesTable, argX, argR, varargin)
 
     mySize = size(argImagesTable);
     mySize = [prod(mySize(1:end-1)) mySize(end)]; 
@@ -21,9 +21,9 @@ function [a_map varargout] = bmMonoExpFit1(argImagesTable, argX, argR, varargin)
     lsqUpperBound = []; 
     lsqcurvefitFlag = 0; 
     
-    if length(varargin) == 0
+    if isempty(varargin)
         1+1;
-    elseif length(varargin) == 1
+    elseif isscalar(varargin)
         errorTh = varargin{1}; 
     elseif length(varargin) == 3 
         errorTh = varargin{1}; 

@@ -9,7 +9,7 @@ function varargout = bmGetFile()
     
     myFileName  = 0; 
     myPath      = 0; 
-    [myFileName myPath] = uigetfile; 
+    [myFileName, myPath] = uigetfile; 
     
     if isnumeric(myFileName)
         failFlag = 1; 

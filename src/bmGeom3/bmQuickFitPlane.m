@@ -53,7 +53,7 @@ I = [   Ixx, Ixy, Ixz;
 [v, ev] = eig(I); 
 
 ev = [ev(1, 1), ev(2, 2), ev(3, 3)]; 
-[myVal, myInd] = max(ev); 
+[~, myInd] = max(ev); 
 
 n = v(:, myInd); 
 n = n/norm(n); 

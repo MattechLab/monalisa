@@ -49,7 +49,7 @@ end
 
 
 %% Trivial case : one block only 
-if length(varargin) > 0
+if ~isempty(varargin)
     if strcmp(varargin{1}, 'one') % Fill output variables
         nBlock = int32(1); 
         l_block_start = int32(0); 

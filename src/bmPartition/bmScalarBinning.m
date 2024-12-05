@@ -10,7 +10,7 @@ x = x(:)';
 N = size(x, 2);
 myBinLength = fix(N/nBin); 
 
-[mySort, myPerm] = sort(x);
+[~, myPerm] = sort(x);
 
 myMask = false(nBin, N);
 for i = 0:nBin-1

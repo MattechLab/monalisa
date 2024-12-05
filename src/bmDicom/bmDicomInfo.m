@@ -17,7 +17,7 @@ fileFlag    = 0;
 
 % We are only interested by the dir, the path or the file
 if nargin == 0
-    [myDir myPath myDirName] = bmGetDir;
+    [myDir, myPath, ~] = bmGetDir;
     dirFlag = 1; 
     if isnumeric(myDir)
         imagesTable = 0; 
@@ -74,7 +74,7 @@ end
 myFileNameList = bmNameList(myDir); 
 myFileNameList = sort(myFileNameList); 
 
-if length(myFileNameList) == 0
+if isempty(myFileNameList)
     imagesTable = 0; 
     return; 
 end

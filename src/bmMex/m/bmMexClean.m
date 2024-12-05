@@ -9,10 +9,10 @@
 function bmMexClean(varargin)
 
 
-if length(varargin) == 0
+if isempty(varargin)
     argDir = 'C:/main/matlab/bmToolBox';
     myOS   = 'windows';
-elseif length(varargin) == 1
+elseif isscalar(varargin)
     argDir = varargin{1};
     myOS   = 'windows';
 elseif length(varargin) == 2

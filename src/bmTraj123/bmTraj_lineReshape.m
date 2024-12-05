@@ -33,7 +33,7 @@ else
 % Reshape trajectory to be defined in lines
 out = reshape(t, [imDim, N, nLine]); 
 
-if length(varargin) > 0
+if ~isempty(varargin)
    temp = varargin{1}; 
    nCh = size(temp, 1); 
    varargout{1} = reshape(temp, [nCh, N, nLine]);

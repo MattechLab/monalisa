@@ -31,8 +31,8 @@ end
 
 
 omp_flag = false;
-if length(varargin) > 0
-    if strcmp(varargin{1}, 'omp');
+if ~isempty(varargin)
+    if strcmp(varargin{1}, 'omp')
         omp_flag = true;
     elseif islogical(varargin{1})
         omp_flag = varargin{1};
@@ -53,7 +53,7 @@ v_size = size(v);
 v_size = v_size(:)';
 n_vec_32 = int32(0);
 T_flag = false;
-if v_size(1, 1) >= v_size(1, 2);
+if v_size(1, 1) >= v_size(1, 2)
     n_vec_32 = int32(size(v, 2));
     T_flag = false;
 else

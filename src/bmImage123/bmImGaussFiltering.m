@@ -38,7 +38,7 @@ elseif imDim == 3
 
 end
 
-[argIm, imDim, imSize] = bmImReshape(argIm); 
+[argIm, imDim, ~] = bmImReshape(argIm); 
 
 if imDim == 1
     

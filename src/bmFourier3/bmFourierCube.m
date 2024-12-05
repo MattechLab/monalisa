@@ -9,7 +9,7 @@ a = 0;
 b = 0;
 c = 0;
 
-if length(argEdge(:)) == 1
+if isscalar(argEdge(:))
     a = argEdge(1);
     b = argEdge(1);
     c = argEdge(1);
@@ -33,7 +33,7 @@ if size(argK, 1)~= 3 && size(argK, 2) ~= 3
 end
 
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myCenter = varargin{1};
     myCenter = reshape(myCenter, [3 1]);
 else

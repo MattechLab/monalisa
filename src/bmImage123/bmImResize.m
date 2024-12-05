@@ -124,7 +124,7 @@ elseif imDim == 3
     
 end
 
-if bmIsColShape(argIm, N_u);
+if bmIsColShape(argIm, N_u)
     outIm = bmColReshape(outIm, N_u);
 else bmIsBlockShape(argIm, N_u);
     outIm = bmBlockReshape(outIm, N_u);
