@@ -62,7 +62,7 @@ end
 return;
 % END_graphic initial -----------------------------------------------------
 
-    function myWindowScrollWheelFcn(src,evnt) % nested function
+    function myWindowScrollWheelFcn(~,evnt) % nested function
         if evnt.VerticalScrollCount > 0            
             myScrol = max(1, fix(  abs(evnt.VerticalScrollAmount)/  1  ));
             myParam.curImNum = myParam.curImNum - myScrol;
@@ -79,7 +79,7 @@ return;
         refresh_image;
     end
 
-    function myClickCallback(src, evnt)
+    function myClickCallback(~, ~)
         switch get(gcf,'selectiontype')
             case 'normal'% left mouse button click
                 show_imVal_in_title;
@@ -97,7 +97,7 @@ return;
     end
 
 
-    function myKeyPressFcn(src,command) % nested function
+    function myKeyPressFcn(~,command) % nested function
         switch lower(command.Key)
             case 'downarrow'
                 myParam.curImNum = myParam.curImNum - 1;
@@ -226,7 +226,7 @@ return;
         end % End Switch command.key
     end
 
-    function myKeyReleaseFcn(src,command) % nested function
+    function myKeyReleaseFcn(~,command) % nested function
         % Switch through the type of key that has been pressed and chose
         % the action to perform
         switch lower(command.Key)
@@ -330,7 +330,7 @@ function myPoint = hard_coord(myPoint)
         
     end
 
-    function show_imVal_in_title(soft_point)
+    function show_imVal_in_title(~)
         
         soft_point = get_soft_point_from_click;
         
@@ -781,7 +781,7 @@ function myPoint = hard_coord(myPoint)
 
 end
 
-function out_ind = private_ind_box(arg_ind, arg_max)
+function out_ind = private_ind_box(arg_ind, ~)
 
     out_ind = arg_ind; 
     out_ind = min(out_ind, arg_ind); 

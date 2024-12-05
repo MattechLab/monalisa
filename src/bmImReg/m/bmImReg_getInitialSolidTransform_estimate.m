@@ -147,7 +147,7 @@ end
 
 
 
-function R = private_find_rotation2(v_ref_1, v_ref_2, v_mov_1, v_mov_2, imRef, imMov, c_ref, c_mov, X, Y, Z)
+function R = private_find_rotation2(v_ref_1, v_ref_2, v_mov_1, v_mov_2, imRef, imMov, ~, c_mov, X, Y, Z)
 
 R = []; 
 
@@ -206,7 +206,7 @@ end
 end
 
 
-function R = private_find_rotation3(v_ref_1, v_ref_2, v_ref_3, v_mov_1, v_mov_2, v_mov_3, imRef, imMov, c_ref, c_mov, X, Y, Z)
+function R = private_find_rotation3(v_ref_1, v_ref_2, v_ref_3, v_mov_1, v_mov_2, v_mov_3, imRef, imMov, ~, c_mov, X, Y, Z)
 
     myEps = 1e-4; % ------------------------------------------------------------- magic_number
 

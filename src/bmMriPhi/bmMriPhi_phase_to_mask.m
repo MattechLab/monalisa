@@ -8,7 +8,7 @@ function myMask = bmMriPhi_phase_to_mask(phi, nPhase, argPercent)
 phi = phi(:).'; 
 nPt = size(phi(:), 1); 
 
-c = [0:nPhase-1]/nPhase;
+c = (0:nPhase-1)/nPhase;
 w = argPercent*2*pi/nPhase/2; 
 
 psi = complex(cos(phi),    sin(phi)   ); 

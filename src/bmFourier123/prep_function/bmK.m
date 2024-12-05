@@ -77,14 +77,14 @@ x = [];
 y = []; 
 z = []; 
 if imDim == 1 % See imDim == 3 for comments
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
     x = ndgrid(x);
     d = sqrt(x(:).^2);
     d = reshape(d, [N_u_os, 1]); 
 end
 if imDim == 2 % See imDim == 3 for comments
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
     [x, y] = ndgrid(x, y); 
     d = sqrt(x(:).^2 + y(:).^2);
     d = reshape(d, N_u_os);
@@ -92,9 +92,9 @@ end
 if imDim == 3
     % Create 1D oversampled grid for 3 dimensions going from 
     % -N_u/2 to N_u/2 in N_u*arg_osf steps
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf; 
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
-    z = [-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf; 
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
+    z = (-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1)/arg_osf;
 
     % Create 3D oversampled grid 
     % (x,y,z containing the coordinates for every point)
