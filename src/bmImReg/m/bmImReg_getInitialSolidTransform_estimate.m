@@ -71,7 +71,7 @@ n_u = size(c);
 n_u = n_u(:)'; 
 imDim = size(n_u(:), 1); 
 
-[X, Y, Z] = bmImGrid(n_u, X, Y, Z); 
+[X, Y, ~] = bmImGrid(n_u, X, Y, Z); 
 
 X = X - c(1, 1);
 Y = Y - c(2, 1);
@@ -85,7 +85,7 @@ I = [
     Ixy, Iyy;
     ];
 
-[v, ev] = eig(I);
+[v, ~] = eig(I);
 
 v_1 = v(:, 1)/norm(v(:, 1));
 v_1 = cat(1, v_1, 0);
@@ -129,7 +129,7 @@ I = [
     Ixz, Iyz, Izz;
     ];
 
-[v, ev] = eig(I);
+[v, ~] = eig(I);
 
 v_1 = v(:, 1)/norm(v(:, 1));
 v_2 = v(:, 2)/norm(v(:, 2));
@@ -147,7 +147,7 @@ end
 
 
 
-function R = private_find_rotation2(v_ref_1, v_ref_2, v_mov_1, v_mov_2, imRef, imMov, c_ref, c_mov, X, Y, Z)
+function R = private_find_rotation2(v_ref_1, v_ref_2, v_mov_1, v_mov_2, imRef, imMov, ~, c_mov, X, Y, Z)
 
 R = []; 
 
@@ -170,7 +170,7 @@ R = cat(2, R1(:), R2(:), R3(:), R4(:));
 
 myDiff          = repmat(R1(:), [1, 4]) - R;
 myDiff          = sqrt(sum(myDiff.^2, 1));
-[myMax, myInd]  = max(myDiff);
+[~, myInd]  = max(myDiff);
 R1              = R(:, 1);
 R2              = R(:, myInd);
 
@@ -206,7 +206,7 @@ end
 end
 
 
-function R = private_find_rotation3(v_ref_1, v_ref_2, v_ref_3, v_mov_1, v_mov_2, v_mov_3, imRef, imMov, c_ref, c_mov, X, Y, Z)
+function R = private_find_rotation3(v_ref_1, v_ref_2, v_ref_3, v_mov_1, v_mov_2, v_mov_3, imRef, imMov, ~, c_mov, X, Y, Z)
 
     myEps = 1e-4; % ------------------------------------------------------------- magic_number
 
@@ -270,7 +270,7 @@ function R = private_find_rotation3(v_ref_1, v_ref_2, v_ref_3, v_mov_1, v_mov_2,
            mySum(1, i)  = sum( (imDef(:) - imRef(:)).^2 ); 
        end
 
-       [myMin, myInd]   = min(mySum); 
+       [~, myInd]   = min(mySum); 
         R               = R_list(:, :, myInd); 
 
 end

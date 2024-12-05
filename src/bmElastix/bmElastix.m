@@ -99,7 +99,7 @@ end
 
 
 % preparing_folders -------------------------------------------------------
-if bmCheckDir(argTempDir, false); 
+if bmCheckDir(argTempDir, false) 
    error('The proposed temporary folder already exist. Please choose another directory name.');
    varargout{1} = 0; 
    varargout{2} = 0; 

@@ -152,7 +152,7 @@ for i = 1:length(myNameList) % Begin loop over fields, note that
             mySerieList{mySerieCounter}.serieFolder = mySerieFolder;
             
             if myStudyFolderFlag == 0
-                [myPathString, myStudyFolder] = fileparts(myPathString);
+                [~, myStudyFolder] = fileparts(myPathString);
                 myStudyPath = strcat(argDirectoryPath,'\DICOM\',myStudyFolder,'\');
                 
                 mySerieList{mySerieCounter}.studyFolder = myStudyFolder;
@@ -202,7 +202,7 @@ end
 
 % storing all the image matrices in a 3 dimensional array -----------------
 for i = 1:mySerieListLength %begin loop over series
-    if length(mySerieList{i}.imageNameList) == 0
+    if isempty(mySerieList{i}.imageNameList)
         continue;
     end
     

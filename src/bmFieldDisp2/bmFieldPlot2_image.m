@@ -97,7 +97,7 @@ refresh;
 
 % END_graphic initial -----------------------------------------------------
 
-    function myKeyReleaseFcn(src,command) % nested function
+    function myKeyReleaseFcn(~,command) % nested function
         % Switch through the type of key that has been pressed and chose
         % the action to perform
         switch lower(command.Key)
@@ -111,7 +111,7 @@ refresh;
     end
 
 
-    function myKeyPressFcn(src,command) % nested function
+    function myKeyPressFcn(~,command) % nested function
         switch lower(command.Key)
             case 'control'     % Ctrl key is pressed
                 controlFlag = 1;
@@ -190,7 +190,7 @@ refresh;
         end % End Switch command.key
     end
 
-    function myClickCallback(src, evnt)
+    function myClickCallback(~, ~)
         
         myCoordinates = get(gca,'CurrentPoint');
         myCoordinates = ceil(myCoordinates(1,1:2)-[0.5 0.5]);

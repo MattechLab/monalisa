@@ -100,11 +100,11 @@ Read the raw data and compute trajectory points, volume elements
     ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3');
 
 Load the Coil Sensitivity Matrix
--------------------------------
+--------------------------------
 
 Resize the coil sensitivity matrix to match the reconstruction matrix size.
 
-.. takehomemessage::
+.. tip::
     Here we want to clarify the distinction of the concepts between "Reconstruction matrix size" and "Acquisition matrix size"
 
     - Acquisition matrix size: This refers to the matrix size specified by the acquisition protocol. It was already set at the acquisition step by the experimenters. 
@@ -122,7 +122,6 @@ Resize the coil sensitivity matrix to match the reconstruction matrix size.
     - dK_u: The step size of the grid in Fourier space, calculated as `dK_u = 1/Fov`.
         - :math:`dK_u = [dK_x, dK_y, dK_z]` 
 
-
 .. code-block:: matlab
 
     load(CMatPath);
@@ -130,7 +129,7 @@ Resize the coil sensitivity matrix to match the reconstruction matrix size.
     C = bmImResize(C, [48, 48, 48], [N_u, N_u, N_u]);
 
 Normalize the data
------------------
+------------------
 
 Normalize the raw data by the average value of a region of interest (ROI). The goal is to adjust the intensity values of the image so that they are centered around a mean of 1 in the ROI.
 

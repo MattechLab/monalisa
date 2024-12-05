@@ -19,34 +19,33 @@ function m = bmCoilSense_nonCart_mask_automatic(y, Gn, autoFlag, varargin)
 %
 % Parameters:
 %   y (array): Raw data that should be gridded onto the grid defined by the
-%    bmSparseMat in Gn.
+%   bmSparseMat in Gn.
 %   Gn (bmSparseMat): Sparse Matrix defining the new uniform grid.
 %   autoFlag (Logical): Flag; Automatically decide on thresholds and 
-%    borders for mask if true.
+%   borders for mask if true.
 %   varargin{1}: Double containing the voxel intensity threshold for RMS
-%    value. If this is kept empty, the value will be decided in this
-%    function. 
+%   value. If this is kept empty, the value will be decided in this
+%   function. 
 %   varargin{2}: Double containing the voxel intensity threshold for MIP
-%    value. If this is kept empty, the value will be decided in this
-%    function. 
+%   value. If this is kept empty, the value will be decided in this
+%   function. 
 %   varargin{3}: Array containing the min and max values for the 3
-%    dimensions. Has the structure [xMin, xMax; yMin, yMax; zMin, zMax]. If
-%    this is kept empty, the value will be decided in this function.
+%   dimensions. Has the structure [xMin, xMax; yMin, yMax; zMin, zMax]. If
+%   this is kept empty, the value will be decided in this function.
 %   varargin{4}: Value (not yet commented). Default value is empty.
 %   varargin{5}: Value (not yet commented). Default value is empty.
 %
 % Returns:
 %   m (array): Mask for grid defined by Gn masking all pixels outside the
-%    ROI and below threshold values, by setting their points in the mask to
-%    0
+%   ROI and below threshold values, by setting their points in the mask to
+%   0
 %
 % Examples:
 %   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag);
 %   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag, [], ...
-%                                          [], borders);
+%   [], borders);
 %   m = bmCoilSense_nonCart_mask_automatic(y_body, Gn, autoFlag, thRMS, ...
-%                                          thMIP, borders, open_size, ...
-%                                          close_size);
+%   thMIP, borders, open_size, close_size);
 
 %% Initialize arguments
 % Magic number

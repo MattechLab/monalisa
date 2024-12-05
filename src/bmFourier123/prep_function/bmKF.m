@@ -17,23 +17,23 @@ function KF = bmKF(C, N_u, n_u, dK_u, nCh, varargin)
 %
 % Parameters:
 %   C (array): The coil sensitivity.  Can be given as [] if the coil
-%    sensitvity should not be included.
+%   sensitvity should not be included.
 %   N_u (list): The size of the grid for which K should be generated.
 %   n_u (list): The size of the grid in the image space.
 %   dK_u (list): The distances between grid points in every dimension. Same
-%    size as N_u.
+%   size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
 %   channel.
 %   varargin{1}: Char that contains the kernel type. Either 'gauss' or 
-%    'kaiser'. Default value is 'gauss'.
+%   'kaiser'. Default value is 'gauss'.
 %   varargin{2}: Integer that contains the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{3}: List that contains the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Returns:
 %   KF (array): The kernel matrix scaled by the factor F and C if given.
-%    The matrix is given as a single in the column format (nPt, nCh).
+%   The matrix is given as a single in the column format (nPt, nCh).
 
 % Extract opional arguments and set default values if empty
 [kernelType, nWin, kernelParam] = bmVarargin(varargin); 

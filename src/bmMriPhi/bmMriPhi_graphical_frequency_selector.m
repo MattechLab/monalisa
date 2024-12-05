@@ -11,16 +11,16 @@ function varargout = bmMriPhi_graphical_frequency_selector(varargin)
 %      H = BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR returns the handle to a new BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR or the handle to
 %      the existing singleton*.
 %
-%      BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR('CALLBACK',hObject,eventData,handles,...) calls the local
+%      BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR('CALLBACK', hObject, eventData, handles, ...) calls the local
 %      function named CALLBACK in BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR.M with the given input arguments.
 %
-%      BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR('Property','Value',...) creates a new BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
+%      BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR('Property', 'Value', ...) creates a new BMMRIPHI_GRAPHICAL_FREQUENCY_SELECTOR or raises the
+%      existing singleton (1).  Starting from the left, property value pairs are
 %      applied to the GUI before bmMriPhi_graphical_frequency_selector_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
 %      stop.  All inputs are passed to bmMriPhi_graphical_frequency_selector_OpeningFcn via varargin.
 %
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      (1) See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
@@ -50,7 +50,7 @@ end
 end
 
 % --- Executes just before bmMriPhi_graphical_frequency_selector is made visible.
-function bmMriPhi_graphical_frequency_selector_OpeningFcn(hObject, eventdata, handles, varargin)
+function bmMriPhi_graphical_frequency_selector_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -108,7 +108,7 @@ end
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = bmMriPhi_graphical_frequency_selector_OutputFcn(hObject, eventdata, handles) 
+function varargout = bmMriPhi_graphical_frequency_selector_OutputFcn(~, ~, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -126,7 +126,7 @@ delete(handles.figure1)
 end
 
 % --- Executes when user attempts to close figure1.
-function figure1_CloseRequestFcn(hObject, eventdata, handles)
+function figure1_CloseRequestFcn(hObject, ~, ~)
 % hObject    handle to figure1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -262,7 +262,7 @@ function myRefresh_B(hObject, handles)
     imagesc(im_plot); 
     set(gca, 'YDir', 'normal');
     colormap gray
-    caxis(handles.cLim(:)'); 
+    clim(handles.cLim(:)'); 
     hold on
     
     if handles.yellow_flag
@@ -280,7 +280,7 @@ end
 
 
 % --- Executes on mouse press over axes background.
-function axes3_ButtonDownFcn(hObject, eventdata, handles)
+function axes3_ButtonDownFcn(~, ~, ~)
 % hObject    handle to axes3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -289,7 +289,7 @@ end
 
 
 % --- Executes on mouse press over axes background.
-function axes2_ButtonDownFcn(hObject, eventdata, handles)
+function axes2_ButtonDownFcn(~, ~, ~)
 % hObject    handle to axes2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -298,7 +298,7 @@ end
 
 
 % --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
+function pushbutton1_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -320,7 +320,7 @@ end
 
 
 % --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
+function pushbutton2_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -341,7 +341,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton3.
-function pushbutton3_Callback(hObject, eventdata, handles)
+function pushbutton3_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -362,7 +362,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton4.
-function pushbutton4_Callback(hObject, eventdata, handles)
+function pushbutton4_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -383,7 +383,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
+function pushbutton5_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -409,7 +409,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
+function pushbutton6_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -437,7 +437,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton7.
-function pushbutton7_Callback(hObject, eventdata, handles)
+function pushbutton7_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -463,7 +463,7 @@ myRefresh_A(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton8.
-function pushbutton8_Callback(hObject, eventdata, handles)
+function pushbutton8_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -485,7 +485,7 @@ end
 
 
 % --- Executes on button press in pushbutton9.
-function pushbutton9_Callback(hObject, eventdata, handles)
+function pushbutton9_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -512,7 +512,7 @@ end
 
 
 % --- Executes on button press in pushbutton10.
-function pushbutton10_Callback(hObject, eventdata, handles)
+function pushbutton10_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -535,7 +535,7 @@ end
 
 
 % --- Executes on button press in pushbutton11.
-function pushbutton11_Callback(hObject, eventdata, handles)
+function pushbutton11_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -562,7 +562,7 @@ end
 
 
 % --- Executes on button press in pushbutton12.
-function pushbutton12_Callback(hObject, eventdata, handles)
+function pushbutton12_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -589,7 +589,7 @@ end
 
 
 % --- Executes on button press in pushbutton13.
-function pushbutton13_Callback(hObject, eventdata, handles)
+function pushbutton13_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -617,7 +617,7 @@ end
 
 
 % --- Executes on button press in pushbutton14.
-function pushbutton14_Callback(hObject, eventdata, handles)
+function pushbutton14_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton14 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -639,7 +639,7 @@ end
 
 
 % --- Executes on button press in pushbutton15.
-function pushbutton15_Callback(hObject, eventdata, handles)
+function pushbutton15_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton15 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -666,7 +666,7 @@ end
 
 
 % --- Executes on button press in pushbutton16.
-function pushbutton16_Callback(hObject, eventdata, handles)
+function pushbutton16_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton16 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -689,7 +689,7 @@ end
 
 
 % --- Executes on button press in pushbutton17.
-function pushbutton17_Callback(hObject, eventdata, handles)
+function pushbutton17_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton17 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -711,7 +711,7 @@ end
 
 
 % --- Executes on button press in pushbutton18.
-function pushbutton18_Callback(hObject, eventdata, handles)
+function pushbutton18_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton18 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -732,7 +732,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton19.
-function pushbutton19_Callback(hObject, eventdata, handles)
+function pushbutton19_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton19 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -753,7 +753,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton20.
-function pushbutton20_Callback(hObject, eventdata, handles)
+function pushbutton20_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton20 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -776,7 +776,7 @@ end
 
 
 % --- Executes on button press in pushbutton21.
-function pushbutton21_Callback(hObject, eventdata, handles)
+function pushbutton21_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton21 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -798,7 +798,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton22.
-function pushbutton22_Callback(hObject, eventdata, handles)
+function pushbutton22_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton22 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -822,7 +822,7 @@ end
 
 
 % --- Executes on button press in pushbutton23.
-function pushbutton23_Callback(hObject, eventdata, handles)
+function pushbutton23_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton23 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -843,7 +843,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton24.
-function pushbutton24_Callback(hObject, eventdata, handles)
+function pushbutton24_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton24 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -860,7 +860,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton25.
-function pushbutton25_Callback(hObject, eventdata, handles)
+function pushbutton25_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton25 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -881,7 +881,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton26.
-function pushbutton26_Callback(hObject, eventdata, handles)
+function pushbutton26_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton26 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -905,7 +905,7 @@ end
 
 
 % --- Executes on button press in pushbutton27.
-function pushbutton27_Callback(hObject, eventdata, handles)
+function pushbutton27_Callback(~, ~, handles)
 % hObject    handle to pushbutton27 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -915,7 +915,7 @@ imcontrast(handles.axes2);
 end
 
 % --- Executes on button press in pushbutton28.
-function pushbutton28_Callback(hObject, eventdata, handles)
+function pushbutton28_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton28 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -928,7 +928,7 @@ end
 
 
 % --- Executes on button press in pushbutton29.
-function pushbutton29_Callback(hObject, eventdata, handles)
+function pushbutton29_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton29 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -996,7 +996,7 @@ end
 
 
 % --- Executes on button press in pushbutton30.
-function pushbutton30_Callback(hObject, eventdata, handles)
+function pushbutton30_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton30 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1007,7 +1007,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton31.
-function pushbutton31_Callback(hObject, eventdata, handles)
+function pushbutton31_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton31 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1020,7 +1020,7 @@ end
 
 
 % --- Executes on button press in pushbutton32.
-function pushbutton32_Callback(hObject, eventdata, handles)
+function pushbutton32_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton32 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1041,7 +1041,7 @@ myRefresh_B(hObject, handles);
 end
 
 % --- Executes on button press in pushbutton33.
-function pushbutton33_Callback(hObject, eventdata, handles)
+function pushbutton33_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton33 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1062,7 +1062,7 @@ end
 
 
 % --- Executes on button press in pushbutton34.
-function pushbutton34_Callback(hObject, eventdata, handles)
+function pushbutton34_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton34 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1083,7 +1083,7 @@ end
 
 
 % --- Executes on button press in pushbutton35.
-function pushbutton35_Callback(hObject, eventdata, handles)
+function pushbutton35_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton35 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1105,7 +1105,7 @@ end
 
 
 % --- Executes on button press in pushbutton36.
-function pushbutton36_Callback(hObject, eventdata, handles)
+function pushbutton36_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton36 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1129,7 +1129,7 @@ end
 
 
 % --- Executes on button press in pushbutton37.
-function pushbutton37_Callback(hObject, eventdata, handles)
+function pushbutton37_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton37 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

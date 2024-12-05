@@ -20,18 +20,18 @@ function out = bmImLaplaceEquationSolver(imStart, m, nIter, L_th, varargin)
 %
 % Parameters:
 %   imStart (array): Real or complex data of which the masked parts should
-%    be estimated.
+%   be estimated.
 %   m (array): Mask with the same size as imStart (masked where m = 0).
 %   nIter (int): Number of iterations before the result is checked.
 %   L_th (double): Threshold for the residual to determine if the solution
-%    converged enough.
+%   converged enough.
 %   varargin{1}: Flag; use openMP for parallel processing if true. Default
-%    value is [] (false)
+%   value is [] (false)
 %   varargin{1}: Number of blocks per thread (not used atm).
 %
 % Returns:
 %   out (array): Estimate for the coil sensitvity at the masked parts of
-%    the data. The unmasked parts have the original data values.
+%   the data. The unmasked parts have the original data values.
 
 
 % Extract optional arguments

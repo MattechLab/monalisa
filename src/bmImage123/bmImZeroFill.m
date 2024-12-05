@@ -19,7 +19,7 @@ function out_im = bmImZeroFill(arg_im, N_u, n_u, argType)
 %   N_u (list): The grid size in the k-space.
 %   n_u (list): The grid size in the image space.
 %   argType (char): The type of the to be padded array. Can be
-%    'real_double', 'real_single', 'complex_double' and 'complex_single'.
+%   'real_double', 'real_single', 'complex_double' and 'complex_single'.
 
 % Have sizes in the correct format
 N_u = N_u(:)'; 

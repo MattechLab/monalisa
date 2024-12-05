@@ -6,7 +6,7 @@
 function out = bmSparseMat_cell2line(argCell, varargin)
 
 myVararginFlag = false;
-if length(varargin) > 0
+if ~isempty(varargin)
     myVararginFlag = true;
     tempNumOfInd = varargin{1}(:)';
 end

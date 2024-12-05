@@ -12,7 +12,7 @@ out_x = [];
 out_y = []; 
 out_z = []; 
 
-[argIm, imDim, imSize, sx, sy, sz] = bmImReshape(argIm);
+[argIm, imDim, ~, sx, sy, sz] = bmImReshape(argIm);
 
 real_flag = isreal(argIm);
 

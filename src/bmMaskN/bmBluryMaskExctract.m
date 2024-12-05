@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [out, outSum] = bmBluryMaskExctract(argBluryMask ,argArray);
+function [out, outSum] = bmBluryMaskExctract(argBluryMask ,argArray)
 
 argBluryMask = argBluryMask(:)';
 argArray     = argArray(:)';

@@ -68,13 +68,13 @@ C_phi_im = bmBlockReshape(C_phi_im, N_u);
 
 
 bmImage(cat(2, C_phi_im, C_abs_im))
-caxis([0, 100])
+clim([0, 100])
 if nCh == 1
     bmImage(cat(2, permute(C_phi_im, [3, 1, 2]), permute(C_abs_im, [3, 1, 2])))
-    caxis([0, 100])
+    clim([0, 100])
 else
     bmImage(cat(2, permute(C_phi_im, [3, 1, 2, 4]), permute(C_abs_im, [3, 1, 2, 4])))
-    caxis([0, 100])
+    clim([0, 100])
 end
 
 end

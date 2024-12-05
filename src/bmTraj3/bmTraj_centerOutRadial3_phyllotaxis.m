@@ -7,7 +7,7 @@ function t = bmTraj_centerOutRadial3_phyllotaxis(nseg, nshot, flagSelfNav, r)
 
 N = size(r(:), 1); 
 
-[polarAngle azimuthalAngle] = phyllotaxis3D_Jean_for_monalisa(nseg, nshot, flagSelfNav, true);
+[polarAngle, azimuthalAngle] = phyllotaxis3D_Jean_for_monalisa(nseg, nshot, flagSelfNav, true);
          
 azimuthal  = repmat(azimuthalAngle(:)',[N 1]);
 polar      = repmat(pi/2-polarAngle(:)',[N 1]);

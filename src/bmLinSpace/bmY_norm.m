@@ -17,17 +17,17 @@ function n = bmY_norm(y, d_n, varargin)
 % Parameters:
 %   y (array): The data containing datapoints per channel.
 %   d_n (array): The volume elements for every datapoint. Can be a scalar
-%    taken for every datapoint, or can have different values for different
-%    channels.
+%   taken for every datapoint, or can have different values for different
+%   channels.
 %   varargin{1}: Flag; collapses the output into a single value if true.
-%    Another norm is calculated across channels to receive this value.
-%    Default value is false.
+%   Another norm is calculated across channels to receive this value.
+%   Default value is false.
 %
 % Returns:
 %   n (list): The norms for every channel computed over the datapoints.
-%    Only a scalar if y only contains one channel or the optional flag is
-%    true. Row or column vector depending on y -> if size(y,2) = nCh then
-%    size(n,2) = nCh and n is a row vector.
+%   Only a scalar if y only contains one channel or the optional flag is
+%   true. Row or column vector depending on y -> if size(y,2) = nCh then
+%   size(n,2) = nCh and n is a row vector.
 
 
 % Extract optional arguments

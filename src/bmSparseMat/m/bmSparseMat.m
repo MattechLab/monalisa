@@ -59,7 +59,8 @@ classdef bmSparseMat < handle
     methods
         
         
-        function l_squeeze(obj) % *******************************
+        function l_squeeze(obj)
+            % Squeeze the left side of the matrix.
             
             if ~strcmp(obj.type, 'matlab_ind')
                 error('The matrix must be of type ''matlab_ind '' ');
@@ -91,13 +92,14 @@ classdef bmSparseMat < handle
             % check
             obj.check;
             
-        end % end l_squeeze_function *************************************
+        end
         
         
         
         
         
         function cpp_prepare(obj, argMode, nJumpPerBlock_factor, blockLengthMax_factor)
+            % Prepare the matrix for C++ processing.
             
             obj.check;
             
@@ -185,12 +187,12 @@ classdef bmSparseMat < handle
             
             obj.check;
             
-        end % end cpp_prepare *********************************************
+        end
         
         
         
-        function check(obj) % *********************************************
-            
+        function check(obj)
+            % Check the integrity of the sparse matrix.
             
             if strcmp(obj.type, 'void')
                 return;
@@ -318,7 +320,7 @@ classdef bmSparseMat < handle
             
             
             if strcmp(obj.type, 'cpp_prepared') || strcmp(obj.type, 'l_squeezed_cpp_prepared')
-                if ~isempty(obj.r_ind) || ~isempty(obj.l_ind)
+                if ~isempty(obj.r_ind) || !isempty(obj.l_ind)
                     myCheck_flag = true;
                     disp('Check 8.1 failed');
                 end
@@ -390,8 +392,7 @@ classdef bmSparseMat < handle
             
             
             
-        end % END check function ******************************************
-        
+        end
         
         
     end % END method

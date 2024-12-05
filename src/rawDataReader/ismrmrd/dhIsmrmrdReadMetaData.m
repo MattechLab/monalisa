@@ -15,7 +15,7 @@ function varargout = dhIsmrmrdReadMetaData(obj)
 %
 % Returns:
 %   varargout{1}: bmMriAcquisitionParam object containing the extracted
-%    meta data.
+%   meta data.
 %   varargout{2}: Double containing the extracted reconstruction FoV.
 argFile = obj.argFile;
 autoFlag = obj.autoFlag;

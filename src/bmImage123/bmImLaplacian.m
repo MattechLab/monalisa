@@ -25,7 +25,7 @@ argSize = size(argIm);
 
 % Get dimension and size of input data (also get data as column vector if
 % argIm is 1D)
-[argIm, imDim, imSize, sx, sy, sz] = bmImReshape(argIm); 
+[argIm, imDim, ~, sx, sy, sz] = bmImReshape(argIm); 
 
 % Check if the data is real
 real_flag = isreal(argIm); 

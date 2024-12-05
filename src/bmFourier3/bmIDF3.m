@@ -12,14 +12,14 @@ function iFx = bmIDF3(x, N_u, dK_u)
 %
 % Parameters:
 %   x (3D array): Contains the data on which the iFFT should be performed. 
-%    The zero-frequency component is assumed to be in the center of x.
+%   The zero-frequency component is assumed to be in the center of x.
 %   N_u (list): Contains the size of the grid.
 %   dK_u (list): Contains the distances between grid points in every
-%    dimension.
+%   dimension.
 %
 % Returns:
 %   iFx (array): Contains the transformed data, having the same size as x.
-%    The zero-frequency component is given in the center of iFx.
+%   The zero-frequency component is given in the center of iFx.
 
 % Store the original size
 argSize = size(x); 

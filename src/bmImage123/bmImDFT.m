@@ -6,7 +6,7 @@
 function [Ff, varargout] = bmImDFT(argIm, varargin)
 
 nZero_x = [];
-if length(varargin) > 0
+if ~isempty(varargin)
     nZero_x = varargin{1};
 end
 
