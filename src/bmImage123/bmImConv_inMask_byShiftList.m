@@ -6,7 +6,7 @@
 function out_1 = bmImConv_inMask_byShiftList(argIm, argShiftList, argMask, varargin)
 
 nIter = []; 
-if length(varargin) > 0
+if ~isempty(varargin)
    nIter = varargin{1};  
 end
 if isempty(nIter)

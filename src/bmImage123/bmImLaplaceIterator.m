@@ -20,19 +20,19 @@ function out = bmImLaplaceIterator(imStart, m, nIter, varargin)
 % Parameters:
 %   imStart (array): Data of which the Laplace equation should be solved.
 %   m (array): Mask that indicate which parts of the data should be kept
-%    as the original data (m = 1) and for which parts the equation should be
-%    solved (m = 1).
+%   as the original data (m = 1) and for which parts the equation should be
+%   solved (m = 1).
 %   nIter (int): Number of iterations done in this function.
 %   varargin{1}: Char or flag that allows parallized processing with
-%    openMP. This is done if the value is 'omp' or true. Default value is
-%    false.
+%   openMP. This is done if the value is 'omp' or true. Default value is
+%   false.
 %   varargin{2}: Integer giving the number of blocks processed by a thread.
-%    Default value is the the max size of imStart -> all blocks in one
-%    thread.
+%   Default value is the the max size of imStart -> all blocks in one
+%   thread.
 %
 % Returns:
 %   out (array): The data with the masked parts solved using an iterative
-%    solver and the unmasked parts the same as the original data.
+%   solver and the unmasked parts the same as the original data.
 
 %% Initialize arguments
 % Get original size
@@ -62,7 +62,7 @@ end
 
 % Get dimension and size of input data (also get data as column vector if
 % argIm is 1D) 
-[imStart, imDim, imSize, sx, sy, sz] = bmImReshape(imStart);
+[imStart, imDim, ~, sx, sy, sz] = bmImReshape(imStart);
 
 % Check if the data is real
 real_flag = isreal(imStart); 

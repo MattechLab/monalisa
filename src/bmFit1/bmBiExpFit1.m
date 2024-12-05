@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function [monoExpFit_2 biExpFit_1 biExpFit_2 biExpFit_3 varargout] = bmBiExpFit1(argImagesTable, argX, argX_middle, varargin)
+function [monoExpFit_2, biExpFit_1, biExpFit_2, biExpFit_3, varargout] = bmBiExpFit1(argImagesTable, argX, argX_middle, varargin)
 % varargin  = [monoErrorTh biErrorTh monoLowerBound monoUpperBound biLowerBound biUpperBound]
 % varargout = [monoExpFit biExpFit monoErrorMask biErrorMask]
 
@@ -31,9 +31,9 @@ end
     biUpperBound = [];
     
 
-    if length(varargin) == 0
+    if isempty(varargin)
         1+1;
-    elseif length(varargin) == 1
+    elseif isscalar(varargin)
         monoErrorTh = varargin{1};
     elseif length(varargin) == 2
         monoErrorTh = varargin{1};

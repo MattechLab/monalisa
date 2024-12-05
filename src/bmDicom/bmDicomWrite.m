@@ -17,13 +17,13 @@ function varargout = bmDicomWrite(imagesTable, varargin)
     myFileName = 0; 
     
     if nargin == 1
-        [myDir myPath] = bmGetDir;  
+        [myDir, myPath] = bmGetDir;  
         if isnumeric(myDir)
            return;  
         end
         
     elseif nargin == 2
-        [myDir myPath] = bmGetDir;  
+        [myDir, myPath] = bmGetDir;  
         if isnumeric(myDir)
            return;  
         end

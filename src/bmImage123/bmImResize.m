@@ -77,19 +77,19 @@ z2 = [];
 if imDim > 0
     
     x1 = linspace(0, 1, nu_x+1);
-    x2 = mod(0.5 + [-Nu_x/2:Nu_x/2 - 1]/Nu_x, 1); 
+    x2 = mod(0.5 + (-Nu_x/2:Nu_x/2 - 1)/Nu_x, 1); 
     
 end
 if imDim > 1
     
     y1 = linspace(0, 1, nu_y+1);
-    y2 = mod(0.5 + [-Nu_y/2:Nu_y/2 - 1]/Nu_y, 1); 
+    y2 = mod(0.5 + (-Nu_y/2:Nu_y/2 - 1)/Nu_y, 1); 
 
 end
 if imDim > 2
     
     z1 = linspace(0, 1, nu_z+1);
-    z2 = mod(0.5 + [-Nu_z/2:Nu_z/2 - 1]/Nu_z, 1); 
+    z2 = mod(0.5 + (-Nu_z/2:Nu_z/2 - 1)/Nu_z, 1); 
     
 end
     
@@ -124,7 +124,7 @@ elseif imDim == 3
     
 end
 
-if bmIsColShape(argIm, N_u);
+if bmIsColShape(argIm, N_u)
     outIm = bmColReshape(outIm, N_u);
 else bmIsBlockShape(argIm, N_u);
     outIm = bmBlockReshape(outIm, N_u);

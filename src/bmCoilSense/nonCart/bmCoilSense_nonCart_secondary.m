@@ -18,19 +18,19 @@ function [C, varargout] = bmCoilSense_nonCart_secondary(y, C, y_ref, C_ref, Gn, 
 %
 % Parameters:
 %   y (array): The acquired data of the surface coils in column format
-%    [nPt, nCh].
+%   [nPt, nCh].
 %   C (array): The primary estimation of the coil sensitivity map for all
-%    surface coils.
+%   surface coils.
 %   y_ref (array): The acquired data of the reference (body) coil.
 %   C_ref (array): The estimation of the coil sensitivity of the reference
-%    coil.
+%   coil.
 %   Gn (bmSparseMat): The approximate inverse mapping of the grid (backward
 %   mapping).
 %   Gu (bmSparseMat): The sparse matrix giving the forward mapping.
 %   Gut (bmSparseMat): The transpose of Gu (backward mapping).
 %   ve (array): Either an array containing the volume elements for each
-%    point in the trajectory, for each point in the trajectory of each
-%    channel or a skalar.
+%   point in the trajectory, for each point in the trajectory of each
+%   channel or a skalar.
 %   nIter (integer): Number of steps done in the gradient descent. 
 %   display_flag (logical): Show image after every step if true.
 %

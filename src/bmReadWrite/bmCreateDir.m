@@ -6,7 +6,7 @@
 function out = bmCreateDir(argDir, varargin)
 
 myErrorFlag = false;
-if length(varargin) > 0
+if ~isempty(varargin)
     myErrorFlag = varargin{1} ;
 end
 

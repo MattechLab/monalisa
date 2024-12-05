@@ -86,9 +86,7 @@ Steps for Sequential Binning
 
 The reconstructed images result from the contribution of each line within the associated bin. In this case, the image represents the average BOLD signal over the 2-second interval corresponding to each bin.
 
-.. admonition:: Take Home Message
-   :class: takeHomeMessage
-
+.. tip::
    The binning process is usually composed of two main parts:
 
    1. A filtering of data not adeguate for image reconstruction (e.g., not steady state)

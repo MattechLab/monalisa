@@ -42,7 +42,7 @@ if length(varargin) > 1
 end
 if isempty(nDim)
     nDim = 1;
-    while (size(f, nDim) == 1) && (nDim < ndims(f));
+    while (size(f, nDim) == 1) && (nDim < ndims(f))
         nDim = nDim + 1;
     end
     % in that case, nDim is now the first non-singelton dimension.
@@ -58,7 +58,7 @@ else
 end
 
 nZero = [];
-if length(varargin) > 0
+if ~isempty(varargin)
     nZero = varargin{1};
 end
 if isempty(nZero)

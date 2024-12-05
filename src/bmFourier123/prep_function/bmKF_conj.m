@@ -18,20 +18,20 @@ function KF_conj = bmKF_conj(C_conj, N_u, n_u, dK_u, nCh, varargin)
 %
 % Parameters:
 %   C_conj (array): The conjugate of the coil sensitivity. Has to be given
-%    as the conjugate (conj(C)). Can be given as [] if the coil sensitvity
-%    should not be included.
+%   as the conjugate (conj(C)). Can be given as [] if the coil sensitvity
+%   should not be included.
 %   N_u (list): The size of the grid for which K should be generated.
 %   n_u (list): The size of the grid in the image space.
 %   dK_u (list): The distances between grid points in every dimension. Same
-%    size as N_u.
+%   size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
 %   channel.
 %   varargin{1}: Char that contains the kernel type. Either 'gauss' or 
-%    'kaiser'. Default value is 'gauss'.
+%   'kaiser'. Default value is 'gauss'.
 %   varargin{2}: Integer that contains the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{3}: List that contains the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Returns:
 %   KF_conj (array): The kernel matrix scaled by the factor F and C_conj if
@@ -39,7 +39,7 @@ function KF_conj = bmKF_conj(C_conj, N_u, n_u, dK_u, nCh, varargin)
 
 % Warning to make sure that the function is correctly used
 warning(['In KF_conj : make sure you gave ''conj(C)'' ',...
-         'as argument and not C !']); 
+        'as argument and not C !']); 
 
 % Extract optional arguments and set default values for empty ones.
 [kernelType, nWin, kernelParam] = bmVarargin(varargin); 

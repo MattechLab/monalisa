@@ -24,7 +24,7 @@ if isempty(normMax)
 end
 
 argImage = []; 
-if length(varargin) > 0
+if ~isempty(varargin)
     argImage = varargin{1}; 
 end
 

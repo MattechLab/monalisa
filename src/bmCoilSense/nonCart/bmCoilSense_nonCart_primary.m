@@ -20,19 +20,19 @@ function C = bmCoilSense_nonCart_primary(y, y_ref, C_ref, Gn, ve, m)
 % Parameters:
 %   y (array): The data of the surface coils. Has the size (nPt, nCh).
 %   y_ref (array): The column vector containing the data of the reference
-%    coil.
+%   coil.
 %   C_ref (array): The coil sensitivity of the reference coil. Has the size
-%    of Gn.N_u (block format).
+%   of Gn.N_u (block format).
 %   Gn (bmSparseMat): The sparse matrix used to grid the non-uniform data
-%    to a uniform grid.
+%   to a uniform grid.
 %   ve (array): The volume elements for each point in y. Can be the size of
-%    one channel, a scalar or the size of y.
+%   one channel, a scalar or the size of y.
 %   m (array): The mask that masks the data that is not usefull with m = 0.
-%    Has the size of one channel in block format.
+%   Has the size of one channel in block format.
 %
 % Returns:
 %   C (array): The coil sensitvity of all surface coils (channels) in block
-%    format.
+%   format.
 
 
 %% Initialize arguments

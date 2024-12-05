@@ -30,11 +30,11 @@ elseif nargin == 2
     myDiff = (myVal2-myGridd2);
     myAbs = abs(myDiff); 
     
-    [myMin1 myInd1] = min(myAbs);
-    [myMin2 myInd2] = min(flipud(myAbs));
+    [~, myInd1] = min(myAbs);
+    [~, myInd2] = min(flipud(myAbs));
     myInd2 = m-myInd2+1;
     
-    myLineInd = myInd1 + [0:n-1]*m; 
+    myLineInd = myInd1 + (0:n-1)*m; 
     mySign = sign(myVal2(myLineInd));
 
     myInd = myInd1.*(mySign < 0) + myInd2.*(mySign >= 0); 

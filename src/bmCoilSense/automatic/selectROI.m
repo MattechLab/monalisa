@@ -17,16 +17,16 @@ function coordinates = selectROI(dataRMS, dataMIP, N_u, varargin)
 %   dataMIP (array): Data for MIP image. Has to be data of a 3D image.
 %   N_u (list): Contains the size of the data in every dimension.
 %   varargin{1}: Flag; allows changing of coordinates with input fields.
-%    Default value is false.
+%   Default value is false.
 %   varargin{2}: Array that contains the guessed position of the bounding
-%    box. Has to have the structure [xMin, xWidth; yMin, yWidth; zMin,
-%    zWidth]. Default value is 
-%    [2, min(N_u)-4; 2, min(N_u)-4; 2, min(N_u)-4]
+%   box. Has to have the structure [xMin, xWidth; yMin, yWidth; zMin,
+%   zWidth]. Default value is 
+%   [2, min(N_u)-4; 2, min(N_u)-4; 2, min(N_u)-4]
 %
 % Returns:
 %   coordinates (array): The updated coordinates of the bounding box
-%    including the same ROI for dataRMS and dataMIP. Has the structure
-%    [xMin, xMax; yMin, yMax; zMin, zMax]
+%   including the same ROI for dataRMS and dataMIP. Has the structure
+%   [xMin, xMax; yMin, yMax; zMin, zMax]
 
     %% Initialize arguments
     % Extract optional arguments

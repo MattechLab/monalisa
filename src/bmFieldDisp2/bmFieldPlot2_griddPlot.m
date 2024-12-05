@@ -5,7 +5,7 @@
 
 function bmFieldPlot2_griddPlot(argX, argY, varargin)
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myString = varargin{1};
 else
     myString = '.';

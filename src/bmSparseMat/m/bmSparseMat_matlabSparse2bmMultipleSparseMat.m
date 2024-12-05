@@ -11,7 +11,7 @@ size_2 = size(matlabSparseMat, 2);
 matlabSparseMat = matlabSparseMat';
 
 [ind_1, ind_2, m_val] = find(matlabSparseMat);
-myHist = histcounts(ind_2, [1:size_1+1]-0.5);
+myHist = histcounts(ind_2, (1:size_1+1)-0.5);
 
 r_ind = ind_1(:)'; 
 m_val = m_val(:)'; 

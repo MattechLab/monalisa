@@ -55,7 +55,7 @@ classdef bmConvergeCondition < handle
         function obj = bmConvergeCondition(varargin) % constructor
 
             myVarargin_1 = [];
-            if length(varargin) > 0
+            if ~isempty(varargin)
                myVarargin_1 =  varargin{1}; 
             end
             

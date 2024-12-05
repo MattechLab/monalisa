@@ -6,7 +6,7 @@
 function out = bmImCrossMean(argIm)
 
 argSize = size(argIm); 
-[argIm, imDim, imSize, sx, sy, sz] = bmImReshape(argIm);
+[argIm, imDim, ~, sx, sy, sz] = bmImReshape(argIm);
 
 real_flag = isreal(argIm);
 

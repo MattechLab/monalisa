@@ -18,7 +18,7 @@ function varargout = bmImage(argImage, varargin)
 % Parameters:
 %   argImage (array): Contains the data to be displayed as an image.
 %   varargin{1}: Object of class bmImageViewerParam, giving the parameters
-%    for the image.
+%   for the image.
 %
 % Returns:
 %   varargout{1}: Object of class bmImageViewerParam that was used in the

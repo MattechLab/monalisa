@@ -6,7 +6,7 @@ function z = bmZero(argSize, argType, varargin)
 %
 % Authors:
 %   Bastien Milani
-%    CHUV and UNIL
+%   CHUV and UNIL
 %   Lausanne - Switzerland
 %   May 2023
 %
@@ -17,9 +17,9 @@ function z = bmZero(argSize, argType, varargin)
 % Parameters:
 %   argSize (list): The size of the zero array.
 %   argType (char): The type of the zero array. Can be 'real_double',
-%    'real_single', 'complex_double' and 'complex_single'.
+%   'real_single', 'complex_double' and 'complex_single'.
 %   varargin{1}: List containing the size of the cell array if the
-%    result should be a cell array.
+%   result should be a cell array.
 
 % Extract optional arguments
 frame_size = bmVarargin(varargin); 

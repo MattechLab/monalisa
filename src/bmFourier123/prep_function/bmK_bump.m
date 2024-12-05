@@ -40,22 +40,22 @@ x = [];
 y = []; 
 z = []; 
 if imDim == 1
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
     x = ndgrid(x);
     d = sqrt(x(:).^2);
     d = reshape(d, [N_u_os, 1]); 
 end
 if imDim == 2
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
     [x, y] = ndgrid(x, y); 
     d = sqrt(x(:).^2 + y(:).^2);
     d = reshape(d, N_u_os);
 end
 if imDim == 3
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
-    z = [-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
+    z = (-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1)/arg_osf;
     [x, y, z] = ndgrid(x, y, z); 
     d = sqrt(x(:).^2 + y(:).^2 + z(:).^2);
     d = reshape(d, N_u_os);
