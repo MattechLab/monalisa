@@ -18,7 +18,7 @@ function [  s1_ref, ...
             ind_SI_min, ...
             ind_SI_max, ...
             varargout] = bmMriPhi_fromSI_get_standart_reference_signal( rmsSI, ...
-                                                                        nCh, ...
+                                                                        ~, ...
                                                                         N, ...
                                                                         nSeg, ...
                                                                         nShot)
@@ -129,7 +129,7 @@ return;
 
 
 
-    function myWindowScrollWheelFcn(src,evnt) % nested function
+    function myWindowScrollWheelFcn(~,evnt) % nested function
         if evnt.VerticalScrollCount > 0
             myScrol = max(1, fix(  abs(evnt.VerticalScrollAmount)/  1  ));
             
@@ -159,7 +159,7 @@ return;
 
 
 
-    function myKeyPressFcn(src, command)
+    function myKeyPressFcn(~, command)
         switch lower(command.Key)
             case 'control'     % Ctrl key is pressed
                 control_flag = true;
@@ -247,7 +247,7 @@ return;
         end
     end
 
-    function myKeyReleaseFcn(src, command)
+    function myKeyReleaseFcn(~, command)
         switch lower(command.Key)
             case 'control'     % Ctrl key is released
                 control_flag = false;
@@ -265,7 +265,7 @@ return;
     end
 
 
-    function myClickCallback(src, evnt)
+    function myClickCallback(~, ~)
         switch get(gcf,'selectiontype')
             case 'normal'% left mouse button click
                 

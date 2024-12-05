@@ -3,6 +3,6 @@
 % Lausanne - Switzerland
 % May 2023
 
-function out = bmVarName(arg_in)
+function out = bmVarName(~)
     out = inputname(1); 
 end

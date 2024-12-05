@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function bmSave(arg_file, arg_var)
+function bmSave(arg_file, ~)
 
 myName = inputname(2); 
 eval([myName, ' = arg_var; ']); 

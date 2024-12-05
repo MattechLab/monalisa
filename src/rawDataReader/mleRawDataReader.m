@@ -28,7 +28,7 @@ classdef mleRawDataReader
         end
 
         % Abstract method to be implemented by subclasses
-        function readouts = readRawData(obj, flagSS, flagNoSI)
+        function readouts = readRawData(~, ~, ~)
             error('readRawData must be implemented by the subclass');
         end
     end
