@@ -16,7 +16,7 @@ function out = bmPointReshape(t, varargin)
 %
 % Parameters:
 %   t (array or cell array): Contains the points (ex. of a trajectory) and
-%    should be reshaped
+%   should be reshaped
 %   varargin{1}: Gives the number of dimensions the points should have
 %
 % Returns:
@@ -24,8 +24,7 @@ function out = bmPointReshape(t, varargin)
 %
 % Examples:
 %   t = bmPointReshape(trajectory)
-%   t = bmPointReshape(...
-%         bmTraj_fullRadial3_phyllotaxis_lineAssym2(myMriAcquisition_node))
+%   t = bmPointReshape(bmTraj_fullRadial3_phyllotaxis_lineAssym2(myMriAcquisition_node))
 
 argSize = bmVarargin(varargin); 
 

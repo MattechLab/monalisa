@@ -17,19 +17,19 @@ function K = bmK(N_u, dK_u, nCh, varargin)
 % Parameters:
 %   N_u (list): Contains the size of the grid.
 %   dK_u (list): Contains the distances between grid points in every
-%    dimension. Same size as N_u.
+%   dimension. Same size as N_u.
 %   nCh (int): Number of channels (coils). K will be repeated for each
-%    channel.
+%   channel.
 %   varargin{1}: Char that contains the kernel type. Either 'gauss' or 
-%    'kaiser' with 'gauss' being the default value.
+%   'kaiser' with 'gauss' being the default value.
 %   varargin{2}: Integer that contains the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{3}: List that contains the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Results:
 %   K (array): Kernel matrix that will be multiplied element-wise to the
-%    gridded data to deapodize it.
+%   gridded data to deapodize it.
 
 %% Initialize arguments
 % Oversampling factor (magic_number) (improve the interpolation accuracy)
@@ -50,7 +50,7 @@ nCh         = double(single(nCh));
 
 % Check that all dimensions in N_u are even
 if sum(mod(N_u(:), 2)) > 0 
-   error('N_u must have all components even for the Fourier transform. ');
+    error('N_u must have all components even for the Fourier transform. ');
 end
 
 
@@ -77,14 +77,14 @@ x = [];
 y = []; 
 z = []; 
 if imDim == 1 % See imDim == 3 for comments
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
     x = ndgrid(x);
     d = sqrt(x(:).^2);
     d = reshape(d, [N_u_os, 1]); 
 end
 if imDim == 2 % See imDim == 3 for comments
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf;
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf;
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
     [x, y] = ndgrid(x, y); 
     d = sqrt(x(:).^2 + y(:).^2);
     d = reshape(d, N_u_os);
@@ -92,9 +92,9 @@ end
 if imDim == 3
     % Create 1D oversampled grid for 3 dimensions going from 
     % -N_u/2 to N_u/2 in N_u*arg_osf steps
-    x = [-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1]/arg_osf; 
-    y = [-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1]/arg_osf;
-    z = [-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1]/arg_osf;
+    x = (-Nx_u*arg_osf/2:Nx_u*arg_osf/2-1)/arg_osf; 
+    y = (-Ny_u*arg_osf/2:Ny_u*arg_osf/2-1)/arg_osf;
+    z = (-Nz_u*arg_osf/2:Nz_u*arg_osf/2-1)/arg_osf;
 
     % Create 3D oversampled grid 
     % (x,y,z containing the coordinates for every point)

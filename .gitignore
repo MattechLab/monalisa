@@ -7,7 +7,7 @@
 *.o
 *.obj
 /docs/_build/
-
+/examples/tutorial1/data/*.dat
 
 # Precompiled Headers
 *.gch

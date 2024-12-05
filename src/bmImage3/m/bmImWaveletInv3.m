@@ -10,7 +10,7 @@
 %
 % We use periodic image extension. 
 
-function x = bmImWaveletInv2(cA, cH, cV, cD, n_u, varargin)
+function x = bmImWaveletInv3(cA, cH, cV, cD, n_u, varargin)
 
 wavelet_type = bmVarargin(varargin); 
 

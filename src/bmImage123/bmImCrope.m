@@ -18,11 +18,11 @@ function cropped_im = bmImCrope(arg_im, N_u, n_u)
 %   arg_im (array): Data that should be cropped.
 %   N_u (list): Size of the grid occupied by the data in block format.
 %   n_u (list): Size of the grid on which the data should be cropped. If
-%    N_u is odd, this has to be odd as well. Same for N_u even.
+%   N_u is odd, this has to be odd as well. Same for N_u even.
 %
 % Results:
 %   cropped_im (array): Data cropped and given in block format. Or the same
-%    format as the input if no cropping is needed.
+%   format as the input if no cropping is needed.
 
 % Prepare dimensions
 imDim = size(N_u(:), 1); 

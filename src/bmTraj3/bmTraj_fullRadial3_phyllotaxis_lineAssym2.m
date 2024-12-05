@@ -15,23 +15,23 @@ function myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 %
 % Parameters:
 %   varargin: This input is either an bmMriAcquisitionParam object
-%   containing the needed variables or the 6 variables seperatly:
-%       N (int): Number of points on line
-%       nSeg (int): Number of segments
-%       nShot (int): Number of shots
-%       dK_n (double): Distance between points of trajectory (1/FoV)
-%       flagSelfNav (bool): First segment of each shot is at the top of the
-%       sphere if true
-%       nShot_off (int): Number of shots to be discarded
+%   containing the needed variables or the 6 variables separately:
+%   N (int): Number of points on line
+%   nSeg (int): Number of segments
+%   nShot (int): Number of shots
+%   dK_n (double): Distance between points of trajectory (1/FoV)
+%   flagSelfNav (bool): First segment of each shot is at the top of the
+%   sphere if true
+%   nShot_off (int): Number of shots to be discarded
 %
 % Returns:
 %   myTraj (array): Containing the trajectory in the shape [3, N, M], where
 %   M = (nShot - nShot_off) * (nSeg - flagSelfNav)
 
-if length(varargin) == 0
+if isempty(varargin)
    error('Wrong list of arguments. '); 
    
-elseif length(varargin) == 1
+elseif isscalar(varargin)
     % Read variables from the bmMriAcquisitionParam object if given
     myMriAcquisParam = varargin{1};
     

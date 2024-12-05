@@ -20,7 +20,7 @@ function ve_out = bmY_ve_reshape(ve, y_size)
 %
 % Parameters:
 %   ve (array): The volume elements of the data that should be resized and
-%    reshaped to match the size given in y_sze.
+%   reshaped to match the size given in y_sze.
 %   y_size (list): The size of the data.
 %
 % Returns:

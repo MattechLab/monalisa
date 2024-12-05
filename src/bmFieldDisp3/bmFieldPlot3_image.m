@@ -95,7 +95,7 @@ refresh;
 
 % END_graphic initial -----------------------------------------------------
 
-    function myWindowScrollWheelFcn(src,evnt) % nested function
+    function myWindowScrollWheelFcn(~,evnt) % nested function
         
         if evnt.VerticalScrollCount > 0
             curImNum = curImNum - evnt.VerticalScrollAmount;
@@ -113,7 +113,7 @@ refresh;
         
     end
 
-    function myKeyReleaseFcn(src,command) % nested function
+    function myKeyReleaseFcn(~,command) % nested function
         % Switch through the type of key that has been pressed and chose
         % the action to perform
         switch lower(command.Key)
@@ -126,7 +126,7 @@ refresh;
         end
     end
 
-    function myKeyPressFcn(src,command) % nested function
+    function myKeyPressFcn(~,command) % nested function
         switch lower(command.Key)
             case 'downarrow'
                 curImNum = curImNum - 1;
@@ -272,7 +272,7 @@ refresh;
     end
 
 
-    function myClickCallback(src, evnt)
+    function myClickCallback(~, ~)
         
         myCoordinates = get(gca,'CurrentPoint');
         myCoordinates = ceil(myCoordinates(1,1:2)-[0.5 0.5]);

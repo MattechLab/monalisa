@@ -18,24 +18,24 @@ function x = bmNakatsha(y, G, KFC_conj, C_flag, n_u, fft_lib_sFlag)
 %
 % Parameters:
 %   y (array): The data in the k-space to be gridded and transformed into
-%    the image space.
+%   the image space.
 %   G (bmSparseMat): The backward gridding sparse matrix which is used for
-%    transposing the conjugate. -> Gut
+%   transposing the conjugate. -> Gut
 %   KFC_conj (array): The kernel matrix used for deapodization multiplied
-%    with the conjugate Fourier factor and the conjugate transpose of the
-%    coil sensitivity. Can be missing the conjugate transpose of C.
+%   with the conjugate Fourier factor and the conjugate transpose of the
+%   coil sensitivity. Can be missing the conjugate transpose of C.
 %   C_flag (logical): Indicates if KFC_conj contains the conjugate of C. If
-%    false, the conjugate is not included in KFC_conj. Can only be false if
-%    the MATLAB fft implementation is used. 
+%   false, the conjugate is not included in KFC_conj. Can only be false if
+%   the MATLAB fft implementation is used. 
 %   n_u (list): The size of the image space grid.
 %   fft_lib_sFlag (char): The iFFT algorithm to be used. The options are
-%    'MATLAB' using the MATLAB intern iFFT algorithm, 'FFTW' using the
-%    fastest Fourier transform in the west software library or 'CUFFT'
-%    using the CUDA fast Fourier transform library.
+%   'MATLAB' using the MATLAB intern iFFT algorithm, 'FFTW' using the
+%   fastest Fourier transform in the west software library or 'CUFFT'
+%   using the CUDA fast Fourier transform library.
 %
 % Returns:
 %   x (array): The computed image space data (C*F*y = x). Combined into one
-%    image x if C_flag is true, otherwise x has an image for every coil.
+%   image x if C_flag is true, otherwise x has an image for every coil.
 %
 % Notes:
 %   This comes from F(Cx) = y -> x = F*(C*y). If the coil sensitivity is
@@ -47,7 +47,7 @@ function x = bmNakatsha(y, G, KFC_conj, C_flag, n_u, fft_lib_sFlag)
 
 % Use G.N_u if n_u is empty
 if isempty(n_u)
-   n_u = G.N_u;  
+    n_u = G.N_u;  
 end
 
 % Throw error if CUFFT or FFTW are used with C_flag false
@@ -60,10 +60,10 @@ end
 
 % Throw error if CUFFT or FFTW are used with N_u ~= n_u
 if ~isequal(G.N_u, n_u) & strcmp(fft_lib_sFlag, 'CUFFT')
-   error('zero_filling is not implemented for Shanna_CUFFT. ');
+    error('zero_filling is not implemented for Shanna_CUFFT. ');
 end
 if ~isequal(G.N_u, n_u) & strcmp(fft_lib_sFlag, 'FFTW')
-   error('zero_filling is not implemented for Shanna_FFTW. ');
+    error('zero_filling is not implemented for Shanna_FFTW. ');
 end
 
 % Call correct function to use required iFFT implementation

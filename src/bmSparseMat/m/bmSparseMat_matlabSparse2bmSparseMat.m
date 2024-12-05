@@ -38,7 +38,7 @@ a = a';
 % size_1) with edges defined. Bins contain number of non zero indicies for
 % each row in a (column in a'). Inverse operation of
 % bmSparseMat_r_nJump2index.m
-myHist = histcounts(ind_2, [1:size_1+1]-0.5); 
+myHist = histcounts(ind_2, (1:size_1+1)-0.5); 
 
 % Change to row vector
 r_ind = ind_1(:)'; 

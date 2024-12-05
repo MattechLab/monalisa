@@ -16,12 +16,12 @@ function y_raw = bmTwix_data(myTwix, myMriAcquisition_node)
 % Parameters:
 %   myTwix (struct): Struct containing Twix MRI data.
 %   myMriAcquisition_node (struct): Struct containing acquisition 
-%    parameters.
+%   parameters.
 %
 % Returns:
 %   y_raw (array): Raw MRI data in the [nCh, N, nLine] shape, where nLine
-%    is nShot * nSeg, which can change depending on the selfNav_flag and 
-%    nShot_off in myMriAcquisition_node.
+%   is nShot * nSeg, which can change depending on the selfNav_flag and 
+%   nShot_off in myMriAcquisition_node.
 %
 % Notes:
 %   This function reshapes and processes the raw data based on the

@@ -6,9 +6,9 @@
 function m = bmMriPhi_magnitude_to_mask(s, ...
                                         nMask, ...
                                         nSeg, ...
-                                        nShot, ...
+                                        ~, ...
                                         ind_shot_min, ...
-                                        ind_shot_max)
+                                        ~)
 
 nSignal = size(s, 1); 
 
@@ -27,7 +27,7 @@ ind_line    = 1:nLine;
 m = false(nMask, nLine, nSignal);
 for j = 1:nSignal
     
-    [s_sorted, myPerm]  = sort(s(j, :));
+    [~, myPerm]  = sort(s(j, :));
     ind_sorted          = ind_line(myPerm);
     [~, myInvPerm]      = sort(ind_sorted);
 

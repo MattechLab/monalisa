@@ -104,7 +104,7 @@ elseif strcmp(myOption, 'extended')
         
     end
     
-    [myMin, myInd]  = min(d);
+    [~, myInd]  = min(d);
     c               = c(:, myInd);
     s               = bmCol(  s(myInd, :)  );
     

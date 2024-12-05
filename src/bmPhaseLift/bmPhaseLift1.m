@@ -23,7 +23,7 @@ elseif (mySize(1) < 2) && (ndims(mySignal) == 2)
     myTransposeFlag = true;
 end
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myLift = varargin{1}; 
 else
     myLift = 2*pi; 

@@ -19,44 +19,46 @@ function varargout = bmTraj2SparseMat(t, v, N_u, dK_u, varargin)
 % Parameters:
 %   t (array / cell array): Contains all points of the trajectory.
 %   v (array / cell array): Contains the volume elements for each point in 
-%    the trajectory. (1, nPt)
+%   the trajectory. (1, nPt)
 %   N_u (list): The size of the cartesian k-space grid on which the 
-%    trajectory is regridded.
+%   trajectory is regridded.
 %   dK_u (list): The distance between the new grid points in the k-space 
-%    for every dimension. In the physical sense 1/reconFoV. Same size as
-%    N_u.
+%   for every dimension. In the physical sense 1/reconFoV. Same size as
+%   N_u.
 %   varargin{1}: Char that contains the sparse type. The function returns 
-%    objects of class bmSparseMat if it is 'bmSparseMat' or empty and 
-%    sparse matrices if anything else. Default value is 'bmSparseMat'.
+%   objects of class bmSparseMat if it is 'bmSparseMat' or empty and 
+%   sparse matrices if anything else. Default value is 'bmSparseMat'.
 %   varargin{2}: Char that contains the kernel type. Either 'gauss' or 
-%    'kaiser' with 'gauss' being the default value.
+%   'kaiser' with 'gauss' being the default value.
 %   varargin{3}: Integer that contains the window width. Default value is 3 
-%    for 'gauss' and 'kaiser'.
+%   for 'gauss' and 'kaiser'.
 %   varargin{4}: List that contains the kernel parameter. Default value is 
-%    [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
+%   [0.61, 10] for 'gauss' and [1.95, 10, 10] for 'kaiser'.
 %
 % Returns:
 %   Gn as varargout{1}: Gn is a normalized sparse matrix or a bmSparseMat, 
-%    depending on the sparseType (varargin{1}). If Gn is a sparse matrix, 
-%    each row represents a grid point, and the entries represent the 
-%    weighted contribution of trajectory points to each grid point. The 
-%    size is [Nu_tot, nPt], where Nu_tot is prod(N_u) and nPt the number of
-%    trajectory points. Gn is the approximation of the inverse gridding. It
-%    grids the trajectory to the grid.
+%   depending on the sparseType (varargin{1}). If Gn is a sparse matrix, 
+%   each row represents a grid point, and the entries represent the 
+%   weighted contribution of trajectory points to each grid point. The 
+%   size is [Nu_tot, nPt], where Nu_tot is prod(N_u) and nPt the number of
+%   trajectory points. Gn is the approximation of the inverse gridding. It
+%   grids the trajectory to the grid.
 %   Gu as varargout{1} or {2}: Gu is a normalized sparse matrix or a 
-%    bmSparseMat, depending on the sparseType (varargin{1}). If Gu is a 
-%    sparse matrix, each row represents a trajectory point, and the entries 
-%    represent the weighted contribution of grid points to each trajectory 
-%    point. The size is [nPt, Nu_tot], where Nu_tot is prod(N_u) and nPt 
-%    the number of trajectory points. Gu is the forward mapping, which maps
-%    the grid points to the trajectory points.
+%   bmSparseMat, depending on the sparseType (varargin{1}). If Gu is a 
+%   sparse matrix, each row represents a trajectory point, and the entries 
+%   represent the weighted contribution of grid points to each trajectory 
+%   point. The size is [nPt, Nu_tot], where Nu_tot is prod(N_u) and nPt 
+%   the number of trajectory points. Gu is the forward mapping, which maps
+%   the grid points to the trajectory points.
 %   Gut as varargout{3}: Gut is a normalized sparse matrix or a 
-%    bmSparseMat, depending on the sparseType (varargin{1}). Gut is the
-%    transpose of Gu and is backward mapping.
+%   bmSparseMat, depending on the sparseType (varargin{1}). Gut is the
+%   transpose of Gu and is backward mapping.
 %
 % Examples:
-%   Gn = bmTraj2SparseMat(t, ve, N_u, dK_u, 'bmSparseMat', 'gauss', 3, ...
-%                         [0.61, 10]);
+%   Gn = bmTraj2SparseMat(
+%       t, ve, N_u, dK_u, 'bmSparseMat', 'gauss', ...
+%       3, [0.61, 10] );
+%
 %   [Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 %   [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u); 
 

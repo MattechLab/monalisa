@@ -16,7 +16,7 @@ function y_raw = bmISMRMRD_data(myData, myMriAcquisition_node)
 % Parameters:
 %   myData (struct): Struct containing MRI data in ISMRMRD style.
 %   myMriAcquisition_node (struct): Struct containing acquisition 
-%    parameters.
+%   parameters.
 %
 % Returns:
 %   y_raw (array): Raw MRI data in the [nCh, N, nLine] shape, where nLine

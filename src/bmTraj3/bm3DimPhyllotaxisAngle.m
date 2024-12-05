@@ -39,7 +39,7 @@ goldAngle   = 2*pi - (2*pi / goldNum);
 
 % Define flag
 flagSelfNav = 0;
-if length(varargin) > 0
+if ~isempty(varargin)
     flagSelfNav = varargin{1};
 end
 

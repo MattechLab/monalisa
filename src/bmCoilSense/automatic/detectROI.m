@@ -11,13 +11,13 @@ function bBox = detectROI(rawData, N_u)
 %
 % Parameters:
 %   rawData (array): Contains the data of a 3D image for which a bounding
-%    box around the ROI should be guessed.
+%   box around the ROI should be guessed.
 %   N_u (list): The size of each dimension.
 %
 % Returns:
 %   bBox (array): Contains the minimum value and the width of the box for
-%    every dimension. The array is structured like this: 
-%    [xMin, xWidth; yMin, yWidth; zMin, zWidth]
+%   every dimension. The array is structured like this: 
+%   [xMin, xWidth; yMin, yWidth; zMin, zWidth]
 
     %% Initialize arguments
     % Increase box in all directions by this value (magic number)

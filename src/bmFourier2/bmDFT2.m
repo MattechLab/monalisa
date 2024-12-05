@@ -12,14 +12,14 @@ function Fx = bmDFT2(x, N_u, dK_u)
 %
 % Parameters:
 %   x (2D array): Contains the data on which the FFT should be performed. 
-%    The zero-frequency component is assumed to be in the center of x.
+%   The zero-frequency component is assumed to be in the center of x.
 %   N_u (list): Contains the size of the grid.
 %   dK_u (list): Contains the distances between grid points in every
-%    dimension.
+%   dimension.
 %
 % Returns:
 %   Fx (array): Contains the transformed data, having the same size as x.
-%    The zero-frequency component is given in the center of Fx.
+%   The zero-frequency component is given in the center of Fx.
 
 % Store the original size
 argSize = size(x); 

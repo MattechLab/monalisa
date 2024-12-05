@@ -11,7 +11,7 @@ imDim = size(n_u(:), 1);
 
 myTranslationTransform      = bmImReg_translationTransform; 
 
-[X, Y, Z] = bmImGrid(n_u, X, Y, Z);  
+[~, ~, ~] = bmImGrid(n_u, X, Y, Z);  
 
 
 
@@ -35,7 +35,7 @@ if imDim == 2
 elseif imDim == 3
     
     for i = 1:s(1, 1)
-        i
+        i;
         for j = 1:s(1, 2)
             for k = 1:s(1, 3)
                 
@@ -48,7 +48,7 @@ elseif imDim == 3
     
 end
 
-[myMin, myInd] = min(r(:)); 
+[~, myInd] = min(r(:)); 
 
 t = bmIndex2MultiIndex(myInd, s); 
 

@@ -20,13 +20,13 @@ function varargout = bmImage3(argImagesTable, varargin)
 % Parameters:
 %   argImagesTable (3D array): The data to be visualized
 %   varargin{1}: bmImageViewerParam object containing the parameters for
-%    the image.
+%   the image.
 %   varargin{2}: Logical (flag) that interrupts the code execution until
-%    the figure is closed if true.
+%   the figure is closed if true.
 %
 % Returns:
 %   varargout{1}: bmImageViewerParam object containing the parameter for
-%    the image. Useful to get the coordinates of placed points.
+%   the image. Useful to get the coordinates of placed points.
 
 %% Initialize arguments
 % Extract optional arguments
@@ -84,7 +84,7 @@ return;
 
 %% Nested functions
 
-    function myWindowScrollWheelFcn(src,evnt)
+    function myWindowScrollWheelFcn(~,evnt)
         % Mousewheel callback function to give interactions to bmImage3
         if evnt.VerticalScrollCount > 0    
             % Scrolling towards body -> reducing slice value
@@ -108,7 +108,7 @@ return;
         refresh_image;
     end
 
-    function myClickCallback(src, evnt)
+    function myClickCallback(~, ~)
         switch get(gcf,'selectiontype')
             case 'normal'
                 % Left mouse button click
@@ -132,7 +132,7 @@ return;
     end
 
     
-    function myKeyPressFcn(src,command)
+    function myKeyPressFcn(~,command)
         % Keypress callback function to give interactions to bmImage3
         % Switch through the type of key that has been pressed and chose
         % the action to perform
@@ -286,7 +286,7 @@ return;
         end % End Switch command.key
     end
 
-    function myKeyReleaseFcn(src,command)
+    function myKeyReleaseFcn(~,command)
         % Reset flags if keys are released
         switch lower(command.Key)
             case 'control'     % Ctrl key is released
@@ -418,7 +418,7 @@ return;
         
     end
 
-    function show_imVal_in_title(soft_point)
+    function show_imVal_in_title(~)
         % Display the value of the pixel clicked on, by changing the title
 
         % Get array indices closest to the mouse click

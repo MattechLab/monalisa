@@ -3,8 +3,8 @@ function out = bmCol(a)
 %
 % This function returns the input data as a column vector.
 % This is the same as doing:
-%   temp = a;
-%   out = a(:);
+% temp = a;
+% out = a(:);
 % But allows to do it in one line and thus nest in other function calls.
 %
 % Authors:

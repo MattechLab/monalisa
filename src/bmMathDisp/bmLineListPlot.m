@@ -11,7 +11,7 @@ function out = bmLineListPlot(argLines, argLinAssym, varargin)
 myLines = argLines;
 
 myColor = 'k';
-if length(varargin) > 0
+if ~isempty(varargin)
     myColor = varargin{1};
 end
 

@@ -18,7 +18,7 @@ function m = bmCoilSense_nonCart_mask(y, Gn, varargin)
 %
 % Parameters:
 %   y (array): Raw data that should be gridded onto the grid defined by the
-%    bmSparseMat in Gn.
+%   bmSparseMat in Gn.
 %   Gn (bmSparseMat): Sparse Matrix defining the new uniform grid.
 %   varargin{1}: Lower boundary of the x indices of the mask (ROI).
 %   varargin{2}: Upper boundary of the x indices of the mask (ROI).
@@ -34,8 +34,8 @@ function m = bmCoilSense_nonCart_mask(y, Gn, varargin)
 %
 % Returns:
 %   m (array): Mask for grid defined by Gn masking all pixels outside the
-%    ROI and below threshold values, by setting their points in the mask to
-%    0
+%   ROI and below threshold values, by setting their points in the mask to
+%   0
 %
 % Notes:
 %   The x, y, z constrictions are meant to exclude high intensity pixels

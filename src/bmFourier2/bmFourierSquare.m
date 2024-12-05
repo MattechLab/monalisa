@@ -8,7 +8,7 @@ function out = bmFourierSquare(argK, argEdge, varargin)
 a = 0;
 b = 0;
 
-if length(argEdge(:)) == 1
+if isscalar(argEdge(:))
     a = argEdge(1);
     b = argEdge(1);
 elseif length(argEdge(:)) == 2
@@ -30,7 +30,7 @@ if size(argK, 1)~= 2 && size(argK, 2) ~= 2
 end
 
 
-if length(varargin) > 0
+if ~isempty(varargin)
     myCenter = varargin{1};
     myCenter = myCenter(:); 
 else

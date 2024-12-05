@@ -43,17 +43,13 @@ classdef bmMriAcquisitionParam < handle
         
     methods
 
-        % constructor *****************************************************
         function obj = bmMriAcquisitionParam(arg_name) 
+            % Constructor for bmMriAcquisitionParam.
             obj.name = arg_name; 
         end 
-        % END_constructor *************************************************
 
-        
-        
-        
-        function refresh(obj) % *******************************************
- 
+        function refresh(obj)
+            % Refresh the acquisition parameters.
             if isempty(obj.N)
                 obj.N = single(obj.nPt/obj.nLine); 
             end
@@ -70,28 +66,22 @@ classdef bmMriAcquisitionParam < handle
                 obj.nPt = single(obj.N*obj.nSeg*obj.nShot); 
             end
             
-        end % end refresh *************************************************
+        end
 
-        
-        % save ************************************************************
         function save(obj, reconDir)
-           mriAcquisition_node = obj; 
-           save([reconDir, '/node/', obj.name, '.mat'], 'mriAcquisition_node');
+            % Save the acquisition parameters to a file.
+            mriAcquisition_node = obj; 
+            save([reconDir, '/node/', obj.name, '.mat'], 'mriAcquisition_node');
         end
-        % END_save ********************************************************
 
-        
-        
-        % create **********************************************************
         function create(obj, reconDir)
-           temp_load = load([reconDir, '/list.mat']); 
-           list = temp_load.list; 
-           list.stack(reconDir, obj); 
-           list.save(reconDir); 
-           obj.save(reconDir); 
+            % Create a new acquisition parameter set.
+            temp_load = load([reconDir, '/list.mat']); 
+            list = temp_load.list; 
+            list.stack(reconDir, obj); 
+            list.save(reconDir); 
+            obj.save(reconDir); 
         end
-        % END_create ******************************************************
-        
         
     end % END method
 end % END class

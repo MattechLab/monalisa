@@ -27,11 +27,10 @@ function out = bmPermuteToCol(y, varargin)
 %
 % Examples:
 %   Cell array
-%       y = {
-%           [1, 2, 3; 4, 5, 6], ...
-%           [7, 8; 9, 10; 11, 12], ...
-%           {[13, 14; 15, 16]}
-%       };
+%       y = { [1, 2, 3; 4, 5, 6], ...
+%             [7, 8; 9, 10; 11, 12], ...
+%             {[13, 14; 15, 16]} };
+%
 %       out = bmPermuteToCol(y, 2);
 %
 %   Outputs out with cells permuted to
@@ -45,8 +44,8 @@ function out = bmPermuteToCol(y, varargin)
 % 
 %       Cell 3:
 %           {2×2 double}
-%           (13    15
-%            14    16)
+%           (13    15)
+%           (14    16)
 %
 %   Array
 %       y = [1, 2, 3; 4, 5, 6];
@@ -73,8 +72,8 @@ end
 
 % Return empty array if y is empty
 if isempty(y) 
-   out = []; 
-   return; 
+    out = []; 
+    return; 
 end
 
 % Read size from y if not given as varargin

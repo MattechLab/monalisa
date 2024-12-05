@@ -13,7 +13,7 @@ if (mySize(1) == 1) || (mySize(2) == 1)
     myNdims = 1;
     mySize = length(myImage);
     myImage = reshape(myImage, [length(myImage) 1]);
-    myGridd = [1:mySize] - argCenter(1);
+    myGridd = (1:mySize) - argCenter(1);
     myDist = abs(myGridd);
     
     myMask = ones(size(myImage));

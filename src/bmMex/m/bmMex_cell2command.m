@@ -21,7 +21,7 @@ end
 
 % deleting white spaces at start of lines
 for i = 1:numel(c)
-    if length(c{i}) > 0
+    if ~isempty(c{i})
         while strcmp(c{i}(1), ' ')
            c{i} = c{i}(2:end);  
         end

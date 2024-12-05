@@ -6,7 +6,7 @@
 function out = bmCheckPath(argPath, dlgFlag)
 
     if nargin < 2
-        dlgFlag = 1
+        dlgFlag = 1;
     end
 
     out = 1;

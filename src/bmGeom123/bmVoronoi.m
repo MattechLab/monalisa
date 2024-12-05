@@ -20,7 +20,7 @@ function out = bmVoronoi(x, varargin)
 % Returns:
 %   out (list): Contains Voronoi volume or area calculated from x and is of
 %   size [1, nPt]. Contains -1 at indexes where the values are invalid
-%    (should be filtered out afterwards).
+%   (should be filtered out afterwards).
 %
 % Note:
 %   The trajectory x must be separated i.e. the list of positions 
@@ -39,7 +39,7 @@ nPt = size(x, 2);
 out = zeros(1, nPt); % Row vector for volume / area
 
 dispFlag = true;
-if length(varargin) > 0
+if ~isempty(varargin)
     dispFlag = varargin{1};
 end
 % END_initial -------------------------------------------------------------
