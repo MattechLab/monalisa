@@ -249,11 +249,11 @@ classdef bmSparseMat < handle
                 if mySum == 0
                     myCheck_flag = true;
                     disp('Check 3.1 failed');
-                elseif mySum != size(obj.m_val, 2)
+                elseif mySum ~= size(obj.m_val, 2)
                     myCheck_flag = true;
                     disp('Check 3.2 failed');
                 end
-                if (size(obj.r_nJump, 2) != obj.l_nJump)
+                if (size(obj.r_nJump, 2) ~= obj.l_nJump)
                     myCheck_flag = true;
                     disp('Check 3.3 failed');
                 end
@@ -273,7 +273,7 @@ classdef bmSparseMat < handle
                 end
                 
                 if !isempty(mySum)
-                    if mySum != size(obj.r_ind, 2)
+                    if mySum ~= size(obj.r_ind, 2)
                         myCheck_flag = true;
                         disp('Check 5.1 failed');
                     end
@@ -282,7 +282,7 @@ classdef bmSparseMat < handle
             
             
             if strcmp(obj.type, 'matlab_ind')
-                if obj.l_nJump != obj.l_size
+                if obj.l_nJump ~= obj.l_size
                     myCheck_flag = true;
                     disp('Check 6.1 failed');
                 end
@@ -306,7 +306,7 @@ classdef bmSparseMat < handle
                     disp('Check 7.2 failed');
                 end
                 
-                if obj.l_nJump != size(obj.l_ind, 2)
+                if obj.l_nJump ~= size(obj.l_ind, 2)
                     myCheck_flag = true;
                     disp('Check 7.3 failed');
                 end
@@ -336,7 +336,7 @@ classdef bmSparseMat < handle
                     disp('Check 9.1 failed');
                 end
                 if !isempty(mySum)
-                    if mySum != size(obj.r_jump, 2)
+                    if mySum ~= size(obj.r_jump, 2)
                         myCheck_flag = true;
                         disp('Check 9.2 failed');
                     end
@@ -353,7 +353,7 @@ classdef bmSparseMat < handle
                     myCheck_flag = true;
                     disp('Check 10.1 failed');
                 end
-                if size(obj.l_jump, 2) != obj.l_nJump
+                if size(obj.l_jump, 2) ~= obj.l_nJump
                     myCheck_flag = true;
                     disp('Check 10.2 failed');
                 end
