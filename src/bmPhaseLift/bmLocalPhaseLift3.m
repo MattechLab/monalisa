@@ -10,7 +10,7 @@ mySize = [prod(argSize(1:end-1)) argSize(end)];
 
 if isscalar(argTime)
     t = 0:argTime:(mySize(2)-1)*argTime;
-elseif ~isempty(argTime > 1)
+elseif numel(argTime) > 1
     t = squeeze(argTime);
     t = reshape(t, [1 length(t)]);
 else
