@@ -4,7 +4,7 @@ Mitosius: Prepare Your Data for Reconstruction
 
 Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
-You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-5_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :) ).
+You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-2_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :)).
 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
