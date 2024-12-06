@@ -25,7 +25,7 @@ Welcome to Monalisa's documentation!
    :includehidden:
 
    3_api
-   .. 4_theory_and_algorithms
+   4_theory_and_algorithms
 
 .. Indices and tables
 .. ==================
