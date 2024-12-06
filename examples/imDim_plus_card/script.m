@@ -73,7 +73,7 @@ for i = 1:nFr
     
     nIter         = 30;
     witness_ind   = []; % 1:nIter;
-    witness_label = 'sensa_frame_'
+    witness_label = 'sensa_frame_';
     witnessInfo   = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
     convCond      = bmConvergeCondition(nIter);
     
