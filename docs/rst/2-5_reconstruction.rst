@@ -32,10 +32,10 @@ So you need the previous input parameters plus the volume elements:
 The volume elements can be extracted from ``t`` knowing the trajectory.
 This parameter depends only on the trajectory.
 We have specified functions to extract ``ve`` for predefined trajectories,
-but the user can implement their own for other trajectories. Check the section :doc:`2-2_mitosis_prepare_data` for more information.
+but the user can implement their own for other trajectories. Check the section :doc:`2-4_mitosis_prepare_data` for more information.
 
 ``y``, ``t``, and ``ve`` are included in what we call the *mitosius*,
-with further explanation on how to create it in the section :doc:`2-2_mitosis_prepare_data`.
+with further explanation on how to create it in the section :doc:`2-4_mitosis_prepare_data`.
 They can be loaded as:
 
 .. code-block:: matlab
