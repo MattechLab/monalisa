@@ -320,7 +320,7 @@ classdef bmSparseMat < handle
             
             
             if strcmp(obj.type, 'cpp_prepared') || strcmp(obj.type, 'l_squeezed_cpp_prepared')
-                if ~isempty(obj.r_ind) || !isempty(obj.l_ind)
+                if ~isempty(obj.r_ind) || ~isempty(obj.l_ind)
                     myCheck_flag = true;
                     disp('Check 8.1 failed');
                 end
