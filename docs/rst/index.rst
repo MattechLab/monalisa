@@ -11,7 +11,7 @@ Welcome to Monalisa's documentation!
    :width: 100 %
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :glob:
    :includehidden:
 
