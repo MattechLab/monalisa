@@ -2,6 +2,8 @@
 Tutorial 1: Reconstruct MRI rawdata
 =====================================
 
+*Author : Mauro Leidi*
+
 Welcome to this tutorial! In this guide, we will use **Monalisa** to reconstruct MRI raw data. 
 This tutorial aim to give you a first good experience with the toolbox, providing you with all the essential information to reconstruct your own data.
 We'll start with a set of files: 

@@ -1,6 +1,8 @@
 ============================
-Running Monalisa with Docker
+Docker for Monalisa 
 ============================
+
+*Author : Mauro Leidi*
 
 This guide will walk you through the steps to run Monalisa using Docker, enabling you to leverage our library on clusters.
 
