@@ -1,5 +1,8 @@
 API
 ===
+
+ Author : Jaime Barranco
+
 bmArrayUtility
 --------------
 .. automodule:: bmArrayUtility

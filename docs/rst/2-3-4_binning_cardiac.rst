@@ -1,6 +1,8 @@
 Fourth Example: Cardiac Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections
 ========================================================================================================
 
+*Author : Bastien Milani*
+
 The present cardiac binning procedure is implemented in the script `lineMask_card_fromSI_script.m`. 
 It returns a list of masks (one mask per bin) as a binary array of size `[nBin, nLines]` where `nLines` is 
 the total number of acquired lines in the sequence.

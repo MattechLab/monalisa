@@ -1,6 +1,8 @@
 Acquisition Guidelines for Coil Sensitivity Estimation using Prescans
 =======================================================================
 
+*Author : Mauro Leidi*
+
 We recommend using raw-data prescans for accurate coil sensitivity estimation. This requires two small extra acquisitions 
 (one with body-coil and the same repeated with the surface coils) that are quick to perform. 
 From the two resulting raw-data sets, the coil-sensitivity can be estimated by an iterative procedure that interact with the raw-data. 
