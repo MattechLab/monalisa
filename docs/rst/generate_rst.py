@@ -25,6 +25,14 @@ def underline_title(title, level):
     underline = char * max(len(title), 3)  # Ensure at least 3 characters
     return f"{title}\n{underline}\n"
 
+
+def author_name(author):
+    """
+    Write some author's name.
+    """
+    return f"\n Author : {author}\n\n"
+
+
 def generate_rst_for_folder(folder_path, level=0, parent=""):
     """
     Generate the RST content for a given folder and its subfolders.
@@ -82,6 +90,9 @@ def write_rst_file():
     with open(rst_file_path, 'w') as rst_file:
         # Add the main title
         rst_content = underline_title("API", 0)
+
+        # Add some authors's name
+        rst_content += author_name("Jaime Barranco")
         
         # Generate RST for the root 'src' folder
         rst_content += generate_rst_for_folder(src_dir, level=0, parent="")

@@ -7,5 +7,5 @@ Quick Start
    :glob:
    :includehidden:
    
-   1-1_installation
-   1-2_hello_monalisa
+   1-1_hello_monalisa
+   1-2_installation

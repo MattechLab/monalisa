@@ -1,6 +1,8 @@
 First Example: Sequential Binning
 =================================
 
+*Author : Mauro Leidi*
+
 Sequential binning is one of the simplest ways to partition lines, splitting data sequentially by acquisition time. This method is particularly useful for imaging modalities that depend on temporal dynamics, such as resting-state fMRI, where we want to monitor the timecourse of the BOLD signal across brain regions. In sequential binning, we aim to generate a sequence of frames as illustrated below:
 
 .. image:: ../images/sequential_binning.png

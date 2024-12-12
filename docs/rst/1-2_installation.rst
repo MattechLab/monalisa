@@ -2,6 +2,8 @@
 Installation
 ============
 
+*Author : Mauro Leidi*
+
 To get started with the MRI reconstruction code, follow these steps:
 
 Clone the Repository
