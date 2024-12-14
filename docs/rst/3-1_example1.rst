@@ -412,19 +412,16 @@ Reconstruction Methods Overview
      - Exploits coil sensitivity maps for improved image quality.
      - `C`: Coil sensitivity maps  
        `nCGD`: Number of conjugate gradient iterations  
-       `convCond`: Convergence threshold
+       `convCond`: Convergence condition. 
      - High-quality images with moderate computing requirements.
-   * - **Compressed Sensing (TevaMorphosia-Chain)**
-     - Reduces undersampling artifacts by enforcing sparsity.
+   * - **Compressed Sensing (TevaMorphosia_chain)**
+     - Reduces undersampling artifacts by temporal regularization (1 temporal dimension).
      - `delta`: Regularization weight  
-       `rho`: Step size  
+       `rho`: Convergence parameter  
        `nIter`: Number of iterations
-     - When data is undersampled or sparsity is expected.
-   * - **Motion-Compensated Reconstruction (TevaMorphosia)**
-     - Incorporates motion correction into compressed sensing.
-     - `motionField`: Motion information  
-       `delta`, `rho`, `nIter`: As above
-     - High-quality reconstructions in dynamic imaging scenarios.
+       `Tu, Tut`: Deformation matrices. If not empty, motion compensaiton is performed. 
+     - When data is undersampled and/or sparsity of temporal gradient is expected.
+
 
 Reconstruction Implementation
 -----------------------------
