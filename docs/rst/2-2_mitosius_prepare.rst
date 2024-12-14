@@ -1,6 +1,6 @@
-====================================================================================
-The Mitosius: Prepare the Data, Trajectoryfor and Volume-Elements for Reconstruction
-====================================================================================
+============
+The Mitosius
+============
 
 *Author : Yiwei Jia*
 
