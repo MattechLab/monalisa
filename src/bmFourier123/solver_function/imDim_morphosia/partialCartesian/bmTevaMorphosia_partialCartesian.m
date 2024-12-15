@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function x = bmTevaMorphosia_partialCartesian(  x, z, u, y, ve, C, N_u, n_u, dK_u, ...
+function x = bmTevaMorphosia_partialCartesian(  x, z, u, y, ve, C, N_u, frSize, dK_u, ...
                                                 ind_u, ... 
                                                 Tu, Tut, ...
                                                 delta, rho, regul_mode, ...
@@ -19,11 +19,11 @@ myEps           = 10*eps('single'); % ------------------------------------------
 y               = bmSingle_of_cell(y);
 nCh             = size(y{1}, 2);
 N_u             = double(int32(N_u(:)'));
-if isempty(n_u)
-    n_u = N_u;
+if isempty(frSize)
+    frSize = N_u;
 end
-n_u             = double(int32(n_u(:)'));
-nPt_u           = prod(n_u(:));
+frSize             = double(int32(frSize(:)'));
+nPt_u           = prod(frSize(:));
 dK_u            = double(single(dK_u(:)'));
 
 dX_u            = single(  (1./single(dK_u))./single(N_u)  );
@@ -59,14 +59,14 @@ for i = 1:nFr
     ve{i}       = min(ve{i}, single(ve_max)); 
     
 end
-C               = single(bmBlockReshape(C, n_u));
-FC              = single(bmFC(          C,  N_u, n_u, dK_u)  );
-FC_conj         = single(bmFC_conj(conj(C), N_u, n_u, dK_u)  ); 
+C               = single(bmBlockReshape(C, frSize));
+FC              = single(bmFC(          C,  N_u, frSize, dK_u)  );
+FC_conj         = single(bmFC_conj(conj(C), N_u, frSize, dK_u)  ); 
 
 
 for i = 1:nFr    
     
-    x{i} = single(bmColReshape(x{i}, n_u));
+    x{i} = single(bmColReshape(x{i}, frSize));
 
 end
 
@@ -89,8 +89,8 @@ witnessInfo.param{2}         = dK_u;
 witnessInfo.param_name{3}    = 'N_u'; 
 witnessInfo.param{3}         = N_u; 
 
-witnessInfo.param_name{4}    = 'n_u'; 
-witnessInfo.param{4}         = n_u; 
+witnessInfo.param_name{4}    = 'frSize'; 
+witnessInfo.param{4}         = frSize; 
 
 witnessInfo.param_name{5}    = 'delta'; 
 witnessInfo.param{5}         = delta; 
@@ -131,7 +131,7 @@ if isempty(z)
     z = cell(nFr, 1);
     for i = 1:nFr
         i_minus_1   = mod(i - 2, nFr) + 1;
-        z{i}        = bmImDeform(Tu{i}, x{i}, n_u, []) - x{i_minus_1}; % z{i} = Bx{i}
+        z{i}        = bmImDeform(Tu{i}, x{i}, frSize, []) - x{i_minus_1}; % z{i} = Bx{i}
     end
 end
 if isempty(u)
@@ -159,14 +159,14 @@ for c = 1:nIter
     % initial of CGD
     for i = 1:nFr
         i_minus_1 = mod(i - 2, nFr) + 1;
-        q1_next{i} = y{i} - bmShanna_partialCartesian(x{i}, ind_u{i}, FC, N_u, n_u, dK_u);
-        q2_next{i} = z{i} - u{i} + x{i_minus_1} - bmImDeform(Tu{i}, x{i}, n_u, []);
+        q1_next{i} = y{i} - bmShanna_partialCartesian(x{i}, ind_u{i}, FC, N_u, frSize, dK_u);
+        q2_next{i} = z{i} - u{i} + x{i_minus_1} - bmImDeform(Tu{i}, x{i}, frSize, []);
     end
     
     for i = 1:nFr
         i_plus_1 = mod(i, nFr) + 1;
-        temp_B1_q1_next = bmNakatsha_partialCartesian(ve{i}.*q1_next{i}, ind_u{i}, FC_conj, N_u, n_u, dK_u); % negative_gradient
-        temp_B2_q2_next = Du_rho*(  bmImDeformT(Tut{i}, q2_next{i}, n_u, []) - q2_next{i_plus_1} ); % negative_gradient
+        temp_B1_q1_next = bmNakatsha_partialCartesian(ve{i}.*q1_next{i}, ind_u{i}, FC_conj, N_u, frSize, dK_u); % negative_gradient
+        temp_B2_q2_next = Du_rho*(  bmImDeformT(Tut{i}, q2_next{i}, frSize, []) - q2_next{i_plus_1} ); % negative_gradient
         temp_B_q_next{i} = temp_B1_q1_next + temp_B2_q2_next;
     end
     
@@ -191,8 +191,8 @@ for c = 1:nIter
         
         for i = 1:nFr
             i_minus_1   = mod(i - 2, nFr) + 1;
-            A1_p{i}     = bmShanna_partialCartesian(p{i}, ind_u{i}, FC, N_u, n_u, dK_u);
-            A2_p{i}     = bmImDeform(Tu{i}, p{i}, n_u, []) - p{i_minus_1};
+            A1_p{i}     = bmShanna_partialCartesian(p{i}, ind_u{i}, FC, N_u, frSize, dK_u);
+            A2_p{i}     = bmImDeform(Tu{i}, p{i}, frSize, []) - p{i_minus_1};
         end
         
         P = 0;
@@ -218,8 +218,8 @@ for c = 1:nIter
         
         for i = 1:nFr
             i_plus_1 = mod(i, nFr) + 1;
-            temp_B1_q1_next = bmNakatsha_partialCartesian(ve{i}.*q1_next{i}, ind_u{i}, FC_conj, N_u, n_u, dK_u);
-            temp_B2_q2_next = Du_rho*(  bmImDeformT(Tut{i}, q2_next{i}, n_u, []) - q2_next{i_plus_1} );
+            temp_B1_q1_next = bmNakatsha_partialCartesian(ve{i}.*q1_next{i}, ind_u{i}, FC_conj, N_u, frSize, dK_u);
+            temp_B2_q2_next = Du_rho*(  bmImDeformT(Tut{i}, q2_next{i}, frSize, []) - q2_next{i_plus_1} );
             temp_B_q_next{i} = temp_B1_q1_next + temp_B2_q2_next;
         end
         
@@ -237,7 +237,7 @@ for c = 1:nIter
     % update of z and u 
     for i = 1:nFr
         i_minus_1       = mod(i - 2, nFr) + 1;
-        Vx_plus_u{i}    = bmImDeform(Tu{i}, x{i}, n_u, []) - x{i_minus_1} + u{i};
+        Vx_plus_u{i}    = bmImDeform(Tu{i}, x{i}, frSize, []) - x{i_minus_1} + u{i};
     end
     for i = 1:nFr
         z{i}            = bmProx_oneNorm(Vx_plus_u{i}, delta/rho);
@@ -250,10 +250,10 @@ for c = 1:nIter
     for i = 1:nFr
         i_minus_1 = mod(i - 2, nFr) + 1;
         
-        temp_r  = y{i} - bmShanna_partialCartesian(x{i}, ind_u{i}, FC, N_u, n_u, dK_u); % residu
+        temp_r  = y{i} - bmShanna_partialCartesian(x{i}, ind_u{i}, FC, N_u, frSize, dK_u); % residu
         R       = R + real(  temp_r(:)'*(  ve{i}(:).*temp_r(:)  )  );  
         
-        temp_r  = x{i_minus_1} - bmImDeform(Tu{i}, x{i}, n_u, []);
+        temp_r  = x{i_minus_1} - bmImDeform(Tu{i}, x{i}, frSize, []);
         TV      = TV + Du*sum(abs(  temp_r(:)  ));
         
     end 
@@ -261,15 +261,15 @@ for c = 1:nIter
     
     witnessInfo.param{wit_residu_ind}(1, c)     = R;  
     witnessInfo.param{wit_TV_ind}(1, c)         = TV;  
-    witnessInfo.watch(c, x, n_u, 'loop');
+    witnessInfo.watch(c, x, frSize, 'loop');
 end
 % END_ADMM loop -----------------------------------------------------------
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(c, x, n_u, 'final');
+witnessInfo.watch(c, x, frSize, 'final');
 for i = 1:nFr
-    x{i} = bmBlockReshape(x{i}, n_u);
+    x{i} = bmBlockReshape(x{i}, frSize);
 end
 % END_final ---------------------------------------------------------------
 

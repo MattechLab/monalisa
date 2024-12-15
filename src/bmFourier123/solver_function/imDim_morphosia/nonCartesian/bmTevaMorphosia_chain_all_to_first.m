@@ -4,7 +4,7 @@
 % May 2023
 
 function x = bmTevaMorphosia_chain_all_to_first(  x, z, u, y, ve, C, ...
-                                            Gu, Gut, n_u, ...
+                                            Gu, Gut, frSize, ...
                                             Tu, Tut, ...
                                             delta, rho, regul_mode, ...
                                             nCGD, ve_max, ...
@@ -20,11 +20,11 @@ y               = bmSingle_of_cell(y);
 nCh             = size(y{1}, 2);
 nFr             = size(y(:), 1);
 N_u             = double(int32(Gu{1}.N_u(:)'));
-if isempty(n_u)
-    n_u = N_u;
+if isempty(frSize)
+    frSize = N_u;
 end
-n_u             = double(int32(n_u(:)'));
-nPt_u           = prod(n_u(:));
+frSize             = double(int32(frSize(:)'));
+nPt_u           = prod(frSize(:));
 dK_u            = double(single(Gu{1}.d_u(:)'));
 
 dX_u            = single(  (1./single(dK_u))./single(N_u)  );
@@ -42,14 +42,14 @@ for i = 1:nFr
     ve{i}       = single(bmY_ve_reshape(ve{i}, size(y{i})  ));
     HY{i}       = min(ve{i}, single(ve_max)); 
 end
-C               = single(bmBlockReshape(C, n_u));
-KFC             = single(bmKF(          C,  N_u, n_u, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
-KFC_conj        = single(bmKF_conj(conj(C), N_u, n_u, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
+C               = single(bmBlockReshape(C, frSize));
+KFC             = single(bmKF(          C,  N_u, frSize, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
+KFC_conj        = single(bmKF_conj(conj(C), N_u, frSize, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
 % K_bump        = bmK_bump(N_u).^(0.5); 
 K_bump          = []; 
 
 for i = 1:nFr    
-    x{i} = single(bmColReshape(x{i}, n_u));
+    x{i} = single(bmColReshape(x{i}, frSize));
 end
 
 if isempty(Tu)
@@ -59,7 +59,7 @@ if isempty(Tut)
     Tut = cell(nFr, 1); 
 end
 
-private_init_witnessInfo(witnessInfo, 'bmTevaMorphosia_all_to_first', n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'bmTevaMorphosia_all_to_first', frSize, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
 
 res_y_next      = cell(nFr, 1);
 res_z_next      = cell(nFr, 1);
@@ -74,7 +74,7 @@ if isempty(z)
     z = cell(nFr, 1);
     z{1} = myZero;     
     for i = 2:nFr
-        z{i}        = bmImDeform(Tu{i}, x{i}, n_u, K_bump) - x{1}; % z{i} = Bx{i}
+        z{i}        = bmImDeform(Tu{i}, x{i}, frSize, K_bump) - x{1}; % z{i} = Bx{i}
     end
 end
 if isempty(u)
@@ -104,17 +104,17 @@ for c = 1:nIter
     
     % initial_CGD
     for i = 1:nFr
-        res_y_next{i} = y{i} - bmShanna(x{i}, Gu{i}, KFC, n_u, 'MATLAB');
+        res_y_next{i} = y{i} - bmShanna(x{i}, Gu{i}, KFC, frSize, 'MATLAB');
         
         if i == 1
             res_z_next{i} = z{i} - u{i};
         else
-            res_z_next{i} = z{i} - u{i} - ( bmImDeform(Tu{i}, x{i}, n_u, K_bump) - x{1} );
+            res_z_next{i} = z{i} - u{i} - ( bmImDeform(Tu{i}, x{i}, frSize, K_bump) - x{1} );
         end
     end
     
     for i = 1:nFr
-        dagM_res_y_next = (1/HX)*bmNakatsha(HY{i}.*res_y_next{i}, Gut{i}, KFC_conj, true, n_u, 'MATLAB'); % negative_gradient
+        dagM_res_y_next = (1/HX)*bmNakatsha(HY{i}.*res_y_next{i}, Gut{i}, KFC_conj, true, frSize, 'MATLAB'); % negative_gradient
         
         if i == 1
             dagF_res_z_next = 0;
@@ -122,7 +122,7 @@ for c = 1:nIter
                 dagF_res_z_next = dagF_res_z_next - (1/HX)*rho_HZ*res_z_next{j};
             end
         else
-            dagF_res_z_next = (1/HX)*bmImDeformT(Tut{i}, rho_HZ*res_z_next{i}, n_u, K_bump); % negative_gradient
+            dagF_res_z_next = (1/HX)*bmImDeformT(Tut{i}, rho_HZ*res_z_next{i}, frSize, K_bump); % negative_gradient
         end
         dagA_res_next{i} = dagM_res_y_next + dagF_res_z_next;
     end
@@ -150,11 +150,11 @@ for c = 1:nIter
         
         
         for i = 1:nFr
-            Mp_curr{i}     = bmShanna(p_curr{i}, Gu{i}, KFC, n_u, 'MATLAB');
+            Mp_curr{i}     = bmShanna(p_curr{i}, Gu{i}, KFC, frSize, 'MATLAB');
             if i == 1
                 Fp_curr{i}  = myZero; 
             else
-                Fp_curr{i}  = bmImDeform(Tu{i}, p_curr{i}, n_u, K_bump) - p_curr{1};
+                Fp_curr{i}  = bmImDeform(Tu{i}, p_curr{i}, frSize, K_bump) - p_curr{1};
             end
         end
         
@@ -182,7 +182,7 @@ for c = 1:nIter
         end
         
         for i = 1:nFr
-            dagM_res_y_next = (1/HX)*bmNakatsha(HY{i}.*res_y_next{i}, Gut{i}, KFC_conj, true, n_u, 'MATLAB'); % negative_gradient
+            dagM_res_y_next = (1/HX)*bmNakatsha(HY{i}.*res_y_next{i}, Gut{i}, KFC_conj, true, frSize, 'MATLAB'); % negative_gradient
             
             if i == 1
                 dagF_res_z_next = 0;
@@ -190,7 +190,7 @@ for c = 1:nIter
                     dagF_res_z_next = dagF_res_z_next - (1/HX)*rho_HZ*res_z_next{j};
                 end
             else
-                dagF_res_z_next = (1/HX)*bmImDeformT(Tut{i}, rho_HZ*res_z_next{i}, n_u, K_bump); % negative_gradient
+                dagF_res_z_next = (1/HX)*bmImDeformT(Tut{i}, rho_HZ*res_z_next{i}, frSize, K_bump); % negative_gradient
             end
             dagA_res_next{i} = dagM_res_y_next + dagF_res_z_next;
         end
@@ -218,7 +218,7 @@ for c = 1:nIter
         if i == 1
             Fx_plus_u{i}    = u{i};
         else
-            Fx_plus_u{i}    = bmImDeform(Tu{i}, x{i}, n_u, K_bump) - x{1} + u{i};
+            Fx_plus_u{i}    = bmImDeform(Tu{i}, x{i}, frSize, K_bump) - x{1} + u{i};
         end
     end
     
@@ -233,20 +233,20 @@ for c = 1:nIter
     % monitoring ----------------------------------------------------------
     R   = 0;
     for i = 1:nFr
-        temp_res  = y{i} - bmShanna(x{i}, Gu{i}, KFC, n_u, 'MATLAB'); % residu
+        temp_res  = y{i} - bmShanna(x{i}, Gu{i}, KFC, frSize, 'MATLAB'); % residu
         R       = R + real(  temp_res(:)'*(  ve{i}(:).*temp_res(:)  )  );
     end
     
     TV  = 0;
     for i = 2:nFr
-        temp_res  = bmImDeform(Tu{i}, x{i}, n_u, K_bump) - x{1};
+        temp_res  = bmImDeform(Tu{i}, x{i}, frSize, K_bump) - x{1};
         TV      = TV + HZ*sum(abs(  real(temp_res(:))  )) + HZ*sum(abs(  imag(temp_res(:))  ));
     end
     
     
     witnessInfo.param{wit_residu_ind}(1, c)     = R;  
     witnessInfo.param{wit_TV_ind}(1, c)         = TV;  
-    witnessInfo.watch(c, x, n_u, 'loop');
+    witnessInfo.watch(c, x, frSize, 'loop');
     % END_monitoring ------------------------------------------------------
     
 end
@@ -254,9 +254,9 @@ end
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(c, x, n_u, 'final');
+witnessInfo.watch(c, x, frSize, 'final');
 for i = 1:nFr
-    x{i} = bmBlockReshape(x{i}, n_u);
+    x{i} = bmBlockReshape(x{i}, frSize);
 end
 % END_final ---------------------------------------------------------------
 
@@ -292,7 +292,7 @@ rho     = rho_factor*delta;
 end
 
 
-function private_init_witnessInfo(witnessInfo, arg_name, n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
+function private_init_witnessInfo(witnessInfo, arg_name, frSize, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}       = 'recon_name';
 witnessInfo.param{1}            =  arg_name; 
@@ -303,8 +303,8 @@ witnessInfo.param{2}            = dK_u;
 witnessInfo.param_name{3}       = 'N_u'; 
 witnessInfo.param{3}            = N_u; 
 
-witnessInfo.param_name{4}       = 'n_u'; 
-witnessInfo.param{4}            = n_u; 
+witnessInfo.param_name{4}       = 'frSize'; 
+witnessInfo.param{4}            = frSize; 
 
 witnessInfo.param_name{5}       = 'delta'; 
 witnessInfo.param{5}            = delta; 
