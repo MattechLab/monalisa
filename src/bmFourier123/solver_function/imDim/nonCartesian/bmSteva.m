@@ -44,7 +44,7 @@ if isempty(u)
 u = bmZero([nPt_u, imDim], 'complex_single');
 end
 
-private_init_witnessInfo(witnessInfo, nIter, 'steva', n_u, N_u, dK_u, delta, rho, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'steva', n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
 % END_initial -------------------------------------------------------------
 
 
@@ -154,7 +154,9 @@ rho = rho(:)';
 
 end
 
-function private_init_witnessInfo(witnessInfo, nIter, argName, n_u, N_u, dK_u, delta, rho, nCGD, ve_max)
+
+
+function private_init_witnessInfo(witnessInfo, argName, n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}    = 'recon_name'; 
 witnessInfo.param{1}         = argName; 
@@ -174,16 +176,21 @@ witnessInfo.param{5}         = delta;
 witnessInfo.param_name{6}    = 'rho'; 
 witnessInfo.param{6}         = rho; 
 
-witnessInfo.param_name{7}    = 'nCGD'; 
-witnessInfo.param{7}         = nCGD; 
+witnessInfo.param_name{7}    = 'nIter'; 
+witnessInfo.param{7}         = nIter; 
 
-witnessInfo.param_name{8}    = 've_max'; 
-witnessInfo.param{8}         = ve_max;
+witnessInfo.param_name{8}    = 'nCGD'; 
+witnessInfo.param{8}         = nCGD; 
 
-witnessInfo.param_name{9}    = 'residu'; 
-witnessInfo.param{9}         = zeros(1, nIter); 
+witnessInfo.param_name{9}    = 've_max'; 
+witnessInfo.param{9}         = ve_max;
 
-witnessInfo.param_name{10}   = 'total_variation'; 
-witnessInfo.param{10}        = zeros(1, nIter); 
+witnessInfo.param_name{10}    = 'residu'; 
+witnessInfo.param{10}         = zeros(1, nIter); 
+
+witnessInfo.param_name{11}   = 'total_variation'; 
+witnessInfo.param{11}        = zeros(1, nIter); 
 
 end
+
+
