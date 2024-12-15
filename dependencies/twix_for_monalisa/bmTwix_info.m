@@ -253,7 +253,7 @@ imagesc(mySI);
 colormap gray
 plot(s_center_mass, 'y.-')
 plot(s_mean, 'r.-')
-caxis([0, 3*mean(mySI(:))])
+clim([0, 3*mean(mySI(:))])
 
 % END_display -------------------------------------------------------------
 
