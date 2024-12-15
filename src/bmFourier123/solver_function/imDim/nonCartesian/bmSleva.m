@@ -5,7 +5,7 @@
 
 function x = bmSleva(x, ...
                      y, ve, C, ...
-                     Gu, Gut, n_u, ...
+                     Gu, Gut, frSize, ...
                      delta, regul_mode, ...
                      nCGD, ve_max, ...
                      nIter, witnessInfo  )
@@ -22,7 +22,7 @@ myEps                   = 10*eps('single'); % -------------------------------- m
 
 
 % input data and output image are single. 
-x                       = bmSingle(bmColReshape(x, n_u));
+x                       = bmSingle(bmColReshape(x, frSize));
 y                       = bmSingle(y);
 
 
@@ -30,7 +30,7 @@ y                       = bmSingle(y);
 % every size is double (because indices must be double in Matlab)
 nCh         = size(y, 2); 
 N_u         = double(int32(Gu.N_u(:)'));
-n_u         = double(int32(n_u(:)')); 
+frSize         = double(int32(frSize(:)')); 
 
 
 
@@ -49,21 +49,21 @@ delta_list              = single(private_init_regul_param(delta,   nIter));
 
 
 % coil_sense and deapodization kernels are single
-C                       = single(bmBlockReshape(C, n_u));
-KFC                     = single(bmKF(          C,  N_u, n_u, dK_u, nCh, Gu.kernel_type, Gu.nWin, Gu.kernelParam));
-KFC_conj                = single(bmKF_conj(conj(C), N_u, n_u, dK_u, nCh, Gu.kernel_type, Gu.nWin, Gu.kernelParam));
+C                       = single(bmBlockReshape(C, frSize));
+KFC                     = single(bmKF(          C,  N_u, frSize, dK_u, nCh, Gu.kernel_type, Gu.nWin, Gu.kernelParam));
+KFC_conj                = single(bmKF_conj(conj(C), N_u, frSize, dK_u, nCh, Gu.kernel_type, Gu.nWin, Gu.kernelParam));
 
 
 
 bmInitialWitnessInfo(   witnessInfo, ...
                         function_label, ...
-                        N_u, n_u, dK_u, ve_max, ...
+                        N_u, frSize, dK_u, ve_max, ...
                         nIter, ...
                         nCGD, ...
                         delta_list, [], ...
                         regul_mode); 
                     
-[dafi, regul]           = private_dafi_regul(x, y, Gu, HY, HZ, n_u, KFC);
+[dafi, regul]           = private_dafi_regul(x, y, Gu, HY, HZ, frSize, KFC);
 
 disp('... initial done. ');
 % END_initial -------------------------------------------------------------
@@ -86,9 +86,9 @@ for c = 1:nIter
     % CGD -----------------------------------------------------------------
     
     % L_Aube
-    res_y_next              = bmMinus(  y,  private_M(x, Gu, n_u, KFC   )      );  
+    res_y_next              = bmMinus(  y,  private_M(x, Gu, frSize, KFC   )      );  
     res_z_next              = bmMinus(  0,  private_F(x)    );
-    dagM_res_y_next         = private_dagM(res_y_next, Gut, HX, HY, n_u, KFC_conj);
+    dagM_res_y_next         = private_dagM(res_y_next, Gut, HX, HY, frSize, KFC_conj);
     dagF_res_z_next         = bmMult(delta, private_dagF(res_z_next));
     dagA_res_next           = bmPlus(dagM_res_y_next, dagF_res_z_next); 
     p_next                  = dagA_res_next; 
@@ -107,7 +107,7 @@ for c = 1:nIter
         end
         
         % Le_Midi
-        Mp_curr             = private_M(p_curr, Gu, n_u, KFC); 
+        Mp_curr             = private_M(p_curr, Gu, frSize, KFC); 
         Fp_curr             = private_F(p_curr); 
         sqn_Mp_curr         = bmSquaredNorm(Mp_curr, HY); 
         sqn_Fp_curr         = bmSquaredNorm(Fp_curr, delta*HZ);
@@ -125,7 +125,7 @@ for c = 1:nIter
         % La_Nouvelle_Aube
         res_y_next          = bmAxpy(-a, Mp_curr, res_y_curr); 
         res_z_next          = bmAxpy(-a, Fp_curr, res_z_curr);
-        dagM_res_y_next     =               private_dagM(res_y_next, Gut, HX, HY, n_u, KFC_conj);
+        dagM_res_y_next     =               private_dagM(res_y_next, Gut, HX, HY, frSize, KFC_conj);
         dagF_res_z_next     = bmMult(delta, private_dagF(res_z_next));
         dagA_res_next       = bmPlus(dagM_res_y_next, dagF_res_z_next); 
         sqn_dagA_res_next   = bmSquaredNorm(dagA_res_next, HX);
@@ -138,13 +138,13 @@ for c = 1:nIter
      
     
     % monitoring ----------------------------------------------------------
-    [dafi, regul]                   = private_dafi_regul(x, y, Gu, HY, HZ, n_u, KFC);
+    [dafi, regul]                   = private_dafi_regul(x, y, Gu, HY, HZ, frSize, KFC);
     
     objective                       = 0.5*dafi + 0.5*delta*regul; 
     witnessInfo.param{11}(1, c)     = objective; 
     witnessInfo.param{12}(1, c)     = dafi;  
     witnessInfo.param{13}(1, c)     = regul; 
-    witnessInfo.watch(c, x, n_u, 'loop');
+    witnessInfo.watch(c, x, frSize, 'loop');
     % END_monitoring ------------------------------------------------------
     
 end
@@ -155,8 +155,8 @@ disp(['... ', function_label, ' completed. '])
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(c, x, n_u, 'final');
-x = bmBlockReshape(x, n_u);
+witnessInfo.watch(c, x, frSize, 'final');
+x = bmBlockReshape(x, frSize);
 % END_final ---------------------------------------------------------------
 
 end
@@ -172,9 +172,9 @@ end
 
 
 
-function [dafi, regul]    = private_dafi_regul(x, y, Gu, HY, HZ, n_u, KFC)
+function [dafi, regul]    = private_dafi_regul(x, y, Gu, HY, HZ, frSize, KFC)
     
-        temp_res    = y - bmShanna(x, Gu, KFC, n_u, 'MATLAB'); % residu
+        temp_res    = y - bmShanna(x, Gu, KFC, frSize, 'MATLAB'); % residu
         dafi        = bmSquaredNorm(temp_res, HY);   
         regul       = bmSquaredNorm(x, HZ);      
 
@@ -211,8 +211,8 @@ end
 % MODEL_AND_SPARSIFIER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % forward_model
-function M_x = private_M(x, Gu, n_u, KFC) 
-    M_x = bmShanna(x, Gu, KFC, n_u, 'MATLAB');
+function M_x = private_M(x, Gu, frSize, KFC) 
+    M_x = bmShanna(x, Gu, KFC, frSize, 'MATLAB');
 end
 
 % forward_sparsifier
@@ -223,8 +223,8 @@ end
 
 
 % adjoint_model
-function dagM_y = private_dagM(y, Gut, HX, HY, n_u, KFC_conj)
-    dagM_y = (1/HX)*bmNakatsha(HY.*y, Gut, KFC_conj, true, n_u, 'MATLAB'); % negative_gradient
+function dagM_y = private_dagM(y, Gut, HX, HY, frSize, KFC_conj)
+    dagM_y = (1/HX)*bmNakatsha(HY.*y, Gut, KFC_conj, true, frSize, 'MATLAB'); % negative_gradient
 end
 
 

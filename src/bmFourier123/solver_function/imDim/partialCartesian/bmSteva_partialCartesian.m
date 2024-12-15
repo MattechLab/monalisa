@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function x = bmSteva_partialCartesian(x, z, u, y, ve, C, ind_u, N_u, n_u, dK_u, ...
+function x = bmSteva_partialCartesian(x, z, u, y, ve, C, ind_u, N_u, frSize, dK_u, ...
                                     delta, rho, nCGD, ve_max, ...
                                     nIter, witnessInfo)
 
@@ -13,11 +13,11 @@ myEps   = 10*eps('single'); % --------------------------------------------------
 y           = single(y);   
 nCh         = size(y, 2);
 N_u         = double(int32(  N_u(:)'  ));
-n_u         = double(int32(  n_u(:)'  ));
-if isempty(n_u)
-   n_u = N_u;  
+frSize         = double(int32(  frSize(:)'  ));
+if isempty(frSize)
+   frSize = N_u;  
 end
-nPt_u       = prod(n_u(:)); 
+nPt_u       = prod(frSize(:)); 
 imDim       = size(N_u(:), 1);  
 dK_u        = double(single(dK_u(:)'));
 dX_u        = single(  (1./single(dK_u))./single(N_u)  );
@@ -31,31 +31,31 @@ end
 HX              = single(  prod(dX_u(:))  );
 HZ              = single(  prod(dX_u(:))  );
 HY              = min(single(  bmY_ve_reshape(ve, size(y))  ), single(ve_max)); 
-C               = single(bmBlockReshape(C, n_u));
-FC              = single(bmFC(          C,  N_u, n_u, dK_u)  );
-FC_conj         = single(bmFC_conj(conj(C), N_u, n_u, dK_u)  ); 
+C               = single(bmBlockReshape(C, frSize));
+FC              = single(bmFC(          C,  N_u, frSize, dK_u)  );
+FC_conj         = single(bmFC_conj(conj(C), N_u, frSize, dK_u)  ); 
 
-x = single(bmColReshape(x, n_u));
+x = single(bmColReshape(x, frSize));
 
 if isempty(z)
-    z = bmBackGradient(x, n_u, dX_u);
+    z = bmBackGradient(x, frSize, dX_u);
 end
 if isempty(u)
     u = bmZero([nPt_u, imDim], 'complex_single');
 end
 
-private_init_witnessInfo(witnessInfo, 'steva_partialCartesian', n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'steva_partialCartesian', frSize, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
 % END_initial -------------------------------------------------------------
 
 
 % ADMM loop ---------------------------------------------------------------
 for c = 1:nIter 
 
-    res_y_next   = y - bmShanna_partialCartesian(x, ind_u, FC, N_u, n_u, dK_u); 
-    res_z_next   = (z - u) - bmBackGradient(x, n_u, dX_u);
+    res_y_next   = y - bmShanna_partialCartesian(x, ind_u, FC, N_u, frSize, dK_u); 
+    res_z_next   = (z - u) - bmBackGradient(x, frSize, dX_u);
     
-    dagM_res_y_next  = (1/HX)*bmNakatsha_partialCartesian(HY.*res_y_next, ind_u, FC_conj, N_u, n_u, dK_u);  
-    dagF_res_z_next  = rho(1, c)*(1/HX)*bmBackGradientT(HZ*res_z_next, n_u, dX_u);
+    dagM_res_y_next  = (1/HX)*bmNakatsha_partialCartesian(HY.*res_y_next, ind_u, FC_conj, N_u, frSize, dK_u);  
+    dagF_res_z_next  = rho(1, c)*(1/HX)*bmBackGradientT(HZ*res_z_next, frSize, dX_u);
 
     dagA_res_next   = dagM_res_y_next + dagF_res_z_next; 
     p_next          = dagA_res_next; 
@@ -75,8 +75,8 @@ for c = 1:nIter
         end
         
         
-        Mp_curr     = bmShanna_partialCartesian(p_curr, ind_u, FC, N_u, n_u, dK_u);
-        Fp_curr     = bmBackGradient(p_curr, n_u, dX_u);
+        Mp_curr     = bmShanna_partialCartesian(p_curr, ind_u, FC, N_u, frSize, dK_u);
+        Fp_curr     = bmBackGradient(p_curr, frSize, dX_u);
         
         sqn_Mp_curr      = real(   Mp_curr(:)'*(HY(:).*Mp_curr(:))   );
         sqn_Fp_curr      = real(   Fp_curr(:)'*(rho(1, c)*HZ*Fp_curr(:))   );
@@ -93,8 +93,8 @@ for c = 1:nIter
         res_y_next          = res_y_curr - a*Mp_curr;
         res_z_next          = res_z_curr - a*Fp_curr;
         
-        dagM_res_y_next   = (1/HX)*bmNakatsha_partialCartesian(HY.*res_y_next, ind_u, FC_conj, N_u, n_u, dK_u); 
-        dagF_res_z_next   = rho(1, c)*(1/HX)*bmBackGradientT(HZ*res_z_next, n_u, dX_u);
+        dagM_res_y_next   = (1/HX)*bmNakatsha_partialCartesian(HY.*res_y_next, ind_u, FC_conj, N_u, frSize, dK_u); 
+        dagF_res_z_next   = rho(1, c)*(1/HX)*bmBackGradientT(HZ*res_z_next, frSize, dX_u);
         
         dagA_res_next     = dagM_res_y_next + dagF_res_z_next;
         sqn_dagA_res_next = real(   dagA_res_next(:)'*(HX*dagA_res_next(:))   );
@@ -105,28 +105,28 @@ for c = 1:nIter
 
     end
 
-    bGx_plus_u      = bmBackGradient(x, n_u, dX_u) + u; 
+    bGx_plus_u      = bmBackGradient(x, frSize, dX_u) + u; 
     z               = bmProx_oneNorm(bGx_plus_u, delta(1, c)/rho(1, c)); 
     u               = bGx_plus_u - z; 
      
     % evaluating_residuals_for_monitoring ---------------------------------
-    temp_r          =   y - bmShanna_partialCartesian(x, ind_u, FC, N_u, n_u, dK_u); 
+    temp_r          =   y - bmShanna_partialCartesian(x, ind_u, FC, N_u, frSize, dK_u); 
     R               = real(  temp_r(:)'*(HY(:).*temp_r(:))  ); 
     
-    temp_r  = bmBackGradient(x, n_u, dX_u);
+    temp_r  = bmBackGradient(x, frSize, dX_u);
     TV      = HZ*sum(abs(  real(temp_r(:))  )) + HZ*sum(abs(  imag(temp_r(:))  ));
     
     witnessInfo.param{9}(1, c)  = R; 
     witnessInfo.param{10}(1, c) = TV; 
     % END_evaluating_residuals_for_monitoring -----------------------------
     
-    witnessInfo.watch(c, x, n_u, 'loop'); 
+    witnessInfo.watch(c, x, frSize, 'loop'); 
 end
 % END_ADMM loop -----------------------------------------------------------
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(c, x, n_u, 'final'); 
-x = bmBlockReshape(x, n_u);
+witnessInfo.watch(c, x, frSize, 'final'); 
+x = bmBlockReshape(x, frSize);
 % END_final ---------------------------------------------------------------
 
 
@@ -151,7 +151,7 @@ rho = rho(:)';
 
 end
 
-function private_init_witnessInfo(witnessInfo, argName, n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
+function private_init_witnessInfo(witnessInfo, argName, frSize, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}    = 'recon_name'; 
 witnessInfo.param{1}         = argName; 
@@ -162,8 +162,8 @@ witnessInfo.param{2}         = dK_u;
 witnessInfo.param_name{3}    = 'N_u'; 
 witnessInfo.param{3}         = N_u; 
 
-witnessInfo.param_name{4}    = 'n_u'; 
-witnessInfo.param{4}         = n_u; 
+witnessInfo.param_name{4}    = 'frSize'; 
+witnessInfo.param{4}         = frSize; 
 
 witnessInfo.param_name{5}    = 'delta'; 
 witnessInfo.param{5}         = delta; 

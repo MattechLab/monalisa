@@ -5,7 +5,7 @@
 
 function x = bmSensitivaDuoMorphosia_chain(x, ...
                                      y, ve, C, ...
-                                     Gu, Gut, n_u, ...
+                                     Gu, Gut, frSize, ...
                                      Tu1, Tu1t, Tu2, Tu2t, ...
                                      delta, regul_mode, ...
                                      nCGD, ve_max, ...
@@ -23,7 +23,7 @@ myEps                   = 10*eps('single'); % -------------------------------- m
 
 
 % input data and output image are single. 
-x                       = bmSingle(bmColReshape(x, n_u));
+x                       = bmSingle(bmColReshape(x, frSize));
 y                       = bmSingle(y);
 
 
@@ -32,7 +32,7 @@ y                       = bmSingle(y);
 nCh                     = double(size(y{1}, 2));
 nFr                     = double(size(y(:), 1));
 N_u                     = double(int32(Gu{1}.N_u(:)'));
-n_u                     = double(int32(n_u(:)'));
+frSize                     = double(int32(frSize(:)'));
 
 
 
@@ -52,9 +52,9 @@ delta_list              = single(private_init_regul_param(delta,   nIter));
 
 
 % coil_sense and deapodization kernels are single
-C                       = single(bmBlockReshape(C, n_u));
-KFC                     = single(bmKF(          C,  N_u, n_u, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
-KFC_conj                = single(bmKF_conj(conj(C), N_u, n_u, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
+C                       = single(bmBlockReshape(C, frSize));
+KFC                     = single(bmKF(          C,  N_u, frSize, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
+KFC_conj                = single(bmKF_conj(conj(C), N_u, frSize, dK_u, nCh, Gu{1}.kernel_type, Gu{1}.nWin, Gu{1}.kernelParam));
 
 
 
@@ -78,13 +78,13 @@ K_bump          = []; % bmK_bump(N_u).^(0.5);
 
 bmInitialWitnessInfo(   witnessInfo, ...
                         function_label, ...
-                        N_u, n_u, dK_u, ve_max, ...
+                        N_u, frSize, dK_u, ve_max, ...
                         nIter, ...
                         nCGD, ...
                         delta_list, [], ...
                         regul_mode); 
                     
-[dafi, regul] = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, n_u, nFr, KFC, K_bump);
+[dafi, regul] = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, frSize, nFr, KFC, K_bump);
 
 disp('... initial done. ');
 % END_initial -------------------------------------------------------------
@@ -107,12 +107,12 @@ for c = 1:nIter
     % CGD -----------------------------------------------------------------
     
     % L_Aube
-    res_y_next              = bmMinus(  y,  private_M(x, Gu, n_u, nFr, KFC   )      );  
-    res_z1_next             = bmMinus(  0,  private_F1(x, Tu1, n_u, nFr, K_bump)    );
-    res_z2_next             = bmMinus(  0,  private_F2(x, Tu2, n_u, nFr, K_bump)    );
-    dagM_res_y_next         = private_dagM(res_y_next, Gut, HX, HY, n_u, nFr, KFC_conj);
-    dagF1_res_z1_next       = bmMult(delta, private_dagF1(res_z1_next, Tu1t, HX, HZ1, n_u, nFr, K_bump));
-    dagF2_res_z2_next       = bmMult(delta, private_dagF2(res_z2_next, Tu2t, HX, HZ2, n_u, nFr, K_bump));
+    res_y_next              = bmMinus(  y,  private_M(x, Gu, frSize, nFr, KFC   )      );  
+    res_z1_next             = bmMinus(  0,  private_F1(x, Tu1, frSize, nFr, K_bump)    );
+    res_z2_next             = bmMinus(  0,  private_F2(x, Tu2, frSize, nFr, K_bump)    );
+    dagM_res_y_next         = private_dagM(res_y_next, Gut, HX, HY, frSize, nFr, KFC_conj);
+    dagF1_res_z1_next       = bmMult(delta, private_dagF1(res_z1_next, Tu1t, HX, HZ1, frSize, nFr, K_bump));
+    dagF2_res_z2_next       = bmMult(delta, private_dagF2(res_z2_next, Tu2t, HX, HZ2, frSize, nFr, K_bump));
     dagA_res_next           = bmPlus(dagM_res_y_next, bmPlus(dagF1_res_z1_next, dagF2_res_z2_next)); 
     p_next                  = dagA_res_next; 
     sqn_dagA_res_next       = bmSquaredNorm(  dagA_res_next, HX  ); 
@@ -131,9 +131,9 @@ for c = 1:nIter
         end
         
         % Le_Midi
-        Mp_curr             = private_M(p_curr, Gu, n_u, nFr, KFC); 
-        F1p_curr            = private_F1(p_curr, Tu1, n_u, nFr, K_bump); 
-        F2p_curr            = private_F2(p_curr, Tu2, n_u, nFr, K_bump); 
+        Mp_curr             = private_M(p_curr, Gu, frSize, nFr, KFC); 
+        F1p_curr            = private_F1(p_curr, Tu1, frSize, nFr, K_bump); 
+        F2p_curr            = private_F2(p_curr, Tu2, frSize, nFr, K_bump); 
         sqn_Mp_curr         = bmSquaredNorm(Mp_curr, HY); 
         sqn_F1p_curr        = bmSquaredNorm(F1p_curr, delta*HZ1);
         sqn_F2p_curr        = bmSquaredNorm(F2p_curr, delta*HZ2);
@@ -152,9 +152,9 @@ for c = 1:nIter
         res_y_next          = bmAxpy(-a, Mp_curr, res_y_curr); 
         res_z1_next         = bmAxpy(-a, F1p_curr, res_z1_curr);
         res_z2_next         = bmAxpy(-a, F2p_curr, res_z2_curr);
-        dagM_res_y_next     =             private_dagM(res_y_next, Gut, HX, HY, n_u, nFr, KFC_conj);
-        dagF1_res_z1_next   = bmMult(delta, private_dagF1(res_z1_next, Tu1t, HX, HZ1, n_u, nFr, K_bump));
-        dagF2_res_z2_next   = bmMult(delta, private_dagF2(res_z2_next, Tu2t, HX, HZ2, n_u, nFr, K_bump));
+        dagM_res_y_next     =             private_dagM(res_y_next, Gut, HX, HY, frSize, nFr, KFC_conj);
+        dagF1_res_z1_next   = bmMult(delta, private_dagF1(res_z1_next, Tu1t, HX, HZ1, frSize, nFr, K_bump));
+        dagF2_res_z2_next   = bmMult(delta, private_dagF2(res_z2_next, Tu2t, HX, HZ2, frSize, nFr, K_bump));
         dagA_res_next       = bmPlus(dagM_res_y_next, bmPlus(dagF1_res_z1_next, dagF2_res_z2_next)); 
         sqn_dagA_res_next   = bmSquaredNorm(dagA_res_next, HX);
         b                   = sqn_dagA_res_next/sqn_dagA_res_curr; 
@@ -166,13 +166,13 @@ for c = 1:nIter
      
     
     % monitoring ----------------------------------------------------------
-    [dafi, regul]                   = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, n_u, nFr, KFC, K_bump);
+    [dafi, regul]                   = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, frSize, nFr, KFC, K_bump);
     
     objective                       = 0.5*dafi + 0.5*delta*regul; 
     witnessInfo.param{11}(1, c)     = objective; 
     witnessInfo.param{12}(1, c)     = dafi;  
     witnessInfo.param{13}(1, c)     = regul; 
-    witnessInfo.watch(c, x, n_u, 'loop');
+    witnessInfo.watch(c, x, frSize, 'loop');
     % END_monitoring ------------------------------------------------------
     
 end
@@ -183,8 +183,8 @@ disp(['... ', function_label, ' completed. '])
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(c, x, n_u, 'final');
-x = bmBlockReshape(x, n_u);
+witnessInfo.watch(c, x, frSize, 'final');
+x = bmBlockReshape(x, frSize);
 % END_final ---------------------------------------------------------------
 
 end
@@ -204,20 +204,20 @@ end
 
 
 
-function [dafi, regul]    = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, n_u, nFr, KFC, K_bump) 
+function [dafi, regul]    = private_dafi_regul(x, y, Gu, Tu1, Tu2, HY, HZ1, HZ2, frSize, nFr, KFC, K_bump) 
 
     dafi   = 0;
     regul  = 0; 
     for i = 1:nFr
-        temp_res    = y{i} - bmShanna(x{i}, Gu{i}, KFC, n_u, 'MATLAB'); % residu
+        temp_res    = y{i} - bmShanna(x{i}, Gu{i}, KFC, frSize, 'MATLAB'); % residu
         dafi        = dafi + bmSquaredNorm(temp_res, HY{i});   
         
         i_minus_1   = mod( (i-1) - 1, nFr) + 1; 
-        temp_res    = x{i_minus_1} - bmImDeform(Tu1{i}, x{i}, n_u, K_bump);
+        temp_res    = x{i_minus_1} - bmImDeform(Tu1{i}, x{i}, frSize, K_bump);
         regul       = regul + bmSquaredNorm(temp_res, HZ1);      
         
         i_plus_1    = mod( (i+1) - 1, nFr) + 1; 
-        temp_res    = x{i_plus_1} - bmImDeform(Tu2{i}, x{i}, n_u, K_bump);
+        temp_res    = x{i_plus_1} - bmImDeform(Tu2{i}, x{i}, frSize, K_bump);
         regul       = regul + bmSquaredNorm(temp_res, HZ2);
         
     end 
@@ -253,57 +253,57 @@ end
 
 % MODEL_AND_SPARSIFIER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % forward_model
-function M_x = private_M(x, Gu, n_u, nFr, KFC)
+function M_x = private_M(x, Gu, frSize, nFr, KFC)
     M_x = cell(nFr, 1); 
     for i = 1:nFr
-        M_x{i}     = bmShanna(x{i}, Gu{i}, KFC, n_u, 'MATLAB');
+        M_x{i}     = bmShanna(x{i}, Gu{i}, KFC, frSize, 'MATLAB');
     end
 end
 
 
 % forward_sparsifier_1
-function F1_x = private_F1(x, Tu1, n_u, nFr, K_bump)
+function F1_x = private_F1(x, Tu1, frSize, nFr, K_bump)
     F1_x = cell(nFr, 1); 
     for i = 1:nFr
         i_minus_1   = mod( (i-1) - 1, nFr) + 1;
-        F1_x{i}     = 0.5*(bmImDeform(Tu1{i}, x{i}, n_u, K_bump) - x{i_minus_1}); 
+        F1_x{i}     = 0.5*(bmImDeform(Tu1{i}, x{i}, frSize, K_bump) - x{i_minus_1}); 
     end
 end
 
 % forward_sparsifier_2
-function F2_x = private_F2(x, Tu2, n_u, nFr, K_bump)
+function F2_x = private_F2(x, Tu2, frSize, nFr, K_bump)
     F2_x = cell(nFr, 1); 
     for i = 1:nFr
         i_plus_1   = mod( (i+1) - 1, nFr) + 1;
-        F2_x{i}    = 0.5*(bmImDeform(Tu2{i}, x{i}, n_u, K_bump) - x{i_plus_1}); 
+        F2_x{i}    = 0.5*(bmImDeform(Tu2{i}, x{i}, frSize, K_bump) - x{i_plus_1}); 
     end
 end
 
 % adjoint_model
-function dagM_y = private_dagM(y, Gut, HX, HY, n_u, nFr, KFC_conj)
+function dagM_y = private_dagM(y, Gut, HX, HY, frSize, nFr, KFC_conj)
     dagM_y = cell(nFr, 1); 
     for i = 1:nFr
-        dagM_y{i} = (1/HX)*bmNakatsha(HY{i}.*y{i}, Gut{i}, KFC_conj, true, n_u, 'MATLAB'); % negative_gradient
+        dagM_y{i} = (1/HX)*bmNakatsha(HY{i}.*y{i}, Gut{i}, KFC_conj, true, frSize, 'MATLAB'); % negative_gradient
     end
 end
 
 
 % adjoint_sparsifier_1
-function dagF1_z = private_dagF1(z, Tu1t, HX, HZ1, n_u, nFr, K_bump)
+function dagF1_z = private_dagF1(z, Tu1t, HX, HZ1, frSize, nFr, K_bump)
     dagF1_z = cell(nFr, 1); 
     for i = 1:nFr
         i_plus_1   = mod( (i+1) - 1, nFr) + 1;
-        dagF1_z{i} = (0.5/HX)*(   bmImDeformT(Tu1t{i}, HZ1*z{i}, n_u, K_bump) - HZ1*z{i_plus_1}  ); % negative_gradient
+        dagF1_z{i} = (0.5/HX)*(   bmImDeformT(Tu1t{i}, HZ1*z{i}, frSize, K_bump) - HZ1*z{i_plus_1}  ); % negative_gradient
     end
 end
 
 
 % adjoint_sparsifier_2
-function dagF2_z = private_dagF2(z, Tu2t, HX, HZ2, n_u, nFr, K_bump)
+function dagF2_z = private_dagF2(z, Tu2t, HX, HZ2, frSize, nFr, K_bump)
     dagF2_z = cell(nFr, 1); 
     for i = 1:nFr
         i_minus_1   = mod( (i-1) - 1, nFr) + 1;
-        dagF2_z{i}  = (0.5/HX)*(   bmImDeformT(Tu2t{i}, HZ2*z{i}, n_u, K_bump) - HZ2*z{i_minus_1}  ); % negative_gradient
+        dagF2_z{i}  = (0.5/HX)*(   bmImDeformT(Tu2t{i}, HZ2*z{i}, frSize, K_bump) - HZ2*z{i_minus_1}  ); % negative_gradient
     end
 end
 
