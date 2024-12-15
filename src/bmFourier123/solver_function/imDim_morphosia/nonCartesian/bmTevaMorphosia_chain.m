@@ -97,7 +97,7 @@ disp('... initial done. ');
 
 % ADMM loop ---------------------------------------------------------------
 disp([function_label, ' is running ...']);
-for c=1:nIter
+for c = 1:nIter
     
     % seting_regul_weight -------------------------------------------------
     if strcmp(regul_mode, 'normal')
@@ -221,13 +221,13 @@ function [dafi, regul]    = private_dafi_regul(x, y, Gu, Tu, HY, HZ, n_u, nFr, K
 end
 
 
-function out_param = private_init_regul_param(in_param, nIter_max)
+function out_param = private_init_regul_param(in_param, nIter)
 
 out_param       = single(  abs(in_param(:))  );
 if size(out_param, 1) == 1
-    out_param   = linspace(out_param, out_param, nIter_max);
+    out_param   = linspace(out_param, out_param, nIter);
 elseif size(out_param, 1) == 2
-    out_param   = linspace(out_param(1, 1), out_param(2, 1), nIter_max);
+    out_param   = linspace(out_param(1, 1), out_param(2, 1), nIter);
 end
 out_param = out_param(:)';
 out_param = single(out_param); 

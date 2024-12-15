@@ -8,7 +8,7 @@ function x = bmTevaMorphosia_chain_all_to_first(  x, z, u, y, ve, C, ...
                                             Tu, Tut, ...
                                             delta, rho, regul_mode, ...
                                             nCGD, ve_max, ...
-                                            convCond, witnessInfo)
+                                            nIter, witnessInfo)
 
 % initial -----------------------------------------------------------------
 
@@ -31,7 +31,7 @@ dX_u            = single(  (1./single(dK_u))./single(N_u)  );
 HX              = single(  prod(dX_u(:))  );
 HZ              = HX; 
 
-[delta_list, rho_list]    = private_init_delta_rho(delta, rho, convCond); 
+[delta_list, rho_list]    = private_init_delta_rho(delta, rho, nIter); 
 
 if isempty(ve_max)
    ve_max = single(bmMax(ve)); 
@@ -59,7 +59,7 @@ if isempty(Tut)
     Tut = cell(nFr, 1); 
 end
 
-private_init_witnessInfo(witnessInfo, convCond, 'bmTevaMorphosia_all_to_first', n_u, N_u, dK_u, delta, rho, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'bmTevaMorphosia_all_to_first', n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
 
 res_y_next      = cell(nFr, 1);
 res_z_next      = cell(nFr, 1);
@@ -89,9 +89,7 @@ disp('... initial done. ');
 
 
 % ADMM loop ---------------------------------------------------------------
-while convCond.check()
-    
-    c = convCond.nIter_curr; 
+for c = 1:nIter
     
     if strcmp(regul_mode, 'normal')
         delta   = delta_list(1, c);
@@ -256,7 +254,7 @@ end
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(convCond.nIter_curr, x, n_u, 'final');
+witnessInfo.watch(c, x, n_u, 'final');
 for i = 1:nFr
     x{i} = bmBlockReshape(x{i}, n_u);
 end
@@ -265,20 +263,20 @@ end
 end
 
 
-function [delta, rho] = private_init_delta_rho(delta, rho, convCond)
+function [delta, rho] = private_init_delta_rho(delta, rho, nIter)
 
 rho             = single(  abs(rho(:))  );
 delta           = single(  abs(delta(:))  );
 if size(delta, 1) == 1
-    delta   = linspace(delta, delta, convCond.nIter_max);
+    delta   = linspace(delta, delta, nIter);
 elseif size(delta, 1) == 2
-    delta   = linspace(delta(1, 1), delta(2, 1), convCond.nIter_max);
+    delta   = linspace(delta(1, 1), delta(2, 1), nIter);
 end
 delta = delta(:)';
 if size(rho, 1) == 1
-    rho     = linspace(rho,     rho, convCond.nIter_max);
+    rho     = linspace(rho, rho, nIter);
 elseif size(rho, 1) == 2
-    rho     = linspace(rho(1, 1),     rho(2, 1), convCond.nIter_max);
+    rho     = linspace(rho(1, 1), rho(2, 1), nIter);
 end
 rho = rho(:)';
 
@@ -294,7 +292,7 @@ rho     = rho_factor*delta;
 end
 
 
-function private_init_witnessInfo(witnessInfo, convCond, arg_name, n_u, N_u, dK_u, delta, rho, nCGD, ve_max)
+function private_init_witnessInfo(witnessInfo, arg_name, n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}       = 'recon_name';
 witnessInfo.param{1}            =  arg_name; 
@@ -314,22 +312,23 @@ witnessInfo.param{5}            = delta;
 witnessInfo.param_name{6}       = 'rho'; 
 witnessInfo.param{6}            = rho; 
 
-witnessInfo.param_name{7}       = 'nCGD'; 
-witnessInfo.param{7}            = nCGD; 
+witnessInfo.param_name{7}       = 'nIter'; 
+witnessInfo.param{7}            = nIter; 
 
-witnessInfo.param_name{8}       = 've_max'; 
-witnessInfo.param{8}            = ve_max;
+witnessInfo.param_name{8}       = 'nCGD'; 
+witnessInfo.param{8}            = nCGD; 
 
-witnessInfo.param_name{9}       = 'regul_mode'; 
-witnessInfo.param{9}            = regul_mode;
+witnessInfo.param_name{9}       = 've_max'; 
+witnessInfo.param{9}            = ve_max;
 
-wit_residu_ind = 10; 
-witnessInfo.param_name{10}      = 'data_fidelity'; 
-witnessInfo.param{10}           = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{10}      = 'regul_mode'; 
+witnessInfo.param{10}           = regul_mode;
 
-wit_TV_ind = 11; 
-witnessInfo.param_name{11}      = 'tTV'; 
-witnessInfo.param{11}           = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{11}      = 'data_fidelity'; 
+witnessInfo.param{11}           = zeros(1, nIter); 
+
+witnessInfo.param_name{12}      = 'tTV'; 
+witnessInfo.param{12}           = zeros(1, nIter); 
 
 end
 

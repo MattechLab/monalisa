@@ -5,7 +5,7 @@
 
 function x = bmSteva_partialCartesian(x, z, u, y, ve, C, ind_u, N_u, n_u, dK_u, ...
                                     delta, rho, nCGD, ve_max, ...
-                                    convCond, witnessInfo)
+                                    nIter, witnessInfo)
 
 % initial -----------------------------------------------------------------
 myEps   = 10*eps('single'); % -------------------------------------------------- magic number
@@ -26,7 +26,7 @@ if isempty(ve_max)
    ve_max = max(ve(:));  
 end
 
-[delta, rho]    = private_init_delta_rho(delta, rho, convCond); 
+[delta, rho]    = private_init_delta_rho(delta, rho, nIter); 
 
 HX              = single(  prod(dX_u(:))  );
 HZ              = single(  prod(dX_u(:))  );
@@ -44,14 +44,12 @@ if isempty(u)
     u = bmZero([nPt_u, imDim], 'complex_single');
 end
 
-private_init_witnessInfo(witnessInfo, convCond, 'steva_partialCartesian', n_u, N_u, dK_u, delta, rho, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'steva_partialCartesian', n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max); 
 % END_initial -------------------------------------------------------------
 
 
 % ADMM loop ---------------------------------------------------------------
-while convCond.check()
-    
-    c = convCond.nIter_curr; 
+for c = 1:nIter 
 
     res_y_next   = y - bmShanna_partialCartesian(x, ind_u, FC, N_u, n_u, dK_u); 
     res_z_next   = (z - u) - bmBackGradient(x, n_u, dX_u);
@@ -127,33 +125,33 @@ end
 % END_ADMM loop -----------------------------------------------------------
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(convCond.nIter_curr, x, n_u, 'final'); 
+witnessInfo.watch(c, x, n_u, 'final'); 
 x = bmBlockReshape(x, n_u);
 % END_final ---------------------------------------------------------------
 
 
 end
 
-function [delta, rho] = private_init_delta_rho(delta, rho, convCond)
+function [delta, rho] = private_init_delta_rho(delta, rho, nIter)
 
 rho             = single(  abs(rho(:))  );
 delta           = single(  abs(delta(:))  );
 if size(delta, 1) == 1
-    delta   = linspace(delta, delta, convCond.nIter_max);
+    delta   = linspace(delta, delta, nIter);
 elseif size(delta, 1) == 2
-    delta   = linspace(delta(1, 1), delta(2, 1), convCond.nIter_max);
+    delta   = linspace(delta(1, 1), delta(2, 1), nIter);
 end
 delta = delta(:)';
 if size(rho, 1) == 1
-    rho     = linspace(rho,     rho, convCond.nIter_max);
+    rho     = linspace(rho,     rho, nIter);
 elseif size(rho, 1) == 2
-    rho     = linspace(rho(1, 1),     rho(2, 1), convCond.nIter_max);
+    rho     = linspace(rho(1, 1),     rho(2, 1), nIter);
 end
 rho = rho(:)';
 
 end
 
-function private_init_witnessInfo(witnessInfo, convCond, argName, n_u, N_u, dK_u, delta, rho, nCGD, ve_max)
+function private_init_witnessInfo(witnessInfo, argName, n_u, N_u, dK_u, delta, rho, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}    = 'recon_name'; 
 witnessInfo.param{1}         = argName; 
@@ -173,16 +171,19 @@ witnessInfo.param{5}         = delta;
 witnessInfo.param_name{6}    = 'rho'; 
 witnessInfo.param{6}         = rho; 
 
-witnessInfo.param_name{7}    = 'nCGD'; 
-witnessInfo.param{7}         = nCGD; 
+witnessInfo.param_name{7}    = 'nIter'; 
+witnessInfo.param{7}         = nIter; 
 
-witnessInfo.param_name{8}    = 've_max'; 
-witnessInfo.param{8}         = ve_max;
+witnessInfo.param_name{8}    = 'nCGD'; 
+witnessInfo.param{8}         = nCGD; 
 
-witnessInfo.param_name{9}    = 'residu'; 
-witnessInfo.param{9}         = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{9}    = 've_max'; 
+witnessInfo.param{9}         = ve_max;
 
-witnessInfo.param_name{10}   = 'total_variation'; 
-witnessInfo.param{10}        = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{10}   = 'residu'; 
+witnessInfo.param{10}        = zeros(1, nIter); 
+
+witnessInfo.param_name{11}   = 'total_variation'; 
+witnessInfo.param{11}        = zeros(1, nIter); 
 
 end
