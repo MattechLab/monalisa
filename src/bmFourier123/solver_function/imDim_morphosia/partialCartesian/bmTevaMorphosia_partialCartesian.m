@@ -8,7 +8,7 @@ function x = bmTevaMorphosia_partialCartesian(  x, z, u, y, ve, C, N_u, n_u, dK_
                                                 Tu, Tut, ...
                                                 delta, rho, regul_mode, ...
                                                 nCGD, ve_max, ...
-                                                convCond, witnessInfo)
+                                                nIter, witnessInfo)
 
 % initial -----------------------------------------------------------------
 
@@ -35,15 +35,15 @@ rho             = single(  abs(rho(:))  );
 delta_list      = []; 
 rho_list        = [];
 if size(delta, 1) == 1
-    delta_list  = linspace(delta, delta, convCond.nIter_max);
+    delta_list  = linspace(delta, delta, nIter);
 elseif size(delta, 1) == 2  
-    delta_list  = linspace(delta(1, 1), delta(2, 1), convCond.nIter_max); 
+    delta_list  = linspace(delta(1, 1), delta(2, 1), nIter); 
 end
 delta_list = delta_list(:)'; 
 if size(rho, 1) == 1
-    rho_list    = linspace(rho,     rho, convCond.nIter_max);
+    rho_list    = linspace(rho,     rho, nIter);
 elseif size(rho, 1) == 2   
-    rho_list    = linspace(rho(1, 1),     rho(2, 1), convCond.nIter_max); 
+    rho_list    = linspace(rho(1, 1),     rho(2, 1), nIter); 
 end
 rho_list = rho_list(:)'; 
 
@@ -98,22 +98,25 @@ witnessInfo.param{5}         = delta;
 witnessInfo.param_name{6}    = 'rho'; 
 witnessInfo.param{6}         = rho; 
 
-witnessInfo.param_name{7}    = 'nCGD'; 
-witnessInfo.param{7}         = nCGD; 
+witnessInfo.param_name{7}    = 'nIter'; 
+witnessInfo.param{7}         = nIter; 
 
-witnessInfo.param_name{8}    = 've_max'; 
-witnessInfo.param{8}         = ve_max;
+witnessInfo.param_name{8}    = 'nCGD'; 
+witnessInfo.param{8}         = nCGD; 
 
-witnessInfo.param_name{9}    = 'regul_mode'; 
-witnessInfo.param{9}         = regul_mode;
+witnessInfo.param_name{9}    = 've_max'; 
+witnessInfo.param{9}         = ve_max;
 
-wit_residu_ind = 10; 
-witnessInfo.param_name{10}    = 'residu'; 
-witnessInfo.param{10}         = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{10}    = 'regul_mode'; 
+witnessInfo.param{10}         = regul_mode;
 
-wit_TV_ind = 11; 
-witnessInfo.param_name{11}   = 'total_variation'; 
-witnessInfo.param{11}        = zeros(1, convCond.nIter_max); 
+wit_residu_ind = 11; 
+witnessInfo.param_name{11}    = 'residu'; 
+witnessInfo.param{11}         = zeros(1, nIter); 
+
+wit_TV_ind = 12; 
+witnessInfo.param_name{12}   = 'total_variation'; 
+witnessInfo.param{12}        = zeros(1, nIter); 
 
 Vx_plus_u       = cell(nFr, 1);
 q1_next         = cell(nFr, 1);
@@ -143,9 +146,7 @@ disp('... initial done. ');
 
 
 % ADMM loop ---------------------------------------------------------------
-while convCond.check()
-    
-    c = convCond.nIter_curr; 
+for c = 1:nIter
     
     if strcmp(regul_mode, 'normal')
         delta   = delta_list(1, c);
@@ -266,7 +267,7 @@ end
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(convCond.nIter_curr, x, n_u, 'final');
+witnessInfo.watch(c, x, n_u, 'final');
 for i = 1:nFr
     x{i} = bmBlockReshape(x{i}, n_u);
 end

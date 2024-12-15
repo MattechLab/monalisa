@@ -5,7 +5,7 @@
 
 function x = bmSensa(   x, y, ve, C, Gu, Gut, n_u, ...
                         nCGD, ve_max, ...
-                        convCond, witnessInfo)
+                        nIter, witnessInfo)
 
 % initial -----------------------------------------------------------------
 myEps       = 10*eps('single'); % --------------------------------------------- magic_number
@@ -31,14 +31,12 @@ if isempty(ve_max)
 end
 HY = min(ve, single(ve_max)); 
 
-private_init_witnessInfo(witnessInfo, convCond, 'sensa', n_u, N_u, dK_u, nCGD, ve_max); 
+private_init_witnessInfo(witnessInfo, 'sensa', n_u, N_u, dK_u, nIter, nCGD, ve_max); 
 
 % END_initial -------------------------------------------------------------
 
 % main_loop ---------------------------------------------------------------
-while convCond.check()
-    
-    c = convCond.nIter_curr; 
+for c = 1:nIter
     
     res_next            = y - bmShanna(x, Gu, KFC, n_u, 'MATLAB');
     % compute the adjoint. 
@@ -91,7 +89,7 @@ end
 % END_main_loop -----------------------------------------------------------
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(convCond.nIter_curr, x, n_u, 'final'); 
+witnessInfo.watch(c, x, n_u, 'final'); 
 x = bmBlockReshape(x, n_u); 
 % END_final ---------------------------------------------------------------
 
@@ -99,7 +97,7 @@ end
 
 
 
-function private_init_witnessInfo(witnessInfo, convCond, argName, n_u, N_u, dK_u, nCGD, ve_max)
+function private_init_witnessInfo(witnessInfo, argName, n_u, N_u, dK_u, nIter, nCGD, ve_max)
 
 witnessInfo.param_name{1}    = 'recon_name'; 
 witnessInfo.param{1}         = argName; 
@@ -113,14 +111,17 @@ witnessInfo.param{3}         = N_u;
 witnessInfo.param_name{4}    = 'n_u'; 
 witnessInfo.param{4}         = n_u; 
 
-witnessInfo.param_name{5}    = 'nCGD'; 
-witnessInfo.param{5}         = nCGD; 
+witnessInfo.param_name{5}    = 'nIter'; 
+witnessInfo.param{5}         = nIter; 
 
-witnessInfo.param_name{6}    = 've_max'; 
-witnessInfo.param{6}         = ve_max;
+witnessInfo.param_name{6}    = 'nCGD'; 
+witnessInfo.param{6}         = nCGD; 
 
-witnessInfo.param_name{7}    = 'residu'; 
-witnessInfo.param{7}         = zeros(1, convCond.nIter_max); 
+witnessInfo.param_name{7}    = 've_max'; 
+witnessInfo.param{7}         = ve_max;
+
+witnessInfo.param_name{8}    = 'residu'; 
+witnessInfo.param{8}         = zeros(1, nIter); 
 
 end
 

@@ -8,7 +8,7 @@ function x = bmSleva(x, ...
                      Gu, Gut, n_u, ...
                      delta, regul_mode, ...
                      nCGD, ve_max, ...
-                     convCond, witnessInfo  )
+                     nIter, witnessInfo  )
 
 % initial -----------------------------------------------------------------
 
@@ -44,7 +44,7 @@ HY                      = private_ve_to_HY(ve, ve_max, y);
 
 
 % algorithm parameters are single 
-delta_list              = single(private_init_regul_param(delta,   convCond.nIter_max)); 
+delta_list              = single(private_init_regul_param(delta,   nIter)); 
 
 
 
@@ -58,7 +58,7 @@ KFC_conj                = single(bmKF_conj(conj(C), N_u, n_u, dK_u, nCh, Gu.kern
 bmInitialWitnessInfo(   witnessInfo, ...
                         function_label, ...
                         N_u, n_u, dK_u, ve_max, ...
-                        convCond.nIter_max, ...
+                        nIter, ...
                         nCGD, ...
                         delta_list, [], ...
                         regul_mode); 
@@ -72,9 +72,7 @@ disp('... initial done. ');
 
 % Outer_CGD_loop ----------------------------------------------------------
 disp([function_label, ' is running ...']);
-while convCond.check()
-    
-    c       = convCond.nIter_curr; 
+for c = 1:nIter
     
     % seting_regul_weight -------------------------------------------------
     if strcmp(regul_mode, 'normal')
@@ -157,7 +155,7 @@ disp(['... ', function_label, ' completed. '])
 
 
 % final -------------------------------------------------------------------
-witnessInfo.watch(convCond.nIter_curr, x, n_u, 'final');
+witnessInfo.watch(c, x, n_u, 'final');
 x = bmBlockReshape(x, n_u);
 % END_final ---------------------------------------------------------------
 
@@ -183,13 +181,13 @@ function [dafi, regul]    = private_dafi_regul(x, y, Gu, HY, HZ, n_u, KFC)
 end
 
 
-function out_param = private_init_regul_param(in_param, nIter_max)
+function out_param = private_init_regul_param(in_param, nIter)
 
 out_param       = single(  abs(in_param(:))  );
 if size(out_param, 1) == 1
-    out_param   = linspace(out_param, out_param, nIter_max);
+    out_param   = linspace(out_param, out_param, nIter);
 elseif size(out_param, 1) == 2
-    out_param   = linspace(out_param(1, 1), out_param(2, 1), nIter_max);
+    out_param   = linspace(out_param(1, 1), out_param(2, 1), nIter);
 end
 out_param = out_param(:)';
 out_param = single(out_param); 
