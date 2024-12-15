@@ -169,7 +169,7 @@ if ~exist('filename','var') || isempty(filename)
 else
     if ischar(filename)
         % assume that complete path is given
-        if  ~strcmpi(filename(end-3:end),'.dat');
+        if  ~strcmpi(filename(end-3:end),'.dat')
             filename=[filename '.dat'];   %% adds filetype ending to file
         end
     else
@@ -360,7 +360,7 @@ if (strcmp(version, 'vb')) % not implemented/tested for vd, yet
                     %                    end;
                     if (mod(length(rawfactors),2) ~= 0)
                         error('Error reading rawfactors');
-                    end;
+                    end
                     %note the transpose, this makes the vector
                     %multiplication during the read easier
                     arg.rawDataCorrectionFactors = rawfactors(1:2:end).' + 1i*rawfactors(2:2:end).';
@@ -686,7 +686,7 @@ function [mdh_blob, filePos, isEOF] = loop_mdh_read( fid, version, Nscans, scan,
         bitMask = data_u8(evIdx);   % the initial 8 bit from evalInfoMask are enough
 
         if   isequal( data_u8(1:3), u8_000 )    ... % probably ulDMALength == 0
-          || bitand(bitMask, bit_0);                % MDH_ACQEND
+          || bitand(bitMask, bit_0)                % MDH_ACQEND
 
             % ok, look closer if really all *4* bytes are 0:
             data_u8(4)= bitget( data_u8(4),1);  % ubit24: keep only 1 bit from the 4th byte
@@ -701,7 +701,7 @@ function [mdh_blob, filePos, isEOF] = loop_mdh_read( fid, version, Nscans, scan,
                 break;
             end
         end
-        if bitand(bitMask, bit_5);  % MDH_SYNCDATA
+        if bitand(bitMask, bit_5)  % MDH_SYNCDATA
             data_u8(4)= bitget( data_u8(4),1);  % ubit24: keep only 1 bit from the 4th byte
             ulDMALength = double( typecast( data_u8(1:4), 'uint32' ) );
             cPos = cPos + ulDMALength;
