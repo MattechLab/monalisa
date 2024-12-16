@@ -22,7 +22,7 @@ if nEcho == 1
     end
     if nShot_off > 0
         y_raw(:, :, :, 1:nShot_off) = NaN;
-        % nShot = nShot - nShot_off;
+        nShot = nShot - nShot_off;
     end
     if roosk_flag
         y_raw = y_raw(:, 1:2:end, :, :);
