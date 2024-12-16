@@ -7,7 +7,7 @@ function myPerm_inv = bmInvPerm(myPerm)
 
 myPerm  = myPerm(:)'; 
 N       = size(myPerm(:), 1); 
-myList  = [1:N]; 
+myList  = 1:N; 
 myList  = myList(myPerm); 
 [~, myPerm_inv] = sort(myList); 
 
