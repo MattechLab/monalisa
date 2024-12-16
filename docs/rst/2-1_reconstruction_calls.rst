@@ -4,25 +4,23 @@ Reconstruction Calls
 
 *Author : Jaime Barranco*
 
-This section describes the functions calls of some reconstructions of our toolbox. 
-Not all reconstruction are included but the user may understand the scheme and refer to the 
-m-files for the remaining reconstruction functions.  
-
+This section describes the functions calls of the reconstructions of our toolbox. 
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static 
-reconstruction (one signle frame), and other are dynamic (multiple-frames) with 1 or 2 temporal dimensions.
+reconstruction (one signle frame) and other are dynamic (multiple-framess) with 1 or 2 temporal dimensions.
 
 A static image will be called a `frame`. The spatial dimension of the reconstruced image will be called 
 the `frame dimension` and will written ``frDim``. It is equal to 2 or 3. The spatial size of the image 
-will be called the `frame size` and will be written ``frSize``. It is of the form ``[frN_x, frN_y]``
-for 2D frames and of the form ``[frN_x, frN_y, frN_z]`` for 3D frames. 
+will be called the `frame size` and will be written ``frSize``. It is of the form ``[frNx, frNy]``
+for 2D frames and of the form ``[frNx, frNy, frNz]`` for 3D frames. 
 
 A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
 contains then one frame of the image. For 1 temporal dimension, the cell-array is of size ``[nFr, 1]`` where ``nFr``
-stands for `number of frames`. For 2 temporal dimension, the cell-array is of size ``[nFr_1, nFr_2]``. 
+stands for `number of frames`. We will call such a cell-array a `chain (of frames)`. 
+For 2 temporal dimension, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a `sheet (of frames)`. 
 
 Rconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
 The terminasion "_partial_cartesian" in the name of a function indicates a use for a  
-(fully or parially sampled) cartesian trajectory. If that terminasion is absent from the name, 
+fully or parially sampled cartesian trajectory. If that terminasion is absent from the name, 
 it means that the reconstruction is for non-cartesian trajectory.    
 
 Non-Cartesian Reconstructions
@@ -36,16 +34,16 @@ Some argument are (almost) always present in the argument list of all our recons
 We will call them the `generic arguments`. 
 
 
-For single frame reconstruction, ``y``, ``t`` and ``ve`` are arrays while for dynamic reconstruction 
+For single frame reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
 they are cell-arrays with one cell per data-bin. 
 
 For single frame recontruction are: 
 
-    - ``y``: the raw data. Complex-valued sinlge-precision. Of size ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-point and ``nCh`` is the number of channels. 
-    - ``t``: the trajectory. Double-precision. Of size ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-point. 
-    - ``ve``: the volume elements (inverse density compensation). Single precision.  Of size ``[1, nPt]`` where ``nPt`` is the number of trajectory-point. 
+    - ``y``: the raw data. Complex-valued sinlge-precision. Of size ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-points and ``nCh`` is the number of channels. 
+    - ``t``: the trajectory. Double-precision. Of size ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
+    - ``ve``: the volume elements (inverse density compensation). Single precision.  Of size ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
-For multiple-frame (dynamic) recontruction are: 
+For multiple-frame (dynamic) recontructions are: 
 
     - ``y``: the cell-array of raw-data bins. 
     - ``t``: the cell-array of trajectory bins. 
@@ -92,7 +90,7 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
 
 where `C_size` is the size of `C` before resizing it. 
 
-``Gu`` and ``Gut``: The is the gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. 
+- ``Gu`` and ``Gut``: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction...
 
 Other Arguments
 ---------------
@@ -141,15 +139,15 @@ A Look at some Non-Cartesian Reconstructions
 
 After having the initial guess ``x0``, we propose the following reconstruction scripts:
 
-- :ref:`sensa`: Iterative-SENSE reconstruction (single frame). 
-- :ref:`steva`: CS recon with spatial (anisotropic) total-variation regularization (single frame). 
-- :ref:`sleva`: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).  
-- :ref:`tevaMorphosia_chain`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames). 
-- :ref:`tevaDuoMorphosia_chain`: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames). 
-- :ref:`sensitivaMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).
-- :ref:`sensitivaDuoMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).
-- :ref:`tevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames). 
-- :ref:`sensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames). 
+- :ref:`Sensa`: Iterative-SENSE reconstruction (single frame). 
+- :ref:`Steva`: CS recon with spatial (anisotropic) total-variation regularization (single frame). 
+- :ref:`Sleva`: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).  
+- :ref:`TevaMorphosia_chain`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames). 
+- :ref:`TevaDuoMorphosia_chain`: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames). 
+- :ref:`SensitivaMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).
+- :ref:`SensitivaDuoMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).
+- :ref:`TevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames). 
+- :ref:`SensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames). 
 
 For non-cartesian reconstructions, before running any of the scripts, you must estimate the gridding (sparse) matrices:
 
@@ -191,104 +189,116 @@ For all the cases...
 
 
 
-.. _sensa:
+.. _Sensa:
 
 Sensa
 -----
 
-This is our implementation of the iterative-SENSE recon for non-cartesian data.
-Iterative-SENSE [1]_ is an iterative reconstruction method, that uses the iterative conjugate gradient descent (CGD) algorithm,
-for cartesian and non-cartesian data, performed frame by frame without sharing information between frames.
-Consequently, it performs poorly with heavily undersampled data.
+This is our implementation of the iterative-SENSE reconstruction [1]_ for non-cartesian data.
+It is a single-frame least-square reconstruction without regularisation. The objective function is minimized 
+iteratively with the conjugate gradient descent (CGD) algorithm. 
+
+Since it is a single frame reconstruction, it can be applied independently for all frames of a multiple-frame
+image, but it does not share information between frames. Consequently, it performs poorly with heavily undersampled data.
 However, despite its limitations, this method is important in the theoretical framework of reconstruction
 and finds applications in specific cases.
 
 .. code-block:: matlab
 
-    x = cell(nFr, 1); 
+    witness_label = 'sens_demo'; 
+    witnessInfo = bmWitnessInfo(witness_label, witness_ind);
+    
+    x = bmSensa(    x0{1}, y{1}, ve{1}, C, ...
+                    Gu{1}, Gut{1}, frSize, ve_max, ... 
+                    witnessInfo );
 
-    for i = 1:nFr
-        witnessInfo = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
-        convCond    = bmConvergeCondition(nIter); % convergence condition
-
-        x{i} = bmSensa(
-                x0{i}, y{i}, ve{i}, C, Gu{i}, Gut{i}, frSize,
-                nCGD, ve_max, 
-                convCond, witnessInfo);
-    end
-
-.. _steva:
+.. _Steva:
 
 Steva
 -----
 
-Compressed Sensing (CS) recon regularized with spatial total variation.
+Single-frame Least-square Regularized Reconstruction, 
+where reularizaiton is the l&-norm of spatial gradient of the image. 
+
+witness_label = 'steva_demo';
 
 .. code-block:: matlab
 
-    % For nFr<= 1
-    x = bmSteva(  
-        x0{1}, ...
-        [], [], ...
-        y{1}, ve{1}, C, ...
-        Gu{1}, Gut{1}, frSize, ...
-        [], [], ...
-        delta, rho, 'normal', ...
-        nCGD, ve_max, ...
-        nIter, ...
-        bmWitnessInfo(witness_label, witness_ind));
+    x = bmSteva(    x0{1}, ...
+                    [], [], ...
+                    y{1}, ve{1}, C, ...
+                    Gu{1}, Gut{1}, frSize, ...
+                    [], [], ...
+                    delta, rho, 'normal', ...
+                    nCGD, ve_max, ...
+                    nIter, ...
+                    bmWitnessInfo(witness_label, witness_ind));
 
 
-.. _sleva:
+.. _Sleva:
 
 Sleva
 -----
 
-Single-frame Itarative-Sense reconstruciton regularized with l2-norm of the image. 
+Single-frame Least-square Regularized Reconstruction, where reularizaiton is the l2-norm of the image. 
 
 .. code-block:: matlab
 
-    % For nFr<= 1
-    x = bmSleva(  
-        x0, ...
-        [], [], ...
-        y, ve, C, ...
-        Gu, Gut, frSize, ...
-        [], [], ...
-        delta, rho, 'normal', ...
-        nCGD, ve_max, ...
-        nIter, ...
-        bmWitnessInfo(witness_label, witness_ind));
+    witness_label = 'sleva_demo'; 
+
+    x = bmSleva(    x0, ...
+                    [], [], ...
+                    y, ve, C, ...
+                    Gu, Gut, frSize, ...
+                    [], [], ...
+                    delta, rho, 'normal', ...
+                    nCGD, ve_max, ...
+                    nIter, ...
+                    bmWitnessInfo(witness_label, witness_ind));
 
 
 
-.. _sensitivaMorphosia_chain:
 
-SensitivaMorphosia
+Deformation Fields
 ------------------
 
-Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of 
-temporal finite difference time derivative, or the squared 2 norm of motion compensated 
-residuals if motion fields are used.
+The next functions can be called with or without deformation-matrices given as argument. We will see both cases. 
+
+The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with mouvement compensation. 
+The multiplication of an image vector by a deformation matrix defroms the image accroding to the deformation-field 
+encoded in the deformation-matrix. A deformation-field must therefore be estimated prior to the definition of any deformation matrix. 
+
+Here is a possible way to estimate deformation-fields. In that example, the deformation-field
+between each frame and its (past and future) temporal neighboring frame is estimated with the `imregdemons` function of Matlab.  
+
 
 .. code-block:: matlab
 
-    witnessInfo = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
-    convCond    = bmConvergeCondition(nIter); % convergence condition
+    %% deformation field evaluation with imReg Demon 
+    reg_file                    = 'C:\path\to\your\reg_file';
+    [DF_to_prev, imReg_to_prev] = bmImDeformFieldChain_imRegDemons23(h, frSize, 'curr_to_prev', 500, 1, reg_file, reg_mask); % past temporal neighbor
+    [DF_to_next, imReg_to_next] = bmImDeformFieldChain_imRegDemons23(h, frSize, 'curr_to_next', 500, 1, reg_file, reg_mask); % futur temporal neighbor
 
-    x = bmSensitivaMorphosia_chain(
-            x, ...
-            y, ve, C, ...
-            Gu, Gut, frSize, ...
-            Tu, Tut, ...
-            delta, regul_mode, ...
-            nCGD, ve_max, ...
-            convCond, witnessInfo)
 
-.. _tevaMorphosia_chain:
+Once the deformation-fields are estimated, the deformation-matrices can simply be defined as follows.:  
 
-TevaMorphosia
--------------
+
+.. code-block:: matlab
+
+    %% deformation fields to sparse matrices
+    [Tu1, Tu1t] = bmImDeformField2SparseMat(DF_to_prev, N_u, [], true);
+    [Tu2, Tu2t] = bmImDeformField2SparseMat(DF_to_next, N_u, [], true);
+
+
+Note that the deformation-fields can be estimated by any tool as chosen by the user. Here is the use of `imregdemons` just an example. 
+
+The computed deformation-matrices can be strored and re-used many times with different functions described below.   
+
+
+.. _TevaMorphosia_chain:
+
+TevaMorphosia_chain
+-------------------
 
 CS recon with temporal regularization, with or without deformation fields.
 
@@ -305,10 +315,11 @@ CS recon with temporal regularization, with or without deformation fields.
         nIter, ...
         bmWitnessInfo(witness_label, witness_ind));
 
-.. _tevaDuoMorphosia_chain:
 
-TevaDuoMorphosia
-----------------
+.. _TevaDuoMorphosia_chain:
+
+TevaDuoMorphosia_chain
+----------------------
 
 Same as TevaMorphosia but with forward and backward temporal regularization, with or without deformation fields.
 
@@ -325,53 +336,99 @@ Same as TevaMorphosia but with forward and backward temporal regularization, wit
         bmConvergeCondition(nIter), ...
         bmWitnessInfo(witness_label, witness_ind));
 
-Deformation Fields
-==================
 
-Here's how you add deformation fields to the reconstruction process.
 
-.. code-block:: matlab
 
-    %% deformation field evaluation with imReg Demon 
-    reg_file                    = 'C:\path\to\your\reg_file';
-    [DF_to_prev, imReg_to_prev] = bmImDeformFieldChain_imRegDemons23(h, frSize, 'curr_to_prev', 500, 1, reg_file, reg_mask); 
-    [DF_to_next, imReg_to_next] = bmImDeformFieldChain_imRegDemons23(h, frSize, 'curr_to_next', 500, 1, reg_file, reg_mask); 
+.. _SensitivaMorphosia_chain:
 
-    %% deformation fields to sparse matrices
-    [Tu1, Tu1t] = bmImDeformField2SparseMat(DF_to_prev, N_u, [], true);
-    [Tu2, Tu2t] = bmImDeformField2SparseMat(DF_to_next, N_u, [], true);
+SensitivaMorphosia_chain
+------------------------
 
-TevaMorphosia with Deformation Fields
---------------------------------------
+Least Square Regularized (LSR) reconstruction, where regularization is the squared 2 norm of 
+finite difference time derivative. 
 
 .. code-block:: matlab
 
-    x = bmTevaMorphosia_chain(
-        x0, ...
-        [], [], ...
-        y, ve, C, ...
-        Gu, Gut, frSize, ...
-        Tu1, Tu1t, ...
-        delta, rho, 'normal', ...
-        nCGD, ve_max, ...
-        bmConvergeCondition(nIter), ...
-        bmWitnessInfo(witness_label, witness_ind));
+    witnessInfo = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
 
-TevaDuoMorphosia with Deformation Fields
------------------------------------------
+    x = bmSensitivaMorphosia_chain(
+            x, ...
+            y, ve, C, ...
+            Gu, Gut, frSize, ...
+            [], [], ...
+            delta, regul_mode, ...
+            nCGD, ve_max, ...
+            convCond, witnessInfo)
+
+
+.. _SensitivaDuoMorphosia_chain:
+
+SensitivaDuoMorphosia_chain
+---------------------------
+
+Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of 
+finite difference time derivative. 
 
 .. code-block:: matlab
 
-    x = bmTevaDuoMorphosia_chain(
-        x0, ...
-        [], [], [], [], ...
-        y, ve, C, ...
-        Gu, Gut, frSize, ...
-        Tu1, Tu1t, Tu2, Tu2t, ...
-        delta, rho, 'normal', ...
-        nCGD, ve_max, ...
-        bmConvergeCondition(nIter), ...
-        bmWitnessInfo(witness_label, witness_ind));
+    witnessInfo = bmWitnessInfo(witness_label, witness_ind);
+
+    x = bmSensitivaDuoMorphosia_chain(
+            x, ...
+            y, ve, C, ...
+            Gu, Gut, frSize, ...
+            [], [], [], [], ...
+            delta, regul_mode, ...
+            nCGD, ve_max, ...
+            nIter, witnessInfo)
+
+
+.. _TevaMorphosia_sheet:
+
+TevaMorphosia_sheet
+-------------------
+
+Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of 
+finite difference time derivative. 
+
+.. code-block:: matlab
+
+    witnessInfo = bmWitnessInfo(witness_label, witness_ind);
+
+    x = bmTevaMorphosia_sheet(
+            x, ...
+            y, ve, C, ...
+            Gu, Gut, frSize, ...
+            [], [], [], [], ...
+            delta, regul_mode, ...
+            nCGD, ve_max, ...
+            nIter, witnessInfo)
+
+.. _SensitivaMorphosia_sheet:
+
+SensitivaMorphosia_sheet
+------------------------
+
+Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of 
+finite difference time derivative. 
+
+.. code-block:: matlab
+
+    witnessInfo = bmWitnessInfo(witness_label, witness_ind);
+
+    x = bmSensitivaMorphosia_sheet(
+            x, ...
+            y, ve, C, ...
+            Gu, Gut, frSize, ...
+            [], [], [], [], ...
+            delta, regul_mode, ...
+            nCGD, ve_max, ...
+            nIter, witnessInfo)
+
+
+
+
+
 
 .. [1] Pruessmann, K. P., Weiger, M., Börnert, P., & Boesiger, P. (2001).
     Advances in sensitivity encoding with arbitrary k-space trajectories. Magnetic Resonance in Medicine, 46(4), 638–651.
