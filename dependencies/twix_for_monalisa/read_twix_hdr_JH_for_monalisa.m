@@ -2,11 +2,11 @@ function [prot,rstraj] = read_twix_hdr_JH_for_monalisa(fid)
 
 
 
-% This file was originally written by the hereafter mentioned authors 
-% but some changes were done by John Heerfordt in order to read 
-% large free-running acquisitions. In addition, some lines were deleted by
-% Bastien Milani because of some compatibility problem with new Siemens
-% environements. The function names were also renamed with the extension 
+% This file was written by Philipp Ehses. Some changes were done 
+% by John Heerfordt in order to read large free-running acquisitions. 
+% In addition, some lines were deleted by Bastien Milani because of some 
+% compatibility problem with new Siemens environements. 
+% The function names were also renamed with the extension 
 % '_for_monalisa' in order to prevent any conflict of names with other
 % version (please don't see there an atempt of appropriation of this code). 
 
