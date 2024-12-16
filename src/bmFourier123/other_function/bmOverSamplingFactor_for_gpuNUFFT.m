@@ -36,7 +36,7 @@ elseif imDim == 3
     myOsf_2 = N_u(1, 2)/n_u(1, 2);
     myOsf_3 = N_u(1, 3)/n_u(1, 3);
     
-    if (myOsf_1 ~= myOsf_2)|(myOsf_1 ~= myOsf_3)
+    if (myOsf_1 ~= myOsf_2)||(myOsf_1 ~= myOsf_3)
        error('Oversampling for gpu_NUFFT must be isotropic. '); 
        return; 
     else
