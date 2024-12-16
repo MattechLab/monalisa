@@ -1,5 +1,5 @@
 classdef mleRawDataReader
-% The idea behinf the RawData reader is that it acts as an intermediary
+% The idea behind the RawData reader is that it acts as an intermediary
 % with a clear interface between rawData and the rest of the code. This is
 % necessary to abstract away the file format (Siemens, ismrmRD, etc.) from
 % the rest of the code. For each file format a subclass is defined. To

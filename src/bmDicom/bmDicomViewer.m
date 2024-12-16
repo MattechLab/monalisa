@@ -208,13 +208,13 @@ end
 
 set(handles.listbox1, 'String', listBoxString, 'Fontsize', 12); 
 
-staticString2{1} = ['Subject Name']; 
-staticString2{2} = ['Subject Forename']; 
-staticString2{3} = ['Subject ID']; 
-staticString2{4} = ['Subject Birthdate']; 
+staticString2{1} = 'Subject Name'; 
+staticString2{2} = 'Subject Forename'; 
+staticString2{3} = 'Subject ID'; 
+staticString2{4} = 'Subject Birthdate'; 
 staticString2{5} = ''; 
-staticString2{6} = ['Study Date']; 
-staticString2{7} = ['Study Folder']; 
+staticString2{6} = 'Study Date'; 
+staticString2{7} = 'Study Folder'; 
 set(handles.text2, 'String', staticString2, 'Fontsize', 12);
 
 staticString4{1} = [':  ' myPatientName]; 

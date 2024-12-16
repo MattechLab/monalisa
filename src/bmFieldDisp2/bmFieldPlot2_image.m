@@ -132,7 +132,7 @@ refresh;
                     controlFlag = 0;
                 elseif shiftFlag         % Shift+E = fix the contrast
                     clims=get(gca,'CLim');
-                    display('Contrast Fixed')
+                    disp('Contrast Fixed')
                     refresh;
                     shiftFlag = 0;
                 elseif escFlag           % Esc + E = Reset the contrast

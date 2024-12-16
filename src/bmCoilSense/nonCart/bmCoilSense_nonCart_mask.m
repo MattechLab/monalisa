@@ -121,7 +121,7 @@ if not(isempty(th_RMS)) & isempty(th_MIP)
 elseif isempty(th_RMS) & not(isempty(th_MIP)) 
     m = (myRMS > th_MIP) & (myMIP > th_MIP);
 
-elseif not(isempty(th_RMS)) & not(isempty(th_MIP))
+elseif not(isempty(th_RMS)) && not(isempty(th_MIP))
     m = (myRMS > th_RMS) & (myMIP > th_MIP);
 end
 
