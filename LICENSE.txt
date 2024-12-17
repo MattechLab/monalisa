@@ -1,0 +1,45 @@
+THE FOLLOWING LICENSE AFFECTS EACH FILE CONTAINED IN A SUBDIRECTORY OR NESTED SUBDIRECTORY
+OF THE 'src' DIRECTORY, BUT IT DOES NOT AFFECTS FILES OUTSIDE THE 'src' DIRECTORY.  
+
+
+SOFTWARE LICENSE AGREEMENT FOR ACADEMIC NON-COMMERCIAL RESEARCH PURPOSES ONLY
+Between HES-SO Valais-Wallis and CHUV (individually described as “LICENSOR” and hereby identified together as “LICENSORS”) and LICENSEE
+
+Effective at the date the downloading is completed (“EFFECTIVE DATE”).
+
+1. LICENSE
+1.1 Grant
+Subject to the terms of this Agreement, LICENSORS hereby grant to LICENSEE, solely for academic non-commercial research purposes, a non-exclusive, non-transferable license to: (a) download, compile, execute, display and utilize the PROGRAM and (b) create bug fixes and modify the PROGRAM. 
+LICENSEE hereby automatically grants to LICENSORS a non-exclusive, royalty-free, irrevocable license to any LICENSEE bug fixes or modifications to the PROGRAM with rights to sublicense and/or distribute. LICENSEE agrees to provide any such modifications and bug fixes to LICENSORS promptly upon their creation.
+
+1.2 No Sublicensing or Additional Rights
+LICENSEE shall not sublicense or distribute the PROGRAM, in whole or in part, without prior written permission from LICENSORS. 
+LICENSEE shall ensure that all of its users agree to the terms of this Agreement. 
+LICENSEE further agrees that it shall not put the PROGRAM on a network, server, or other similar technology that may be accessed by anyone other than the LICENSEE and its employees and users who have agreed to the terms of this Agreement.
+
+1.3 License Limitations
+Nothing in this Agreement shall be construed to confer any rights upon LICENSEE by implication, estoppel, or otherwise to any computer software, trademark, intellectual property, or patent rights of LICENSORS, or of any other entity, except as expressly granted herein. 
+LICENSEE agrees that the PROGRAM, in whole or part, shall be used only for academic purposes excluding any use for any commercial purposes, including without limitation, as the basis of a commercial software or hardware product or to provide services. 
+LICENSEE further agrees that the PROGRAM shall not be copied or otherwise adapted in order to circumvent the need for obtaining a license for use of the PROGRAM.
+
+2. OWNERSHIP OF INTELLECTUAL PROPERTY
+LICENSEE acknowledges that title to the PROGRAM shall remain with LICENSORS. The PROGRAM shall be marked with the notice of attribution to contributors. LICENSEE shall retain such notice on all copies. LICENSEE agrees to include appropriate acknowledgements if any results obtained from use of the PROGRAM are included in any publication, as follows :
+Notice of attribution: Supported by Swiss National Science Foundation (Project grant 320030B_201292 and 32HW-0_220433)
+LICENSEE shall not use any trademark or trade name of LICENSORS, or any variation, adaptation, or abbreviation, of such marks or trade names, or any names of officers, faculty, students, employees, or agents of LICENSORS except as states above for acknowledgements purposes.
+
+3. INDEMNIFICATION
+LICENSEE shall indemnify, defend, and hold harmless LICENSORS, and their respective officers, faculty, students, employees, associated investigators and agents, and their respective successors, heirs and assigns, (Indemnitees), against any liability, damage, loss, or expense (including reasonable attorney fees and expenses) incurred by or imposed upon any of the Indemnitees in connection with any claims, suits, actions, demands or judgments arising out of any theory of liability (including, without limitation, actions in the form of tort, warranty, or strict liability and regardless of whether such action has any factual basis) pursuant to any right or license granted under this Agreement.
+
+4. NO REPRESENTATIONS OR WARRANTIES
+The program is delivered “AS IS”. LICENSORS make no representations or warranties of any kind concerning the program, express or implied, including, without limitation, warranties of merchantability, fitness for a particular purpose, non-infringement, or the absence of latent or other defects, whether or not discoverable. LICENSORS extend no warranties of any kind as to program conformity with whatever user manuals or other literature may be issued from time to time.
+In no event shall LICENSORS or its respective directors, officers, employees, affiliated investigators and affiliates be liable for incidental or consequential damages of any kind, including, without limitation, economic damages or injury to property and lost profits, regardless of whether LICENSORS shall be advised, shall have other reason to know, or in fact shall know of the possibility of the foregoing.
+
+5. ASSIGNMENT
+This License is personal to LICENSEE and any rights or obligations assigned by LICENSEE without the prior written consent of LICENSORS shall be null and void.
+
+6. TERMINATION 
+LICENSEE shall have the right to terminate this license for any reason. If LICENSEE breaches any provision hereunder, and fails to cure such breach within thirty (30) days, LICENSORS may terminate this license immediately. Upon termination, LICENSEE shall delete the PROGRAM the original and all copies, except that, upon prior written authorization from LICENSORS, LICENSEE may retain a copy for archive purposes.
+
+7. GOVERNING LAW
+This license is governed by the laws of Switzerland and the jurisdiction of the Canton of Vaud.
+

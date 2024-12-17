@@ -37,9 +37,6 @@ function KF_conj = bmKF_conj(C_conj, N_u, n_u, dK_u, nCh, varargin)
 %   KF_conj (array): The kernel matrix scaled by the factor F and C_conj if
 %   given. The matrix is given as a single in the column format (nPt, nCh).
 
-% Warning to make sure that the function is correctly used
-warning(['In KF_conj : make sure you gave ''conj(C)'' ',...
-        'as argument and not C !']); 
 
 % Extract optional arguments and set default values for empty ones.
 [kernelType, nWin, kernelParam] = bmVarargin(varargin); 

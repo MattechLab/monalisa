@@ -44,3 +44,6 @@
 
 # MatLab autosave files
 *.asv
+
+# temp directory
+/temp/
