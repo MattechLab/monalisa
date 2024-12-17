@@ -1,33 +1,35 @@
-%% SOME VARIABLES EXPLANATION TO BETTER FOLLOW WHAT IS GOING ON
+%% Setting Path and loading Data
 
-% This script assumes that some preprocessing phase has already taken place
-% previously. For what I understand the trajectory generation and binning
-% masks are already selected and a coil sensitivity estimation has taken
-% place. The result of all the preprocessing are several variables stated
-% below
+% Specify here the path to the monalisa directory : 
+monalisa_dir = 'C:\main\project\monalisa_git_project\monalisa'; 
+addpath(genpath(monalisa_dir));
 
-% t is the trajectory evaluated in the bins
-% y = data mask, Is the data evaluated in the bins (nchannels) 
-% C = coil sensitivity map.
+% Load some demonstration-data 
+load([monalisa_dir, '\demo\data_demo\data_cardiac_CINE_radial_simulated_from_XCAT\data.mat']); 
 
-% In /monalisa:
-addpath(genpath(pwd));
 
-% Load the data provided by Bastien (here we load the variables stated before)
-load('data.mat')
 
-%% volume_elements: we compute ve = volume elements from t and knowing the trajectory
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+% Of note : the results of iterative reconstrucitons will automatically be
+% saved in the current directory. Please set you current directory so that
+% files can be written in it. 
+% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+%% volume_elements: From the trajectory t we compute ve (volume elements)
 
 % This depends only on the trajectory. There is a function
-% bmVolumeElement_blablabla for each type of trajectory. For special
-% trajectories you may have to implement your own volumeElement,function. 
+% bmVolumeElement_xxxxxx for each type of trajectory. For special
+% trajectories you may have to implement your own volume-element function. 
 % In the present case, we have a 2D radial trajectory. 
 
-% t is a Nx1 cell array, containing values of dimention 2xvariable double
+% t is a cell-array of size nFr x 1, containing double-precission 
+% arrays of dimension frDim x nPt{i}. 
 
 ve = bmVolumeElement(t, 'voronoi_full_radial2'); 
-% the result of this function are the volume elements, that is still a Nx1
-% cell array, containing values of dimension 1xvariable doubles
+% the result of this function are the volume elements, that is still 
+% a nFr x 1 cell array, containing values of dimension 1 x nPt{i} doubles
 
 %% gridding_matrices
 
@@ -35,14 +37,20 @@ ve = bmVolumeElement(t, 'voronoi_full_radial2');
 
 [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 
-%% Mathilda_per_cell
+%% Mathilda
 
 % This is the gridded recon for any non-cartesian data-set.
-% Mathilda does the same as nasha mathematically, but without computing the Gn, which takes a lot of time.
+% Mathilda does the same as Nasha mathematically, but without computing 
+% the Gn, which takes a lot of time.
+% 
+% 
+% Mathilda is a single-frame reconstruciton. We call it here for each 
+% data-bin independnetly. 
+
 
 x0 = cell(nFr, 1);
 for i = 1:nFr
-    x0{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, n_u, dK_u, [], [], [], []);
+    x0{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, frSize, dK_u, [], [], [], []);
 end
 bmImage(x0);
 
@@ -51,41 +59,44 @@ bmImage(x0);
 % It performs the same like Mathilda, but with gridding matrix Gn. We never
 % use Nasha, excepted if we have to repeat the exact same gridded recon 
 % manytimes. But it is rarely the case. A gridded recon is usually done 
-% only one time for one data set. We use therefore Mathilda. 
+% only one time for one data set. Therefore we use rather Mathilda. 
 
 for i = 1:nFr
-    x0{i} = bmNasha(y{i}, Gn{i}, n_u, C, []);
+    x0{i} = bmNasha(y{i}, Gn{i}, frSize, C, []);
 end
 bmImage(x0);
 
 %% Sensa
 
-% This is the iterative-SENSE recon for non-cartesian data. It is a
-% per-frame recon. There is no sharing of information between frame. The
-% result is therefore very bad for very undersampled data. But this recon
-% is important because it has a very important geometrical meaning in the
-% theory of reconstruction and it has some application for some special
-% cases. I have put a demo of reconstruciton here for the sake of
-% completeness.
+% This is the iterative-SENSE reconstruction for non-cartesian data. 
+% It is a per-frame recon. There is no sharing of information 
+% between frame. Theresult is therefore very bad for very undersampled 
+% data. But this recon is important because it has a very 
+% important geometrical meaning in the theory of reconstruction 
+% and it has some application for some special
+% cases. 
 
 x = cell(nFr, 1); 
 for i = 1:nFr
     
     nIter         = 30;
-    witness_ind   = []; % 1:nIter;
+    nCGD          = 4;
+    witness_ind   = [1, nIter];
     witness_label = 'sensa_frame_';
     witnessInfo   = bmWitnessInfo([witness_label, num2str(i)], witness_ind);
-    convCond      = bmConvergeCondition(nIter);
-    
-    nCGD    = 4;
-    ve_max  = 10*prod(dK_u(:));
+    ve_max        = 10*prod(dK_u(:));
         
-    x{i} = bmSensa( x0{i}, y{i}, ve{i}, C, Gu{i}, Gut{i}, n_u,...
+    x{i} = bmSensa( x0{i}, y{i}, ve{i}, C, Gu{i}, Gut{i}, frSize,...
                     nCGD, ve_max, ...
-                    convCond, witnessInfo);
+                    nIter, witnessInfo);
 end
 
 bmImage(x)
+
+%% Steva
+
+%% Sleva
+
 
 %% tevaMorphosia_no_deformField
 
@@ -137,7 +148,7 @@ reg_file                        = 'C:\main\temp\demo_sion\reg_file';
 [DF_to_prev, imReg_to_prev]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_prev', 500, 1, reg_file, reg_mask); 
 [DF_to_next, imReg_to_next]     = bmImDeformFieldChain_imRegDemons23(  h, n_u, 'curr_to_next', 500, 1, reg_file, reg_mask); 
 
-%%
+%% Evaluation of the deformation-matrices
 
 [Tu1, Tu1t] = bmImDeformField2SparseMat(DF_to_prev, N_u, [], true);
 [Tu2, Tu2t] = bmImDeformField2SparseMat(DF_to_next, N_u, [], true);
