@@ -8,7 +8,7 @@ It returns a list of masks (one mask per bin) as a binary array of size `[nBin, 
 the total number of acquired lines in the sequence.
 
 Each mask corresponds to a cardiac phase extracted from the superior inferior (SI) projections 
-acquired as the first line of each shot of a 3D-radial free running sequence (ref sequence???). 
+acquired as the first line of each shot of a 3D-radial free running sequence [1]_. 
 
 In order to run the scripts, the SI’s must be prepared in an array named `SI` of size `[nCh, N, nShot]` 
 where `nCh` is the number of channels in the raw data, `N` is the number of points per acquired line, 
@@ -485,4 +485,6 @@ You can now close all figures and go to the last section.
    
 
 
-
+.. [1] Piccini D, Littmann A, Nielles-Vallespin S, Zenge MO. Spiral phyllotaxis: The natural way to construct
+   a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reson Med. 2011
+   Oct;66(4):1049–56.
