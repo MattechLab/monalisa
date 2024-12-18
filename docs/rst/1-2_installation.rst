@@ -9,24 +9,12 @@ To get started with the MRI reconstruction code, follow these steps:
 Clone the Repository
 ====================
 
-Install git lfs (large file storage) to properly clone the repository:
-
-- **Linux**: ``sudo apt-get install git-lfs``
-- **macOS**: ``brew install git-lfs``
-- **Windows**: ``choco install git-lfs`` or from the `official website <https://git-lfs.github.com/>`_
-- **Conda**: ``conda install -c conda-forge git-lfs``
-
-Initialize git lfs with ``git lfs install`` to make sure it has been installed. You should see a message like "Git LFS initialized.".
-
 Clone the repository and navigate into the directory:
 
 .. code-block:: bash
 
    git clone https://github.com/MattechLab/monalisa.git
    cd monalisa
-
-In case you cloned it without lfs installed, install it, initialize it and run the following command 
-(in monalisa directory) to download the large files: ``git lfs pull``.
 
 Set Up a Compiler
 =================
