@@ -16,6 +16,8 @@
     <script src="_static/documentation_options.js?v=01f34227"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]]}, "TeX": {"Macros": {"coloneqq": "\\mathrel{\\mathpalette\\coloneqq@{}}", "parallel": "\\parallel"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/custom.js?v=35170ed4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,28 +47,66 @@
 <p><em>Author : Jaime Barranco</em></p>
 <p>This section describes the functions calls of the reconstructions of our toolbox.
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static
-reconstruction (one signle frame) and other are dynamic (multiple-framess) with 1 or 2 temporal dimensions.</p>
+reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.</p>
 <p>A static image will be called a <cite>frame</cite>. The spatial dimension of the reconstruced image will be called
 the <cite>frame dimension</cite> and will written <code class="docutils literal notranslate"><span class="pre">frDim</span></code>. It is equal to 2 or 3. The spatial size of the image
 will be called the <cite>frame size</cite> and will be written <code class="docutils literal notranslate"><span class="pre">frSize</span></code>. It is of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy]</span></code>
 for 2D frames and of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy,</span> <span class="pre">frNz]</span></code> for 3D frames.</p>
 <p>A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
-contains then one frame of the image. For 1 temporal dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr,</span> <span class="pre">1]</span></code> where <code class="docutils literal notranslate"><span class="pre">nFr</span></code>
+contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr,</span> <span class="pre">1]</span></code> where <code class="docutils literal notranslate"><span class="pre">nFr</span></code>
 stands for <cite>number of frames</cite>. We will call such a cell-array a <cite>chain (of frames)</cite>.
-For 2 temporal dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr_1,</span> <span class="pre">nFr_2]</span></code>. We will call such a cell-array a <cite>sheet (of frames)</cite>.</p>
-<p>Rconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
+For 2 non-spatial dimensions, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr_1,</span> <span class="pre">nFr_2]</span></code>. We will call such a cell-array a <cite>sheet (of frames)</cite>.</p>
+<p>Reconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
 The terminasion “_partial_cartesian” in the name of a function indicates a use for a
 fully or parially sampled cartesian trajectory. If that terminasion is absent from the name,
 it means that the reconstruction is for non-cartesian trajectory.</p>
-<section id="non-cartesian-reconstructions">
-<h2>Non-Cartesian Reconstructions<a class="headerlink" href="#non-cartesian-reconstructions" title="Link to this heading">¶</a></h2>
+<p>Here is the current list of our reconstructions:</p>
+<blockquote>
+<div><p><em>Non-Cartesian Static Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#mathilda"><span class="std std-ref">Mathilda, the Initial Image-Reconstruction</span></a>: Gridded, zero-padded reconstruction for non-cartesian data (single-frame).</p></li>
+<li><p><a class="reference internal" href="#sensa"><span class="std std-ref">Sensa</span></a>: Iterative-SENSE reconstruction (single frame).</p></li>
+<li><p><a class="reference internal" href="#steva"><span class="std std-ref">Steva</span></a>: CS recon with spatial (anisotropic) total-variation regularization (single frame).</p></li>
+<li><p><a class="reference internal" href="#sleva"><span class="std std-ref">Sleva</span></a>: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).</p></li>
+</ul>
+</div></blockquote>
+<p><em>Non-Cartesian Chain Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#tevamorphosia-chain"><span class="std std-ref">TevaMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#tevaduomorphosia-chain"><span class="std std-ref">TevaDuoMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivamorphosia-chain"><span class="std std-ref">SensitivaMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivaduomorphosia-chain"><span class="std std-ref">SensitivaDuoMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).</p></li>
+</ul>
+</div></blockquote>
+<p><em>Non-Cartesian Sheet Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#tevamorphosia-sheet"><span class="std std-ref">TevaMorphosia_sheet</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivamorphosia-sheet"><span class="std std-ref">SensitivaMorphosia_sheet</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames).</p></li>
+</ul>
+</div></blockquote>
+<p><em>Cartesian Static Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>Sensa_partial_cartesian</cite>: Iterative-SENSE reconstruction (single frame).</p></li>
+</ul>
+</div></blockquote>
+<p><em>Cartesian Chain Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>TevaMorphosia_chain_partial_cartesian</cite>: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
 <section id="generic-arguments">
-<h3>Generic Arguments<a class="headerlink" href="#generic-arguments" title="Link to this heading">¶</a></h3>
+<h2>Generic Arguments<a class="headerlink" href="#generic-arguments" title="Link to this heading">¶</a></h2>
 <p>Some argument are (almost) always present in the argument list of all our reconstructions.
 We will call them the <cite>generic arguments</cite>.</p>
-<p>For single frame reconstructions, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are arrays, while for dynamic reconstructions
-they are cell-arrays with one cell per data-bin.</p>
-<p>For single frame recontruction are:</p>
+<p>For static (single frame) reconstructions, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are arrays, while for dynamic reconstructions
+they are cell-arrays with one cell per data-bin and per frame.</p>
+<p>For static recontructions are:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the raw data. Complex-valued sinlge-precision. Of size <code class="docutils literal notranslate"><span class="pre">[nPt,</span> <span class="pre">nCh]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of channels.</p></li>
@@ -74,17 +114,8 @@ they are cell-arrays with one cell per data-bin.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the volume elements (inverse density compensation). Single precision.  Of size <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">nPt]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points.</p></li>
 </ul>
 </div></blockquote>
-<p>For multiple-frame (dynamic) recontructions are:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the cell-array of raw-data bins.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: the cell-array of trajectory bins.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the cell-array of volume-elements bins.</p></li>
-</ul>
-</div></blockquote>
-<p>The cell of each cell-array is of size and type as given in the static case.</p>
 <p>Refer to <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a> section to learn how to build <code class="docutils literal notranslate"><span class="pre">y</span></code> from the raw-data, how to build the trejectory <code class="docutils literal notranslate"><span class="pre">t</span></code> and how to estimate <code class="docutils literal notranslate"><span class="pre">ve</span></code> from <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
-<p>You can also build the trajectory <code class="docutils literal notranslate"><span class="pre">t</span></code> in your own way as long as you follow our convention described in the <cite>Mitosius</cite> section.
+<p>You can also build the trajectory <code class="docutils literal notranslate"><span class="pre">t</span></code> in your own way as long as you follow our convention described at the end of the <cite>Mitosius</cite> section.
 You can evaluate  <code class="docutils literal notranslate"><span class="pre">ve</span></code> by our functions if your trajectory is supported by Monalisa. Else you can obtain <code class="docutils literal notranslate"><span class="pre">ve</span></code> by your own means.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>: the estimated coil sensitivity map. It is a 4D complex single-precision array of size <code class="docutils literal notranslate"><span class="pre">[frSize,</span> <span class="pre">nCh]</span></code>, where the frame-size <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is the spatial size of the image and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of coils.</p></li>
@@ -96,7 +127,7 @@ You can evaluate  <code class="docutils literal notranslate"><span class="pre">v
 <li><p><code class="docutils literal notranslate"><span class="pre">frSize</span></code> : Is the size of the reconstructed frames which we advise to set equal to <code class="docutils literal notranslate"><span class="pre">N_u</span></code> for optimal image quality. If <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is componentwise smaller than <code class="docutils literal notranslate"><span class="pre">N_u</span></code> some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p></li>
 </ul>
 <p>The choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> and <code class="docutils literal notranslate"><span class="pre">N_u</span></code> sets the virtual cartesian grid used for regridding
-and inherently sets a maximum achievable spatial resolution of :math:<code class="docutils literal notranslate"><span class="pre">1/(dK\_u*N\_u)</span></code>.
+and inherently sets a maximum achievable spatial resolution of <span class="math notranslate nohighlight">\(1/(dK\_u*N\_u)\)</span>.
 Note that <code class="docutils literal notranslate"><span class="pre">dK_u</span> <span class="pre">=</span> <span class="pre">1./FoV</span></code> where <code class="docutils literal notranslate"><span class="pre">FoV</span></code> is the true (non-croped) reconstruction FoV, which is set by the choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> (or reversely) and can be different from the acquisition FoV.</p>
 <p><code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are included in what we call the <em>mitosius</em>,
 with further explanation on how to create it in the section <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a>.</p>
@@ -107,90 +138,69 @@ with further explanation on how to create it in the section <a class="reference 
 </pre></div>
 </div>
 <p>If you already saved a low-resolution coil sensitivity matrix <code class="docutils literal notranslate"><span class="pre">C</span></code>, you can load it and resized it to the image-size as follows:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImResize</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">C_size</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">C_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+<span class="n">C_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">C_size</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">frDim</span><span class="p">);</span>
+<span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImResize</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">C_size</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>where <cite>C_size</cite> is the size of <cite>C</cite> before resizing it.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Gu</span></code> and <code class="docutils literal notranslate"><span class="pre">Gut</span></code>: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction…</p></li>
 </ul>
 </section>
 <section id="other-arguments">
-<h3>Other Arguments<a class="headerlink" href="#other-arguments" title="Link to this heading">¶</a></h3>
+<h2>Other Arguments<a class="headerlink" href="#other-arguments" title="Link to this heading">¶</a></h2>
 <p>You will also encounter other argulents to pass as input to our reconstruction functions. Amongs them are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> : Regularisation parameter. Single precision scalar.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> : Convergence parameter. Single precision scalar. A rule of thumb is to set <code class="docutils literal notranslate"><span class="pre">rho</span></code> equal to a multiple (from 1 to 20) of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> (We don’t say it is the best choice, we don’t take any responsability for this).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code> : Regularisation parameter. Single precision scalar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> : Convergence parameter for the ADMM algorithm. Single precision scalar. A rule of thumb is to set <code class="docutils literal notranslate"><span class="pre">rho</span></code> equal to a multiple (from 1 to 20) of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> (We don’t say it is the best choice, we don’t take any responsability for this).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nIter</span></code>: the number of iterations of the outer-loop of iterative reconstruction. Integer.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nCGD</span></code>: the number of iterations of the inner loop for the conjugate-gradient-descent in iterative reconstructions. Integer.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ve_max</span></code>: the maxium vomume element value that serves to limite <code class="docutils literal notranslate"><span class="pre">ve</span></code> in order to to avoid some convergence problems. Single precision scalar.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Tu</span></code> and <code class="docutils literal notranslate"><span class="pre">Tut</span></code>: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>: An object of the class <code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>. It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images from each iteration.</p></li>
 </ul>
 </div></blockquote>
 </section>
+<section id="non-cartesian-static-reconstructions">
+<h2>Non-Cartesian Static Reconstructions<a class="headerlink" href="#non-cartesian-static-reconstructions" title="Link to this heading">¶</a></h2>
+<p>The following section describes the script for static non-cartesian reconstruction that can be
+found <a class="reference external" href="https://github.com/MattechLab/monalisa/blob/main/demo/script_demo/script_recon_calls/static_recon_calls_script.m">here</a>.
+You will also find that script in the <cite>script_demo</cite> directory of Monalisa.</p>
+<p>The present section gives explanations about variables and functions of that script.</p>
 <section id="mathilda-the-initial-image-reconstruction">
-<h3>Mathilda, the Initial Image-Reconstruction<a class="headerlink" href="#mathilda-the-initial-image-reconstruction" title="Link to this heading">¶</a></h3>
+<span id="mathilda"></span><h3>Mathilda, the Initial Image-Reconstruction<a class="headerlink" href="#mathilda-the-initial-image-reconstruction" title="Link to this heading">¶</a></h3>
 <p>Mathilda is our gridded zero-padded reconstruction for non-cartesian trajectories.
 It performs the initial guess that we often call <code class="docutils literal notranslate"><span class="pre">x0</span></code>.
 Here is the funciton call for a single cell:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
 </pre></div>
 </div>
-<p>You may also call it for multiple cells individually:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nFr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nFr</span>
-<span class="w">    </span><span class="n">x0</span><span class="p">{</span><span class="nb">i</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">t</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">ve</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
-<span class="k">end</span>
-</pre></div>
-</div>
-<p>Take a look at the image!!</p>
+<p>To take a look at the image, run the following command:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bmImage</span><span class="p">(</span><span class="n">x0</span><span class="p">);</span>
 </pre></div>
 </div>
-</section>
-<section id="a-look-at-some-non-cartesian-reconstructions">
-<h3>A Look at some Non-Cartesian Reconstructions<a class="headerlink" href="#a-look-at-some-non-cartesian-reconstructions" title="Link to this heading">¶</a></h3>
-<p>After having the initial guess <code class="docutils literal notranslate"><span class="pre">x0</span></code>, we propose the following reconstruction scripts:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#sensa"><span class="std std-ref">Sensa</span></a>: Iterative-SENSE reconstruction (single frame).</p></li>
-<li><p><a class="reference internal" href="#steva"><span class="std std-ref">Steva</span></a>: CS recon with spatial (anisotropic) total-variation regularization (single frame).</p></li>
-<li><p><a class="reference internal" href="#sleva"><span class="std std-ref">Sleva</span></a>: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).</p></li>
-<li><p><a class="reference internal" href="#tevamorphosia-chain"><span class="std std-ref">TevaMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).</p></li>
-<li><p><a class="reference internal" href="#tevaduomorphosia-chain"><span class="std std-ref">TevaDuoMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames).</p></li>
-<li><p><a class="reference internal" href="#sensitivamorphosia-chain"><span class="std std-ref">SensitivaMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).</p></li>
-<li><p><a class="reference internal" href="#sensitivaduomorphosia-chain"><span class="std std-ref">SensitivaDuoMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).</p></li>
-<li><p><a class="reference internal" href="#tevamorphosia-sheet"><span class="std std-ref">TevaMorphosia_sheet</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames).</p></li>
-<li><p><a class="reference internal" href="#sensitivamorphosia-sheet"><span class="std std-ref">SensitivaMorphosia_sheet</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames).</p></li>
-</ul>
-<p>For non-cartesian reconstructions, before running any of the scripts, you must estimate the gridding (sparse) matrices:</p>
+<p>Before running any iterative non-cartesian reconstructions, you must estimate the gridding (sparse) matrices:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>These depend on the trajectory, the FoV (given by <code class="docutils literal notranslate"><span class="pre">dK_u</span></code>) and the k-space gridd size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.
-For more information, check the section <a class="reference internal" href="2-4_coil_sensitivity_map.html#gridding-matrices"><span class="std std-ref">Coil Sensitivity Map Estimation - Gridding Matrices</span></a>.</p>
-<p>Now you can set some useful reconstruction parameters and choose the best function for your needs:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">nIter</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="c">% number of iteration of the outer-loop</span>
-<span class="n">witness_ind</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="n">nIter</span><span class="p">;</span><span class="w"> </span><span class="c">% Inides of the iteration where the witness informations will be saved on the disk.</span>
-<span class="n">witness_label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;label&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% label to save the file on the disk.</span>
-<span class="n">delta</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"> </span><span class="c">% regularization parameter</span>
-<span class="n">rho</span><span class="w">           </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="n">delta</span><span class="p">;</span><span class="w"> </span><span class="c">% regularization parameter</span>
-<span class="n">nCGD</span><span class="w">          </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="c">% number of CGD iterations</span>
-<span class="n">ve_max</span><span class="w">        </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="nb">prod</span><span class="p">(</span><span class="n">dK_u</span><span class="p">(:));</span><span class="w"> </span><span class="c">% maximum value of the volume elements. This is imprtant to avoid some convergence problems.</span>
+<p>These depend on the trajectory, the reconstruction FoV (given by <code class="docutils literal notranslate"><span class="pre">dK_u</span></code>) and the k-space gridd size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p>
+<p>The following reconstruciton parameters are needed to test the static non-cartesian reconstructions.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">nIter</span><span class="w">               </span><span class="p">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="c">% number of iteration of the outer-loop of the algorithm.</span>
+<span class="n">witness_ind</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"> </span><span class="c">% Indices of the iterations at which the reconstructed image will be saved on the disk.</span>
+<span class="n">witness_label</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;label&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% label to save the file on the disk.</span>
+<span class="n">save_witnessIm_flag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c">% Set to true if you want some images of each iteration to be saved. Set to false if rapidity is a priority.</span>
+<span class="n">delta</span><span class="w">               </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"> </span><span class="c">% regularization parameter</span>
+<span class="n">rho</span><span class="w">                 </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="n">delta</span><span class="p">;</span><span class="w"> </span><span class="c">% convergence parameter for ADMM</span>
+<span class="n">nCGD</span><span class="w">                </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="c">% number of CGD iterations</span>
+<span class="n">ve_max</span><span class="w">              </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="nb">prod</span><span class="p">(</span><span class="n">dK_u</span><span class="p">(:));</span><span class="w"> </span><span class="c">% maximum value of the volume elements. This is imprtant to avoid some convergence problems.</span>
 </pre></div>
 </div>
-<p>And run the reconstruction…</p>
 <p>Be aware that there could be a crash if the memory needed is too big,
 and it can take a lot of time. Maybe it’s better if you first test with small N_u and frSize values.</p>
 <p>For all the cases…</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code> are saved in the current directory.</p>
-</div>
-<p>… and you can check out the reconstructed image using:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bmImage</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
+<p>The reconstructed image <code class="docutils literal notranslate"><span class="pre">x</span></code> and the monitoring object <code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code> are saved in the current directory.</p>
 </div>
 </section>
 <section id="sensa">
@@ -245,6 +255,24 @@ where reularizaiton is the l&amp;-norm of spatial gradient of the image.</p>
 </pre></div>
 </div>
 </section>
+</section>
+<section id="non-cartesian-chain-reconstructions">
+<h2>Non-Cartesian Chain Reconstructions<a class="headerlink" href="#non-cartesian-chain-reconstructions" title="Link to this heading">¶</a></h2>
+<p>For multiple-frame (dynamic) recontructions with one non-spatial dimension will be called <em>chain reconstructions</em>.
+In that case are</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the cell-array of raw-data bins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: the cell-array of trajectory bins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the cell-array of volume-elements bins.</p></li>
+</ul>
+</div></blockquote>
+<p>The cell of each cell-array is of size and type as given in the static case.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Tu</span></code> and <code class="docutils literal notranslate"><span class="pre">Tut</span></code>: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.</p></li>
+</ul>
+</div></blockquote>
 <section id="deformation-fields">
 <h3>Deformation Fields<a class="headerlink" href="#deformation-fields" title="Link to this heading">¶</a></h3>
 <p>The next functions can be called with or without deformation-matrices given as argument. We will see both cases.</p>
@@ -414,7 +442,10 @@ Advances in sensitivity encoding with arbitrary k-space trajectories. Magnetic R
 <li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction Calls</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#non-cartesian-reconstructions">Non-Cartesian Reconstructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generic-arguments">Generic Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-arguments">Other Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#non-cartesian-static-reconstructions">Non-Cartesian Static Reconstructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#non-cartesian-chain-reconstructions">Non-Cartesian Chain Reconstructions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a></li>

@@ -6,7 +6,7 @@ Reconstruction Calls
 
 This section describes the functions calls of the reconstructions of our toolbox. 
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static 
-reconstruction (one signle frame) and other are dynamic (multiple-framess) with 1 or 2 temporal dimensions.
+reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.
 
 A static image will be called a `frame`. The spatial dimension of the reconstruced image will be called 
 the `frame dimension` and will written ``frDim``. It is equal to 2 or 3. The spatial size of the image 
@@ -14,46 +14,66 @@ will be called the `frame size` and will be written ``frSize``. It is of the for
 for 2D frames and of the form ``[frNx, frNy, frNz]`` for 3D frames. 
 
 A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
-contains then one frame of the image. For 1 temporal dimension, the cell-array is of size ``[nFr, 1]`` where ``nFr``
+contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size ``[nFr, 1]`` where ``nFr``
 stands for `number of frames`. We will call such a cell-array a `chain (of frames)`. 
-For 2 temporal dimension, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a `sheet (of frames)`. 
+For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a `sheet (of frames)`. 
 
-Rconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
+Reconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
 The terminasion "_partial_cartesian" in the name of a function indicates a use for a  
 fully or parially sampled cartesian trajectory. If that terminasion is absent from the name, 
 it means that the reconstruction is for non-cartesian trajectory.    
 
-Non-Cartesian Reconstructions
-=============================
+Here is the current list of our reconstructions: 
+
+    *Non-Cartesian Static Reconstrucitons*: 
+
+        - :ref:`Mathilda`: Gridded, zero-padded reconstruction for non-cartesian data (single-frame).  
+        - :ref:`Sensa`: Iterative-SENSE reconstruction (single frame). 
+        - :ref:`Steva`: CS recon with spatial (anisotropic) total-variation regularization (single frame). 
+        - :ref:`Sleva`: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame). 
+
+    *Non-Cartesian Chain Reconstrucitons*:
+
+        - :ref:`TevaMorphosia_chain`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames). 
+        - :ref:`TevaDuoMorphosia_chain`: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames). 
+        - :ref:`SensitivaMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).
+        - :ref:`SensitivaDuoMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).
+
+    *Non-Cartesian Sheet Reconstrucitons*:
+
+
+        - :ref:`TevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames). 
+        - :ref:`SensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames). 
+
+    *Cartesian Static Reconstrucitons*: 
+
+        - `Sensa_partial_cartesian`: Iterative-SENSE reconstruction (single frame).
+
+    *Cartesian Chain Reconstrucitons*:
+
+        - `TevaMorphosia_chain_partial_cartesian`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).
 
 
 Generic Arguments
------------------
+=================
 
 Some argument are (almost) always present in the argument list of all our reconstructions. 
 We will call them the `generic arguments`. 
 
 
-For single frame reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
-they are cell-arrays with one cell per data-bin. 
+For static (single frame) reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
+they are cell-arrays with one cell per data-bin and per frame. 
 
-For single frame recontruction are: 
+For static recontructions are: 
 
     - ``y``: the raw data. Complex-valued sinlge-precision. Of size ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-points and ``nCh`` is the number of channels. 
     - ``t``: the trajectory. Double-precision. Of size ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
     - ``ve``: the volume elements (inverse density compensation). Single precision.  Of size ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
-For multiple-frame (dynamic) recontructions are: 
-
-    - ``y``: the cell-array of raw-data bins. 
-    - ``t``: the cell-array of trajectory bins. 
-    - ``ve``: the cell-array of volume-elements bins. 
-
-The cell of each cell-array is of size and type as given in the static case. 
 
 Refer to :doc:`2-2_mitosius_prepare` section to learn how to build ``y`` from the raw-data, how to build the trejectory ``t`` and how to estimate ``ve`` from ``t``. 
 
-You can also build the trajectory ``t`` in your own way as long as you follow our convention described in the `Mitosius` section. 
+You can also build the trajectory ``t`` in your own way as long as you follow our convention described at the end of the `Mitosius` section. 
 You can evaluate  ``ve`` by our functions if your trajectory is supported by Monalisa. Else you can obtain ``ve`` by your own means.  
 
 
@@ -67,7 +87,7 @@ You can estimate ``C`` either by your own means or by our procedure described in
 
 
 The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
-and inherently sets a maximum achievable spatial resolution of :math:``1/(dK\_u*N\_u)``. 
+and inherently sets a maximum achievable spatial resolution of :math:`1/(dK\_u*N\_u)`. 
 Note that ``dK_u = 1./FoV`` where ``FoV`` is the true (non-croped) reconstruction FoV, which is set by the choice of ``dK_u`` (or reversely) and can be different from the acquisition FoV. 
 
 
@@ -86,24 +106,39 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
 
 .. code-block:: matlab
 
-    C = bmImResize(C, C_size, N_u);
-
-where `C_size` is the size of `C` before resizing it. 
+    C_size = size(C); 
+    C_size = C_size(1:frDim); 
+    C = bmImResize(C, C_size, frSize);
 
 - ``Gu`` and ``Gut``: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction...
 
 Other Arguments
----------------
+===============
 
 You will also encounter other argulents to pass as input to our reconstruction functions. Amongs them are:
 
-    - ``lambda`` : Regularisation parameter. Single precision scalar. 
-    - ``rho`` : Convergence parameter. Single precision scalar. A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
+    - ``delta`` : Regularisation parameter. Single precision scalar. 
+    - ``rho`` : Convergence parameter for the ADMM algorithm. Single precision scalar. A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
     - ``nIter``: the number of iterations of the outer-loop of iterative reconstruction. Integer. 
     - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent in iterative reconstructions. Integer. 
     - ``ve_max``: the maxium vomume element value that serves to limite ``ve`` in order to to avoid some convergence problems. Single precision scalar. 
-    - ``Tu`` and ``Tut``: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.
     - ``witnessInfo``: An object of the class ``witnessInfo``. It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images from each iteration. 
+
+
+
+Non-Cartesian Static Reconstructions
+====================================
+
+The following section describes the script for static non-cartesian reconstruction that can be 
+found `here <https://github.com/MattechLab/monalisa/blob/main/demo/script_demo/script_recon_calls/static_recon_calls_script.m>`_.  
+You will also find that script in the `script_demo` directory of Monalisa. 
+
+The present section gives explanations about variables and functions of that script. 
+
+
+
+
+.. _Mathilda:
 
 Mathilda, the Initial Image-Reconstruction
 ------------------------------------------
@@ -116,62 +151,35 @@ Here is the funciton call for a single cell:
 
     x0 = bmMathilda(y, t, ve, C, N_u, frSize, dK_u, [], [], [], []);
 
-
-
-You may also call it for multiple cells individually: 
-
-.. code-block:: matlab
-
-    x0 = cell(nFr, 1);
-    for i = 1:nFr
-        x0{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, frSize, dK_u, [], [], [], []);
-    end
-
-Take a look at the image!!
+To take a look at the image, run the following command: 
 
 .. code-block:: matlab
 
     >> bmImage(x0);
 
 
-A Look at some Non-Cartesian Reconstructions
---------------------------------------------
-
-After having the initial guess ``x0``, we propose the following reconstruction scripts:
-
-- :ref:`Sensa`: Iterative-SENSE reconstruction (single frame). 
-- :ref:`Steva`: CS recon with spatial (anisotropic) total-variation regularization (single frame). 
-- :ref:`Sleva`: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).  
-- :ref:`TevaMorphosia_chain`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames). 
-- :ref:`TevaDuoMorphosia_chain`: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames). 
-- :ref:`SensitivaMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).
-- :ref:`SensitivaDuoMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).
-- :ref:`TevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames). 
-- :ref:`SensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames). 
-
-For non-cartesian reconstructions, before running any of the scripts, you must estimate the gridding (sparse) matrices:
+Before running any iterative non-cartesian reconstructions, you must estimate the gridding (sparse) matrices:
 
 .. code-block:: matlab
 
     [Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
 
-These depend on the trajectory, the FoV (given by ``dK_u``) and the k-space gridd size ``N_u``.
-For more information, check the section :ref:`Coil Sensitivity Map Estimation - Gridding Matrices <gridding_matrices>`.
+These depend on the trajectory, the reconstruction FoV (given by ``dK_u``) and the k-space gridd size ``N_u``.
 
-Now you can set some useful reconstruction parameters and choose the best function for your needs:
+The following reconstruciton parameters are needed to test the static non-cartesian reconstructions. 
 
 .. code-block:: matlab
 
-    nIter         = 30; % number of iteration of the outer-loop
-    witness_ind   = 1:5:nIter; % Inides of the iteration where the witness informations will be saved on the disk. 
-    witness_label = 'label'; % label to save the file on the disk. 
-    delta         = 0.1; % regularization parameter
-    rho           = 10*delta; % regularization parameter
-    nCGD          = 4; % number of CGD iterations
-    ve_max        = 10*prod(dK_u(:)); % maximum value of the volume elements. This is imprtant to avoid some convergence problems. 
+    nIter               = 30; % number of iteration of the outer-loop of the algorithm. 
+    witness_ind         = []; % Indices of the iterations at which the reconstructed image will be saved on the disk. 
+    witness_label       = 'label'; % label to save the file on the disk.
+    save_witnessIm_flag = false; % Set to true if you want some images of each iteration to be saved. Set to false if rapidity is a priority.  
+    delta               = 0.1; % regularization parameter
+    rho                 = 10*delta; % convergence parameter for ADMM
+    nCGD                = 4; % number of CGD iterations
+    ve_max              = 10*prod(dK_u(:)); % maximum value of the volume elements. This is imprtant to avoid some convergence problems. 
 
 
-And run the reconstruction...
 
 Be aware that there could be a crash if the memory needed is too big,
 and it can take a lot of time. Maybe it's better if you first test with small N_u and frSize values.
@@ -179,13 +187,7 @@ and it can take a lot of time. Maybe it's better if you first test with small N_
 For all the cases...
 
 .. note::
-    ``x`` and ``witnessInfo`` are saved in the current directory.
-
-... and you can check out the reconstructed image using:
-
-.. code-block:: matlab
-
-    >> bmImage(x)
+    The reconstructed image ``x`` and the monitoring object ``witnessInfo`` are saved in the current directory.
 
 
 
@@ -256,6 +258,23 @@ Single-frame Least-square Regularized Reconstruction, where reularizaiton is the
                     nIter, ...
                     bmWitnessInfo(witness_label, witness_ind));
 
+
+
+
+
+Non-Cartesian Chain Reconstructions
+===================================
+
+For multiple-frame (dynamic) recontructions with one non-spatial dimension will be called *chain reconstructions*. 
+In that case are
+
+    - ``y``: the cell-array of raw-data bins. 
+    - ``t``: the cell-array of trajectory bins. 
+    - ``ve``: the cell-array of volume-elements bins. 
+
+The cell of each cell-array is of size and type as given in the static case. 
+
+ - ``Tu`` and ``Tut``: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.
 
 
 
