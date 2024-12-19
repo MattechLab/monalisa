@@ -1,9 +1,9 @@
 Acquisition Guidelines for Coil Sensitivity Estimation using Prescans
 =======================================================================
 
-*Author : Mauro Leidi*
+*Authors : Mauro Leidi, Jean-Baptiste Ledoux*
 
-We recommend using raw-data prescans for accurate coil sensitivity estimation. This requires two small extra acquisitions 
+We recommend using prescan raw-data for accurate coil sensitivity estimation. This requires two small extra acquisitions 
 (one with body-coil and the same repeated with the surface coils) that are quick to perform. 
 From the two resulting raw-data sets, the coil-sensitivity can be estimated by an iterative procedure that interact with the raw-data. 
 
@@ -19,9 +19,21 @@ Consider the following when acquiring prescans:
 4. The flip angle should be adapted to have enough signal. Good contrast is not required. 
 
 Practical hints for a Siemens scanner:
-1. Try to avoid re-shimming between the two prescans.  
-2. Make sure to select the ``Adjust with Body Coil`` checkbox in the protocol for prescans. It can help to avoid re-shimming between the two prescans. 
-3. Set a protocol for the first prescan and then append the protocol of the second scan from first one.
-4. Disable the automatic coil selection feature.
-5. Listen between scans if you want to ensure there is no re-shimming or other adjustments occurring.
 
+   1. Try to avoid re-shimming between the two prescans.  
+   2. Make sure to select the ``Adjust with Body Coil`` checkbox in the protocol for prescans. It can help to avoid re-shimming between the two prescans. 
+   3. Set a protocol for the first prescan and then append the protocol of the second scan from first one.
+   4. Disable the automatic coil selection feature.
+   5. Listen between scans if you want to ensure there is no re-shimming or other adjustments occurring.
+
+
+Here is a demonstration video for our prescan acquisition: 
+
+
+.. raw:: html
+
+   <video width="640" height="360" controls="controls">
+      <source src="_static/prescan_bene_JB.mp4" type="video/mp4"/>
+      Your browser does not support the video tag.
+   </video>
+   
