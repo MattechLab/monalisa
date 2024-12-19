@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial 1: Reconstruct MRI rawdata &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="4_api.html" />
+    <link rel="prev" title="Examples" href="3_examples.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tutorial-1-reconstruct-mri-rawdata">
+<h1>Tutorial 1: Reconstruct MRI rawdata<a class="headerlink" href="#tutorial-1-reconstruct-mri-rawdata" title="Link to this heading">¶</a></h1>
+<p><em>Author : Mauro Leidi</em></p>
+<p>Welcome to this tutorial! In this guide, we will use <strong>Monalisa</strong> to reconstruct MRI raw data.
+This tutorial aim to give you a first good experience with the toolbox, providing you with all the essential information to reconstruct your own data.
+We’ll start with a set of files:</p>
+<ul class="simple">
+<li><p>A <strong>brain scan</strong> dataset (the main scan).</p></li>
+<li><dl class="simple">
+<dt>Two <strong>prescans</strong> for coil sensitivity estimation:</dt><dd><ul>
+<li><p>A <strong>body coil</strong> prescan.</p></li>
+<li><p>A <strong>head coil</strong> prescan.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Some MATLAB scripts are provided to help us produce images step by step. While the process involves multiple stages illustrated in the figure below, we will walk you through each of them.</p>
+<a class="reference internal image-reference" href="_images/reconSteps.png"><img alt="Reconstruction process flowchart." class="align-center" src="_images/reconSteps.png" style="width: 600px;" />
+</a>
+<p>For this tutorial we provide a folder organized as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tutorial1/
+├── scripts/
+│   ├── coilSensitivityEstimation.m
+│   ├── binnings.m
+│   ├── mitosius.m
+│   └── reconstructions.m
+├── data/
+│   ├── bodyCoil.dat # this is the body coil prescan
+│   ├── brainScan.dat # this is the actual brain data
+│   ├── surfaceCoil.dat # this is the brain coil prescan
+</pre></div>
+</div>
+<p>To start working on this tutorial, and get the needed data you need to:
+If you haven’t done it already, clone monalisa</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:MattechLab/monalisa.git
+</pre></div>
+</div>
+<p>Download the data needed for tutorial 1, this can take a while depending on your internet connection:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>monalisa/examples/tutorial1/scripts
+./downloadData.sh
+</pre></div>
+</div>
+<p>Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.</p>
+<section id="step-1-compute-coil-sensitivity">
+<h2>Step 1: Compute Coil Sensitivity<a class="headerlink" href="#step-1-compute-coil-sensitivity" title="Link to this heading">¶</a></h2>
+<p>The first step is to compute <strong>coil sensitivity maps</strong>, which describe how each coil “sees” the object being scanned. This is crucial for proper reconstruction.</p>
+<p>For this step, we use the provided <cite>coilSensitivityEstimation.m</cite> script.
+The only parameter you need to adjust is the <strong>virtual Cartesian grid size</strong> (<cite>N_u</cite>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We recommend setting <cite>N_u</cite> between <strong>48</strong> and <strong>96</strong> for optimal results.</p>
+</div>
+<section id="script-overview">
+<h3>Script Overview:<a class="headerlink" href="#script-overview" title="Link to this heading">¶</a></h3>
+<p>Below is the main structure of the <cite>coilSensitivityEstimation.m</cite> script:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Coil Sensitivity Estimation</span>
+<span class="c">% Define paths for data and results</span>
+<span class="n">baseDir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fileparts</span><span class="p">(</span><span class="nb">mfilename</span><span class="p">(</span><span class="s">&#39;fullpath&#39;</span><span class="p">));</span><span class="w">  </span><span class="c">% Current script directory</span>
+<span class="n">dataDir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;..&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;data&#39;</span><span class="p">);</span><span class="w">   </span><span class="c">% Input data folder</span>
+<span class="n">resultsDir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">baseDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;..&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;results&#39;</span><span class="p">);</span><span class="w">  </span><span class="c">% Output folder</span>
+
+<span class="c">% Ensure results folder exists</span>
+<span class="k">if</span><span class="w"> </span><span class="o">~</span><span class="nb">exist</span><span class="p">(</span><span class="n">resultsDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;dir&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">mkdir</span><span class="p">(</span><span class="n">resultsDir</span><span class="p">);</span>
+<span class="k">end</span>
+
+<span class="n">bodyCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;bodyCoil.dat&#39;</span><span class="p">);</span><span class="w">      </span><span class="c">% Body coil prescan</span>
+<span class="n">surfaceCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;surfaceCoil.dat&#39;</span><span class="p">);</span><span class="c">% Surface coil prescan</span>
+
+<span class="c">%% Load Data</span>
+<span class="n">bodyreader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">bodyCoilFile</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">surfaceReader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">surfaceCoilFile</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="c">%%  Cartesian grid spacing (dk_u) and grid size (N_u)</span>
+<span class="n">dK_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">./</span><span class="w"> </span><span class="n">headCoilReader</span><span class="p">.</span><span class="n">acquisitionParams</span><span class="p">.</span><span class="n">FoV</span><span class="p">;</span>
+<span class="n">N_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">];</span><span class="w">             </span><span class="c">% Adjust this value as needed</span>
+
+<span class="c">%% Compute Coil Sensitivity</span>
+<span class="p">[</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_data</span><span class="p">(</span><span class="n">bodyreader</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
+<span class="n">y_surface</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_data</span><span class="p">(</span><span class="n">surfaceReader</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
+
+<span class="p">[</span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+<span class="c">% First we compute a binary mask to enhance our estimation</span>
+<span class="n">mask</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_mask_automatic</span><span class="p">(</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="c">%% Estimate Coil Sensitivity</span>
+<span class="c">% Reference coil sensitivity using the body coils. This is used as</span>
+<span class="c">% a reference to estiamte the sensitivity of each head coil</span>
+<span class="p">[</span><span class="n">y_ref</span><span class="p">,</span><span class="w"> </span><span class="n">C_ref</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_ref</span><span class="p">(</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span><span class="w"> </span><span class="p">[]);</span>
+<span class="c">% Head coils sensitivities estimation using body coil reference</span>
+<span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_primary</span><span class="p">(</span><span class="n">y_surface</span><span class="p">,</span><span class="w"> </span><span class="n">y_ref</span><span class="p">,</span><span class="w"> </span><span class="n">C_ref</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">);</span>
+
+<span class="c">% Save Results</span>
+<span class="n">saveName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">resultsDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;coil_sensitivity_map.mat&#39;</span><span class="p">);</span>
+<span class="nb">save</span><span class="p">(</span><span class="n">saveName</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;C&#39;</span><span class="p">);</span>
+<span class="nb">disp</span><span class="p">([</span><span class="s">&#39;Coil sensitivity maps saved to: &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">saveName</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>This script performs three main function calls:</p>
+<ol class="arabic simple">
+<li><p><strong>Compute a binary mask</strong>
+A binary mask, <code class="docutils literal notranslate"><span class="pre">mask</span></code>, is generated to filter out the contribution of noisy voxels from the estimation process.</p></li>
+<li><p><strong>Calculate reference coil sensitivity</strong>
+The body coil is used to calculate a reference coil sensitivity, which serves as a baseline for comparison.</p></li>
+<li><p><strong>Compute individual coil sensitivities</strong>
+Using the reference coil sensitivity, the script computes the individual coil sensitivities.</p></li>
+</ol>
+<p>After running the script, we can observe the generated maps. These maps represent how different coils perceive the imaging field.</p>
+</section>
+</section>
+<section id="step-2-binning">
+<h2>Step 2: Binning<a class="headerlink" href="#step-2-binning" title="Link to this heading">¶</a></h2>
+<p>Binning is highly related to the study design. In the following we illustrate several very different binning strategies in increasing difficulty level.</p>
+</section>
+<section id="step-2-1-alllines-binning-a-single-bin">
+<h2>Step 2.1: allLines Binning - A Single Bin<a class="headerlink" href="#step-2-1-alllines-binning-a-single-bin" title="Link to this heading">¶</a></h2>
+<p>The first binning strategy we will use is <strong>allLines binning</strong>, which groups all usable lines into a single bin. This is the simplest form of binning and serves as a baseline for more advanced strategies.</p>
+<p><strong>Purpose:</strong>
+The goal of this step is to include all lines that are in the steady-state phase and exclude:</p>
+<ul class="simple">
+<li><p><strong>Non-steady-state lines</strong>: These occur during the initial acquisition phase before the steady-state phase is reached.</p></li>
+<li><p><strong>SI projection lines</strong>: Repeated measurements at the same spatial location (e.g., 1 line every <cite>nSeg = 22</cite>).</p></li>
+</ul>
+<p><strong>Script Overview:</strong>
+We start by initializing a mask that includes all lines, excluding those that cannot be used for reconstruction. Here’s the MATLAB implementation:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Step 2: Simple Binning - Include All Steady-State Lines</span>
+<span class="c">% Create a mask with all lines that are in steady state</span>
+<span class="c">% (excluding the first few lines which may be non-steady-state)</span>
+<span class="n">nbins</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">mask</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="p">(</span><span class="n">nbins</span><span class="p">,</span><span class="w"> </span><span class="n">nLines</span><span class="p">);</span><span class="w">  </span><span class="c">% Include all lines except non steady state</span>
+
+<span class="c">% Exclude non-steady-state lines</span>
+<span class="n">mask</span><span class="p">(</span><span class="n">nbins</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nExcludeMeasures</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="c">% Exclude repeated SI projection lines</span>
+<span class="k">for</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="nb">floor</span><span class="p">(</span><span class="n">nLines</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nMeasuresPerShot</span><span class="p">)</span>
+<span class="w">    </span><span class="n">idx</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nMeasuresPerShot</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">nLines</span>
+<span class="w">        </span><span class="n">mask</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p><strong>Visualization:</strong>
+To better understand the generated mask, we plot the binning mask. Different categories of points are displayed:</p>
+<ul class="simple">
+<li><p><strong>Red Points</strong>: Non-steady-state lines.</p></li>
+<li><p><strong>Orange Points</strong>: SI projection lines.</p></li>
+<li><p><strong>Green Points</strong>: Steady-state lines included in the bin.</p></li>
+</ul>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Visualize the Binning Mask</span>
+<span class="nb">figure</span><span class="p">;</span>
+<span class="n">hold</span><span class="w"> </span><span class="s">on</span><span class="p">;</span>
+
+<span class="c">% Define the color for orange as an RGB triplet</span>
+<span class="n">orangeColor</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0.647</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c">% Preallocate the x and y data for each category</span>
+<span class="n">redX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"> </span><span class="n">redY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="n">orangeX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"> </span><span class="n">orangeY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="n">greenX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span><span class="w"> </span><span class="n">greenY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
+
+<span class="c">% Categorize the points into red, orange, and green</span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">length</span><span class="p">(</span><span class="n">timeInSeconds</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">nExcludeMeasures</span>
+<span class="w">        </span><span class="n">redX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">redX</span><span class="p">,</span><span class="w"> </span><span class="n">timeInSeconds</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">        </span><span class="n">redY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">redY</span><span class="p">,</span><span class="w"> </span><span class="n">simpleBinningMask</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">    </span><span class="k">elseif</span><span class="w"> </span><span class="nb">mod</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="n">orangeX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">orangeX</span><span class="p">,</span><span class="w"> </span><span class="n">timeInSeconds</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">        </span><span class="n">orangeY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">orangeY</span><span class="p">,</span><span class="w"> </span><span class="n">simpleBinningMask</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">greenX</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">greenX</span><span class="p">,</span><span class="w"> </span><span class="n">timeInSeconds</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">        </span><span class="n">greenY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">greenY</span><span class="p">,</span><span class="w"> </span><span class="n">simpleBinningMask</span><span class="p">(</span><span class="nb">i</span><span class="p">)];</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c">% Plot points by category</span>
+<span class="nb">scatter</span><span class="p">(</span><span class="n">orangeX</span><span class="p">,</span><span class="w"> </span><span class="n">orangeY</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="n">orangeColor</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;filled&#39;</span><span class="p">);</span><span class="w"> </span><span class="c">% Orange</span>
+<span class="nb">scatter</span><span class="p">(</span><span class="n">redX</span><span class="p">,</span><span class="w"> </span><span class="n">redY</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;r&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;filled&#39;</span><span class="p">);</span><span class="w">              </span><span class="c">% Red</span>
+<span class="nb">scatter</span><span class="p">(</span><span class="n">greenX</span><span class="p">,</span><span class="w"> </span><span class="n">greenY</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;g&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;filled&#39;</span><span class="p">);</span><span class="w">          </span><span class="c">% Green</span>
+
+<span class="nb">hold</span><span class="w"> </span><span class="n">off</span><span class="p">;</span>
+
+<span class="c">% Add labels and title</span>
+<span class="nb">xlabel</span><span class="p">(</span><span class="s">&#39;Time (s)&#39;</span><span class="p">);</span>
+<span class="nb">ylabel</span><span class="p">(</span><span class="s">&#39;Logical Mask Values (0 = exclude)&#39;</span><span class="p">);</span>
+<span class="nb">title</span><span class="p">(</span><span class="s">&#39;allLine Binning Mask (4.15s to 5s)&#39;</span><span class="p">);</span>
+<span class="n">grid</span><span class="w"> </span><span class="s">on</span><span class="p">;</span>
+<span class="nb">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="w"> </span><span class="mf">1.1</span><span class="p">]);</span><span class="w">  </span><span class="c">% Binary y-axis</span>
+<span class="nb">xlim</span><span class="p">([</span><span class="mf">4.15</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">]);</span><span class="w">    </span><span class="c">% Limit x-axis to the specified time range</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">gca</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;XTick&#39;</span><span class="p">,</span><span class="w"> </span><span class="mf">4.15</span><span class="p">:</span><span class="mf">0.05</span><span class="p">:</span><span class="mi">5</span><span class="p">);</span><span class="w">  </span><span class="c">% Adjust tick density within the range</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">gcf</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Color&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;w&#39;</span><span class="p">);</span><span class="w">  </span><span class="c">% Set white background for the figure</span>
+
+<span class="c">% Add a legend with the color descriptions</span>
+<span class="nb">legend</span><span class="p">({</span><span class="s">&#39;SI point (Orange)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Not steady-state points (Red)&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Other points (Green)&#39;</span><span class="p">},</span><span class="w"> </span><span class="s">&#39;Location&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;best&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Interpretation of the Plot:</strong></p>
+<ul class="simple">
+<li><p><strong>Red Points</strong>: Indicate non-steady-state lines that are excluded from reconstruction.</p></li>
+<li><p><strong>Orange Points</strong>: Represent SI projection lines, excluded due to redundancy.</p></li>
+<li><p><strong>Green Points</strong>: Indicate steady-state lines included in the reconstruction.</p></li>
+</ul>
+<p><strong>Output:</strong>
+The mask generated in this step groups all steady-state lines into a single bin. This mask will be used as a reference for comparison in subsequent steps.</p>
+</section>
+<section id="step-2-2-sequential-binning-5-second-temporal-bins">
+<h2>Step 2.2: Sequential Binning - 5-Second Temporal Bins<a class="headerlink" href="#step-2-2-sequential-binning-5-second-temporal-bins" title="Link to this heading">¶</a></h2>
+<p>The purpose of this step is to group the measured data into fixed temporal bins of 5 seconds each. This approach allows for systematic segmentation of the dataset while excluding non-steady-state measurements. Below are the details of the process:</p>
+<section id="temporal-window-definition">
+<h3>Temporal Window Definition<a class="headerlink" href="#temporal-window-definition" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>The temporal window for each bin is set to 5 seconds, defined as:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">temporalWindowSec</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">temporalWindowMs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">temporalWindowSec</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Data is processed within this window size, converting the time to milliseconds for consistency with the timestamp measurements.</p></li>
+</ul>
+</section>
+<section id="exclude-non-steady-state-measurements">
+<h3>Exclude Non-Steady-State Measurements<a class="headerlink" href="#exclude-non-steady-state-measurements" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Non-steady-state measurements, such as the first few “off-shots” or specific artifacts, are excluded by adjusting the start time:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">startTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">timestampMs</span><span class="p">(</span><span class="n">nExcludeMeasures</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">endTime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">timestampMs</span><span class="p">(</span><span class="k">end</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>The <cite>startTime</cite> ensures that the initial excluded data points are not considered during binning.</p></li>
+</ul>
+</section>
+<section id="binning-mask-creation">
+<h3>Binning Mask Creation<a class="headerlink" href="#binning-mask-creation" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>The number of temporal bins (<cite>nMasks</cite>) is calculated based on the duration of valid data and the size of the temporal window:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">totalDuration</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">endTime</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">startTime</span><span class="p">;</span>
+<span class="n">nMasks</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">floor</span><span class="p">(</span><span class="n">totalDuration</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">temporalWindowMs</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>An empty logical matrix (<cite>sequentialBinningMask</cite>) is initialized to store inclusion/exclusion information for each bin.</p></li>
+</ul>
+</section>
+<section id="filling-the-binning-mask">
+<h3>Filling the Binning Mask<a class="headerlink" href="#filling-the-binning-mask" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>For each bin, a mask is created to identify which measurements fall within the temporal window. This mask is then adjusted to exclude specific lines (e.g., SI projections or other artifacts) based on predefined rules.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nMasks</span>
+<span class="w">    </span><span class="n">windowStart</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">startTime</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nb">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">temporalWindowMs</span><span class="p">;</span>
+<span class="w">    </span><span class="n">windowEnd</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">windowStart</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">temporalWindowMs</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">mask</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">timestampMs</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">windowStart</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">timestampMs</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">windowEnd</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">:</span><span class="nb">floor</span><span class="p">(</span><span class="n">nLines</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nMeasuresPerShot</span><span class="p">)</span>
+<span class="w">        </span><span class="n">idx</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nSeg</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">nLines</span>
+<span class="w">            </span><span class="n">mask</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="n">sequentialBinningMask</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="w"> </span><span class="p">:)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mask</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>A figure is created to display the temporal binning masks. By default, the data for the first bin is displayed, however a dropdown menu is added to allow users to select and visualize different bins interactively.</p>
+</section>
+</section>
+<section id="step-3-preparing-the-data-for-reconstruction-mitosius">
+<h2>Step 3: Preparing the Data for Reconstruction (Mitosius)<a class="headerlink" href="#step-3-preparing-the-data-for-reconstruction-mitosius" title="Link to this heading">¶</a></h2>
+<p>This step organizes the data into the correct format for the reconstruction algorithm. The key tasks in this stage include:</p>
+<ul class="simple">
+<li><p><strong>Loading the raw brain scan data.</strong></p></li>
+<li><p><strong>Computing trajectories and volume elements.</strong></p></li>
+<li><p><strong>Normalizing the data.</strong></p></li>
+<li><p><strong>Selecting a binning strategy.</strong></p></li>
+</ul>
+<section id="mitosius-script-overview">
+<h3>Mitosius Script Overview<a class="headerlink" href="#mitosius-script-overview" title="Link to this heading">¶</a></h3>
+<p>Below is a streamlined script for the Mitosius step. It prepares the data for reconstruction by leveraging previously computed <strong>coil sensitivity maps</strong> and <strong>binning masks</strong>.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% Load Raw Data and Compute Trajectories</span>
+<span class="n">reader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">brainScanFile</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="n">y_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="n">readRawData</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="n">t_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="n">ve_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmVolumeElement</span><span class="p">(</span><span class="n">t_tot</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;voronoi_full_radial3&#39;</span><span class="p">);</span>
+
+<span class="c">%% Normalize the Data</span>
+<span class="n">x_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y_tot</span><span class="p">,</span><span class="w"> </span><span class="n">t_tot</span><span class="p">,</span><span class="w"> </span><span class="n">ve_tot</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+<span class="n">temp_im</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">getimage</span><span class="p">(</span><span class="nb">gca</span><span class="p">);</span>
+<span class="n">temp_roi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">roipoly</span><span class="p">;</span>
+<span class="n">normalize_val</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">mean</span><span class="p">(</span><span class="n">temp_im</span><span class="p">(</span><span class="n">temp_roi</span><span class="p">(:)));</span>
+<span class="n">y_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">y_tot</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">normalize_val</span><span class="p">;</span>
+
+<span class="c">%% Select Binning Strategy</span>
+<span class="n">choice</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">questdlg</span><span class="p">(</span><span class="s">&#39;Select a binning strategy:&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                  </span><span class="s">&#39;Binning Selection&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                  </span><span class="s">&#39;AllLines&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Sequential&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Cancel&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;AllLines&#39;</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="nb">strcmp</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;AllLines&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">load</span><span class="p">(</span><span class="n">allLinesBinningspath</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;mask&#39;</span><span class="p">);</span>
+<span class="k">elseif</span><span class="w"> </span><span class="nb">strcmp</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Sequential&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">load</span><span class="p">(</span><span class="n">seqBinningspath</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;mask&#39;</span><span class="p">);</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="nb">error</span><span class="p">(</span><span class="s">&#39;Binning selection canceled.&#39;</span><span class="p">);</span>
+<span class="k">end</span>
+
+<span class="c">%% Apply Mitosis</span>
+<span class="p">[</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosis</span><span class="p">(</span><span class="n">y_tot</span><span class="p">,</span><span class="w"> </span><span class="n">t_tot</span><span class="p">,</span><span class="w"> </span><span class="n">mask</span><span class="p">);</span>
+<span class="n">ve</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmVolumeElement</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;voronoi_full_radial3&#39;</span><span class="p">);</span>
+<span class="n">bmMitosius_create</span><span class="p">(</span><span class="n">saveFolder</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="user-interaction-choosing-a-binning-strategy">
+<h3>User Interaction: Choosing a Binning Strategy<a class="headerlink" href="#user-interaction-choosing-a-binning-strategy" title="Link to this heading">¶</a></h3>
+<p>The script includes a pop-up window allowing the user to choose between the <strong>AllLines</strong> and <strong>Sequential</strong> binning strategies:</p>
+<ul class="simple">
+<li><p><strong>AllLines Binning</strong>: Groups all steady-state lines into a single bin.</p></li>
+<li><p><strong>Sequential Binning</strong>: Groups the data into temporal bins of 5 seconds.</p></li>
+</ul>
+<p>Upon selection, the appropriate binning mask is applied to the data, preparing it for reconstruction. For the sake of this tutorial, repeat the mitosius step for both binning strategies, to be able to reconstruct both.
+The processed data is saved in the <cite>mitosius</cite> directory. This output is now ready for use in the next step: <strong>Reconstruction</strong>.</p>
+</section>
+</section>
+<section id="efficient-workflow-local-preprocessing-hpc-reconstruction">
+<h2>Efficient Workflow: Local Preprocessing, HPC Reconstruction<a class="headerlink" href="#efficient-workflow-local-preprocessing-hpc-reconstruction" title="Link to this heading">¶</a></h2>
+<p>A key feature of the <strong>Monalisa</strong> workflow is its ability to minimize the computational and data transfer burdens. Instead of directly transferring raw datasets to a High-Performance Computing (HPC) system, <strong>we reccomend to preprocess the data locally on your laptop</strong> untill the <strong>mitosius</strong> step. This approach ensures that only the essential preprocessed data is transferred, significantly reducing file size and optimizing HPC utilization.</p>
+<section id="why-this-approach">
+<h3>Why This Approach?<a class="headerlink" href="#why-this-approach" title="Link to this heading">¶</a></h3>
+<p>MRI datasets are typically large, with raw data files often reaching several gigabytes. Transferring such large files to an HPC system can be time-consuming and inefficient. By running the <strong>mitosius</strong> preprocessing step locally, you can achieve the following:</p>
+<ul class="simple">
+<li><p><strong>Reduced Data Volume</strong>: The <strong>mitosius</strong> step processes and organizes the raw data into a streamlined format, drastically reducing its size while retaining all critical information for reconstruction.</p></li>
+<li><p><strong>Efficient Reconstruction</strong>: The preprocessed data is tailored for computationally intensive reconstruction algorithms, enabling faster execution on HPC systems.</p></li>
+<li><p><strong>Lower Costs</strong>: Fewer data transfers mean reduced network bandwidth usage, saving your time. Running the preprocessing</p></li>
+</ul>
+</section>
+<section id="workflow-summary">
+<h3>Workflow Summary:<a class="headerlink" href="#workflow-summary" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Run the mitosius step locally</strong>:</p>
+<ul class="simple">
+<li><p>Preprocess your raw data using the provided MATLAB scripts.</p></li>
+<li><p>Save the resulting files in a lightweight format suitable for reconstruction.</p></li>
+</ul>
+</li>
+<li><p><strong>Transfer the preprocessed data to HPC, if you have one</strong>:</p>
+<ul class="simple">
+<li><p>Use secure and efficient transfer methods (e.g., <cite>scp</cite>, <cite>rsync</cite>, or cloud-based storage) to move the smaller dataset to the HPC system.</p></li>
+</ul>
+</li>
+<li><p><strong>Perform heavy reconstructions on HPC</strong>:</p>
+<ul class="simple">
+<li><p>Use Monalisa’s advanced reconstruction algorithms (e.g., Mathilda, Sensa, compressed sensing) to generate high-quality images.</p></li>
+</ul>
+</li>
+<li><p><strong>Download and analyze results locally</strong>:</p>
+<ul class="simple">
+<li><p>Retrieve the reconstructed images and analyze them on your laptop or workstation.</p></li>
+</ul>
+</li>
+</ol>
+<p>This hybrid approach leverages the strengths of both local and HPC envsironments, providing an optimal balance between convenience and computational power.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Ensure you carefully verify the preprocessed data before transferring it to the HPC system. Small errors in the <strong>mitosius</strong> step can propagate into reconstruction, leading to suboptimal results.</p>
+</div>
+<p>By following this workflow, you can maximize efficiency and focus on obtaining the highest quality MRI reconstructions with minimal hassle.</p>
+</section>
+</section>
+<section id="step-4-running-reconstructions">
+<h2>Step 4: Running Reconstructions<a class="headerlink" href="#step-4-running-reconstructions" title="Link to this heading">¶</a></h2>
+<section id="reconstruction-methods-overview">
+<h3>Reconstruction Methods Overview<a class="headerlink" href="#reconstruction-methods-overview" title="Link to this heading">¶</a></h3>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+<th class="head"><p><strong>Key Parameters</strong></p></th>
+<th class="head"><p><strong>Use Case</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Gridded Reconstruction (Mathilda)</strong></p></td>
+<td><p>Basic reconstruction using gridding.</p></td>
+<td><p><cite>N_u</cite>: Grid size
+<cite>dK_u</cite>: Grid spacing</p></td>
+<td><p>Quick reconstruction for visual inspection or debugging.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Iterative Sense Reconstruction (Sensa)</strong></p></td>
+<td><p>Exploits coil sensitivity maps for improved image quality.</p></td>
+<td><p><cite>C</cite>: Coil sensitivity maps
+<cite>nCGD</cite>: Number of conjugate gradient iterations
+<cite>convCond</cite>: Convergence condition.</p></td>
+<td><p>High-quality images with moderate computing requirements.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Compressed Sensing (TevaMorphosia_chain)</strong></p></td>
+<td><p>Reduces undersampling artifacts by temporal regularization (1 temporal dimension).</p></td>
+<td><p><cite>delta</cite>: Regularization weight
+<cite>rho</cite>: Convergence parameter
+<cite>nIter</cite>: Number of iterations
+<cite>Tu, Tut</cite>: Deformation matrices. If not empty, motion compensaiton is performed.</p></td>
+<td><p>When data is undersampled and/or sparsity of temporal gradient is expected.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reconstruction-implementation">
+<h3>Reconstruction Implementation<a class="headerlink" href="#reconstruction-implementation" title="Link to this heading">¶</a></h3>
+<p>The final step is to reconstruct the images using various methods.
+First we need to load the data prepared previously:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">allLinesBinningspath</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;y&#39;</span><span class="p">);</span>
+<span class="n">t</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">allLinesBinningspath</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;t&#39;</span><span class="p">);</span>
+<span class="n">ve</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">allLinesBinningspath</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;ve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Then we need to decide set some parameters:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">reader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">brainScanFile</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+<span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="n">acquisitionParams</span><span class="p">;</span>
+<span class="n">FoV</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">FoV</span><span class="p">;</span><span class="w">  </span><span class="c">% Field of View</span>
+<span class="n">matrix_size</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">FoV</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">  </span><span class="c">% Max nominal spatial resolution</span>
+<span class="n">N_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">matrix_size</span><span class="p">,</span><span class="w"> </span><span class="n">matrix_size</span><span class="p">,</span><span class="w"> </span><span class="n">matrix_size</span><span class="p">];</span>
+<span class="n">n_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">N_u</span><span class="p">;</span>
+<span class="n">dK_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">FoV</span><span class="p">;</span>
+<span class="nb">load</span><span class="p">(</span><span class="n">coilSensitivityPath</span><span class="p">)</span>
+<span class="c">% Adjust grid size for coil sensitivity maps</span>
+<span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImResize</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">],</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
+
+<span class="c">% For Iterative Sense</span>
+<span class="p">[</span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+<span class="n">nIter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="c">% Number</span>
+<span class="n">witness_ind</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="n">nCGD</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="n">ve_max</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="nb">prod</span><span class="p">(</span><span class="n">dK_u</span><span class="p">(:));</span>
+
+<span class="c">% For CS recon</span>
+<span class="p">[</span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+<span class="n">nIter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="c">% Number</span>
+<span class="n">witness_ind</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="n">delta</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span>
+<span class="n">rho</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="n">delta</span><span class="p">;</span>
+<span class="n">witness_ind</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="n">nIter</span><span class="p">;</span><span class="w"> </span><span class="c">% Only track one out of three steps</span>
+<span class="n">nCGD</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Finally we can run the reconstruction, many options are available:</p>
+<ol class="arabic">
+<li><p><strong>Gridded Reconstruction (Mathilda)</strong>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">t</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">ve</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Iterative Sense Reconstruction (Sensa)</strong>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x_sensa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSensa</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">n_u</span><span class="p">,</span><span class="w"> </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w"> </span><span class="n">convCond</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Compressed Sensing</strong>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x_cs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTevaMorphosia_chain</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">n_u</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">nIter</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Motion-Compensated Reconstruction (TevaMorphosia)</strong>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x_motion</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTevaMorphosia</span><span class="p">(</span><span class="n">x_cs</span><span class="p">,</span><span class="w"> </span><span class="n">motionField</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the reconstruction is too memory demanding (OOM error), you can consider:</p>
+<ul class="simple">
+<li><p>Reducing the matrix size (and the nominal resolution of the reconstruction)</p></li>
+<li><p>Migrating to high computing resources, which might be needed for advanced reconstructions.</p></li>
+</ul>
+<p>The memory bottleneck is the FFT computation.</p>
+</div>
+<p>Congratulations, you just completed your first reconstructions with Monalisa! You should be able to observe the magic of CS reconstructions, enhancing the image quality significantly. Observe how eye displacements become observable in the image reconstructed using bmTevaMorphosia.</p>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h3>
+<p>This tutorial demonstrated the end-to-end workflow for reconstructing MRI data using <strong>Monalisa</strong>. From preprocessing to advanced reconstruction techniques, you now have all the tools to generate high-quality images. Experiment with the methods and parameters to optimize your results.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_contents.html">Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="3_examples.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial 1: Reconstruct MRI rawdata</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-compute-coil-sensitivity">Step 1: Compute Coil Sensitivity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-binning">Step 2: Binning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-1-alllines-binning-a-single-bin">Step 2.1: allLines Binning - A Single Bin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-2-sequential-binning-5-second-temporal-bins">Step 2.2: Sequential Binning - 5-Second Temporal Bins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-preparing-the-data-for-reconstruction-mitosius">Step 3: Preparing the Data for Reconstruction (Mitosius)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#efficient-workflow-local-preprocessing-hpc-reconstruction">Efficient Workflow: Local Preprocessing, HPC Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-running-reconstructions">Step 4: Running Reconstructions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="3_examples.html">Examples</a><ul>
+      <li>Previous: <a href="3_examples.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="4_api.html" title="next chapter">API</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/3-1_example1.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

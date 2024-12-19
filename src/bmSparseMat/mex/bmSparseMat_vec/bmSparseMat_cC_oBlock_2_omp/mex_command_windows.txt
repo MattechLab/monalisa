@@ -1,1 +1,0 @@
-mex -largeArrayDims CXXFLAGS="-fopenmp" LDFLAGS="-fopenmp" bmSparseMat_cC_oBlock_2_omp_mex.cpp

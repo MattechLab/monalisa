@@ -1,1 +1,0 @@
-mex -largeArrayDims CXXFLAGS="-fopenmp" LDFLAGS="-fopenmp" bmImCrossMean2_omp_mex.cpp
