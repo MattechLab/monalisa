@@ -226,23 +226,32 @@ Examples:
     - 1. If your acquisiton trajectory corresponds to a FoV of ``[200, 300]`` in `mm` (milimeter), the step size in `kx`-direction of k-space must then be 1/200 (in `1/mm`), and the step size in `ky`-direction of k-space must be 1/300 (in `1/mm`). 
     - 2. If your acquisiton trajectory is a radial trajectory for a FoV of ``[360, 360]`` in `mm`, the space between two consecutive points on a radial trajectory line must be `1/360` (in `1/mm`). 
 
+.. raw:: html
+
+   <br><br>
+
 .. image:: ../images/mitosius/trajectory_ct_radial.png
+
+.. raw:: html
+
+   <br><br><br><br>
 
 If you already computed your trajectory and that it is scalled in the unit-cube (between `-0.5` and `+0.5` in each direction), you can make the 
 following rescaling to adapt your trejectory for Monalisa. 
 
 For that you need to identify: 
-    - the true acquisition matrix size `[aNx, aNy, aNz]` i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface. 
-    - the true acquisition field of view `[aLx, aLy, aLz]` i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some "over-sampling". 
+    - the true acquisition matrix size :math:`[aN_x, aN_y, aN_z]` i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface. 
+    - the true acquisition field of view :math:`[aL_x, aL_y, aL_z]` i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some "over-sampling". 
 
-Let then be `[kx, ky, kz]` the coordinate of a trajectory point. Then rescale it as
+Let then be :math:`[k_x, k_y, k_z]` the coordinate of a trajectory point. Then rescale it as
 
-    `[kx, ky, kz] -> [kx aNx/aLx, ky aNy/aLy, kz aNz/aLz]` 
+    :math:`[k_x, k_y, k_z] \rightarrow [k_x \cdot aN_x/aL_x, \quad  k_y \cdot aN_y/aL_y,  \quad k_z \cdot aN_z/aL_z]` 
 
-In another scenario, you may already have your trajectory with the convention that `kx` is scalled between `-aNx/2` and `aNx/2 - 1` and `ky, kz` are scalled acoordingly. 
+In another scenario, you may already have your trajectory with the convention that :math:`k_x` is scalled between :math:`-aN_x/2` and :math:`aN_x/2 - 1` and :math:`k_y, k_z` are scalled acoordingly. 
 Then you can simply rescal your trajectory as
 
-    `[kx, ky, kz] -> [kx/aLx, ky/aLy, kz/aLz]`
+    
+    :math:`[k_x, k_y, k_z] \rightarrow [k_x/aL_x, \quad  k_y/aL_y, \quad  k_z/aL_z]`
 
 
 The trajectory is not a reconstruction quantity in the sense that it cannot be chosen flexibly for the reconstruction. It is an acquisition quantity that

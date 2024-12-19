@@ -42,8 +42,8 @@
             
   <section id="acquisition-guidelines-for-coil-sensitivity-estimation-using-prescans">
 <h1>Acquisition Guidelines for Coil Sensitivity Estimation using Prescans<a class="headerlink" href="#acquisition-guidelines-for-coil-sensitivity-estimation-using-prescans" title="Link to this heading">¶</a></h1>
-<p><em>Author : Mauro Leidi</em></p>
-<p>We recommend using raw-data prescans for accurate coil sensitivity estimation. This requires two small extra acquisitions
+<p><em>Authors : Mauro Leidi, Jean-Baptiste Ledoux</em></p>
+<p>We recommend using prescan raw-data for accurate coil sensitivity estimation. This requires two small extra acquisitions
 (one with body-coil and the same repeated with the surface coils) that are quick to perform.
 From the two resulting raw-data sets, the coil-sensitivity can be estimated by an iterative procedure that interact with the raw-data.</p>
 <p>Alternatively, prescan-images can be reconstructed from each prescan raw-data as a preparation setp. The coil-sensitivity estimation can then
@@ -55,13 +55,21 @@ be performed in a simpler way from those prescan images. But if quality is a pri
 <li><p>For prescans, choose preferably acquisition parameters that result a low image contrast (as low as possible) and a high signal (as high as possible) everywhere tissue are present. We need to get ride of contraste anyway by an image division for coil-sensitivity estimation. Maybe a small repetition time (TR) can help. In any case, the remaining presence of a strong contrast should still leads to an acceptable result.</p></li>
 <li><p>The flip angle should be adapted to have enough signal. Good contrast is not required.</p></li>
 </ol>
-<p>Practical hints for a Siemens scanner:
-1. Try to avoid re-shimming between the two prescans.
-2. Make sure to select the <code class="docutils literal notranslate"><span class="pre">Adjust</span> <span class="pre">with</span> <span class="pre">Body</span> <span class="pre">Coil</span></code> checkbox in the protocol for prescans. It can help to avoid re-shimming between the two prescans.
-3. Set a protocol for the first prescan and then append the protocol of the second scan from first one.
-4. Disable the automatic coil selection feature.
-5. Listen between scans if you want to ensure there is no re-shimming or other adjustments occurring.</p>
-</section>
+<p>Practical hints for a Siemens scanner:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Try to avoid re-shimming between the two prescans.</p></li>
+<li><p>Make sure to select the <code class="docutils literal notranslate"><span class="pre">Adjust</span> <span class="pre">with</span> <span class="pre">Body</span> <span class="pre">Coil</span></code> checkbox in the protocol for prescans. It can help to avoid re-shimming between the two prescans.</p></li>
+<li><p>Set a protocol for the first prescan and then append the protocol of the second scan from first one.</p></li>
+<li><p>Disable the automatic coil selection feature.</p></li>
+<li><p>Listen between scans if you want to ensure there is no re-shimming or other adjustments occurring.</p></li>
+</ol>
+</div></blockquote>
+<p>Here is a demonstration video for our prescan acquisition:</p>
+<video width="640" height="360" controls="controls">
+   <source src="_static/prescan_bene_JB.mp4" type="video/mp4"/>
+   Your browser does not support the video tag.
+</video></section>
 
 
           </div>
