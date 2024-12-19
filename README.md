@@ -1,10 +1,5 @@
-# monalisa
-This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
-Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
+# Monalisa : a reconstruction tool-box for non-cartesian and cartesian MRI data
 
-## MRI Reconstruction with Non-Uniform Fast Fourier Transform (NUFFT)
-
-## Overview
 This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
 Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
 
