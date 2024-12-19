@@ -212,10 +212,20 @@ Notes
 
 Using a Custom Acquisition Trajectory
 ======================================
-There are several trajectories, for example the cartesian and the radial ones.
+
+You can use any trajectory with our reconstruction as long as you can provide the volume elements (inverse density compensation)
+for your trajectory. These volume elements can be estimated by one of our volume-element function if your trajectory is supported by Monalisa. 
+Else you have to implement your own volume-elements. 
+
+You can create your own custom trajectory as long as you follows the following rule: 
+
+    The trajectory points in k-space must be given in physical units according to the dK_u you entered. 
+
+Examples: 
+    - 1. Tf you create a cartesian trajectory for a FoV of ``[300, 200]`` in `mm` (milimeter), then is 
+    the step size in `kx`-direction of k-space is 1/300 (in `1/mm`), and the step size in `ky`-direction of k-space is 1/200 (in `1/mm`). 
+    - 2. If you create a radial trajectory for a FoV of ``[360, 360]`` in `mm` (milimeter), the space between two consecutive points on a radial 
+    trajectory line in k-space must be `1/360` (in `1/mm`). 
 
 .. image:: ../images/mitosius/trajectory_ct_radial.png
 
-An example to show how to calculate trajectory.
-
-Still to do: Discuss how to use a custom trajectory & test it.
