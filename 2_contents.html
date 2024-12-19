@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Contents &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]]}, "TeX": {"Macros": {"coloneqq": "\\mathrel{\\mathpalette\\coloneqq@{}}", "parallel": "\\parallel"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reconstruction Calls" href="2-1_reconstruction_calls.html" />
+    <link rel="prev" title="Installation" href="1-2_installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="2-1_reconstruction_calls.html">Reconstruction Calls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#non-cartesian-reconstructions">Non-Cartesian Reconstructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#generic-arguments">Generic Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#other-arguments">Other Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#mathilda-the-initial-image-reconstruction">Mathilda, the Initial Image-Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#a-look-at-some-non-cartesian-reconstructions">A Look at some Non-Cartesian Reconstructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensa">Sensa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#steva">Steva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sleva">Sleva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#deformation-fields">Deformation Fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevamorphosia-chain">TevaMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevaduomorphosia-chain">TevaDuoMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivamorphosia-chain">SensitivaMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivaduomorphosia-chain">SensitivaDuoMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevamorphosia-sheet">TevaMorphosia_sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivamorphosia-sheet">SensitivaMorphosia_sheet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#usage-instructions">Usage instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#define-the-paths">Define the Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#load-the-raw-data">Load the Raw Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#add-mri-acquisition-parameters">Add MRI Acquisition Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#read-the-raw-data-and-compute-trajectory-points-volume-elements">Read the raw data and compute trajectory points, volume elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#load-the-coil-sensitivity-matrix">Load the Coil Sensitivity Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#normalize-the-data">Normalize the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#cleaning-of-the-mask">Cleaning of the mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#compute-final-data-structures-for-reconstruction">Compute Final Data Structures for Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#save-the-results">Save the Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#notes">Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#using-a-custom-acquisition-trajectory">Using a Custom Acquisition Trajectory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-3-1_binning_eye_1.html">First Example: Sequential Binning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-3-1_binning_eye_1.html#steps-for-sequential-binning">Steps for Sequential Binning</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-3-2_binning_eye_2.html">Second Example: Task-Based (Hi-Fi) fMRI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-3-2_binning_eye_2.html#steps-for-hi-fi-binning">Steps for Hi-Fi Binning:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-3-3_binning_respiratory.html">Third Example: Respiratory Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-3-3_binning_respiratory.html#steps-for-respiratory-binning-using-si-projections">Steps for Respiratory Binning using SI projections:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-3-4_binning_cardiac.html">Fourth Example: Cardiac Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-3-4_binning_cardiac.html#steps-for-cardiac-binning-using-si-projections">Steps for Cardiac Binning using SI projections:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-from-pre-scan-images">Coil sensitivity from pre-scan images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-from-raw-data-pre-scans">Coil sensitivity from raw data pre-scans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#automated-estimation">Automated Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#manual-estimation">Manual Estimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#acquisition-parameters">Acquisition Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#mask-creation">Mask Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#sensitivity-approximation">Sensitivity Approximation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#code-explanation">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#path-selection">Path selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#data-extraction">Data extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#gridding-matrices">Gridding Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#id2">Mask Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-estimation">Coil Sensitivity Estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#improved-estimation">Improved Estimation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="1-2_installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="2-1_reconstruction_calls.html" title="next chapter">Reconstruction Calls</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/2_contents.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
