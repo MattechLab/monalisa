@@ -255,24 +255,24 @@ Else you have to implement your own volume-element function.</p>
 </li>
 </ul>
 </div></blockquote>
-<img alt="_images/trajectory_ct_radial.png" src="_images/trajectory_ct_radial.png" />
-<p>If you already computed your trajectory and that it is scalled in the unit-cube (between <cite>-0.5</cite> and <cite>+0.5</cite> in each direction), you can make the
+<br><br><img alt="_images/trajectory_ct_radial.png" src="_images/trajectory_ct_radial.png" />
+<br><br><br><br><p>If you already computed your trajectory and that it is scalled in the unit-cube (between <cite>-0.5</cite> and <cite>+0.5</cite> in each direction), you can make the
 following rescaling to adapt your trejectory for Monalisa.</p>
 <dl class="simple">
 <dt>For that you need to identify:</dt><dd><ul class="simple">
-<li><p>the true acquisition matrix size <cite>[aNx, aNy, aNz]</cite> i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface.</p></li>
-<li><p>the true acquisition field of view <cite>[aLx, aLy, aLz]</cite> i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some “over-sampling”.</p></li>
+<li><p>the true acquisition matrix size <span class="math notranslate nohighlight">\([aN_x, aN_y, aN_z]\)</span> i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface.</p></li>
+<li><p>the true acquisition field of view <span class="math notranslate nohighlight">\([aL_x, aL_y, aL_z]\)</span> i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some “over-sampling”.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Let then be <cite>[kx, ky, kz]</cite> the coordinate of a trajectory point. Then rescale it as</p>
+<p>Let then be <span class="math notranslate nohighlight">\([k_x, k_y, k_z]\)</span> the coordinate of a trajectory point. Then rescale it as</p>
 <blockquote>
-<div><p><cite>[kx, ky, kz] -&gt; [kx aNx/aLx, ky aNy/aLy, kz aNz/aLz]</cite></p>
+<div><p><span class="math notranslate nohighlight">\([k_x, k_y, k_z] \rightarrow [k_x \cdot aN_x/aL_x, \quad  k_y \cdot aN_y/aL_y,  \quad k_z \cdot aN_z/aL_z]\)</span></p>
 </div></blockquote>
-<p>In another scenario, you may already have your trajectory with the convention that <cite>kx</cite> is scalled between <cite>-aNx/2</cite> and <cite>aNx/2 - 1</cite> and <cite>ky, kz</cite> are scalled acoordingly.
+<p>In another scenario, you may already have your trajectory with the convention that <span class="math notranslate nohighlight">\(k_x\)</span> is scalled between <span class="math notranslate nohighlight">\(-aN_x/2\)</span> and <span class="math notranslate nohighlight">\(aN_x/2 - 1\)</span> and <span class="math notranslate nohighlight">\(k_y, k_z\)</span> are scalled acoordingly.
 Then you can simply rescal your trajectory as</p>
 <blockquote>
-<div><p><cite>[kx, ky, kz] -&gt; [kx/aLx, ky/aLy, kz/aLz]</cite></p>
+<div><p><span class="math notranslate nohighlight">\([k_x, k_y, k_z] \rightarrow [k_x/aL_x, \quad  k_y/aL_y, \quad  k_z/aL_z]\)</span></p>
 </div></blockquote>
 <p>The trajectory is not a reconstruction quantity in the sense that it cannot be chosen flexibly for the reconstruction. It is an acquisition quantity that
 is set at acquisition and cannot be changed anymore. We have thus to guess how the scanner defined the trajectory. There is no algorithm for that because it
