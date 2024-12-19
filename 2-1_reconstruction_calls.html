@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reconstruction Calls &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Mitosius" href="2-2_mitosius_prepare.html" />
+    <link rel="prev" title="Contents" href="2_contents.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reconstruction-calls">
+<h1>Reconstruction Calls<a class="headerlink" href="#reconstruction-calls" title="Link to this heading">¶</a></h1>
+<p><em>Author : Jaime Barranco</em></p>
+<p>This section describes the functions calls of the reconstructions of our toolbox.
+All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static
+reconstruction (one signle frame) and other are dynamic (multiple-framess) with 1 or 2 temporal dimensions.</p>
+<p>A static image will be called a <cite>frame</cite>. The spatial dimension of the reconstruced image will be called
+the <cite>frame dimension</cite> and will written <code class="docutils literal notranslate"><span class="pre">frDim</span></code>. It is equal to 2 or 3. The spatial size of the image
+will be called the <cite>frame size</cite> and will be written <code class="docutils literal notranslate"><span class="pre">frSize</span></code>. It is of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy]</span></code>
+for 2D frames and of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy,</span> <span class="pre">frNz]</span></code> for 3D frames.</p>
+<p>A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
+contains then one frame of the image. For 1 temporal dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr,</span> <span class="pre">1]</span></code> where <code class="docutils literal notranslate"><span class="pre">nFr</span></code>
+stands for <cite>number of frames</cite>. We will call such a cell-array a <cite>chain (of frames)</cite>.
+For 2 temporal dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr_1,</span> <span class="pre">nFr_2]</span></code>. We will call such a cell-array a <cite>sheet (of frames)</cite>.</p>
+<p>Rconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
+The terminasion “_partial_cartesian” in the name of a function indicates a use for a
+fully or parially sampled cartesian trajectory. If that terminasion is absent from the name,
+it means that the reconstruction is for non-cartesian trajectory.</p>
+<section id="non-cartesian-reconstructions">
+<h2>Non-Cartesian Reconstructions<a class="headerlink" href="#non-cartesian-reconstructions" title="Link to this heading">¶</a></h2>
+<section id="generic-arguments">
+<h3>Generic Arguments<a class="headerlink" href="#generic-arguments" title="Link to this heading">¶</a></h3>
+<p>Some argument are (almost) always present in the argument list of all our reconstructions.
+We will call them the <cite>generic arguments</cite>.</p>
+<p>For single frame reconstructions, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are arrays, while for dynamic reconstructions
+they are cell-arrays with one cell per data-bin.</p>
+<p>For single frame recontruction are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the raw data. Complex-valued sinlge-precision. Of size <code class="docutils literal notranslate"><span class="pre">[nPt,</span> <span class="pre">nCh]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of channels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: the trajectory. Double-precision. Of size <code class="docutils literal notranslate"><span class="pre">[frDim,</span> <span class="pre">nPt]</span></code> where the frame-dimension <code class="docutils literal notranslate"><span class="pre">frDim</span></code> is the spatial dimension of the frames (2 or 3) and <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the volume elements (inverse density compensation). Single precision.  Of size <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">nPt]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points.</p></li>
+</ul>
+</div></blockquote>
+<p>For multiple-frame (dynamic) recontructions are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the cell-array of raw-data bins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: the cell-array of trajectory bins.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the cell-array of volume-elements bins.</p></li>
+</ul>
+</div></blockquote>
+<p>The cell of each cell-array is of size and type as given in the static case.</p>
+<p>Refer to <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a> section to learn how to build <code class="docutils literal notranslate"><span class="pre">y</span></code> from the raw-data, how to build the trejectory <code class="docutils literal notranslate"><span class="pre">t</span></code> and how to estimate <code class="docutils literal notranslate"><span class="pre">ve</span></code> from <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<p>You can also build the trajectory <code class="docutils literal notranslate"><span class="pre">t</span></code> in your own way as long as you follow our convention described in the <cite>Mitosius</cite> section.
+You can evaluate  <code class="docutils literal notranslate"><span class="pre">ve</span></code> by our functions if your trajectory is supported by Monalisa. Else you can obtain <code class="docutils literal notranslate"><span class="pre">ve</span></code> by your own means.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>: the estimated coil sensitivity map. It is a 4D complex single-precision array of size <code class="docutils literal notranslate"><span class="pre">[frSize,</span> <span class="pre">nCh]</span></code>, where the frame-size <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is the spatial size of the image and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of coils.</p></li>
+</ul>
+<p>You can estimate <code class="docutils literal notranslate"><span class="pre">C</span></code> either by your own means or by our procedure described in a later section.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">N_u</span></code> : This is the size of the Cartesian gridd used for regridding in k-space. It is of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny,</span> <span class="pre">Nz]</span></code> for 3 spatial dimensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dK_u</span></code> : Is the step-size of the gridd used for regridding in k-space. It is of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y,</span> <span class="pre">dK_z]</span></code> for 3 spatial dimensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frSize</span></code> : Is the size of the reconstructed frames which we advise to set equal to <code class="docutils literal notranslate"><span class="pre">N_u</span></code> for optimal image quality. If <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is componentwise smaller than <code class="docutils literal notranslate"><span class="pre">N_u</span></code> some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p></li>
+</ul>
+<p>The choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> and <code class="docutils literal notranslate"><span class="pre">N_u</span></code> sets the virtual cartesian grid used for regridding
+and inherently sets a maximum achievable spatial resolution of :math:<code class="docutils literal notranslate"><span class="pre">1/(dK\_u*N\_u)</span></code>.
+Note that <code class="docutils literal notranslate"><span class="pre">dK_u</span> <span class="pre">=</span> <span class="pre">1./FoV</span></code> where <code class="docutils literal notranslate"><span class="pre">FoV</span></code> is the true (non-croped) reconstruction FoV, which is set by the choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> (or reversely) and can be different from the acquisition FoV.</p>
+<p><code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are included in what we call the <em>mitosius</em>,
+with further explanation on how to create it in the section <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a>.</p>
+<p>If your mitosius is already stored on the disk, you can load it as follows:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;y&#39;</span><span class="p">);</span>
+<span class="n">t</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;t&#39;</span><span class="p">);</span>
+<span class="n">ve</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;ve&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If you already saved a low-resolution coil sensitivity matrix <code class="docutils literal notranslate"><span class="pre">C</span></code>, you can load it and resized it to the image-size as follows:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImResize</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">C_size</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>where <cite>C_size</cite> is the size of <cite>C</cite> before resizing it.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Gu</span></code> and <code class="docutils literal notranslate"><span class="pre">Gut</span></code>: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction…</p></li>
+</ul>
+</section>
+<section id="other-arguments">
+<h3>Other Arguments<a class="headerlink" href="#other-arguments" title="Link to this heading">¶</a></h3>
+<p>You will also encounter other argulents to pass as input to our reconstruction functions. Amongs them are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda</span></code> : Regularisation parameter. Single precision scalar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> : Convergence parameter. Single precision scalar. A rule of thumb is to set <code class="docutils literal notranslate"><span class="pre">rho</span></code> equal to a multiple (from 1 to 20) of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> (We don’t say it is the best choice, we don’t take any responsability for this).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nIter</span></code>: the number of iterations of the outer-loop of iterative reconstruction. Integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nCGD</span></code>: the number of iterations of the inner loop for the conjugate-gradient-descent in iterative reconstructions. Integer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ve_max</span></code>: the maxium vomume element value that serves to limite <code class="docutils literal notranslate"><span class="pre">ve</span></code> in order to to avoid some convergence problems. Single precision scalar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tu</span></code> and <code class="docutils literal notranslate"><span class="pre">Tut</span></code>: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>: An object of the class <code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>. It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images from each iteration.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="mathilda-the-initial-image-reconstruction">
+<h3>Mathilda, the Initial Image-Reconstruction<a class="headerlink" href="#mathilda-the-initial-image-reconstruction" title="Link to this heading">¶</a></h3>
+<p>Mathilda is our gridded zero-padded reconstruction for non-cartesian trajectories.
+It performs the initial guess that we often call <code class="docutils literal notranslate"><span class="pre">x0</span></code>.
+Here is the funciton call for a single cell:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
+</pre></div>
+</div>
+<p>You may also call it for multiple cells individually:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nFr</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="nb">i</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nFr</span>
+<span class="w">    </span><span class="n">x0</span><span class="p">{</span><span class="nb">i</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">t</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">ve</span><span class="p">{</span><span class="nb">i</span><span class="p">},</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Take a look at the image!!</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bmImage</span><span class="p">(</span><span class="n">x0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="a-look-at-some-non-cartesian-reconstructions">
+<h3>A Look at some Non-Cartesian Reconstructions<a class="headerlink" href="#a-look-at-some-non-cartesian-reconstructions" title="Link to this heading">¶</a></h3>
+<p>After having the initial guess <code class="docutils literal notranslate"><span class="pre">x0</span></code>, we propose the following reconstruction scripts:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#sensa"><span class="std std-ref">Sensa</span></a>: Iterative-SENSE reconstruction (single frame).</p></li>
+<li><p><a class="reference internal" href="#steva"><span class="std std-ref">Steva</span></a>: CS recon with spatial (anisotropic) total-variation regularization (single frame).</p></li>
+<li><p><a class="reference internal" href="#sleva"><span class="std std-ref">Sleva</span></a>: Iterative-Sense reconstruction with regulerization by l2-norm of the image (single frame).</p></li>
+<li><p><a class="reference internal" href="#tevamorphosia-chain"><span class="std std-ref">TevaMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#tevaduomorphosia-chain"><span class="std std-ref">TevaDuoMorphosia_chain</span></a>: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivamorphosia-chain"><span class="std std-ref">SensitivaMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivaduomorphosia-chain"><span class="std std-ref">SensitivaDuoMorphosia_chain</span></a>: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative (chain of frames).</p></li>
+<li><p><a class="reference internal" href="#tevamorphosia-sheet"><span class="std std-ref">TevaMorphosia_sheet</span></a>: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames).</p></li>
+<li><p><a class="reference internal" href="#sensitivamorphosia-sheet"><span class="std std-ref">SensitivaMorphosia_sheet</span></a>: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames).</p></li>
+</ul>
+<p>For non-cartesian reconstructions, before running any of the scripts, you must estimate the gridding (sparse) matrices:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>These depend on the trajectory, the FoV (given by <code class="docutils literal notranslate"><span class="pre">dK_u</span></code>) and the k-space gridd size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.
+For more information, check the section <a class="reference internal" href="2-4_coil_sensitivity_map.html#gridding-matrices"><span class="std std-ref">Coil Sensitivity Map Estimation - Gridding Matrices</span></a>.</p>
+<p>Now you can set some useful reconstruction parameters and choose the best function for your needs:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">nIter</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span><span class="w"> </span><span class="c">% number of iteration of the outer-loop</span>
+<span class="n">witness_ind</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="n">nIter</span><span class="p">;</span><span class="w"> </span><span class="c">% Inides of the iteration where the witness informations will be saved on the disk.</span>
+<span class="n">witness_label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;label&#39;</span><span class="p">;</span><span class="w"> </span><span class="c">% label to save the file on the disk.</span>
+<span class="n">delta</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="mf">0.1</span><span class="p">;</span><span class="w"> </span><span class="c">% regularization parameter</span>
+<span class="n">rho</span><span class="w">           </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="n">delta</span><span class="p">;</span><span class="w"> </span><span class="c">% regularization parameter</span>
+<span class="n">nCGD</span><span class="w">          </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w"> </span><span class="c">% number of CGD iterations</span>
+<span class="n">ve_max</span><span class="w">        </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="nb">prod</span><span class="p">(</span><span class="n">dK_u</span><span class="p">(:));</span><span class="w"> </span><span class="c">% maximum value of the volume elements. This is imprtant to avoid some convergence problems.</span>
+</pre></div>
+</div>
+<p>And run the reconstruction…</p>
+<p>Be aware that there could be a crash if the memory needed is too big,
+and it can take a lot of time. Maybe it’s better if you first test with small N_u and frSize values.</p>
+<p>For all the cases…</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code> are saved in the current directory.</p>
+</div>
+<p>… and you can check out the reconstructed image using:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bmImage</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensa">
+<span id="id1"></span><h3>Sensa<a class="headerlink" href="#sensa" title="Link to this heading">¶</a></h3>
+<p>This is our implementation of the iterative-SENSE reconstruction <a class="footnote-reference brackets" href="#id11" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for non-cartesian data.
+It is a single-frame least-square reconstruction without regularisation. The objective function is minimized
+iteratively with the conjugate gradient descent (CGD) algorithm.</p>
+<p>Since it is a single frame reconstruction, it can be applied independently for all frames of a multiple-frame
+image, but it does not share information between frames. Consequently, it performs poorly with heavily undersampled data.
+However, despite its limitations, this method is important in the theoretical framework of reconstruction
+and finds applications in specific cases.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witness_label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;sens_demo&#39;</span><span class="p">;</span>
+<span class="n">witnessInfo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">);</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSensa</span><span class="p">(</span><span class="w">    </span><span class="n">x0</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">y</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">ve</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">Gu</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Gut</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">witnessInfo</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="steva">
+<span id="id3"></span><h3>Steva<a class="headerlink" href="#steva" title="Link to this heading">¶</a></h3>
+<p>Single-frame Least-square Regularized Reconstruction,
+where reularizaiton is the l&amp;-norm of spatial gradient of the image.</p>
+<p>witness_label = ‘steva_demo’;</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSteva</span><span class="p">(</span><span class="w">    </span><span class="n">x0</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">y</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">ve</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">Gu</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">Gut</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;normal&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="sleva">
+<span id="id4"></span><h3>Sleva<a class="headerlink" href="#sleva" title="Link to this heading">¶</a></h3>
+<p>Single-frame Least-square Regularized Reconstruction, where reularizaiton is the l2-norm of the image.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witness_label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;sleva_demo&#39;</span><span class="p">;</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSleva</span><span class="p">(</span><span class="w">    </span><span class="n">x0</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;normal&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">                </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="deformation-fields">
+<h3>Deformation Fields<a class="headerlink" href="#deformation-fields" title="Link to this heading">¶</a></h3>
+<p>The next functions can be called with or without deformation-matrices given as argument. We will see both cases.</p>
+<p>The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with mouvement compensation.
+The multiplication of an image vector by a deformation matrix defroms the image accroding to the deformation-field
+encoded in the deformation-matrix. A deformation-field must therefore be estimated prior to the definition of any deformation matrix.</p>
+<p>Here is a possible way to estimate deformation-fields. In that example, the deformation-field
+between each frame and its (past and future) temporal neighboring frame is estimated with the <cite>imregdemons</cite> function of Matlab.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% deformation field evaluation with imReg Demon</span>
+<span class="n">reg_file</span><span class="w">                    </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;C:\path\to\your\reg_file&#39;</span><span class="p">;</span>
+<span class="p">[</span><span class="n">DF_to_prev</span><span class="p">,</span><span class="w"> </span><span class="n">imReg_to_prev</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImDeformFieldChain_imRegDemons23</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;curr_to_prev&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">reg_file</span><span class="p">,</span><span class="w"> </span><span class="n">reg_mask</span><span class="p">);</span><span class="w"> </span><span class="c">% past temporal neighbor</span>
+<span class="p">[</span><span class="n">DF_to_next</span><span class="p">,</span><span class="w"> </span><span class="n">imReg_to_next</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImDeformFieldChain_imRegDemons23</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;curr_to_next&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">reg_file</span><span class="p">,</span><span class="w"> </span><span class="n">reg_mask</span><span class="p">);</span><span class="w"> </span><span class="c">% futur temporal neighbor</span>
+</pre></div>
+</div>
+<p>Once the deformation-fields are estimated, the deformation-matrices can simply be defined as follows.:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% deformation fields to sparse matrices</span>
+<span class="p">[</span><span class="n">Tu1</span><span class="p">,</span><span class="w"> </span><span class="n">Tu1t</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImDeformField2SparseMat</span><span class="p">(</span><span class="n">DF_to_prev</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="p">[</span><span class="n">Tu2</span><span class="p">,</span><span class="w"> </span><span class="n">Tu2t</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImDeformField2SparseMat</span><span class="p">(</span><span class="n">DF_to_next</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that the deformation-fields can be estimated by any tool as chosen by the user. Here is the use of <cite>imregdemons</cite> just an example.</p>
+<p>The computed deformation-matrices can be strored and re-used many times with different functions described below.</p>
+</section>
+<section id="tevamorphosia-chain">
+<span id="id5"></span><h3>TevaMorphosia_chain<a class="headerlink" href="#tevamorphosia-chain" title="Link to this heading">¶</a></h3>
+<p>CS recon with temporal regularization, with or without deformation fields.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTevaMorphosia_chain</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x0</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;normal&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="tevaduomorphosia-chain">
+<span id="id6"></span><h3>TevaDuoMorphosia_chain<a class="headerlink" href="#tevaduomorphosia-chain" title="Link to this heading">¶</a></h3>
+<p>Same as TevaMorphosia but with forward and backward temporal regularization, with or without deformation fields.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTevaDuoMorphosia_chain</span><span class="p">(</span>
+<span class="w">    </span><span class="n">x0</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;normal&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">bmConvergeCondition</span><span class="p">(</span><span class="n">nIter</span><span class="p">),</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="sensitivamorphosia-chain">
+<span id="id7"></span><h3>SensitivaMorphosia_chain<a class="headerlink" href="#sensitivamorphosia-chain" title="Link to this heading">¶</a></h3>
+<p>Least Square Regularized (LSR) reconstruction, where regularization is the squared 2 norm of
+finite difference time derivative.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witnessInfo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmWitnessInfo</span><span class="p">([</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="nb">num2str</span><span class="p">(</span><span class="nb">i</span><span class="p">)],</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">);</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSensitivaMorphosia_chain</span><span class="p">(</span>
+<span class="w">        </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">regul_mode</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">convCond</span><span class="p">,</span><span class="w"> </span><span class="n">witnessInfo</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensitivaduomorphosia-chain">
+<span id="id8"></span><h3>SensitivaDuoMorphosia_chain<a class="headerlink" href="#sensitivaduomorphosia-chain" title="Link to this heading">¶</a></h3>
+<p>Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of
+finite difference time derivative.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witnessInfo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">);</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSensitivaDuoMorphosia_chain</span><span class="p">(</span>
+<span class="w">        </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">regul_mode</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="n">witnessInfo</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tevamorphosia-sheet">
+<span id="id9"></span><h3>TevaMorphosia_sheet<a class="headerlink" href="#tevamorphosia-sheet" title="Link to this heading">¶</a></h3>
+<p>Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of
+finite difference time derivative.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witnessInfo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">);</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTevaMorphosia_sheet</span><span class="p">(</span>
+<span class="w">        </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">regul_mode</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="n">witnessInfo</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sensitivamorphosia-sheet">
+<span id="id10"></span><h3>SensitivaMorphosia_sheet<a class="headerlink" href="#sensitivamorphosia-sheet" title="Link to this heading">¶</a></h3>
+<p>Least Square Regularized (LSR) recon, where regularization is the squared 2 norm of
+finite difference time derivative.</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">witnessInfo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmWitnessInfo</span><span class="p">(</span><span class="n">witness_label</span><span class="p">,</span><span class="w"> </span><span class="n">witness_ind</span><span class="p">);</span>
+
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmSensitivaMorphosia_sheet</span><span class="p">(</span>
+<span class="w">        </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">delta</span><span class="p">,</span><span class="w"> </span><span class="n">regul_mode</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nCGD</span><span class="p">,</span><span class="w"> </span><span class="n">ve_max</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">        </span><span class="n">nIter</span><span class="p">,</span><span class="w"> </span><span class="n">witnessInfo</span><span class="p">)</span>
+</pre></div>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>Pruessmann, K. P., Weiger, M., Börnert, P., &amp; Boesiger, P. (2001).
+Advances in sensitivity encoding with arbitrary k-space trajectories. Magnetic Resonance in Medicine, 46(4), 638–651.
+<a class="reference external" href="https://doi.org/10.1002/mrm.1241">https://doi.org/10.1002/mrm.1241</a>.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reconstruction Calls</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#non-cartesian-reconstructions">Non-Cartesian Reconstructions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="2_contents.html">Contents</a><ul>
+      <li>Previous: <a href="2_contents.html" title="previous chapter">Contents</a></li>
+      <li>Next: <a href="2-2_mitosius_prepare.html" title="next chapter">The Mitosius</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/2-1_reconstruction_calls.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

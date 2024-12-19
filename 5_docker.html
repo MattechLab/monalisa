@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Docker for Monalisa &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API" href="4_api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="docker-for-monalisa">
+<h1>Docker for Monalisa<a class="headerlink" href="#docker-for-monalisa" title="Link to this heading">¶</a></h1>
+<p><em>Author : Mauro Leidi</em></p>
+<p>This guide will walk you through the steps to run Monalisa using Docker, enabling you to leverage our library on clusters.</p>
+<section id="dockerfile-setup">
+<h2>Dockerfile Setup<a class="headerlink" href="#dockerfile-setup" title="Link to this heading">¶</a></h2>
+<p>We provide a <cite>Dockerfile</cite> that correctly sets up the container for running our functions. This Dockerfile is a modified version based on the official guidelines provided by MathWorks for generating Dockerfiles for MATLAB.</p>
+<ul class="simple">
+<li><p>Reference: <a class="reference external" href="https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/Dockerfile">MathWorks MATLAB Dockerfile</a></p></li>
+</ul>
+</section>
+<section id="license-requirements">
+<h2>License Requirements<a class="headerlink" href="#license-requirements" title="Link to this heading">¶</a></h2>
+<p>To use MATLAB remotely via Docker, you must either have access to a license server or possess a license file. Detailed instructions for setting this up can be found here:</p>
+<ul class="simple">
+<li><p>Reference: <a class="reference external" href="https://github.com/mathworks-ref-arch/matlab-dockerfile?tab=readme-ov-file#use-the-network-license-manager">MATLAB Dockerfile Licensing Information</a></p></li>
+</ul>
+</section>
+<section id="steps-to-run-monalisa">
+<h2>Steps to Run Monalisa<a class="headerlink" href="#steps-to-run-monalisa" title="Link to this heading">¶</a></h2>
+<ol class="arabic">
+<li><p><strong>Clone the Repository:</strong></p>
+<p>First, clone the repository containing the necessary files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/YourRepository/monalisa.git
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create or Use a Script:</strong></p>
+<p>Create the script you want to run with MATLAB inside the Docker container. As an example, you can use the provided script:</p>
+<ul class="simple">
+<li><p>Test Script: <a class="reference external" href="https://github.com/MattechLab/monalisa/tree/main/examples/scripts/testDocker.m">testDocker.m</a></p></li>
+</ul>
+</li>
+<li><p><strong>Build the Docker Image:</strong></p>
+<p>Build the Docker image using the following command. Make sure to replace <cite>LICENSE_SERVER</cite> with your actual license server information:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">LICENSE_SERVER</span><span class="o">=</span>port@servername<span class="w"> </span>-t<span class="w"> </span>my_matlab_image_name<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+<li><p><strong>Run the Docker Image:</strong></p>
+<p>Run the Docker image with the following command, replacing <cite>localpathto/recon_eva</cite> with your local directory path:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>--init<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span>localpathto/recon_eva:/usr/src/app/recon_eva<span class="w"> </span>my_matlab_image_name
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Congratulations! You are now running Monalisa in a Docker container.</p>
+<p><strong>Note:</strong>
+You will likely build the Docker image locally, push it to Docker Hub, and then pull it on your remote cluster where you will run it. If you are unfamiliar with basic Docker operations, this guide assumes you already have that knowledge, so consider starting with Docker basics if needed.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_contents.html">Contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Docker for Monalisa</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dockerfile-setup">Dockerfile Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license-requirements">License Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#steps-to-run-monalisa">Steps to Run Monalisa</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="4_api.html" title="previous chapter">API</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/5_docker.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
