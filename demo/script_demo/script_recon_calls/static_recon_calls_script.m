@@ -6,9 +6,9 @@
 for i = 1:3
     [monalisa_dir, ~, ~] = fileparts(monalisa_dir); 
 end
-src_dir = [monalisa_dir, filesep, 'src']; 
 
 % Add the paths to all Monalisa subdirectories.  
+src_dir = [monalisa_dir, filesep, 'src']; 
 addpath(genpath(src_dir));
 
 %% Load data-set
