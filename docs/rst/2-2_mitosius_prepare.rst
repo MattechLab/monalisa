@@ -214,18 +214,43 @@ Using a Custom Acquisition Trajectory
 ======================================
 
 You can use any trajectory with our reconstruction as long as you can provide the volume elements (inverse density compensation)
-for your trajectory. These volume elements can be estimated by one of our volume-element function if your trajectory is supported by Monalisa. 
-Else you have to implement your own volume-elements. 
+for your trajectory. These volume elements can be estimated by one of our volume-element functions if your trajectory is supported by Monalisa. 
+Else you have to implement your own volume-element function. 
 
 You can create your own custom trajectory as long as you follows the following rule: 
 
-    The trajectory points in k-space must be given in physical units according to the dK_u you entered. 
+    The trajectory points in k-space must be given in physical units according to your FoV.  
 
 Examples: 
-    - 1. Tf you create a cartesian trajectory for a FoV of ``[300, 200]`` in `mm` (milimeter), then is 
-    the step size in `kx`-direction of k-space is 1/300 (in `1/mm`), and the step size in `ky`-direction of k-space is 1/200 (in `1/mm`). 
-    - 2. If you create a radial trajectory for a FoV of ``[360, 360]`` in `mm` (milimeter), the space between two consecutive points on a radial 
-    trajectory line in k-space must be `1/360` (in `1/mm`). 
+
+    - 1. If your acquisiton trajectory corresponds to a FoV of ``[200, 300]`` in `mm` (milimeter), the step size in `kx`-direction of k-space must then be 1/200 (in `1/mm`), and the step size in `ky`-direction of k-space must be 1/300 (in `1/mm`). 
+    - 2. If your acquisiton trajectory is a radial trajectory for a FoV of ``[360, 360]`` in `mm`, the space between two consecutive points on a radial trajectory line must be `1/360` (in `1/mm`). 
 
 .. image:: ../images/mitosius/trajectory_ct_radial.png
+
+If you already computed your trajectory and that it is scalled in the unit-cube (between `-0.5` and `+0.5` in each direction), you can make the 
+following rescaling to adapt your trejectory for Monalisa. 
+
+For that you need to identify: 
+    - the true acquisition matrix size `[aNx, aNy, aNz]` i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface. 
+    - the true acquisition field of view `[aLx, aLy, aLz]` i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some "over-sampling". 
+
+Let then be `[kx, ky, kz]` the coordinate of a trajectory point. Then rescale it as
+
+    `[kx, ky, kz] -> [kx aNx/aLx, ky aNy/aLy, kz aNz/aLz]` 
+
+In another scenario, you may already have your trajectory with the convention that `kx` is scalled between `-aNx/2` and `aNx/2 - 1` and `ky, kz` are scalled acoordingly. 
+Then you can simply rescal your trajectory as
+
+    `[kx, ky, kz] -> [kx/aLx, ky/aLy, kz/aLz]`
+
+
+The trajectory is not a reconstruction quantity in the sense that it cannot be chosen flexibly for the reconstruction. It is an acquisition quantity that
+is set at acquisition and cannot be changed anymore. We have thus to guess how the scanner defined the trajectory. There is no algorithm for that because it
+depends on arbitrary conventions used on each MRI scanner.  
+
+We don't work with arbitray units in Monalisa. For example, we do not admit that the edge length of voxels is 1, which corresponds to a scaling ot the 
+trajectory in the unit-cube. This strategy of working with physical (non-arbitrary) units allows for example to work with different voxel-size for 
+the same data without having scaling problems in the reconstructed images. 
+
 

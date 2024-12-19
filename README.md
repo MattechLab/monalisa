@@ -1,10 +1,12 @@
 # monalisa
-This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT). This implementation is designed to handle non-uniformly sampled data points, which is a common scenario in some advanced MRI techniques. 
+This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
+Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
 
 ## MRI Reconstruction with Non-Uniform Fast Fourier Transform (NUFFT)
 
 ## Overview
-This repository contains code for performing MRI reconstruction using Non-Uniform Fast Fourier Transform (NUFFT). This implementation is specifically designed to handle non-uniformly sampled data points, which is a common scenario in some advanced MRI techniques.
+This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
+Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
 
 ## Usage and installation
 To get started with the MRI reconstruction code, follow these steps:
