@@ -32,7 +32,7 @@ Welcome to Monalisa's documentation!
    :includehidden:
 
    5_docker
-   
+   6_ack_contribution
 
 .. Indices and tables
 .. ==================
