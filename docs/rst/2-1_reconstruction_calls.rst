@@ -68,7 +68,7 @@ For static reconstructions are:
     - ``t``: the trajectory. Double-precision. Of size ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
     - ``ve``: the volume elements (inverse density compensation). Single precision.  Of size ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
-For multiple-frame (dynamic) recontructions are: 
+For multiple-frame (dynamic) reconstructions are: 
 
     - ``y``: the cell-array of raw-data bins. 
     - ``t``: the cell-array of trajectory bins. 
