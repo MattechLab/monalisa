@@ -31,6 +31,5 @@ If you have to install a compiler we reccomend:
 4. Test your compilation step worked successfully using the example script: https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m
    
 # Getting started: 
-Link to initial tutorials.
 
-Link to Docs.
+Check the Monalisa documentation [here](https://mattechlab.github.io/monalisa/)!
