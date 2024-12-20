@@ -10,7 +10,6 @@ There are many possible ways to rearrange the measurements, depending on the goa
 .. important::
    Monalisa requires the binning to be a logical array of size `[nBins,nLines]`, where the element `Mask(i, j)` is true if we want to include the `j-th` line in the `i-th` reconstructed image. `nLines` is the total number of sampled radial lines.
 
-
 .. toctree::
    :maxdepth: 1
    :glob:
