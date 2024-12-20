@@ -1,39 +1,24 @@
-@ECHO OFF
+# Minimal makefile for Sphinx documentation
+#
 
-pushd %~dp0
+# You can set these variables from the command line, and also
+# from the environment for the first two.
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
+SOURCEDIR     = ./rst
+BUILDDIR      = _build
 
-REM Run codespell to check for typos with an ignore list
-codespell -i 3 -I codespell_ignore.txt ./rst
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-REM Run generate_rst.py before building the documentation
-python ./rst/generate_rst.py
+.PHONY: help Makefile
 
-if "%SPHINXBUILD%" == "" (
-    set SPHINXBUILD=sphinx-build
-)
-set SOURCEDIR=./rst
-set BUILDDIR=_build
+# Run generate_rst.py before building the documentation
+generate:
+	python ./rst/generate_rst.py
 
-%SPHINXBUILD% >NUL 2>NUL
-if errorlevel 9009 (
-    echo.
-    echo.The 'sphinx-build' command was not found. Make sure you have Sphinx
-    echo.installed, then set the SPHINXBUILD environment variable to point
-    echo.to the full path of the 'sphinx-build' executable. Alternatively you
-    echo.may add the Sphinx directory to PATH.
-    echo.
-    echo.If you don't have Sphinx installed, grab it from
-    echo.https://www.sphinx-doc.org/
-    exit /b 1
-)
-
-if "%1" == "" goto help
-
-%SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
-goto end
-
-:help
-%SPHINXBUILD% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
-
-:end
-popd
+# Catch-all target: route all unknown targets to Sphinx using the new
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+%: Makefile generate
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
