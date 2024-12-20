@@ -4,7 +4,7 @@ Reconstruction Calls
 
 *Author : Jaime Barranco*
 
-This section describes the functions calls of the reconstructions of our toolbox. 
+This section describes the functions calls of our reconstructions. 
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static 
 reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.
 
@@ -76,14 +76,17 @@ Refer to :doc:`2-2_mitosius_prepare` section to learn how to build ``y`` from th
 You can also build the trajectory ``t`` in your own way as long as you follow our convention described at the end of the `Mitosius` section. 
 You can evaluate  ``ve`` by our functions if your trajectory is supported by Monalisa. Else you can obtain ``ve`` by your own means.  
 
+For any reconstruciton is
 
-- ``C``: the estimated coil sensitivity map. It is a 4D complex single-precision array of size ``[frSize, nCh]``, where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
+    - ``C``: the estimated coil sensitivity map. It is a 4D complex single-precision array of size ``[frSize, nCh]``, where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
 
 You can estimate ``C`` either by your own means or by our procedure described in a later section. 
 
-- ``N_u`` : This is the size of the Cartesian gridd used for regridding in k-space. It is of size ``[Nx, Ny]`` for 2 spatial dimensionts and of size ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
-- ``dK_u`` : Is the step-size of the gridd used for regridding in k-space. It is of size ``[dK_x, dK_y]`` for 2 spatial dimensionts and of size ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
-- ``frSize`` : Is the size of the reconstructed frames which we advise to set equal to ``N_u`` for optimal image quality. If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
+For any reconstrucitons are
+
+    - ``N_u`` : This is the size of the Cartesian gridd used for regridding in k-space. It is of size ``[Nx, Ny]`` for 2 spatial dimensionts and of size ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
+    - ``dK_u`` : Is the step-size of the gridd used for regridding in k-space. It is of size ``[dK_x, dK_y]`` for 2 spatial dimensionts and of size ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
+    - ``frSize`` : Is the size of the reconstructed frames which we advise to set equal to ``N_u`` for optimal image quality. If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
 
 
 The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
@@ -94,7 +97,7 @@ Note that ``dK_u = 1./FoV`` where ``FoV`` is the true (non-croped) reconstructio
 ``y``, ``t``, and ``ve`` are included in what we call the *mitosius*,
 with further explanation on how to create it in the section :doc:`2-2_mitosius_prepare`.
 
-If your mitosius is already stored on the disk, you can load it as follows: 
+If your mitosius is already stored on the disk at the math ``m``, you can load it as follows: 
 
 .. code-block:: matlab
 
@@ -110,7 +113,10 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
     C_size = C_size(1:frDim); 
     C = bmImResize(C, C_size, frSize);
 
-- ``Gu`` and ``Gut``: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction...
+
+For any non-cartesian reconstrucitons are
+
+    - ``Gu`` and ``Gut``: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction...
 
 Other Arguments
 ===============

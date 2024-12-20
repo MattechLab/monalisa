@@ -109,8 +109,10 @@ end
 
 varargout{1} = im_out;
 
-save(arg_name,  'imDeformField',        '-v7.3');
-save([arg_name, '_im_out'], 'im_out',   '-v7.3');
+if ~isempty(arg_name)
+    save(arg_name,  'imDeformField',        '-v7.3');
+    save([arg_name, '_im_out'], 'im_out',   '-v7.3');
+end
 
 end
 
