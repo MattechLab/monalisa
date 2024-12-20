@@ -1,4 +1,4 @@
-function [theta, phi] = bm3DimPhyllotaxisAngle(nseg, nshot, varargin)
+function [theta, phi] = bmPhyllotaxisAngle3(nseg, nshot, varargin)
 % [theta, phi] = bm3DimPhyllotaxisAngle(nseg, nshot, varargin)
 %
 % Calculates spherical coordinates for all points (nseg * nshot) of the

@@ -5,9 +5,12 @@
 % 3. Allowing the user to select a binning strategy (AllLines or Sequential).
 
 % Define paths for data and results
-baseDir = fileparts(mfilename('fullpath'));  % Current script directory
-dataDir = fullfile(baseDir, '..', 'data');   % Data folder
-resultsDir = fullfile(baseDir, '..', 'results');  % Results folder
+[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
+resultsDir = fullfile(dataDir, 'results');  % Results folderv
+
+%% Step 0: If you haven't done it already add src to your MATLAB PATH
+addpath(genpath(srcDir))
 
 % File paths
 brainScanFile = fullfile(dataDir, 'brainScan.dat'); 
