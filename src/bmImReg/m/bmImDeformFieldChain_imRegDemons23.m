@@ -24,10 +24,15 @@ maxImVal = 255; % ----------------------------------------- magic number
 
 x = bmBlockReshape(x, n_u);
 
+
+
+
+
 imDim           = size(n_u(:), 1); 
 nCell           = size(x(:), 1);
 imDeformField   = cell(nCell, 1);
 im_out          = cell(nCell, 1);
+
 
 
 if ~isempty(myMask)
@@ -39,6 +44,7 @@ if ~isempty(myMask)
 end
 
 
+
 for i = 1:nCell
     
     v_reg = [];
@@ -46,16 +52,21 @@ for i = 1:nCell
     i_minus_1 = mod(i-2, nCell) + 1;
     i_plus_1  = mod(i  , nCell) + 1;
     
+    
+    
+    
     im_first    = single(private_smooth(x{1},         nSmooth));
     im_curr     = single(private_smooth(x{i},         nSmooth));
     im_prev     = single(private_smooth(x{i_minus_1}, nSmooth));
     im_next     = single(private_smooth(x{i_plus_1},  nSmooth));
     
     
+    
     [im_first, min_first, max_first]    = private_rescale(im_first, maxImVal);
     [im_curr,  min_curr,  max_curr]     = private_rescale(im_curr,  maxImVal);
     [im_prev,  min_prev,  max_prev]     = private_rescale(im_prev,  maxImVal);
     [im_next,  min_next,  max_next]     = private_rescale(im_next,  maxImVal);
+    
     
     
     if strcmp(chain_type,        'curr_to_prev')
@@ -109,12 +120,16 @@ end
 
 varargout{1} = im_out;
 
+
 if ~isempty(arg_name)
     save(arg_name,  'imDeformField',        '-v7.3');
     save([arg_name, '_im_out'], 'im_out',   '-v7.3');
 end
 
+
 end
+
+
 
 function v_out = private_flip_x_y(v_in)
 
