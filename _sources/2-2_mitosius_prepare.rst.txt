@@ -2,8 +2,6 @@
 The Mitosius
 ============
 
-*Author : Yiwei Jia*
-
 Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
 You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-4_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :)).
