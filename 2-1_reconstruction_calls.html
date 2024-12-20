@@ -45,7 +45,7 @@
   <section id="reconstruction-calls">
 <h1>Reconstruction Calls<a class="headerlink" href="#reconstruction-calls" title="Link to this heading">¶</a></h1>
 <p><em>Author : Jaime Barranco</em></p>
-<p>This section describes the functions calls of the reconstructions of our toolbox.
+<p>This section describes the functions calls of our reconstructions.
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static
 reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.</p>
 <p>A static image will be called a <cite>frame</cite>. The spatial dimension of the reconstruced image will be called
@@ -117,21 +117,27 @@ they are cell-arrays with one cell per data-bin and per frame.</p>
 <p>Refer to <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a> section to learn how to build <code class="docutils literal notranslate"><span class="pre">y</span></code> from the raw-data, how to build the trejectory <code class="docutils literal notranslate"><span class="pre">t</span></code> and how to estimate <code class="docutils literal notranslate"><span class="pre">ve</span></code> from <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
 <p>You can also build the trajectory <code class="docutils literal notranslate"><span class="pre">t</span></code> in your own way as long as you follow our convention described at the end of the <cite>Mitosius</cite> section.
 You can evaluate  <code class="docutils literal notranslate"><span class="pre">ve</span></code> by our functions if your trajectory is supported by Monalisa. Else you can obtain <code class="docutils literal notranslate"><span class="pre">ve</span></code> by your own means.</p>
-<ul class="simple">
+<p>For any reconstruciton is</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>: the estimated coil sensitivity map. It is a 4D complex single-precision array of size <code class="docutils literal notranslate"><span class="pre">[frSize,</span> <span class="pre">nCh]</span></code>, where the frame-size <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is the spatial size of the image and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of coils.</p></li>
 </ul>
+</div></blockquote>
 <p>You can estimate <code class="docutils literal notranslate"><span class="pre">C</span></code> either by your own means or by our procedure described in a later section.</p>
-<ul class="simple">
+<p>For any reconstrucitons are</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">N_u</span></code> : This is the size of the Cartesian gridd used for regridding in k-space. It is of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny,</span> <span class="pre">Nz]</span></code> for 3 spatial dimensions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dK_u</span></code> : Is the step-size of the gridd used for regridding in k-space. It is of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y,</span> <span class="pre">dK_z]</span></code> for 3 spatial dimensions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">frSize</span></code> : Is the size of the reconstructed frames which we advise to set equal to <code class="docutils literal notranslate"><span class="pre">N_u</span></code> for optimal image quality. If <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is componentwise smaller than <code class="docutils literal notranslate"><span class="pre">N_u</span></code> some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p></li>
 </ul>
+</div></blockquote>
 <p>The choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> and <code class="docutils literal notranslate"><span class="pre">N_u</span></code> sets the virtual cartesian grid used for regridding
 and inherently sets a maximum achievable spatial resolution of <span class="math notranslate nohighlight">\(1/(dK\_u*N\_u)\)</span>.
 Note that <code class="docutils literal notranslate"><span class="pre">dK_u</span> <span class="pre">=</span> <span class="pre">1./FoV</span></code> where <code class="docutils literal notranslate"><span class="pre">FoV</span></code> is the true (non-croped) reconstruction FoV, which is set by the choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> (or reversely) and can be different from the acquisition FoV.</p>
 <p><code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code>, and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are included in what we call the <em>mitosius</em>,
 with further explanation on how to create it in the section <a class="reference internal" href="2-2_mitosius_prepare.html"><span class="doc">The Mitosius</span></a>.</p>
-<p>If your mitosius is already stored on the disk, you can load it as follows:</p>
+<p>If your mitosius is already stored on the disk at the math <code class="docutils literal notranslate"><span class="pre">m</span></code>, you can load it as follows:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;y&#39;</span><span class="p">);</span>
 <span class="n">t</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;t&#39;</span><span class="p">);</span>
 <span class="n">ve</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">bmMitosius_load</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;ve&#39;</span><span class="p">);</span>
@@ -143,9 +149,12 @@ with further explanation on how to create it in the section <a class="reference 
 <span class="n">C</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmImResize</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">C_size</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">);</span>
 </pre></div>
 </div>
-<ul class="simple">
+<p>For any non-cartesian reconstrucitons are</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Gu</span></code> and <code class="docutils literal notranslate"><span class="pre">Gut</span></code>: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction…</p></li>
 </ul>
+</div></blockquote>
 </section>
 <section id="other-arguments">
 <h2>Other Arguments<a class="headerlink" href="#other-arguments" title="Link to this heading">¶</a></h2>
