@@ -2,8 +2,6 @@
 Coil Sensitivity Map Estimation
 ===============================
 
-*Author : Dominik Helbing*
-
 .. contents::
    :local:
 
