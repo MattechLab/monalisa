@@ -74,9 +74,11 @@ load([  monalisa_dir, filesep, ...
 
 % As an example, we set here the 'temp' directory of the Monalisa 
 % directory as current directory: 
+
+if ~bmCheckDir([monalisa_dir, filesep, 'temp'], false)
+   bmCreateDir([monalisa_dir, filesep, 'temp']);  
+end
 cd([monalisa_dir, filesep, 'temp']); 
-
-
 
 
 
