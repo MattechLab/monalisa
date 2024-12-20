@@ -45,6 +45,7 @@ If you haven't done it already, clone monalisa
 Download the data needed for tutorial 1, this can take a while depending on your internet connection:
 
 .. code-block:: bash
+    
     # Make the folder writable (to download the data)
     cd /monalisa/demo/data_demo/
     chmod u+w data_8_tutorial_1
