@@ -2,7 +2,7 @@
 
 # Ensure the target directory exists
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-target_dir="$(realpath "$script_dir/../data")"
+target_dir="$(realpath "$script_dir/")"
 mkdir -p "$target_dir"
 
 # Function to download using curl or wget
