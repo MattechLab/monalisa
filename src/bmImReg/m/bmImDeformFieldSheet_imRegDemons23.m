@@ -8,29 +8,44 @@
 %                   'prev_to_curr'      or
 %                   'next_to_curr'      or
 
+
+
 function [imDeformField_1, imDeformField_2, varargout] = bmImDeformFieldSheet_imRegDemons23(    x, ...
                                                                                                 n_u, ...
                                                                                                 sheet_type, ...
                                                                                                 nIter, ...
                                                                                                 nSmooth, ...
-                                                                                                arg_name)
+                                                                                                arg_name, ...
+                                                                                                varargin)
+
 
 maxImVal = 255; % -------------------------------------------------------------- magic number
 
+[myMask, maxPixDisplacement] = bmVarargin(varargin);
 
-imDim = size(n_u(:), 1); 
 x = bmBlockReshape(x, n_u);
 
 nIter = nIter(:)'; 
 nIter_1 = nIter(1, 1);
 nIter_2 = nIter(1, 2);
 
+imDim = size(n_u(:), 1); 
 nCell_1             = size(x, 1);
 nCell_2             = size(x, 2);
 imDeformField_1     = cell(nCell_1, nCell_2);
 imDeformField_2     = cell(nCell_1, nCell_2);
-im_1                = cell(nCell_1, nCell_2);
-im_2                = cell(nCell_1, nCell_2);
+im_out_1            = cell(nCell_1, nCell_2);
+im_out_2            = cell(nCell_1, nCell_2);
+
+if ~isempty(myMask)
+    for i = 1:nCell_1
+        for j = 1:nCell_2
+            x{i, j} = x{i, j}.*myMask;
+        end
+    end
+    myMask = repmat(myMask(:), [1, imDim]);
+    myMask = bmBlockReshape(myMask, n_u);
+end
 
 for i = 1:nCell_1
     for j = 1:nCell_2
@@ -58,31 +73,31 @@ for i = 1:nCell_1
         
         
         if strcmp(sheet_type,        'curr_to_prev')
-            [v_reg_1, tmp_im_1]  = imregdemons(im_curr, im_prev_1, nIter_1);
+            [v_reg_1, tmp_im_1]  = imregdemons(im_curr, im_prev_1, [nIter_1, fix(nIter_1/2), fix(nIter_1/4)]); 
             tmp_im_1             = tmp_im_1*max_curr/maxImVal + min_curr;
             
-            [v_reg_2, tmp_im_2]  = imregdemons(im_curr, im_prev_2, nIter_2);
+            [v_reg_2, tmp_im_2]  = imregdemons(im_curr, im_prev_2, [nIter_2, fix(nIter_2/2), fix(nIter_2/4)]);
             tmp_im_2             = tmp_im_2*max_curr/maxImVal + min_curr;
             
         elseif strcmp(sheet_type,    'curr_to_next')
-            [v_reg_1, tmp_im_1]  = imregdemons(im_curr, im_next_1, nIter_1);
+            [v_reg_1, tmp_im_1]  = imregdemons(im_curr, im_next_1, [nIter_1, fix(nIter_1/2), fix(nIter_1/4)]);
             tmp_im_1             = tmp_im_1*max_curr/maxImVal + min_curr;
             
-            [v_reg_2, tmp_im_2]  = imregdemons(im_curr, im_next_2, nIter_2);
+            [v_reg_2, tmp_im_2]  = imregdemons(im_curr, im_next_2, [nIter_2, fix(nIter_2/2), fix(nIter_2/4)]);
             tmp_im_2             = tmp_im_2*max_curr/maxImVal + min_curr;
             
         elseif strcmp(sheet_type,    'prev_to_curr')
-            [v_reg_1, tmp_im_1]  = imregdemons(im_prev_1, im_curr, nIter_1);
+            [v_reg_1, tmp_im_1]  = imregdemons(im_prev_1, im_curr, [nIter_1, fix(nIter_1/2), fix(nIter_1/4)]);
             tmp_im_1             = tmp_im_1*max_prev_1/maxImVal + min_prev_1;
             
-            [v_reg_2, tmp_im_2]  = imregdemons(im_prev_2, im_curr, nIter_2);
+            [v_reg_2, tmp_im_2]  = imregdemons(im_prev_2, im_curr, [nIter_2, fix(nIter_2/2), fix(nIter_2/4)]);
             tmp_im_2             = tmp_im_2*max_prev_2/maxImVal + min_prev_2;
             
         elseif strcmp(sheet_type,    'next_to_curr')
-            [v_reg_1, tmp_im_1]  = imregdemons(im_next_1, im_curr, nIter_1);
+            [v_reg_1, tmp_im_1]  = imregdemons(im_next_1, im_curr, [nIter_1, fix(nIter_1/2), fix(nIter_1/4)]);
             tmp_im_1             = tmp_im_1*max_next_1/maxImVal + min_next_1;
             
-            [v_reg_2, tmp_im_2]  = imregdemons(im_next_2, im_curr, nIter_2);
+            [v_reg_2, tmp_im_2]  = imregdemons(im_next_2, im_curr, [nIter_2, fix(nIter_2/2), fix(nIter_2/4)]);
             tmp_im_2             = tmp_im_2*max_next_2/maxImVal + min_next_2;
             
         else
@@ -90,27 +105,44 @@ for i = 1:nCell_1
             return;
         end
 
-        if (imDim == 3) && (~isempty(v_reg_1)) && (~isempty(v_reg_2))
+        if (~isempty(v_reg_1))
             v_reg_1 = private_flip_x_y(squeeze(v_reg_1));
+        end
+        if (~isempty(v_reg_2))    
             v_reg_2 = private_flip_x_y(squeeze(v_reg_2));
         end
         
-        imDeformField_1{i, j}    = bmPermuteToPoint(v_reg_1, n_u);
-        imDeformField_2{i, j}    = bmPermuteToPoint(v_reg_2, n_u);
+        im_out_1{i, j} = tmp_im_1; 
+        im_out_2{i, j} = tmp_im_2; 
         
-        im_1{i, j} = tmp_im_1; 
-        im_2{i, j} = tmp_im_2; 
+        v_reg_1                 = bmBlockReshape(v_reg_1, n_u);
+        v_reg_2                 = bmBlockReshape(v_reg_2, n_u);
+        if ~isempty(myMask)
+            v_reg_1           = v_reg_1.*myMask;
+            v_reg_2           = v_reg_2.*myMask;
+        end
+        if ~isempty(maxPixDisplacement)
+            v_reg_1           = bmImDeformField_hardThresholding2(v_reg_1, n_u, maxPixDisplacement);
+            v_reg_2           = bmImDeformField_hardThresholding2(v_reg_2, n_u, maxPixDisplacement);
+        end
+        v_reg_1                 = bmPermuteToPoint(v_reg_1, n_u);
+        v_reg_2                 = bmPermuteToPoint(v_reg_2, n_u);
+        imDeformField_1{i, j}   = v_reg_1;
+        imDeformField_2{i, j}   = v_reg_2;
         
     end
 end
 
-varargout{1} = im_1;
-varargout{2} = im_2;
+varargout{1} = im_out_1;
+varargout{2} = im_out_2;
 
-save([arg_name, '_1'],      'imDeformField_1',  '-v7.3');
-save([arg_name, '_2'],      'imDeformField_2',  '-v7.3');
-save([arg_name, '_im_1'],   'im_1',             '-v7.3');
-save([arg_name, '_im_2'],   'im_2',             '-v7.3');
+if ~isempty(arg_name)
+    save([arg_name, '_1'],       'imDeformField_1',  '-v7.3');
+    save([arg_name, '_2'],       'imDeformField_2',  '-v7.3');
+    save([arg_name, '_im_out_1'],       'im_out_1',  '-v7.3');
+    save([arg_name, '_im_out_2'],       'im_out_2',  '-v7.3');
+end
+
 
 end
 
