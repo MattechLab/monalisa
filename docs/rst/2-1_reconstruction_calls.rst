@@ -133,6 +133,8 @@ You will also encounter other arguments to pass as input to our reconstruction f
     - ``ve_max``: the maximum volume element value that serves to limit ``ve`` in order to avoid some convergence problems. Single precision scalar. 
     - ``witnessInfo``: An object of the class ``witnessInfo``. It serves to store some monitoring information about the execution of the reconstruction process, in particular some information about convergence and some 2D images from each iteration. 
 
+.. _Mathilda:
+
 Mathilda, the Initial Image-Reconstruction
 ------------------------------------------
 
@@ -214,8 +216,6 @@ For all the cases...
 .. code-block:: matlab
 
     >> bmImage(x)
-
-
 
 .. _Sensa:
 
