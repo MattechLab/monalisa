@@ -93,7 +93,7 @@ Windows
 
 2. **Compile the C++ code**:
 
-   Navigate to the directory containing the `compileScript.m` file and run it in MATLAB:
+   After checking that the compiler is successfully installed (mex -setup C++), run `compile_mex_for_monalisa.m` function in MATLAB:
 
    .. code-block:: matlab
 
@@ -116,4 +116,4 @@ Notes
 - **macOS**: You need libomp as explained in this StackOverflow post: `How to include omp.h in OS X <https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>`_.
 - **Windows**: Ensure that the Visual Studio C++ compiler is set up correctly and recognized by MATLAB.
 
-Follow these steps to set up your environment and compile the necessary code for MRI reconstruction. If you encounter any issues, consider opening an issue on our GitHub repository.
+Follow these steps to set up your environment and compile the necessary code for MRI reconstruction. If you encounter any issues, consider opening an issue on `our GitHub repository <https://github.com/MattechLab/monalisa>`_. We will do our best to help you.

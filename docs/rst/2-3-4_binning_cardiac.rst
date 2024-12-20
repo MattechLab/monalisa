@@ -38,7 +38,7 @@ Steps for Cardiac Binning using SI projections:
                                                 
       nMask                       = 18; % Should be adapted to heart_rate.  
       maskWidth                   = 1;  % A width of 1 expresses no overlap.
-                                        % A width of 1.2 expresses 20% overlapp. 
+                                        % A width of 1.2 expresses 20% overlap. 
 
       nSignal_to_select           = 20; % 15 to 25 for card. binning.
                                            
@@ -111,7 +111,7 @@ Steps for Cardiac Binning using SI projections:
    You ca npress ctr+E to open the imcontrast interface tool of Matlab. 
    
    You may be able to adjust to contrast in order to see some vertical 
-   strikes that are typical of cardiac mouvement, as on the following figure. 
+   strikes that are typical of cardiac movement, as on the following figure. 
 
    Press shift + E to freeze the chosen contrast, else it will be lost. 
 
@@ -144,7 +144,7 @@ Steps for Cardiac Binning using SI projections:
    
    In order to avoid pathologies in the even extension of the reference signal, 
    we will select the left and right ends (yellow vertical bars) of the 
-   horizontal window either in two maxima of the respiratory patern, or in two minima.
+   horizontal window either in two maxima of the respiratory pattern, or in two minima.
    You can zoom with the loop to click precisely. 
    
    In the case of cardiac binning, 
@@ -171,14 +171,14 @@ Steps for Cardiac Binning using SI projections:
  
 
    You have now to define the lower and upper bound of the vertical window that
-   contains the some caracteristic patterns of cardiac motion. The best way to do it
+   contains the some characteristic patterns of cardiac motion. The best way to do it
    is to select some vertical window that seems to contain some cardiac pattern
    and then adjust it as described below. Make two clicks as follows: 
 
       - Do `x + Left Click` to set the lower bound of the window.
       - Do `x + Right Click` to set the upper end of the window.
 
-   After these two clicks you may see someting like this: 
+   After these two clicks you may see something like this: 
 
    .. image:: ../images/cardiac_binning/cardiac_binning_04.png
       :width: 90%
@@ -195,7 +195,7 @@ Steps for Cardiac Binning using SI projections:
       - press the ctrl+right-arrow to increase the width of vertical window,
       - press the ctrl+left-arrow to decrease the width of vertical window,
    
-   You can also play with the displayed signal without chaning its values internally, 
+   You can also play with the displayed signal without changing its values internally, 
    by using following keys: 
 
       - press ctrl+up-arrow to increase the displayed amplitude of the reference signal,
@@ -204,7 +204,7 @@ Steps for Cardiac Binning using SI projections:
 
    After playing with those adjustments, you may be able to end up with a reference 
    signal that is synchronized with the strikes due to cardiac motion. If you are lucky, 
-   you may see someting like this:   
+   you may see something like this:   
       
    .. image:: ../images/cardiac_binning/cardiac_binning_05.png
       :width: 90%
@@ -217,13 +217,13 @@ Steps for Cardiac Binning using SI projections:
 
 
    Finally, chose a vertical window that will serve for display purpose 
-   only in the rest of the precedure.
+   only in the rest of the procedure.
 
       - press n + left-click to select the lower bound of the display window, 
       - press n + right-click to select the upper bound of the display window. 
 
 
-   After those clicks, you should see someting like this: 
+   After those clicks, you should see something like this: 
 
    .. image:: ../images/cardiac_binning/cardiac_binning_06.png
       :width: 90%
@@ -254,10 +254,10 @@ Steps for Cardiac Binning using SI projections:
                                               imNav   ); 
                                                                
 
-   You should then see the graphical frequency selector appear. In the left pannel is the 
-   frequency spectrum of the reference signal displayed, and the right pannel 
+   You should then see the graphical frequency selector appear. In the left panel is the 
+   frequency spectrum of the reference signal displayed, and the right panel 
    is the reference signal displayed.  
-   On the left pannel, in the upper line of buttons, press the more right button the stretch 
+   On the left panel, in the upper line of buttons, press the more right button the stretch 
    the frequency axis to the right until you see a similar picture like the following.  
 
    .. image:: ../images/cardiac_binning/cardiac_binning_07.png
@@ -265,12 +265,12 @@ Steps for Cardiac Binning using SI projections:
       :align: center
       :alt: cardiac_binning_07  
 
-   Still on the left pannel, in the lower line of buttons, on the right, press the "<<<" button
-   to decrese the value of the maximum frequency of the filter. You may have to press many times 
+   Still on the left panel, in the lower line of buttons, on the right, press the "<<<" button
+   to decrease the value of the maximum frequency of the filter. You may have to press many times 
    until the effect appears on the displayed range of frequencies. You can also use the buttons 
-   "<<" and "<" to be more precise. Try to identify the peak arround the base frequency of 
+   "<<" and "<" to be more precise. Try to identify the peak around the base frequency of 
    the cardiac signal, and create a lowpass filter that include that peak. Then increase the 
-   minimum frequency of the filter to make it bandpass, so that only the frequencies arround
+   minimum frequency of the filter to make it bandpass, so that only the frequencies around
    the base frequency of the cardiac signal are accepted by the filter. Here is an example: 
 
    .. image:: ../images/cardiac_binning/cardiac_binning_08.png
@@ -279,7 +279,7 @@ Steps for Cardiac Binning using SI projections:
       :alt: cardiac_binning_08  
    
    Then press the button "Filter Signal". 
-   The filtered signal appears then in blue on the right pannel. 
+   The filtered signal appears then in blue on the right panel. 
    You can press "Hide Yelow" to discard the reference signal. 
    
    .. image:: ../images/cardiac_binning/cardiac_binning_09.png
@@ -297,12 +297,12 @@ Steps for Cardiac Binning using SI projections:
    until the filtered signal looks like a modulated sinusoid. 
 
    You can change the contrast of the background in the right 
-   pannel with the imcontrast tool of Matlab by pressing the "imcontrast" button. 
-   But once you have changed the contrast, press the "fix contrast" buton, else
+   panel with the imcontrast tool of Matlab by pressing the "imcontrast" button. 
+   But once you have changed the contrast, press the "fix contrast" button, else
    the changes in contrast will be lost. 
    
    By adjusting the contrast, you should observe
-   that the filtered signal oscilated together with the vertical strikes due to 
+   that the filtered signal oscillated together with the vertical strikes due to 
    cardiac motion. This confirms that the correct peak was selected in the frequency
    spectrum. If you cannot see those strikes, a good rule of thumb is that the first
    peak in the frequency spectrum is due to respiratory motion, and the second
@@ -318,7 +318,7 @@ Steps for Cardiac Binning using SI projections:
    You can now close the window and the filter will be saved.   
  
 
-5. **Reformating the Filtered Signal**
+5. **Reformatting the Filtered Signal**
 
    Just execute the following automatic section. 
 
@@ -337,8 +337,8 @@ Steps for Cardiac Binning using SI projections:
 
                                                                               
 
-   A figure appears then to show the filtered signal reformated with the correct size. 
-   You can check on that figure that the filtered signal oscillate toghether with the 
+   A figure appears then to show the filtered signal reformatted with the correct size. 
+   You can check on that figure that the filtered signal oscillate together with the 
    background. 
 
    .. image:: ../images/cardiac_binning/cardiac_binning_11.png
@@ -396,9 +396,9 @@ Steps for Cardiac Binning using SI projections:
 7. **Selecting the Best Candidate Signals**
 
    After executing the following section, you will see a sequence of figures appear 
-   showing some candidate signales in their phase space. After closing the window 
+   showing some candidate signals in their phase space. After closing the window 
    of a candidate signal, answer if you accept of reject the signal. A signal that 
-   spins arround the center without crossing the center is considered of good 
+   spins around the center without crossing the center is considered of good 
    quality to evaluate a phase and should be accepted. A signal that crosses the 
    center is considered of bad quality to evaluate a phase and should be rejected.   
 
@@ -486,5 +486,5 @@ You can now close all figures and go to the last section.
 
 
 .. [1] Piccini D, Littmann A, Nielles-Vallespin S, Zenge MO. Spiral phyllotaxis: The natural way to construct
-   a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reson Med. 2011
+   a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reason Med. 2011
    Oct;66(4):1049–56.

@@ -2,7 +2,8 @@
 
 pushd %~dp0
 
-REM Command file for Sphinx documentation
+REM Run codespell to check for typos
+codespell -i 3./rst
 
 REM Run generate_rst.py before building the documentation
 python ./rst/generate_rst.py
