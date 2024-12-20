@@ -2,8 +2,6 @@
 Reconstruction Calls
 ====================
 
-*Author : Jaime Barranco*
-
 This section describes the functions calls of our reconstructions. 
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static 
 reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.
