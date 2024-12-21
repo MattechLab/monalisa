@@ -48,5 +48,6 @@
 # temp directory
 /temp/*.mat
 /temp/*.m
+/temp/*.txt
 /temp/*.*
 /temp/*
