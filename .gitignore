@@ -46,5 +46,4 @@
 *.asv
 
 # temp directory
-/temp/*
-!/temp/
+/temp/*.m
