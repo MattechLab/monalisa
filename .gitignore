@@ -47,4 +47,4 @@
 
 # temp directory
 /temp/*
-!/temp
+!/temp/
