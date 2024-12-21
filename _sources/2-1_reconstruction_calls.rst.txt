@@ -4,22 +4,21 @@ Reconstruction Calls
 
 This section describes the functions calls of our reconstructions. 
 All our reconstructions are implemented for 2 and 3 spatial dimensions. Some of them are static 
-reconstruction (one signle frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.
+reconstruction (one single frame) and other are dynamic (multiple-frames) with 1 or 2 non-spatial dimensions.
 
-A static image will be called a `frame`. The spatial dimension of the reconstruced image will be called 
-the `frame dimension` and will written ``frDim``. It is equal to 2 or 3. The spatial size of the image 
-will be called the `frame size` and will be written ``frSize``. It is of the form ``[frNx, frNy]``
+A static image will be called a *frame*. The spatial dimension of the reconstruced image will be called 
+the *frame dimension* and will written ``frDim``. It is equal to 2 or 3. The spatial size of the image 
+will be called the *frame size* and will be written ``frSize``. It is of the form ``[frNx, frNy]``
 for 2D frames and of the form ``[frNx, frNy, frNz]`` for 3D frames. 
 
 A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
 contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size ``[nFr, 1]`` where ``nFr``
-stands for `number of frames`. We will call such a cell-array a `chain (of frames)`. 
-For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a `sheet (of frames)`. 
+stands for *number of frames*. We will call such a cell-array a *chain (of frames)*. 
+For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a *sheet (of frames)*. 
 
 Reconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
-The terminasion "_partial_cartesian" in the name of a function indicates a use for a  
-fully or parially sampled cartesian trajectory. If that terminasion is absent from the name, 
-it means that the reconstruction is for non-cartesian trajectory.    
+The terminasion "_partial_cartesian" in the name of a function indicates a use for a cartesian trajectory (fully or partially sampled). 
+If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectory.    
 
 Here is the current list of our reconstructions: 
 
@@ -39,7 +38,6 @@ Here is the current list of our reconstructions:
 
     *Non-Cartesian Sheet Reconstrucitons*:
 
-
         - :ref:`TevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative (sheet of frames). 
         - :ref:`SensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative (sheet of frames). 
 
@@ -52,12 +50,8 @@ Here is the current list of our reconstructions:
         - `TevaMorphosia_chain_partial_cartesian`: CS recon with temporal regularization by l1-norm of temporal derivative (chain of frames).
 
 
-Generic Arguments
-=================
-
-Some argument are (almost) always present in the argument list of all our reconstructions. 
-We will call them the `generic arguments`. 
-
+Arguments of Reconstruction Functions
+=====================================
 
 For static (single frame) reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
 they are cell-arrays with one cell per data-bin and per frame. 
@@ -69,31 +63,18 @@ For static recontructions are:
     - ``ve``: the volume elements (inverse density compensation). Single precision.  Of size ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
 
-Refer to :doc:`2-2_mitosius_prepare` section to learn how to build ``y`` from the raw-data, how to build the trejectory ``t`` and how to estimate ``ve`` from ``t``. 
+For multiple-frame (dynamic) recontructions are 
 
+    - ``y``: the cell-array of raw-data bins, 
+    - ``t``: the cell-array of trajectory bins,  
+    - ``ve``: the cell-array of volume-elements bins.  
+
+Each cell of those cell-arrays is of size and type given by its static counter parts.  
+
+The three variables ``y``, ``t`` and ``ve``, or their list for each cell in the case of dynamic imaging, forms the *Mitosius*. 
+Refer to :doc:`2-2_mitosius_prepare` section to learn how to build ``y`` from the raw-data, how to build the trejectory ``t`` and how to estimate ``ve`` from ``t``. 
 You can also build the trajectory ``t`` in your own way as long as you follow our convention described at the end of the `Mitosius` section. 
 You can evaluate  ``ve`` by our functions if your trajectory is supported by Monalisa. Else you can obtain ``ve`` by your own means.  
-
-For any reconstruciton is
-
-    - ``C``: the estimated coil sensitivity map. It is a 4D complex single-precision array of size ``[frSize, nCh]``, where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
-
-You can estimate ``C`` either by your own means or by our procedure described in a later section. 
-
-For any reconstrucitons are
-
-    - ``N_u`` : This is the size of the Cartesian gridd used for regridding in k-space. It is of size ``[Nx, Ny]`` for 2 spatial dimensionts and of size ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
-    - ``dK_u`` : Is the step-size of the gridd used for regridding in k-space. It is of size ``[dK_x, dK_y]`` for 2 spatial dimensionts and of size ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
-    - ``frSize`` : Is the size of the reconstructed frames which we advise to set equal to ``N_u`` for optimal image quality. If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
-
-
-The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
-and inherently sets a maximum achievable spatial resolution of :math:`1/(dK\_u*N\_u)`. 
-Note that ``dK_u = 1./FoV`` where ``FoV`` is the true (non-croped) reconstruction FoV, which is set by the choice of ``dK_u`` (or reversely) and can be different from the acquisition FoV. 
-
-
-``y``, ``t``, and ``ve`` are included in what we call the *mitosius*,
-with further explanation on how to create it in the section :doc:`2-2_mitosius_prepare`.
 
 If your mitosius is already stored on the disk at the math ``m``, you can load it as follows: 
 
@@ -101,8 +82,15 @@ If your mitosius is already stored on the disk at the math ``m``, you can load i
 
     y   = bmMitosius_load(m, 'y'); 
     t   = bmMitosius_load(m, 't'); 
-    ve  = bmMitosius_load(m, 've'); 
+    ve  = bmMitosius_load(m, 've');
 
+
+For any reconstruciton is
+
+    - ``C``: the estimated coil sensitivity map. It is a 4D complex single-precision array of size ``[frSize, nCh]``, 
+        where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
+
+You can estimate ``C`` either by your own means or by our procedure described in a later section. 
 If you already saved a low-resolution coil sensitivity matrix ``C``, you can load it and resized it to the image-size as follows:
 
 .. code-block:: matlab
@@ -112,21 +100,60 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
     C = bmImResize(C, C_size, frSize);
 
 
+For any reconstructions are
+
+    - ``N_u`` : the size of the Cartesian gridd used for regridding in k-space. It is of size ``[Nx, Ny]`` for 2 spatial dimensionts and of size ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
+    - ``dK_u`` : the step-size of the gridd used for regridding in k-space. It is of size ``[dK_x, dK_y]`` for 2 spatial dimensionts and of size ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
+    - ``frSize`` : the size of the reconstructed frames which we advise to set equal to ``N_u`` for optimal image quality. If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
+
+
+These three arguments are the *Companions*. They are present in much of the functions involved in reconstructions.  
+The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
+and inherently sets the voxel size :math:`1/(dK\_u*N\_u)`. 
+Note that ``dK_u = 1./FoV`` where ``FoV`` is the true (non-croped) reconstruction FoV.  
+The FoV is set by the choice of ``dK_u`` (or reversely) and can be different from the acquisition FoV, that we will write *aFoV*. 
+The frame size ``frSize`` should be equal or smaller (component wise) to ``N_u``. We advise to choose ``frSize`` equal to ``N_u`` for optimal quality. 
+
+In order to avoid numerical problems due to large differences between volume elements, we have to limit them by the user defined upper bound
+
+    - ``ve_max``: the maxium vomume element value that serves to limite ``ve`` in order to to avoid some convergence problems. Single precision scalar. 
+
+Number of iterations in reconstruction functions are given by
+
+    - ``nIter``: the number of iterations of the outer-loop of iterative reconstruction. Integer.  
+    - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent in iterative reconstructions. Integer. 
+
+For CS reconstructions,  ``nIter`` is the number of iterations of the ADMM algorithm (outer loop) and ``nCGD`` is the number of CGD (inner loop) iterations.   
+For least square reconstructions, ``nIter`` is the nubmer of iterations of the CGD algorithm.
+
+
+The regularization weight of least-square regularized reconstructions is 
+
+    - ``delta`` : Regularisation parameter. Single precision scalar. 
+
+The ADMM algorithm needs an aditional *convergence paramter* that we will write
+
+    - ``rho`` : Convergence parameter for the ADMM algorithm. Single precision scalar. A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
+
+In order to monitor what is happening during a reconstruction (typically if this is taking lany hours), a object of the class *bmWitnessInfo* is written
+is the current directory. You have to give as argument an instance of that object to every iterative reconstruciton.   
+    
+    - ``witnessInfo``: An object of the class ``witnessInfo``. It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images from each iteration. 
+
+
 For any non-cartesian reconstrucitons are
 
     - ``Gu`` and ``Gut``: The gridding (sparse) matrix and its transposed matrix used for forward and backward gridding in our iterative non-cartesian reconstructions. For a static reconstruction...
 
-Other Arguments
-===============
 
-You will also encounter other argulents to pass as input to our reconstruction functions. Amongs them are:
+For image (not k-space) motion compensation are
 
-    - ``delta`` : Regularisation parameter. Single precision scalar. 
-    - ``rho`` : Convergence parameter for the ADMM algorithm. Single precision scalar. A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
-    - ``nIter``: the number of iterations of the outer-loop of iterative reconstruction. Integer. 
-    - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent in iterative reconstructions. Integer. 
-    - ``ve_max``: the maxium vomume element value that serves to limite ``ve`` in order to to avoid some convergence problems. Single precision scalar. 
-    - ``witnessInfo``: An object of the class ``witnessInfo``. It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images from each iteration. 
+    - ``Tu``        : the deformation (sparse) matrix used for forward deformation in our motion compensated reconstructions, 
+    - ``Tut``       : the transposed matrix of ``Tut`` for backward deformation. 
+
+Note that matrix ``Tut`` do not perform an inverse deformation. It realizes the transposed opperation of the forward deformation. 
+
+
 
 
 
@@ -238,7 +265,7 @@ witness_label = 'steva_demo';
                     delta, rho, 'normal', ...
                     nCGD, ve_max, ...
                     nIter, ...
-                    bmWitnessInfo(witness_label, witness_ind));
+                    witnessInfo);
 
 
 .. _Sleva:
@@ -250,7 +277,6 @@ Single-frame Least-square Regularized Reconstruction, where reularizaiton is the
 
 .. code-block:: matlab
 
-    witness_label = 'sleva_demo'; 
 
     x = bmSleva(    x0, ...
                     [], [], ...
@@ -260,7 +286,7 @@ Single-frame Least-square Regularized Reconstruction, where reularizaiton is the
                     delta, rho, 'normal', ...
                     nCGD, ve_max, ...
                     nIter, ...
-                    bmWitnessInfo(witness_label, witness_ind));
+                    witnessInfo);
 
 
 
@@ -268,17 +294,6 @@ Single-frame Least-square Regularized Reconstruction, where reularizaiton is the
 
 Non-Cartesian Chain Reconstructions
 ===================================
-
-For multiple-frame (dynamic) recontructions with one non-spatial dimension will be called *chain reconstructions*. 
-In that case are
-
-    - ``y``: the cell-array of raw-data bins. 
-    - ``t``: the cell-array of trajectory bins. 
-    - ``ve``: the cell-array of volume-elements bins. 
-
-The cell of each cell-array is of size and type as given in the static case. 
-
- - ``Tu`` and ``Tut``: The deformation (sparse) matrix and its transposed matrix used for forward and backward defoemation in our motion compensated reconstructions.
 
 
 
@@ -406,6 +421,11 @@ finite difference time derivative.
             nIter, witnessInfo)
 
 
+Non-Cartesian Sheet Reconstructions
+===================================
+
+
+
 .. _TevaMorphosia_sheet:
 
 TevaMorphosia_sheet
@@ -450,6 +470,13 @@ finite difference time derivative.
 
 
 
+Cartesian Static Reconstructions
+================================
+
+
+
+Cartesian Chain Reconstructions
+===============================
 
 
 
