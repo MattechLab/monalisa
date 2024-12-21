@@ -153,7 +153,7 @@ x1 = x;
 
 
 %% Deformation-Fields Estimation
-
+% 
 % The next reconstruction functions can be run with or without
 % deformation matrices. In order to test both cases, we already estimate 
 % here the deformation-fiels for later usage. 
@@ -258,7 +258,7 @@ bmImage(x)
 
 
 %% SensitivaMorphosia_sheet with deformation matrices
-
+% 
 % SensitivaMorphosia_sheet can be called with or without 
 % deformation matrices. We include it here . 
 %
@@ -283,7 +283,7 @@ delta               = 3;
 nCGD                = 4;
 ve_max              = 10*prod(dK_u(:));
 
-x = bmSensitivaMorphosia_chain( x0, ...
+x = bmSensitivaMorphosia_sheet( x0, ...
                                 y, ve, C, ...
                                 Gu, Gut, frSize, ...
                                 Tu1, Tu1t, Tu2, Tu2t, ...
