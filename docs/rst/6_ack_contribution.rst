@@ -31,15 +31,15 @@ You can contact us via email at: `MatTech Email <mailto:mathematical.technologie
 The contributors behind Monalisa
 ================================
 
-- Bastien Milani: the brain of the project, he wrote the core codes and documentation for the toolkit. With this work, he significantly advanced the state of the art in Magnetic Resonance Imaging reconstruction through a sound mathematical reformulation - and implementation - of the functions. 
+- Bastien Milani: the brain of the project. He wrote the core codes and documentation for the toolkit. With this work, he significantly advanced the state of the art in Magnetic Resonance Imaging reconstruction through a sound mathematical reformulation - and implementation - of the functions. 
 
-- Mauro Leidi: the architect of order, he designed the documentation structure and  contributed extensively to example tutorials, benchmark tests, along with key component code contributions.
+- Mauro Leidi: the architect of order. He designed the documentation structure and  contributed extensively to example tutorials, benchmark tests, along with key component code contributions.
 
 - Yiwei Jia: “let-me-code-that-for-you” (LMCTFY). Besides writing documentation and participating in code review and maintenance, she developed key examples and tutorials, empowering users and testers. 
 
 - Jaime Barranco: one “git-savant” to rule them all. He developed documentation and actively participated in code and data maintenance, ensuring the toolkit\'s long-term usability.
 
-- Dominik Helbing: Authored the documentation and implemented part of the user interface (UI) components of the toolkit. 
+- Dominik Helbing: tour guide of the codes. He authored the documentation, implemented part of the user interface (UI) components, and contributed to commenting on codes for clarity of the toolkit. 
 
 - Jean-Baptiste Ledoux: renowned MRI tamer. He participated in the documentation for “Acquisition Guidelines for Prescans”: don\'t be fooled, with him very complex scanning procedures look trivial - but they are not. 
 
