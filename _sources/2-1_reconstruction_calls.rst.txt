@@ -9,44 +9,61 @@ reconstruction (one single frame) and other are dynamic (multiple-frames) with 1
 A few Definitions
 =================
 
-A static image will be called a *frame*. The spatial dimension of the reconstruced image will be called 
-the *frame dimension* and will written ``frDim``. It is equal to 2 or 3. 
+A static image will be called a **frame**. The spatial dimension of the reconstruced image will be called 
+the **frame dimension** and will written ``frDim``. It is equal to 2 or 3. 
 
-The spatial size of the image will be called the *frame size* and 
+The spatial size of the image will be called the **frame size** and 
 will be written ``frSize``. It is of the form ``[frNx, frNy]``
 for 2D frames and of the form ``[frNx, frNy, frNz]`` for 3D frames. 
 
 A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
 contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size ``[nFr, 1]`` where ``nFr``
-stands for *number of frames*. We will call such a cell-array a *chain (of frames)*. 
-For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a *sheet (of frames)*. 
+stands for **number of frames**. We will call such a cell-array a **chain (of frames)**. 
+For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a **sheet (of frames)**. 
 
 A sampling trajectory will be called a *Cartesian* trajectory if it is uniform and fully sampled. It will be called
-*Partial Cartesian* if it is a cartesian trajectory with missing points. In any other case it will be called *Non-Cartesian*. 
+**Partial Cartesian** if it is a cartesian trajectory with missing points. In any other case it will be called *Non-Cartesian*. 
 
 Reconstructions for non-cartesian and (partial) cartesian trajectories are implemented by different functions.
 The terminasion "_partial_cartesian" in the name of a function indicates a use for a partial cartesian trajectories. 
 If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories. 
 
 All our iteartive reconstructions are least-square regularized reconstructions. We will write *LSR* for "least-square regularized". 
-For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (*CGD*), or
-the alternating direction method of multipliers (*ADMM*). 
+For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (**CGD**), or
+the alternating direction method of multipliers (**ADMM**). 
 
 Many kind of discrete Fourier transforms are involved in our theory of MRI reconstructions. 
-We will write *DFT* for "discrete Fourier transform". Since a DFT is a linear map, we will interpret it as a matrix. 
+We will write **DFT** for "discrete Fourier transform". We will write :math:`F` with super script to designate the matrix of forward DFTs: 
 
-.. note:: 
-    The fast Fourier transform (*FFT*) algorithm is one particular algorithm that perform the DFT for cartesian trajectories in a rapid way. 
-    But the FFT algorithm do not realizes all kind of DFTs. 
+    - :math:`F^{Cart}`  will be the forward DFT matrix for cartesian trajectories, 
+    - :math:`F^{PCart}` will be the forward DFT matrix for partial cartesian trajectories,
+    - :math:`F^{NCart}` will be the forward DFT matrix for non-cartesian trajectories. 
 
+The **inverse DFT** only exist for cartesian trajectories. 
+
+For partial cartesian and non-cartesian trajectories we 
+will call an **approx-inverse** any linear map that leads approximatively 
+to the identity when it is composed with the DFT. 
+
+The **adjoint DFT** always exist.
+
+
+The the complex conjugate transpose of the DFT matrix is the matrix of a map that 
+we will call the **star DFT**. The start and adjoint DFT are related but different in 
+general. 
 
 We use the following supper script for DFTs:
 
     - The matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
-    - The complex matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
+    - The matrix of the adjoint DFT will be written with supper scrpit :math:`*`.
+    - The matrix of the adjoint DFT, if it exists, will be written with supper scrpit :math:`-1`.  
+    - The matrix of any approx-inverse DFT will be written with supper scrpit :math:`\sim  1`.  
 
+.. note:: 
+    The fast Fourier transform (**FFT**) algorithm is an algorithm that perform the DFT for cartesian 
+    trajectories in a rapid way. But the FFT algorithm do not realizes all kind of DFTs. 
 
-The following tables present a mathematical symbole to designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
+The following tables summirizes the mathematical symbole that designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
 
 .. list-table:: 
     :header-rows: 1
