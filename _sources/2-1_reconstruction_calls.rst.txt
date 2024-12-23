@@ -21,32 +21,67 @@ contains then one frame of the image. For 1 non-spatial dimension, the cell-arra
 stands for *number of frames*. We will call such a cell-array a *chain (of frames)*. 
 For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a *sheet (of frames)*. 
 
-Reconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
-The terminasion "_cartesian" in the name of a function indicates a use for a cartesian trajectories (fully or partially sampled). 
-If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories.    
+A sampling trajectory will be called a *Cartesian* trajectory if it is uniform and fully sampled. It will be called
+*Partial Cartesian* if it is a cartesian trajectory with missing points. In any other case it will be called *Non-Cartesian*. 
 
-All our iteartive reconstructions are least-square regularized reconstructions. We will write *LQR* for "least-square regularized". 
+Reconstructions for non-cartesian and (partial) cartesian trajectories are implemented by different functions.
+The terminasion "_partial_cartesian" in the name of a function indicates a use for a partial cartesian trajectories. 
+If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories. 
 
-Many kind of discrete Fourier transforms are involved in MRI reconstructions. We will write *DFT* for "discrete Fourier transform".
-Note the the fast Fourier transform (*FFT*) algorithm is one particular algorithm that perform one specific type of DFT in a rapid way. 
-But the FFT algorithm do not realizes all kind of DFT s. 
+All our iteartive reconstructions are least-square regularized reconstructions. We will write *LSR* for "least-square regularized". 
+For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (*CGD*), or
+the alternating direction method of multipliers (*ADMM*). 
 
-We differenciate between: 
+Many kind of discrete Fourier transforms are involved in our theory of MRI reconstructions. 
+We will write *DFT* for "discrete Fourier transform". Since a DFT is a linear map, we will interpret it as a matrix. 
 
-    - Forward DFT
-    - Adjoint DFT
-    - (Quasi) Inverse DFT
+.. note:: 
+    The fast Fourier transform (*FFT*) algorithm is one particular algorithm that perform the DFT for cartesian trajectories in a rapid way. 
+    But the FFT algorithm do not realizes all kind of DFTs. 
 
-and all those DFTs can be
 
-    - Cartesian fully sampled
-    - Cartesian partially sampled
-    - Non-cartesian (in which case full or partial sampling has no mathematical meaning).  
+We use the following supper script for DFTs:
 
-This results in 9 type of DFT s. Note that full or partial sampling is defined mathematically by the sampling theorem, which is formulated only
+    - The matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
+    - The complex matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
+
+
+The following tables present a mathematical symbole to designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
+
+.. list-table:: 
+    :header-rows: 1
+    :align: center
+
+    * - **DFT's**
+      - Forward
+      - Ajoint
+      - Star
+      - (Approx-) Inverse
+    * - **Cartesian**
+      - :math:`F^{Cart}`
+      - :math:`(F^{Cart})^{\dagger}`
+      - :math:`(F^{Cart})^{*}`
+      - :math:`(F^{Cart})^{-1}`
+    * - **Partial Cartesian**
+      - :math:`F^{PCart}`
+      - :math:`(F^{PCart})^{\dagger}`
+      - :math:`(F^{PCart})^{*}`
+      - :math:`(F^{Cart})^{\sim 1}`
+    * - **Non-Cartesian**
+      - :math:`F^{NCart}`
+      - :math:`(F^{NCart})^{\dagger}`
+      - :math:`(F^{NCart})^{*}`
+      - :math:`(F^{NCart})^{\sim  1}`
+
+Note that the notion of full sampling (and by extension of partial sampling) is defined by the sampling theorem, which is formulated only
 for cartesian trajectories. There is no formally defined notion of under sampling for non-cartesian trajectories. 
 
-Also note that among the 9 type of DFT s, some of them co-inside (up to a factor). For example, the Forward, Adjoint and Inverse 
+Also note that among the 12 type of DFT s, some of them co-inside (up to a factor). For example, for cartesian trajectories 
+are the  Adjoint, the Star and the Inverse DFT equal (they co-inside) up to a factor that depend on definitions. 
+For partially sampled or non-cartesian trajectories, the notion of adjoint and star 
+DFT do not longer co-inside while the inverse DFT do not longer exist in the strict sense. 
+
+
 
 
 A Quick View at the List of our Reconstructions
@@ -135,16 +170,33 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
 
 For any reconstructions are
 
-    - ``N_u`` : the size of the Cartesian gridd used for regridding in k-space. *Double precision, leight.* It is of size ``[Nx, Ny]`` for 2 spatial dimensionts and of size ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
-    - ``dK_u`` : the step-size of the gridd used for regridding in k-space.  *Single precision, leight*. It is of size ``[dK_x, dK_y]`` for 2 spatial dimensionts and of size ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
-    - ``frSize`` : the size of the reconstructed frames. *Double precision, leight*. We advise to set equal to ``N_u`` for optimal image quality. If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
+    - ``N_u`` : the size of the Cartesian gridd used for regridding in k-space. *Double precision, leight.* It is equal to ``[Nx, Ny]`` for 2 spatial dimensionts and it is equal to ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
+    - ``dK_u`` : the step-size of the gridd used for regridding in k-space.  *Single precision, leight*. It is equal to  ``[dK_x, dK_y]`` for 2 spatial dimensions and it is equal to ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
+    - ``frSize`` : the size of the reconstructed frames. *Double precision, leight*. It is equal to  ``[frN_x, frN_y]`` for 2 spatial dimensions and it is equal to ``[frN_x, frN_y, frN_z]`` for 3 spatial dimensions.
+    
+We advise to set ``frSize`` equal to ``N_u`` for optimal image quality. 
+If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling 
+are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
 
 
 These three arguments are the *Companions*. They are present in much of the functions involved in reconstructions.  
 The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
-and inherently sets the voxel size :math:`1/(dK\_u \cdot * N\_u)`. 
+and inherently sets the voxel size :math:`[\Delta r_x, \Delta r_y, \Delta r_z]`: 
+
+.. math::
+   \Delta r_x = (1/dK_x)/N_x
+   \Delta r_y = (1/dK_y)/N_y
+   \Delta r_z = (1/dK_z)/N_z
+
+
 Note that ``dK_u = 1./FoV`` where ``FoV`` is the true (non-croped) reconstruction FoV.  
-The FoV is set by the choice of ``dK_u`` (or reversely) and can be different from the acquisition FoV, that we will write *aFoV*.  
+The reconstruction FoV is set by the choice of ``dK_u``, or reversely, ``dK_u`` is set by the reconstruction FoV.  
+
+
+.. note::
+
+    The reconstruction FoV can be different from the acquisition FoV, that we will usually write *aFoV*.  
+
 
 In order to avoid numerical problems due to large differences between volume elements, we have to limit them by a user defined upper bound that we called
 
@@ -153,7 +205,7 @@ In order to avoid numerical problems due to large differences between volume ele
 
 For iterative reconstruction, the reconstruction function need a start ismage as input that we use to write
 
-    - `x0`: The initial image for iterative reconstruction. *Complex valued, single precision, heavy*.  
+    - ``x0`` : The initial image for iterative reconstruction. *Complex valued, single precision, heavy*.  
 
 The initial guess `x0` must have the same size as the reconstructed image. It must be a frame for static reconstructions and a cell-array for dynamic reconstructions. 
 
@@ -281,9 +333,6 @@ You can take a look at the image by running
 .. code-block:: matlab
 
     >> bmImage(x0);
-
-
-.. code-block:: matlab
 
 Be aware that there could be a crash if the memory needed is too big,
 and it can take a lot of time. Maybe it's better if you first test with small N_u and frSize values.
