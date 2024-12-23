@@ -58,32 +58,65 @@ for 2D frames and of the form <code class="docutils literal notranslate"><span c
 contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr,</span> <span class="pre">1]</span></code> where <code class="docutils literal notranslate"><span class="pre">nFr</span></code>
 stands for <em>number of frames</em>. We will call such a cell-array a <em>chain (of frames)</em>.
 For 2 non-spatial dimensions, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr_1,</span> <span class="pre">nFr_2]</span></code>. We will call such a cell-array a <em>sheet (of frames)</em>.</p>
-<p>Reconstructions for non-cartesian and cartesian trajectories are implemented by different functions.
-The terminasion “_cartesian” in the name of a function indicates a use for a cartesian trajectories (fully or partially sampled).
+<p>A sampling trajectory will be called a <em>Cartesian</em> trajectory if it is uniform and fully sampled. It will be called
+<em>Partial Cartesian</em> if it is a cartesian trajectory with missing points. In any other case it will be called <em>Non-Cartesian</em>.</p>
+<p>Reconstructions for non-cartesian and (partial) cartesian trajectories are implemented by different functions.
+The terminasion “_partial_cartesian” in the name of a function indicates a use for a partial cartesian trajectories.
 If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories.</p>
-<p>All our iteartive reconstructions are least-square regularized reconstructions. We will write <em>LQR</em> for “least-square regularized”.</p>
-<p>Many kind of discrete Fourier transforms are involved in MRI reconstructions. We will write <em>DFT</em> for “discrete Fourier transform”.
-Note the the fast Fourier transform (<em>FFT</em>) algorithm is one particular algorithm that perform one specific type of DFT in a rapid way.
-But the FFT algorithm do not realizes all kind of DFT s.</p>
-<p>We differenciate between:</p>
+<p>All our iteartive reconstructions are least-square regularized reconstructions. We will write <em>LSR</em> for “least-square regularized”.
+For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (<em>CGD</em>), or
+the alternating direction method of multipliers (<em>ADMM</em>).</p>
+<p>Many kind of discrete Fourier transforms are involved in our theory of MRI reconstructions.
+We will write <em>DFT</em> for “discrete Fourier transform”. Since a DFT is a linear map, we will interpret it as a matrix.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fast Fourier transform (<em>FFT</em>) algorithm is one particular algorithm that perform the DFT for cartesian trajectories in a rapid way.
+But the FFT algorithm do not realizes all kind of DFTs.</p>
+</div>
+<p>We use the following supper script for DFTs:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Forward DFT</p></li>
-<li><p>Adjoint DFT</p></li>
-<li><p>(Quasi) Inverse DFT</p></li>
+<li><p>The matrix of the adjoint DFT will be written with supper scrpit <span class="math notranslate nohighlight">\(\dagger\)</span>.</p></li>
+<li><p>The complex matrix of the adjoint DFT will be written with supper scrpit <span class="math notranslate nohighlight">\(\dagger\)</span>.</p></li>
 </ul>
 </div></blockquote>
-<p>and all those DFTs can be</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Cartesian fully sampled</p></li>
-<li><p>Cartesian partially sampled</p></li>
-<li><p>Non-cartesian (in which case full or partial sampling has no mathematical meaning).</p></li>
-</ul>
-</div></blockquote>
-<p>This results in 9 type of DFT s. Note that full or partial sampling is defined mathematically by the sampling theorem, which is formulated only
+<p>The following tables present a mathematical symbole to designate each of the 12 kind of DFTs involved in our MRI reconstructions.</p>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>DFT’s</strong></p></th>
+<th class="head"><p>Forward</p></th>
+<th class="head"><p>Ajoint</p></th>
+<th class="head"><p>Star</p></th>
+<th class="head"><p>(Approx-) Inverse</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{Cart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{-1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Partial Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{PCart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{PCart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{PCart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{\sim 1}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Non-Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{NCart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{\sim  1}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the notion of full sampling (and by extension of partial sampling) is defined by the sampling theorem, which is formulated only
 for cartesian trajectories. There is no formally defined notion of under sampling for non-cartesian trajectories.</p>
-<p>Also note that among the 9 type of DFT s, some of them co-inside (up to a factor). For example, the Forward, Adjoint and Inverse</p>
+<p>Also note that among the 12 type of DFT s, some of them co-inside (up to a factor). For example, for cartesian trajectories
+are the  Adjoint, the Star and the Inverse DFT equal (they co-inside) up to a factor that depend on definitions.
+For partially sampled or non-cartesian trajectories, the notion of adjoint and star
+DFT do not longer co-inside while the inverse DFT do not longer exist in the strict sense.</p>
 </section>
 <section id="a-quick-view-at-the-list-of-our-reconstructions">
 <h2>A Quick View at the List of our Reconstructions<a class="headerlink" href="#a-quick-view-at-the-list-of-our-reconstructions" title="Link to this heading">¶</a></h2>
@@ -177,16 +210,27 @@ If you already saved a low-resolution coil sensitivity matrix <code class="docut
 <p>For any reconstructions are</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">N_u</span></code> : the size of the Cartesian gridd used for regridding in k-space. <em>Double precision, leight.</em> It is of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny,</span> <span class="pre">Nz]</span></code> for 3 spatial dimensions.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dK_u</span></code> : the step-size of the gridd used for regridding in k-space.  <em>Single precision, leight</em>. It is of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y]</span></code> for 2 spatial dimensionts and of size <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y,</span> <span class="pre">dK_z]</span></code> for 3 spatial dimensions.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">frSize</span></code> : the size of the reconstructed frames. <em>Double precision, leight</em>. We advise to set equal to <code class="docutils literal notranslate"><span class="pre">N_u</span></code> for optimal image quality. If <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is componentwise smaller than <code class="docutils literal notranslate"><span class="pre">N_u</span></code> some croping and zero-filling are used internally in the iterative reconstruction in order to regrid on the grid of size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N_u</span></code> : the size of the Cartesian gridd used for regridding in k-space. <em>Double precision, leight.</em> It is equal to <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny]</span></code> for 2 spatial dimensionts and it is equal to <code class="docutils literal notranslate"><span class="pre">[Nx,</span> <span class="pre">Ny,</span> <span class="pre">Nz]</span></code> for 3 spatial dimensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dK_u</span></code> : the step-size of the gridd used for regridding in k-space.  <em>Single precision, leight</em>. It is equal to  <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y]</span></code> for 2 spatial dimensions and it is equal to <code class="docutils literal notranslate"><span class="pre">[dK_x,</span> <span class="pre">dK_y,</span> <span class="pre">dK_z]</span></code> for 3 spatial dimensions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frSize</span></code> : the size of the reconstructed frames. <em>Double precision, leight</em>. It is equal to  <code class="docutils literal notranslate"><span class="pre">[frN_x,</span> <span class="pre">frN_y]</span></code> for 2 spatial dimensions and it is equal to <code class="docutils literal notranslate"><span class="pre">[frN_x,</span> <span class="pre">frN_y,</span> <span class="pre">frN_z]</span></code> for 3 spatial dimensions.</p></li>
 </ul>
 </div></blockquote>
+<p>We advise to set <code class="docutils literal notranslate"><span class="pre">frSize</span></code> equal to <code class="docutils literal notranslate"><span class="pre">N_u</span></code> for optimal image quality.
+If <code class="docutils literal notranslate"><span class="pre">frSize</span></code> is componentwise smaller than <code class="docutils literal notranslate"><span class="pre">N_u</span></code> some croping and zero-filling
+are used internally in the iterative reconstruction in order to regrid on the grid of size <code class="docutils literal notranslate"><span class="pre">N_u</span></code>.</p>
 <p>These three arguments are the <em>Companions</em>. They are present in much of the functions involved in reconstructions.
 The choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> and <code class="docutils literal notranslate"><span class="pre">N_u</span></code> sets the virtual cartesian grid used for regridding
-and inherently sets the voxel size <span class="math notranslate nohighlight">\(1/(dK\_u \cdot * N\_u)\)</span>.
-Note that <code class="docutils literal notranslate"><span class="pre">dK_u</span> <span class="pre">=</span> <span class="pre">1./FoV</span></code> where <code class="docutils literal notranslate"><span class="pre">FoV</span></code> is the true (non-croped) reconstruction FoV.
-The FoV is set by the choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> (or reversely) and can be different from the acquisition FoV, that we will write <em>aFoV</em>.</p>
+and inherently sets the voxel size <span class="math notranslate nohighlight">\([\Delta r_x, \Delta r_y, \Delta r_z]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Delta r_x = (1/dK_x)/N_x
+\Delta r_y = (1/dK_y)/N_y
+\Delta r_z = (1/dK_z)/N_z\]</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">dK_u</span> <span class="pre">=</span> <span class="pre">1./FoV</span></code> where <code class="docutils literal notranslate"><span class="pre">FoV</span></code> is the true (non-croped) reconstruction FoV.
+The reconstruction FoV is set by the choice of <code class="docutils literal notranslate"><span class="pre">dK_u</span></code>, or reversely, <code class="docutils literal notranslate"><span class="pre">dK_u</span></code> is set by the reconstruction FoV.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The reconstruction FoV can be different from the acquisition FoV, that we will usually write <em>aFoV</em>.</p>
+</div>
 <p>In order to avoid numerical problems due to large differences between volume elements, we have to limit them by a user defined upper bound that we called</p>
 <blockquote>
 <div><ul class="simple">
@@ -196,7 +240,7 @@ The FoV is set by the choice of <code class="docutils literal notranslate"><span
 <p>For iterative reconstruction, the reconstruction function need a start ismage as input that we use to write</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><cite>x0</cite>: The initial image for iterative reconstruction. <em>Complex valued, single precision, heavy</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x0</span></code> : The initial image for iterative reconstruction. <em>Complex valued, single precision, heavy</em>.</p></li>
 </ul>
 </div></blockquote>
 <p>The initial guess <cite>x0</cite> must have the same size as the reconstructed image. It must be a frame for static reconstructions and a cell-array for dynamic reconstructions.</p>
@@ -315,9 +359,6 @@ You may then combine those images by any combination of your choice. If you don�
 coil-images by a root-mean-square, but the phase of the image is lost in that case.</p>
 <p>You can take a look at the image by running</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bmImage</span><span class="p">(</span><span class="n">x0</span><span class="p">);</span>
-</pre></div>
-</div>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <p>Be aware that there could be a crash if the memory needed is too big,
