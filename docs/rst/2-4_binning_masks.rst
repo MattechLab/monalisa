@@ -15,7 +15,7 @@ There are many possible ways to rearrange the measurements, depending on the goa
    :glob:
    :includehidden:
 
-   2-3-1_binning_eye_1
-   2-3-2_binning_eye_2
-   2-3-3_binning_respiratory
-   2-3-4_binning_cardiac
+   2-4-1_binning_eye_1
+   2-4-2_binning_eye_2
+   2-4-3_binning_respiratory
+   2-4-4_binning_cardiac
