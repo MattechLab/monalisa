@@ -21,8 +21,8 @@
     <script src="_static/custom.js?v=35170ed4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Binning: Flexible Readout Rearrangement" href="2-3_binning_masks.html" />
-    <link rel="prev" title="Reconstruction Calls" href="2-1_reconstruction_calls.html" />
+    <link rel="next" title="Binning: Flexible Readout Rearrangement" href="2-4_binning_masks.html" />
+    <link rel="prev" title="Reconstruction Calls" href="2-2_reconstruction_calls.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -45,7 +45,7 @@
   <section id="the-mitosius">
 <h1>The Mitosius<a class="headerlink" href="#the-mitosius" title="Link to this heading">¶</a></h1>
 <p>Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.</p>
-<p>You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the <a class="reference internal" href="2-4_coil_sensitivity_map.html"><span class="doc">Coil Sensitivity Map Estimation</span></a>). You need to have access to the raw data of the acquisition (of course :)).</p>
+<p>You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the <span class="xref std std-doc">Coil Sensitivity Map Estimation</span>). You need to have access to the raw data of the acquisition (of course :)).</p>
 <p>This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output “mitosius”. The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -316,7 +316,8 @@ the same data without having scaling problems in the reconstructed images.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">The Mitosius</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-instructions">Usage instructions</a></li>
@@ -324,9 +325,9 @@ the same data without having scaling problems in the reconstructed images.</p>
 <li class="toctree-l3"><a class="reference internal" href="#using-a-custom-acquisition-trajectory">Using a Custom Acquisition Trajectory</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
@@ -344,8 +345,8 @@ the same data without having scaling problems in the reconstructed images.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="2_contents.html">Contents</a><ul>
-      <li>Previous: <a href="2-1_reconstruction_calls.html" title="previous chapter">Reconstruction Calls</a></li>
-      <li>Next: <a href="2-3_binning_masks.html" title="next chapter">Binning: Flexible Readout Rearrangement</a></li>
+      <li>Previous: <a href="2-2_reconstruction_calls.html" title="previous chapter">Reconstruction Calls</a></li>
+      <li>Next: <a href="2-4_binning_masks.html" title="next chapter">Binning: Flexible Readout Rearrangement</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -370,7 +371,7 @@ the same data without having scaling problems in the reconstructed images.</p>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
-      <a href="_sources/2-2_mitosius_prepare.rst.txt"
+      <a href="_sources/2-3_mitosius_prepare.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
