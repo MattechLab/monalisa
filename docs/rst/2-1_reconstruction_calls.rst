@@ -21,29 +21,30 @@ contains then one frame of the image. For 1 non-spatial dimension, the cell-arra
 stands for **number of frames**. We will call such a cell-array a **chain (of frames)**. 
 For 2 non-spatial dimensions, the cell-array is of size ``[nFr_1, nFr_2]``. We will call such a cell-array a **sheet (of frames)**. 
 
-A sampling trajectory will be called a *Cartesian* trajectory if it is uniform and fully sampled. It will be called
-**Partial Cartesian** if it is a cartesian trajectory with missing points. In any other case it will be called *Non-Cartesian*. 
+A sampling trajectory will be called a **Cartesian** trajectory if it is uniform and fully sampled. It will be called
+**Partial-Cartesian** if it is a cartesian trajectory with missing points. In any other case it will be called **Non-Cartesian**. 
 
-Reconstructions for non-cartesian and (partial) cartesian trajectories are implemented by different functions.
-The terminasion "_partial_cartesian" in the name of a function indicates a use for a partial cartesian trajectories. 
-If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories. 
+Reconstructions for non-cartesian and partial-cartesian trajectories are implemented by different functions.
+The terminasion "**_partial_cartesian**" in the name of a function indicates a use for a partial cartesian trajectories. 
+If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories.
+The present documentation do not describe reconstructions for Cartesian trajectories. 
 
-All our iteartive reconstructions are least-square regularized reconstructions. We will write *LSR* for "least-square regularized". 
+All our iteartive reconstructions are least-square regularized reconstructions. We will write **LSR** for "**least-square regularized**". 
 For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (**CGD**), or
 the alternating direction method of multipliers (**ADMM**). 
 
 Many kind of discrete Fourier transforms are involved in our theory of MRI reconstructions. 
-We will write **DFT** for "discrete Fourier transform". We will write :math:`F` with super script to designate the matrix of forward DFTs: 
+We will write "**DFT**"" for "discrete Fourier transform". We will write :math:`F` with some super script to designate the matrix of a forward DFT as follows:  
 
-    - :math:`F^{Cart}`  will be the forward DFT matrix for cartesian trajectories, 
-    - :math:`F^{PCart}` will be the forward DFT matrix for partial cartesian trajectories,
-    - :math:`F^{NCart}` will be the forward DFT matrix for non-cartesian trajectories. 
+    - We will write :math:`F^{Cart}` the forward DFT matrix for cartesian trajectories, 
+    - We will write :math:`F^{PCart}` the forward DFT matrix for partial-cartesian trajectories,
+    - We will write :math:`F^{NCart}` the forward DFT matrix for non-cartesian trajectories. 
 
 The **inverse DFT** only exist for cartesian trajectories. 
 
 For partial cartesian and non-cartesian trajectories we 
 will call an **approx-inverse** any linear map that leads approximatively 
-to the identity when it is composed with the DFT. 
+to the identity when it is composed with the forward DFT. 
 
 The **adjoint DFT** always exist.
 
@@ -55,15 +56,15 @@ general.
 We use the following supper script for DFTs:
 
     - The matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
-    - The matrix of the adjoint DFT will be written with supper scrpit :math:`*`.
-    - The matrix of the adjoint DFT, if it exists, will be written with supper scrpit :math:`-1`.  
+    - The matrix of the star DFT will be written with supper scrpit :math:`*`.
+    - The matrix of the inverse DFT, if it exists, will be written with supper scrpit :math:`-1`.  
     - The matrix of any approx-inverse DFT will be written with supper scrpit :math:`\sim  1`.  
 
 .. note:: 
-    The fast Fourier transform (**FFT**) algorithm is an algorithm that perform the DFT for cartesian 
+    The fast Fourier transform (**FFT**) algorithm is an algorithm that perform the DFT and inverse DFT for cartesian 
     trajectories in a rapid way. But the FFT algorithm do not realizes all kind of DFTs. 
 
-The following tables summirizes the mathematical symbole that designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
+The following tables summarizes the mathematical symboles that designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
 
 .. list-table:: 
     :header-rows: 1
@@ -95,7 +96,7 @@ for cartesian trajectories. There is no formally defined notion of under samplin
 
 Also note that among the 12 type of DFT s, some of them co-inside (up to a factor). For example, for cartesian trajectories 
 are the  Adjoint, the Star and the Inverse DFT equal (they co-inside) up to a factor that depend on definitions. 
-For partially sampled or non-cartesian trajectories, the notion of adjoint and star 
+For partial-cartesian or non-cartesian trajectories, the notion of adjoint and star 
 DFT do not longer co-inside while the inverse DFT do not longer exist in the strict sense. 
 
 
@@ -108,57 +109,57 @@ Here is the current list of our reconstructions:
 
     *Non-Cartesian Static Reconstrucitons*: 
 
-        - :ref:`Mathilda`: Gridded, zero-padded, inverse DFT reconstruction.  
+        - :ref:`Mathilda`: Gridded, zero-padded, approx-inverse DFT reconstruction.  
         - :ref:`Sensa`: Iterative-SENSE reconstruction. 
-        - :ref:`Steva`: CS recon with spatial (anisotropic) total-variation regularization. 
-        - :ref:`Sleva`: Iterative-Sense reconstruction with regulerization by l2-norm of the image. 
+        - :ref:`Steva`: LSR with spatial, anisotropic, total-variation regularization. 
+        - :ref:`Sleva`: LSR with regularized by the l2-norm of the image. 
 
     *Non-Cartesian Chain Reconstrucitons*:
 
-        - :ref:`TevaMorphosia_chain`: CS recon with temporal regularization by l1-norm of temporal derivative. 
-        - :ref:`TevaDuoMorphosia_chain`: CS recon with temporal regularization by l1-norm of (forward and backward) temporal derivative. 
-        - :ref:`SensitivaMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the temporal derivative.
-        - :ref:`SensitivaDuoMorphosia_chain`: Iterative-Sense with regularization by l2-norm of the (forward and backward) temporal derivative.
+        - :ref:`TevaMorphosia_chain`: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward finite difference derivative. 
+        - :ref:`TevaDuoMorphosia_chain`: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward and forward finite difference derivative.
+        - :ref:`SensitivaMorphosia_chain`: LSR with regularization along one non-spatial dimension by the squared l2-norm of the (motion-compensated) backward finite difference derivative.
+        - :ref:`SensitivaDuoMorphosia_chain`: LSR with regularization along one non-spatial dimension by the squared l2-norm of the (motion-compensated) backward and forward finite difference derivative.
 
     *Non-Cartesian Sheet Reconstrucitons*:
 
-        - :ref:`TevaMorphosia_sheet`: CS recon with temporal regularization by l1-norm of temporal derivative. 
-        - :ref:`SensitivaMorphosia_sheet`: Iterative-Sense with regularization by l2-norm of the temporal derivative. 
+        - :ref:`TevaMorphosia_sheet`: LSR with regularization along two non-spatial dimensions by l1-norm of the (motion-compensated) backward finite difference derivative. 
+        - :ref:`SensitivaMorphosia_sheet`: LSR with regularization along two non-spatial dimensions by the squared l2-norm of the (motion-compensated) backward and forward finite difference derivative.
 
     *Cartesian Static Reconstrucitons*: 
 
-        - `Nasha_cartesian`: Zero padded inverse DFT reconstruction.
+        - `Nasha_cartesian`: Zero padded approx-inverse DFT reconstruction.
         - `Sensa_cartesian`: Iterative-SENSE reconstruction.
 
     *Cartesian Chain Reconstrucitons*:
 
-        - `TevaMorphosia_chain_cartesian`: CS recon with temporal regularization by l1-norm of temporal derivative.
+        - `TevaMorphosia_chain_cartesian`: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward and forward finite difference derivative.
 
 
 Input Arguments for Reconstruction Functions
 ============================================
 
-The input arguments that involve no or little preparation, and which are "easy" to define, and which are occupies little memory will be qualified as *leight*.
+The input arguments that involve no or little preparation, and which are "easy" to define, and which are occupies little memory will be qualified as **leight**.
 
-The input arguments that either need some carfull preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as *heavy*.
+The input arguments that either need some carfull preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as **heavy**.
 
 For static (single frame) reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
 they are cell-arrays with one cell per data-bin and per frame. 
 
 For static recontructions are: 
 
-    - ``y``: the raw data. *Complex-valued, sinlge-precision, heavy.* Its size is ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-points and ``nCh`` is the number of channels. 
-    - ``t``: the trajectory. *Double-precision, heavy.* Its size is ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
-    - ``ve``: the volume elements (inverse density compensation). *Single precision, heavy.*  Its size is ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
+    - ``y``: the raw data. **Complex-valued, sinlge-precision, heavy.** Its size is ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-points and ``nCh`` is the number of channels. 
+    - ``t``: the trajectory. **Double-precision, heavy**. Its size is ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
+    - ``ve``: the volume elements (inverse density compensation). **Single precision, heavy**.  Its size is ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
 For multiple-frame (dynamic) recontructions are 
 
-    - ``y``: the cell-array of raw-data bins. *Each cell is complex-valued, sinlge-precision, heavy.*
-    - ``t``: the cell-array of trajectory bins. *Each cell is double precision, heavy.*  
-    - ``ve``: the cell-array of volume-elements bins. *Each cell is single precision, heavy.*  
+    - ``y``: the cell-array of raw-data bins. **Each cell is complex-valued, sinlge-precision, heavy.**
+    - ``t``: the cell-array of trajectory bins. **Each cell is double precision, heavy.**  
+    - ``ve``: the cell-array of volume-elements bins. **Each cell is single precision, heavy.**  
 
 
-The three variables ``y``, ``t`` and ``ve`` (may it be arrays or cell-arrays) forms the *Mitosius*. 
+The three variables ``y``, ``t`` and ``ve`` (may it be arrays or cell-arrays) forms the **Mitosius**. 
 Refer to :doc:`2-2_mitosius_prepare` section to learn how to build ``y`` from the raw-data, how to build the trejectory ``t`` and how to estimate ``ve`` from ``t``. 
 You can also build the trajectory ``t`` in your own way as long as you follow our convention described at the end of the `Mitosius` section. 
 You can evaluate  ``ve`` by our functions if your trajectory is supported by Monalisa. Else you can obtain ``ve`` by your own means.  
@@ -173,7 +174,7 @@ If your mitosius is already stored on the disk at the math ``m``, you can load i
 
 For any reconstruction is
 
-    - ``C``: the estimated coil sensitivity map. *Complex valued, single precision, heavy.* It is a 4D array of size ``[frSize, nCh]``, where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
+    - ``C``: the estimated coil sensitivity map. **Complex valued, single precision, heavy.** It is a 4D array of size ``[frSize, nCh]``, where the frame-size ``frSize`` is the spatial size of the image and ``nCh`` is the number of coils. 
 
 You can estimate ``C`` either by your own means or by our procedure described in a later section. 
 If you already saved a low-resolution coil sensitivity matrix ``C``, you can load it and resized it to the image-size as follows:
@@ -187,22 +188,25 @@ If you already saved a low-resolution coil sensitivity matrix ``C``, you can loa
 
 For any reconstructions are
 
-    - ``N_u`` : the size of the Cartesian gridd used for regridding in k-space. *Double precision, leight.* It is equal to ``[Nx, Ny]`` for 2 spatial dimensionts and it is equal to ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
-    - ``dK_u`` : the step-size of the gridd used for regridding in k-space.  *Single precision, leight*. It is equal to  ``[dK_x, dK_y]`` for 2 spatial dimensions and it is equal to ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
-    - ``frSize`` : the size of the reconstructed frames. *Double precision, leight*. It is equal to  ``[frN_x, frN_y]`` for 2 spatial dimensions and it is equal to ``[frN_x, frN_y, frN_z]`` for 3 spatial dimensions.
+    - ``N_u`` : the size of the Cartesian gridd used for regridding in k-space. **Double precision, leight.** It is equal to ``[Nx, Ny]`` for 2 spatial dimensionts and it is equal to ``[Nx, Ny, Nz]`` for 3 spatial dimensions. 
+    - ``dK_u`` : the step-size of the gridd used for regridding in k-space.  **Single precision, leight**. It is equal to  ``[dK_x, dK_y]`` for 2 spatial dimensions and it is equal to ``[dK_x, dK_y, dK_z]`` for 3 spatial dimensions. 
+    - ``frSize`` : the size of the reconstructed frames. **Double precision, leight**. It is equal to  ``[frN_x, frN_y]`` for 2 spatial dimensions and it is equal to ``[frN_x, frN_y, frN_z]`` for 3 spatial dimensions.
     
 We advise to set ``frSize`` equal to ``N_u`` for optimal image quality. 
 If ``frSize`` is componentwise smaller than ``N_u`` some croping and zero-filling 
 are used internally in the iterative reconstruction in order to regrid on the grid of size ``N_u``. 
 
 
-These three arguments are the *Companions*. They are present in much of the functions involved in reconstructions.  
+These three arguments are the **Companions**. They are present in much of the functions involved in reconstructions.  
 The choice of ``dK_u`` and ``N_u`` sets the virtual cartesian grid used for regridding
 and inherently sets the voxel size :math:`[\Delta r_x, \Delta r_y, \Delta r_z]`: 
 
 .. math::
+    
    \Delta r_x = (1/dK_x)/N_x
+
    \Delta r_y = (1/dK_y)/N_y
+   
    \Delta r_z = (1/dK_z)/N_z
 
 
@@ -222,51 +226,51 @@ In order to avoid numerical problems due to large differences between volume ele
 
 For iterative reconstruction, the reconstruction function need a start ismage as input that we use to write
 
-    - ``x0`` : The initial image for iterative reconstruction. *Complex valued, single precision, heavy*.  
+    - ``x0`` : The initial image for iterative reconstruction. **Complex valued, single precision, heavy**.  
 
-The initial guess `x0` must have the same size as the reconstructed image. It must be a frame for static reconstructions and a cell-array for dynamic reconstructions. 
+The initial guess ``x0`` must have the same size as the reconstructed image. It must be a frame for static reconstructions and a cell-array for dynamic reconstructions. 
 
 The number of iterations in reconstruction functions are given by
 
-    - ``nIter``: the number of iterations of the outer-loop of iterative reconstruction. *Double precision, scalar, leight.*   
-    - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent. *Double precision, scalar, leight.*
+    - ``nIter``: the number of iterations of the outer-loop of iterative reconstruction. **Double precision, scalar, leight.**   
+    - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent. **Double precision, scalar, leight.**
 
-For CS reconstructions,  ``nIter`` is the number of iterations of the ADMM algorithm (outer loop) and ``nCGD`` is the number of CGD (inner loop) iterations.   
+For iterative reconstructions,  ``nIter`` is the number of iterations of the ADMM algorithm (outer loop) and ``nCGD`` is the number of CGD (inner loop) iterations.   
 For least square reconstructions, ``nIter`` is the nubmer of iterations of the CGD algorithm.
 
 
-All least-square regularized reconstructions need a regularization weight. We provide an *adaptive* (automatic) and *normal* 
+All least-square regularized reconstructions need a regularization weight. We provide an **adaptive** (automatic) and **normal** 
 (manual) way to provide that weight. The choice is done by setting the parametter
 
-    - ``regul_mode`` : Regularization mode. *String, leght*. You can set it to *normal* or *adaptive*. 
+    - ``regul_mode`` : Regularization mode. **String, leght**. You can set it to **normal** or **adaptive**. 
 
 If ``regul_mode`` is set to *adaptive*, the reconstruction function makes an automatic choice for the 
-regularization weigth in order to reach an equilibriu between the the data-fidelity term and the regularization term 
+regularization weigth in order to reach an equilibrium between the the data-fidelity term and the regularization term 
 in the objective function.  
 
-If ``regul_mode`` is set to *normal*, then is the regularization weight given by the input argument
+If ``regul_mode`` is set to **normal**, then is the regularization weight given by the input argument
 
-    - ``delta`` : Regularisation parameter. *Single precision, leight.* The parameter ``delta`` can be either a scalar, or a list of 2 scalars (min and max delta values), or a vector of length `nIter`.  
+    - ``delta`` : Regularisation parameter. **Single precision, leight.** The parameter ``delta`` can be either a scalar, or a list of 2 scalars ``[delta_min, delta_max]`` with `delta_min < delta_max` , or a vector of length `nIter`.  
 
 If ``delta`` is a scalar, that number is used as regularization weight for each iteration. 
 If ``delta`` is a vector of length `nIter`, iteration number `c` is performed with the regularization weight equal to the value 
 at position `c` in the vector ``delta``. 
-If ``delta`` is a vector of 2 values :math:`delta_{min}` and :math:`delta_{max}` with :math:`delta_{min} < delta_{max}>`, then is  ``delta`` replaced 
-by a vector of length `nIter` by interpolating linearily `nIter` values between :math:`delta_{min}` and :math:`delta_{max}`.   
+If ``delta`` is a list of 2 values ``[delta_min, delta_max]`` with `delta_min < delta_max`, then is  ``delta`` replaced 
+by a list of length `nIter` by interpolating linearily `nIter` values between `delta_min` and `delta_max`.   
 
-The ADMM algorithm (for l1 regularization) needs an aditional *convergence paramter* that we will write
+The ADMM algorithm (for l1 regularization) needs an aditional **convergence paramter** that we will write
 
-    - ``rho`` : Convergence parameter for the ADMM algorithm. *Single precision, scalar, leight.* A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
+    - ``rho`` : Convergence parameter for the ADMM algorithm. **Single precision, scalar, leight.** A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
 
 
 For any non-cartesian reconstrucitons are
 
-    - ``Gu`` : The gridding (sparse) matrix used for forward gridding in our iterative non-cartesian reconstructions. *Of class `bmSparseMat`, heavy.* 
-    - ``Gut``: The transposed matrix of ``Gu`` used for backward (not inverse) gridding in our iterative non-cartesian reconstructions. *Of class `bmSparseMat`, heavy.* 
+    - ``Gu`` : The gridding (sparse) matrix used for forward gridding in our iterative non-cartesian reconstructions. **Of class `bmSparseMat`, heavy.** 
+    - ``Gut``: The transposed matrix of ``Gu`` used for backward (not inverse) gridding in our iterative non-cartesian reconstructions. **Of class `bmSparseMat`, heavy.** 
 
 For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:
 
-    - ``Gn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Gu``. *Of class `bmSparseMat`, heavy.*  The inverse of ``Gu`` does not exist but ``Gn`` is constructed so that the composition ``Gn Gu`` is as close as possible to the identity.   
+    - ``Gn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Gu``. **Of class `bmSparseMat`, heavy.**  The inverse of ``Gu`` does not exist but ``Gn`` is constructed so that the composition ``Gn Gu`` is as close as possible to the identity.   
 
 Before running any iterative non-cartesian reconstructions, you must estimate the gridding (sparse) matrices:
 
@@ -278,18 +282,18 @@ These two sparse matrices depend on the trajectory, the reconstruction FoV (give
 
 For image (not k-space) motion compensation are
 
-    - ``Tu``        : the deformation (sparse) matrix used for forward deformation in our motion compensated reconstructions. *Of class `bmSparseMat`, heavy.* 
-    - ``Tut``       : the transposed matrix of ``Tut`` for backward deformation. *Of class `bmSparseMat`, heavy.* 
+    - ``Tu``        : the deformation (sparse) matrix used for forward deformation in our motion compensated reconstructions. **Of class `bmSparseMat`, heavy.** 
+    - ``Tut``       : the transposed matrix of ``Tut`` for backward deformation. **Of class `bmSparseMat`, heavy.** 
 
 Note that matrix ``Tut`` do not perform an inverse deformation. It realizes the transposed opperation of the forward deformation. 
 
 For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:
 
-    - ``Tn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Tu``. *Of class `bmSparseMat`, heavy.* The inverse of ``Tu`` may or may  not exist. In any case, ``Tn`` is constructed so that the composition ``Tn Tu`` is as close as possible to the identity.   
+    - ``Tn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Tu``. **Of class `bmSparseMat`, heavy.** The inverse of ``Tu`` may or may  not exist. In any case, ``Tn`` is constructed so that the composition ``Tn Tu`` is as close as possible to the identity.   
 
-In order to monitor what is happening during a reconstruction (typically if this is taking lany hours) or just to have a track recoord of process after reconstruction, the following class has been implemented: 
+In order to monitor what is happening during a reconstruction (typically if this is taking lany hours) or just to have a track recoord of process after the reconstruction is finished, the following class has been implemented: 
     
-    - ``witnessInfo``: Monitoring object to give as input argument to any iterative reconstruction function. *Of the classe `bmWitnessInfo`, Leight.* It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration. 
+    - ``witnessInfo``: Monitoring object to give as input argument to any iterative reconstruction function. **Of the classe `bmWitnessInfo`, Leight.** It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration. 
 
 
 .. note::
@@ -473,7 +477,6 @@ The next functions can be called with or without deformation-matrices given as a
 TevaMorphosia_chain
 -------------------
 
-CS recon with temporal regularization, with or without deformation fields.
 
 .. code-block:: matlab
 
