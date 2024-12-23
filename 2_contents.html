@@ -21,7 +21,7 @@
     <script src="_static/custom.js?v=35170ed4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reconstruction Calls" href="2-1_reconstruction_calls.html" />
+    <link rel="next" title="Introduction" href="2-1_introduction.html" />
     <link rel="prev" title="Installation" href="1-2_installation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -46,94 +46,99 @@
 <h1>Contents<a class="headerlink" href="#contents" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="2-1_reconstruction_calls.html">Reconstruction Calls</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#a-few-definitions">A few Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#a-quick-view-at-the-list-of-our-reconstructions">A Quick View at the List of our Reconstructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#input-arguments-for-reconstruction-functions">Input Arguments for Reconstruction Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#non-cartesian-static-reconstructions">Non-Cartesian Static Reconstructions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#mathilda-the-initial-image-reconstruction">Mathilda, the Initial Image-Reconstruction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensa">Sensa</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#steva">Steva</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sleva">Sleva</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-1_introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html#the-design-of-monalisa">The Design of Monalisa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html#ai-monalisa-entropy-and-energy">AI, Monalisa, Entropy and Energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html#a-few-definitions">A few Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html#a-quick-view-at-the-list-of-our-reconstructions">A Quick View at the List of our Reconstructions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#deformation-fields">Deformation-Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#non-cartesian-chain-reconstructions">Non-Cartesian Chain Reconstructions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevamorphosia-chain">TevaMorphosia_chain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevaduomorphosia-chain">TevaDuoMorphosia_chain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivamorphosia-chain">SensitivaMorphosia_chain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivaduomorphosia-chain">SensitivaDuoMorphosia_chain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#input-arguments-for-reconstruction-functions">Input Arguments for Reconstruction Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#non-cartesian-static-reconstructions">Non-Cartesian Static Reconstructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#mathilda-the-initial-image-reconstruction">Mathilda, the Initial Image-Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#sensa">Sensa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#steva">Steva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#sleva">Sleva</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#non-cartesian-sheet-reconstructions">Non-Cartesian Sheet Reconstructions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#tevamorphosia-sheet">TevaMorphosia_sheet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-1_reconstruction_calls.html#sensitivamorphosia-sheet">SensitivaMorphosia_sheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#deformation-fields">Deformation-Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#non-cartesian-chain-reconstructions">Non-Cartesian Chain Reconstructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#tevamorphosia-chain">TevaMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#tevaduomorphosia-chain">TevaDuoMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivamorphosia-chain">SensitivaMorphosia_chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivaduomorphosia-chain">SensitivaDuoMorphosia_chain</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#cartesian-static-reconstructions">Cartesian Static Reconstructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html#cartesian-chain-reconstructions">Cartesian Chain Reconstructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#non-cartesian-sheet-reconstructions">Non-Cartesian Sheet Reconstructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#tevamorphosia-sheet">TevaMorphosia_sheet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivamorphosia-sheet">SensitivaMorphosia_sheet</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#usage-instructions">Usage instructions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#define-the-paths">Define the Paths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#load-the-raw-data">Load the Raw Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#add-mri-acquisition-parameters">Add MRI Acquisition Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#read-the-raw-data-and-compute-trajectory-points-volume-elements">Read the raw data and compute trajectory points, volume elements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#load-the-coil-sensitivity-matrix">Load the Coil Sensitivity Matrix</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#normalize-the-data">Normalize the data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#cleaning-of-the-mask">Cleaning of the mask</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#compute-final-data-structures-for-reconstruction">Compute Final Data Structures for Reconstruction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-2_mitosius_prepare.html#save-the-results">Save the Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#partial-cartesian-static-reconstructions">Partial-Cartesian Static Reconstructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html#partial-cartesian-chain-reconstructions">Partial-Cartesian Chain Reconstructions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#notes">Notes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html#using-a-custom-acquisition-trajectory">Using a Custom Acquisition Trajectory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-3_mitosius_prepare.html">The Mitosius</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html#usage-instructions">Usage instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#define-the-paths">Define the Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#load-the-raw-data">Load the Raw Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#add-mri-acquisition-parameters">Add MRI Acquisition Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#read-the-raw-data-and-compute-trajectory-points-volume-elements">Read the raw data and compute trajectory points, volume elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#load-the-coil-sensitivity-matrix">Load the Coil Sensitivity Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#normalize-the-data">Normalize the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#cleaning-of-the-mask">Cleaning of the mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#compute-final-data-structures-for-reconstruction">Compute Final Data Structures for Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-3_mitosius_prepare.html#save-the-results">Save the Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2-3-1_binning_eye_1.html">First Example: Sequential Binning</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-3-1_binning_eye_1.html#steps-for-sequential-binning">Steps for Sequential Binning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html#notes">Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html#using-a-custom-acquisition-trajectory">Using a Custom Acquisition Trajectory</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-3-2_binning_eye_2.html">Second Example: Task-Based (Hi-Fi) fMRI</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-3-2_binning_eye_2.html#steps-for-hi-fi-binning">Steps for Hi-Fi Binning:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-4-1_binning_eye_1.html">First Example: Sequential Binning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4-1_binning_eye_1.html#steps-for-sequential-binning">Steps for Sequential Binning</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-3-3_binning_respiratory.html">Third Example: Respiratory Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-3-3_binning_respiratory.html#steps-for-respiratory-binning-using-si-projections">Steps for Respiratory Binning using SI projections:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4-2_binning_eye_2.html">Second Example: Task-Based (Hi-Fi) fMRI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4-2_binning_eye_2.html#steps-for-hi-fi-binning">Steps for Hi-Fi Binning:</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="2-3-4_binning_cardiac.html">Fourth Example: Cardiac Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-3-4_binning_cardiac.html#steps-for-cardiac-binning-using-si-projections">Steps for Cardiac Binning using SI projections:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4-3_binning_respiratory.html">Third Example: Respiratory Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4-3_binning_respiratory.html#steps-for-respiratory-binning-using-si-projections">Steps for Respiratory Binning using SI projections:</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-from-pre-scan-images">Coil sensitivity from pre-scan images</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-from-raw-data-pre-scans">Coil sensitivity from raw data pre-scans</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#automated-estimation">Automated Estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#manual-estimation">Manual Estimation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#acquisition-parameters">Acquisition Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#mask-creation">Mask Creation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#sensitivity-approximation">Sensitivity Approximation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html#code-explanation">Code Explanation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#path-selection">Path selection</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#parameters">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#data-extraction">Data extraction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#gridding-matrices">Gridding Matrices</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#id2">Mask Creation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#coil-sensitivity-estimation">Coil Sensitivity Estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="2-4_coil_sensitivity_map.html#improved-estimation">Improved Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4-4_binning_cardiac.html">Fourth Example: Cardiac Binning for Motion-Resolved Cardiac MRI using Superior-Inferior (SI) Projections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-4-4_binning_cardiac.html#steps-for-cardiac-binning-using-si-projections">Steps for Cardiac Binning using SI projections:</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html#coil-sensitivity-from-pre-scan-images">Coil sensitivity from pre-scan images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html#coil-sensitivity-from-raw-data-pre-scans">Coil sensitivity from raw data pre-scans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html#automated-estimation">Automated Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html#manual-estimation">Manual Estimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#acquisition-parameters">Acquisition Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#mask-creation">Mask Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#sensitivity-approximation">Sensitivity Approximation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html#code-explanation">Code Explanation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#path-selection">Path selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#data-extraction">Data extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#gridding-matrices">Gridding Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#id2">Mask Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#coil-sensitivity-estimation">Coil Sensitivity Estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="2-5_coil_sensitivity_map.html#improved-estimation">Improved Estimation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
 </ul>
 </div>
 </section>
@@ -172,11 +177,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contents</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="2-1_reconstruction_calls.html">Reconstruction Calls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-2_mitosius_prepare.html">The Mitosius</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-3_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-4_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-5_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
@@ -194,7 +200,7 @@
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="1-2_installation.html" title="previous chapter">Installation</a></li>
-      <li>Next: <a href="2-1_reconstruction_calls.html" title="next chapter">Reconstruction Calls</a></li>
+      <li>Next: <a href="2-1_introduction.html" title="next chapter">Introduction</a></li>
   </ul></li>
 </ul>
 </div>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]]}, "TeX": {"Macros": {"coloneqq": "\\mathrel{\\mathpalette\\coloneqq@{}}", "parallel": "\\parallel"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reconstruction Calls" href="2-2_reconstruction_calls.html" />
+    <link rel="prev" title="Contents" href="2_contents.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
+<section id="the-design-of-monalisa">
+<h2>The Design of Monalisa<a class="headerlink" href="#the-design-of-monalisa" title="Link to this heading">¶</a></h2>
+</section>
+<section id="ai-monalisa-entropy-and-energy">
+<h2>AI, Monalisa, Entropy and Energy<a class="headerlink" href="#ai-monalisa-entropy-and-energy" title="Link to this heading">¶</a></h2>
+</section>
+<section id="a-few-definitions">
+<h2>A few Definitions<a class="headerlink" href="#a-few-definitions" title="Link to this heading">¶</a></h2>
+<p>A static image will be called a <strong>frame</strong>. The spatial dimension of the reconstruced image will be called
+the <strong>frame dimension</strong> and will written <code class="docutils literal notranslate"><span class="pre">frDim</span></code>. It is equal to 2 or 3.</p>
+<p>The spatial size of the image will be called the <strong>frame size</strong> and
+will be written <code class="docutils literal notranslate"><span class="pre">frSize</span></code>. It is of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy]</span></code>
+for 2D frames and of the form <code class="docutils literal notranslate"><span class="pre">[frNx,</span> <span class="pre">frNy,</span> <span class="pre">frNz]</span></code> for 3D frames.</p>
+<p>A dynamic image is an array of many frames. We will always store it as a cell-array. Each cell of the cell-array
+contains then one frame of the image. For 1 non-spatial dimension, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr,</span> <span class="pre">1]</span></code> where <code class="docutils literal notranslate"><span class="pre">nFr</span></code>
+stands for <strong>number of frames</strong>. We will call such a cell-array a <strong>chain (of frames)</strong>.
+For 2 non-spatial dimensions, the cell-array is of size <code class="docutils literal notranslate"><span class="pre">[nFr_1,</span> <span class="pre">nFr_2]</span></code>. We will call such a cell-array a <strong>sheet (of frames)</strong>.</p>
+<p>A sampling trajectory will be called a <strong>Cartesian</strong> trajectory if it is uniform and fully sampled. It will be called
+<strong>Partial-Cartesian</strong> if it is a cartesian trajectory with missing points. In any other case it will be called <strong>Non-Cartesian</strong>.</p>
+<p>Reconstructions for non-cartesian and partial-cartesian trajectories are implemented by different functions.
+The terminasion “<strong>_partial_cartesian</strong>” in the name of a function indicates a use for a partial cartesian trajectories.
+If that terminaison is absent from the name, it means that the reconstruction is for non-cartesian trajectories.
+The present documentation do not describe reconstructions for Cartesian trajectories.</p>
+<p>All our iteartive reconstructions are least-square regularized reconstructions. We will write <strong>LSR</strong> for “<strong>least-square regularized</strong>”.
+For each of our LSR reconstruction, we minimize the objective function either with the conjugate gradient descent method (<strong>CGD</strong>), or
+the alternating direction method of multipliers (<strong>ADMM</strong>).</p>
+<p>Many kind of discrete Fourier transforms are involved in our theory of MRI reconstructions.
+We will write “<strong>DFT</strong>”” for “discrete Fourier transform”. We will write <span class="math notranslate nohighlight">\(F\)</span> with some super script to designate the matrix of a forward DFT as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>We will write <span class="math notranslate nohighlight">\(F^{Cart}\)</span> the forward DFT matrix for cartesian trajectories,</p></li>
+<li><p>We will write <span class="math notranslate nohighlight">\(F^{PCart}\)</span> the forward DFT matrix for partial-cartesian trajectories,</p></li>
+<li><p>We will write <span class="math notranslate nohighlight">\(F^{NCart}\)</span> the forward DFT matrix for non-cartesian trajectories.</p></li>
+</ul>
+</div></blockquote>
+<p>The <strong>inverse DFT</strong> only exist for cartesian trajectories.</p>
+<p>For partial cartesian and non-cartesian trajectories we
+will call an <strong>approx-inverse</strong> any linear map that leads approximatively
+to the identity when it is composed with the forward DFT.</p>
+<p>The <strong>adjoint DFT</strong> always exist.</p>
+<p>The the complex conjugate transpose of the DFT matrix is the matrix of a map that
+we will call the <strong>star DFT</strong>. The start and adjoint DFT are related but different in
+general.</p>
+<p>We use the following supper script for DFTs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The matrix of the adjoint DFT will be written with supper scrpit <span class="math notranslate nohighlight">\(\dagger\)</span>.</p></li>
+<li><p>The matrix of the star DFT will be written with supper scrpit <span class="math notranslate nohighlight">\(*\)</span>.</p></li>
+<li><p>The matrix of the inverse DFT, if it exists, will be written with supper scrpit <span class="math notranslate nohighlight">\(-1\)</span>.</p></li>
+<li><p>The matrix of any approx-inverse DFT will be written with supper scrpit <span class="math notranslate nohighlight">\(\sim  1\)</span>.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fast Fourier transform (<strong>FFT</strong>) algorithm is an algorithm that perform the DFT and inverse DFT for cartesian
+trajectories in a rapid way. But the FFT algorithm do not realizes all kind of DFTs.</p>
+</div>
+<p>The following tables summarizes the mathematical symboles that designate each of the 12 kind of DFTs involved in our MRI reconstructions.</p>
+<table class="docutils align-center">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>DFT’s</strong></p></th>
+<th class="head"><p>Forward</p></th>
+<th class="head"><p>Ajoint</p></th>
+<th class="head"><p>Star</p></th>
+<th class="head"><p>(Approx-) Inverse</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{Cart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{-1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Partial Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{PCart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{PCart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{PCart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{Cart})^{\sim 1}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Non-Cartesian</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(F^{NCart}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{\dagger}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{*}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((F^{NCart})^{\sim  1}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the notion of full sampling (and by extension of partial sampling) is defined by the sampling theorem, which is formulated only
+for cartesian trajectories. There is no formally defined notion of under sampling for non-cartesian trajectories.</p>
+<p>Also note that among the 12 type of DFT s, some of them co-inside (up to a factor). For example, for cartesian trajectories
+are the  Adjoint, the Star and the Inverse DFT equal (they co-inside) up to a factor that depend on definitions.
+For partial-cartesian or non-cartesian trajectories, the notion of adjoint and star
+DFT do not longer co-inside while the inverse DFT do not longer exist in the strict sense.</p>
+</section>
+<section id="a-quick-view-at-the-list-of-our-reconstructions">
+<h2>A Quick View at the List of our Reconstructions<a class="headerlink" href="#a-quick-view-at-the-list-of-our-reconstructions" title="Link to this heading">¶</a></h2>
+<p>Here is the current list of our reconstructions:</p>
+<blockquote>
+<div><p><em>Non-Cartesian Static Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul>
+<li><dl>
+<dt><a class="reference internal" href="2-2_reconstruction_calls.html#mathilda"><span class="std std-ref">Mathilda, the Initial Image-Reconstruction</span></a>: Gridded, zero-padded, approx-inverse DFT reconstruction.</dt><dd><div class="math notranslate nohighlight">
+\[x^\# = \underset{x \in X}{argmin} \lVert {C x - (F^{NCart})^{\sim  1} y} \rVert ^2_{X^{nCh}, 2}\]</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference internal" href="2-2_reconstruction_calls.html#sensa"><span class="std std-ref">Sensa</span></a>: Iterative-SENSE reconstruction.</dt><dd><div class="math notranslate nohighlight">
+\[x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2}\]</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference internal" href="2-2_reconstruction_calls.html#steva"><span class="std std-ref">Steva</span></a>: LSR with spatial, anisotropic, total-variation regularization.</dt><dd><div class="math notranslate nohighlight">
+\[x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {\nabla_r {} x} \rVert_{X, 1}\]</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><a class="reference internal" href="2-2_reconstruction_calls.html#sleva"><span class="std std-ref">Sleva</span></a>: LSR with regularized by the l2-norm of the image.</dt><dd><div class="math notranslate nohighlight">
+\[x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {x} \rVert_{X, 2}^2\]</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p><em>Non-Cartesian Chain Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#tevamorphosia-chain"><span class="std std-ref">TevaMorphosia_chain</span></a>: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward finite difference derivative.</p></li>
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#tevaduomorphosia-chain"><span class="std std-ref">TevaDuoMorphosia_chain</span></a>: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward and forward finite difference derivative.</p></li>
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivamorphosia-chain"><span class="std std-ref">SensitivaMorphosia_chain</span></a>: LSR with regularization along one non-spatial dimension by the squared l2-norm of the (motion-compensated) backward finite difference derivative.</p></li>
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivaduomorphosia-chain"><span class="std std-ref">SensitivaDuoMorphosia_chain</span></a>: LSR with regularization along one non-spatial dimension by the squared l2-norm of the (motion-compensated) backward and forward finite difference derivative.</p></li>
+</ul>
+</div></blockquote>
+<p><em>Non-Cartesian Sheet Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#tevamorphosia-sheet"><span class="std std-ref">TevaMorphosia_sheet</span></a>: LSR with regularization along two non-spatial dimensions by l1-norm of the (motion-compensated) backward finite difference derivative.</p></li>
+<li><p><a class="reference internal" href="2-2_reconstruction_calls.html#sensitivamorphosia-sheet"><span class="std std-ref">SensitivaMorphosia_sheet</span></a>: LSR with regularization along two non-spatial dimensions by the squared l2-norm of the (motion-compensated) backward and forward finite difference derivative.</p></li>
+</ul>
+</div></blockquote>
+<p><em>Cartesian Static Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>Nasha_cartesian</cite>: Zero padded approx-inverse DFT reconstruction.</p></li>
+<li><p><cite>Sensa_cartesian</cite>: Iterative-SENSE reconstruction.</p></li>
+</ul>
+</div></blockquote>
+<p><em>Cartesian Chain Reconstrucitons</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>TevaMorphosia_chain_cartesian</cite>: LSR with regularization along one non-spatial dimension by l1-norm of the (motion-compensated) backward and forward finite difference derivative.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p>Iterative reconstructions for Cartesian trajectories are not implemented yet in Monalisa. But all DFTs for that purpose
+are already present in the toolbox. Also, many partial-cartesian reconstructions are not implemented as compared to non-cartesian reconstructions.</p>
+<p>Feel free to try implementating some reconstructions missing in our list. We would be happy to test it and include it in Monalisa
+if it works. In that case you would be the author of the reconstruction function that you wrote.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-design-of-monalisa">The Design of Monalisa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ai-monalisa-entropy-and-energy">AI, Monalisa, Entropy and Energy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-few-definitions">A few Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-quick-view-at-the-list-of-our-reconstructions">A Quick View at the List of our Reconstructions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_ack_contribution.html">Acknowledgment and Authors</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="2_contents.html">Contents</a><ul>
+      <li>Previous: <a href="2_contents.html" title="previous chapter">Contents</a></li>
+      <li>Next: <a href="2-2_reconstruction_calls.html" title="next chapter">Reconstruction Calls</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/2-1_introduction.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
