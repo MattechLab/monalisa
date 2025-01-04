@@ -8,12 +8,6 @@ The Design of Monalisa
 
 
 
-AI, Monalisa, Entropy and Energy
-================================
-
-
-
-
 A few Definitions
 =================
 
@@ -123,15 +117,15 @@ Here is the current list of our reconstructions:
 
         - :ref:`Sensa`: Iterative-SENSE reconstruction. 
             .. math::
-                x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2}
+                x^\# \in \underset{x \in X}{argmin} \lVert {F^{NCart}C x - y} \rVert ^2_{Y, 2}
 
         - :ref:`Steva`: LSR with spatial, anisotropic, total-variation regularization.
             .. math::
-                x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {\nabla_r {} x} \rVert_{X, 1}
+                x^\# \in \underset{x \in X}{argmin} \lVert {F^{NCart}C x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {\nabla_r {} x} \rVert_{X, 1}
 
         - :ref:`Sleva`: LSR with regularized by the l2-norm of the image. 
             .. math::
-                x^\# \in \underset{x \in X}{argmin} \lVert {FC x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {x} \rVert_{X, 2}^2
+                x^\# \in \underset{x \in X}{argmin} \lVert {F^{NCart}C x - y} \rVert ^2_{Y, 2} + \frac{\delta}{2} \lVert {x} \rVert_{X, 2}^2
 
     *Non-Cartesian Chain Reconstrucitons*:
 
