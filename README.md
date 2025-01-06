@@ -24,7 +24,7 @@ To get started with the MRI reconstruction code, follow these steps:
 mex -setup C++
 ```
 
-Depending on your configuration, you should install a C++ compiler. (If you see a message like "No supported compiler or SDK was found. For options, visit <https://www.mathworks.com/support/compilers>.")
+Depending on your configuration, you should install a C++ compiler. (If you see a message like "No supported compiler or SDK was found. For options, visit <https://www.mathworks.com/support/compilers>".)
 
 If you have to install a compiler, we recommend:
 
