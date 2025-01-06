@@ -1,10 +1,18 @@
 %% Coil Sensitivity Estimation Script
 % This script demonstrates how to estimate coil sensitivity using the library.
 
-% Define paths relative to the 'example1' directory
-baseDir = fileparts(mfilename('fullpath'));  % Get the script directory
-dataDir = fullfile(baseDir, '..', 'data');   % Data folder
-resultsDir = fullfile(baseDir, '..', 'results');  % Results folder
+% Define paths for data and results
+[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
+resultsDir = fullfile(dataDir, 'results');  % Results folder
+srcDir = fullfile(baseDir,'..','..','..','src');
+
+%% Step 0: If you haven't done it already add src to your MATLAB PATH
+addpath(genpath(srcDir))
+
+%Add helper functions to path
+helpfDir = fullfile(baseDir, '..','..','function_demo','function_tutorial_1');
+addpath(genpath(helpfDir))
 
 bodyCoilFile = fullfile(dataDir, 'bodyCoil.dat');      % Body coil data
 headCoilFile = fullfile(dataDir, 'surfaceCoil.dat');% Surface coil data

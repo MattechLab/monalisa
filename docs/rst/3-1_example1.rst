@@ -2,8 +2,6 @@
 Tutorial 1: Reconstruct MRI rawdata
 =====================================
 
-*Author : Mauro Leidi*
-
 Welcome to this tutorial! In this guide, we will use **Monalisa** to reconstruct MRI raw data. 
 This tutorial aim to give you a first good experience with the toolbox, providing you with all the essential information to reconstruct your own data.
 We'll start with a set of files: 
@@ -45,9 +43,15 @@ If you haven't done it already, clone monalisa
 Download the data needed for tutorial 1, this can take a while depending on your internet connection:
 
 .. code-block:: bash
-
-    cd monalisa/examples/tutorial1/scripts
-    ./downloadData.sh
+    
+    # Make the folder writable (to download the data)
+    cd /monalisa/demo/data_demo/
+    chmod u+w data_8_tutorial_1
+    cd data_8_tutorial_1
+    # Make the sh file executable
+    chmod +x downloadData.sh 
+    # Execute the file: Download the data
+    downloadData.sh
 
 Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.
 

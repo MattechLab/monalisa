@@ -10,14 +10,21 @@
 %    (in this trajectory we repeat SI projection 1 line every nSeg = 22)
 % 2. A regrouping to get the desired images
 
+% Define paths for data and results
+[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
+resultsDir = fullfile(dataDir, 'results');  % Results folder
+srcDir = fullfile(baseDir,'..','..','..','src');
+
+%% Step 0: If you haven't done it already add src to your MATLAB PATH
+addpath(genpath(srcDir))
+
+%Add helper functions to path
+helpfDir = fullfile(baseDir, '..','..','function_demo','function_tutorial_1');
+addpath(genpath(helpfDir))
 %% Step 1: Read the Raw Data
 % Here, we load the data file for the brain scan, used for binning. 
 % As for coil sensitivity estimation, we use the "RawDataReader" class. 
-
-% Define paths for data and results
-baseDir = fileparts(mfilename('fullpath'));  % Current script directory
-dataDir = fullfile(baseDir, '..', 'data');   % Data folder
-resultsDir = fullfile(baseDir, '..', 'results');  % Results folder
 
 % Load the raw data for the brain scan
 brainScanFile = fullfile(dataDir, 'brainScan.dat');  % Brain scan data file
@@ -198,11 +205,3 @@ disp(['Sequential bins saved to: ', saveName]);
 
 %% End of Binning Generation
 % Now that we have created and saved our binning masks, we can proceed to the next steps in the reconstruction process. These masks will guide how the raw data is grouped for image reconstruction.
-
-function updatePlot(plotHandle, selectedBin, sequentialBinningMask)
-    % Update the plot's YData to the selected bin's data
-    plotHandle.YData = sequentialBinningMask(selectedBin, :);
-    
-    % Update the title to reflect the selected bin
-    plotHandle.Parent.Title.String = ['Sequential Binning Mask: Bin ' num2str(selectedBin)];
-end
