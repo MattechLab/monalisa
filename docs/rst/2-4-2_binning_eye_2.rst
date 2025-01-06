@@ -10,7 +10,7 @@ For instance, in a visual stimulation study, delayed activation in the brain's v
    :align: center
    :alt: Task-based fMRI binning
 
-To implement this binning strategy, we generate a logical array, `hifiMask`, of size `[nBins, nLines]`, where `hifiMask(i, j)` is true if the j-th measurement corresponds to the i-th bin. The number of bins is determined by the total duration of the trial and the temporal resolution we aim to achieve for the haemodynamic response. Of course you need to have enogh lines in each bin if you want to successfully reconstruct images.
+To implement this binning strategy, we generate a logical array, `hifiMask`, of size `[nBins, nLines]`, where `hifiMask(i, j)` is true if the j-th measurement corresponds to the i-th bin. The number of bins is determined by the total duration of the trial and the temporal resolution we aim to achieve for the haemodynamic response. Of course you need to have enough lines in each bin if you want to successfully reconstruct images.
 
 Steps for Hi-Fi Binning:
 ------------------------
