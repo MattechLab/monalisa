@@ -1,5 +1,5 @@
-Sketching a Classical Thermodynamic Theory of Information
-=========================================================
+Sketching a Classical Thermodynamic Theory of Information for MRI Reconstructions
+=================================================================================
 
 Introduction
 ------------
@@ -694,8 +694,8 @@ the relative entropy :math:`D_{KL}`, also known as *Kullback-Leibler divergence*
 Also, we will relate our notion of information *I* to the 
 notion of information-theoretical information that we will write :math:`J`.  
 
-*work in progress*
 
+*Work in Progress*
 
 Discussion
 ----------
