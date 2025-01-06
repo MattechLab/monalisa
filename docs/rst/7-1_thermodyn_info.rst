@@ -177,7 +177,6 @@ subset :math:`\Omega \subset \Gamma` verifies
 
 where the integral with respect to :math:`\omega` is the Lebesgue integral 
 and :math:`f_{\nu}` is the Radon-Nikodym derivative of :math:`\nu` with respect to the Lebesgue measure.   
-:math:`\nu` that way.  
 
 In order to build a connection with information theory later, we want to interpret :math:`\nu` as a probability 
 measure. But for that we need to specify a subset :math:`P \subset \Gamma` so that
@@ -221,7 +220,7 @@ function (PDF) :math:`p_{\mu^{(0)}}` so that the probability that the random var
 
     \mu^{(0)} \left( \Omega \right) = \int_{\Omega}  d\mu^{(0)} = \int_{\Omega}  p_{\mu^{(0)}}(\omega) d\nu 
 
-where :math:`p_{\mu^{(0)}}` is the Radon-Nikodym derivative of :math:`\mu^{(0)}` with respect to :math:`\nu}`. 
+where :math:`p_{\mu^{(0)}}` is the Radon-Nikodym derivative of :math:`\mu^{(0)}` with respect to :math:`\nu`. 
 It holds in particular
 
 .. math ::
@@ -742,7 +741,7 @@ notion of information-theoretical information that we will write :math:`J`.
 Discussion
 ----------
 
-By defining the total usefull energy until (and with) iteration number *c* as
+By defining the total usefull total energy consumed by the reconstruciton as
 
 .. math ::
     
