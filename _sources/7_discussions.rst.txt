@@ -12,6 +12,6 @@ or related topics.
    :glob:
    :includehidden:
 
-   2-7-1_thermodyn_info
+   7-1_thermodyn_info
 
    

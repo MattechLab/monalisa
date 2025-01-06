@@ -14,5 +14,4 @@ Contents
    2-4_binning_masks
    2-5_coil_sensitivity_map
    2-6_prescan_acquisition
-   2-7_discussion
    
