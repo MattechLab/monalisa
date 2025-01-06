@@ -24,7 +24,9 @@ As the reader will notice, this discussion can be applied to any iterative
 algorithm that solves an inverse problem. The MRI reconstruction process is used here
 as a representent example for any iterative inverse-problem solving process. Given the generality
 of the statments exposed in this discussion, we can consider it as an attempt to 
-formulate a classical (non-quantum) physical theory of information. 
+formulate a classical (non-quantum) physical theory of information. In the discussion section, 
+we will infact make some connection with the principle of Landauer, which makes the bridge
+petween physics and information theory by providing an equivalence between energy and information. 
 
 
 Iterative Reconstructions and Phase Space
@@ -153,14 +155,20 @@ An iterative reconstruction process can then be described in two steps:
     - to iterate :math:`\Phi` on :math:`\omega^{(0)}` until the obtained value :math:`\omega^{(c)} = \Phi^{(c)}(\omega^{(0)}; y, param)` is sufficiently close to the attractor :math:`\mathcal{A}`. 
 
 The description of the second step is however not appropriate to the thermodynamical description we are going to present. 
-In order to prepare the rest of the discussion, we need to reformulate thos two steps in term of sets and distributions.  
+In order to prepare the rest of the discussion, we need to reformulate those two steps in term of sets and distributions.  
 For a given subset :math:`\Omega \subset \Gamma` we define
 
 .. math ::
 
     \Phi^{(c)}(\Omega; y, param) := \{\Phi^{(c)}(\omega; y, param) | \omega \in \Omega\}
 
-We assume that :math:`\Gamma` is a measure space with measure :math:`\nu` and we assume that any measurable
+Our phase space :math:`\Gamma` can be considered as isomorphic to :math:`\mathbb{C}^n` for some 
+positive interger :math:`n` in our context of MRI reconstruction. 
+Topologically, it is thus identical to :math:`\mathbb{R}^{2n}`. We will write :math:`\mathcal{L}` the :math:`\sigma`-algebra
+of the Lebesgue measurable sets of :math:`\Gamma` so that the pair :math:`(\Gamma, \mathcal{L})` is a measurable space. 
+We can then provide this measurable space with any measure :math:`\nu` to obtain a measure space. 
+
+We assume threrefore that :math:`\Gamma` is a measure space with measure :math:`\nu` and we assume that any measurable
 subset :math:`\Omega \subset \Gamma` verifies
 
 .. math ::
@@ -168,11 +176,42 @@ subset :math:`\Omega \subset \Gamma` verifies
     \nu \left( \Omega \right) = \int_{\Omega}  d\nu = \int_{\Omega} f_{\nu}(\omega) d\omega
 
 where the integral with respect to :math:`\omega` is the Lebesgue integral 
-and :math:`f_{\nu}` is a well behaved function that allows to evaluate 
+and :math:`f_{\nu}` is the Radon-Nikodym derivative of :math:`\nu` with respect to the Lebesgue measure.   
 :math:`\nu` that way.  
+
+In order to build a connection with information theory later, we want to interpret :math:`\nu` as a probability 
+measure. But for that we need to specify a subset :math:`P \subset \Gamma` so that
+
+.. math ::
+
+    \nu\left(P\right) = 1
+
+We considere then all Lebesgue measurable sets which are also subset of :math:`P`. They 
+form a :math:`\sigma`-algebra that we will write :math:`\mathcal{L}_{P}`. Given a measure :math:`\nu`
+on :math:`\mathcal{L}`, we can normalize it so that the measure by :math:`\nu` of :math:`\mathcal{L}_{P}`
+is 1, so that the tripple :math:`\left(P, \mathcal{L}_{P}, \nu \right)` is a probability space
+(which is nothing more than a measure space where the measure of the entire space is 1). We will also set the constraint
+
+.. math ::
+
+    f_{\nu}(\omega) > 0 \quad \forall \omega \in \Gamma_{support}
+
+in order to avoid some division by 0. There are then mainly two choices of 
+interest for :math:`\Gamma_{support}` in our discussion. In the first case, we will 
+set :math:`\Gamma_{support}` equal to :math:`\Gamma`, while in the second case, we will 
+set :math:`\Gamma_{support}` equal to :math:`\Omega^{(0)}`, as define hereafter.  
 
 We will write :math:`\Omega^{(0)}` the subset of :math:`\Gamma` in which the initial value is chosen
 and we will set on it the restriction :math:`\mathcal{A} \subset \Omega^{(0)}`. 
+
+We will write :math:`\Omega^{(c)}` the subset of :math:`\Gamma` defined by
+
+.. math ::
+
+    \Omega^{(c)} := \Phi^{(c)}(\Omega^{(0)}; y, param)
+
+It is the set that contains :math:`\omega^{(c)}`, whatever the initial value of the reconstruction process is. 
+
 
 Let be :math:`\mu^{(0)}` a probability measure on :math:`\Omega^{(0)}` with probability distribution 
 function (PDF) :math:`p_{\mu^{(0)}}` so that the probability that the random variable associated to 
@@ -182,6 +221,7 @@ function (PDF) :math:`p_{\mu^{(0)}}` so that the probability that the random var
 
     \mu^{(0)} \left( \Omega \right) = \int_{\Omega}  d\mu^{(0)} = \int_{\Omega}  p_{\mu^{(0)}}(\omega) d\nu 
 
+where :math:`p_{\mu^{(0)}}` is the Radon-Nikodym derivative of :math:`\mu^{(0)}` with respect to :math:`\nu}`. 
 It holds in particular
 
 .. math ::
@@ -194,7 +234,7 @@ We then reformulate the two steps above as follows:
     - We describe then the iteration process as a contraction of :math:`\Omega^{(0)}` by iterating on it the map :math:`\Phi` until :math:`\Phi^{(c)}(\Omega^{(0)}; y, param)` becomes sufficiently close to :math:`\mathcal{A}`. 
 
 Note that function :math:`p_{\mu^{(0)}}` can be extended over :math:`\Gamma`  be setting it equal to :math:`0` outside :math:`\Omega^{(0)}`. 
-The following figre summarizes the situation. 
+The following figure summarizes the situation. 
 
 .. image:: ../images/discussion/thermodyn_info/information.png
       :width: 40%
@@ -202,9 +242,11 @@ The following figre summarizes the situation.
       :alt: information
 
 
-This description in term of sets and probability disctribution makes abstraction of the particular image guess and of the reconstructed image. It can be
-considered as a mathematical description of the reconstruction of all possible MRI images in parallel, that would be obtained by chosing all initial guess
-in :math:`\Omega^{(0)}` in parallel, with a given "density of choice" :math:`\mu`. 
+This description in term of sets and probability disctributions makes abstraction 
+of the particular image guess and of the reconstructed image. It can be
+considered as a mathematical description of the reconstruction of all possible MRI 
+images in parallel, that would be obtained by chosing all initial guess
+in :math:`\Omega^{(0)}` in parallel, with a given "density of choice" :math:`\mu^{(0)}`. 
 
 
 
@@ -528,13 +570,13 @@ We get then a relation between physical work (in Joule *J*) and information give
 
 .. math ::        
 
-    \Delta W^{(c, c+1)} = K_{\Gamma} \cdot \Delta I^{(c, c+1)}
+    \Delta W^{(c, c+1)} = K_{\Gamma} \cdot \Delta I^{(c, c+1)} 
 
 for iteration number :math:`{(c+1)}` or alternatively
 
 .. math ::        
 
-    \Delta W^{(c)} = K_{\Gamma} \cdot \Delta I^{(c)}
+    \Delta W^{(c)} = K_{\Gamma} \cdot \Delta I^{(c)} \quad (E1)
 
 for all iteration until (and with) iteration number :math:`{(c+1)}`. 
 It follows in particular from these last two equations that, 
@@ -614,14 +656,14 @@ It follows that
 
 .. math ::        
     
-    \Delta S^{(c)}_{DM} = - k_{\Gamma} \cdot \Delta I^{(c)} 
+    \Delta S^{(c)}_{DM} = - k_{\Gamma} \cdot \Delta I^{(c)} = k_{\Gamma} log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right) \quad (E2)
 
 
-From our equivalence between energy and information, it follows
+From our equivalence between energy and information (E1), it follows
 
 .. math ::        
 
-    \Delta S^{(c, c+1)}_{DM} = - \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  
+    \Delta S^{(c, c+1)}_{DM} = - \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  \quad (E3)
 
 This is consistent with a reversible isothermal compression of an ideal gas, as assumed. 
 If the process is not reversible (as any realistic process) we expect the inequation
@@ -652,7 +694,7 @@ The total entropy change over one iteration is therefore
 
 If we admit that the *DM* experiences an entropy drope of 
 magnitude :math:`\lvert \Delta S^{(c, c+1)}_{DM} \rvert` during one 
-iteration, we deduce that
+iteration. We deduce from (E3) that
 
 .. math ::        
 
@@ -669,7 +711,7 @@ particular that
 
 .. math ::
     
-    \Delta I^{tot} \leq  \frac{\eta}{k_{\Gamma}} \frac{ P \cdot \Delta t^{tot}}{T_C}
+    \Delta I^{tot} \leq  \frac{\eta}{k_{\Gamma}} \frac{ P \cdot \Delta t^{tot}}{T_C} \quad (E4)
 
 
 This inequation is the curiosity of our theory because of its temperature dependency. 
@@ -700,6 +742,47 @@ notion of information-theoretical information that we will write :math:`J`.
 Discussion
 ----------
 
+By defining the total usefull energy until (and with) iteration number *c* as
+
+.. math ::
+    
+    \Delta E^{tot}_{useful} =  \eta \cdot P \cdot \Delta t^{tot}
+
+equation (E4) can be rewritten as
+
+.. math ::
+    
+    k_{\Gamma} \ T_C \  \Delta I^{tot} \leq   \Delta E^{tot}_{useful} \quad (E5)
+
+This equation is very similar to the principle of Laundauer, which reads
+
+.. math ::
+    
+    k_{B} \ T \  log(2) \leq   \Delta E
+
+where :math:`k_{B}` is the Boltzmann constant, :math:`T` is the temperature of the computer
+(which can be identified with our temperature :math:`T_C`) and :math:`\Delta E` is the energy amount that 
+is needed to erase a *bit* of information. This similarity suggests that equation (E5) could be seen 
+as an generalisation of Landauer principle to the context of MRI reconstruction, but we have to stay 
+prudent for the moment. What we where able to show is, that interpreting the *Work* of the computer
+as a virtual work that contract a portion of phase space like an ideal gas leads to a relation between energy
+and information that is very similar to the Principle of Landauer. 
+
+Equation (E2) suggest a definition for the entropy of the form
+
+.. math ::
+
+    S = k_{\Gamma} \  log\left(\frac{\nu \left(\Omega\right) }{\nu \left(P\right)} \right) = k_{\Gamma} \  log\left( \nu \left(\Omega\right) \right)
+
+because by our definitions is :math:`\nu(P)` equal to :math:`1`. This equation is very similar to the equation of Boltzmann
+
+.. math ::
+
+    S = k_{\Gamma} \  log\left( \Omega \right)
+
+where :math:`\Omega` is the area of the surface in phase space occupied by all the micro states of a given energy 
+allowed by the macroscopical constaints on the physical system under consideration 
+(it is the "number" of allowed mirco states, if one prefers). 
 
 
 
