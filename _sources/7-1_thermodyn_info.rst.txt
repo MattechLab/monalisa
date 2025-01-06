@@ -193,12 +193,12 @@ is 1, so that the tripple :math:`\left(P, \mathcal{L}_{P}, \nu \right)` is a pro
 
 .. math ::
 
-    f_{\nu}(\omega) > 0 \quad \forall \omega \in \Gamma_{support}
+    f_{\nu}(\omega) > 0 \quad \forall \omega \in \Gamma_{P}
 
 in order to avoid some division by 0. There are then mainly two choices of 
-interest for :math:`\Gamma_{support}` in our discussion. In the first case, we will 
-set :math:`\Gamma_{support}` equal to :math:`\Gamma`, while in the second case, we will 
-set :math:`\Gamma_{support}` equal to :math:`\Omega^{(0)}`, as define hereafter.  
+interest for :math:`\Gamma_{P}` in our discussion. In the first case, we will 
+set :math:`\Gamma_{P}` equal to :math:`\Gamma`, while in the second case, we will 
+set :math:`\Gamma_{P}` equal to :math:`\Omega^{(0)}`, as define hereafter.  
 
 We will write :math:`\Omega^{(0)}` the subset of :math:`\Gamma` in which the initial value is chosen
 and we will set on it the restriction :math:`\mathcal{A} \subset \Omega^{(0)}`. 
@@ -662,14 +662,14 @@ From our equivalence between energy and information (E1), it follows
 
 .. math ::        
 
-    \Delta S^{(c, c+1)}_{DM} = - \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  \quad (E3)
+    \Delta S^{(c, c+1)}_{DM} = - \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  
 
 This is consistent with a reversible isothermal compression of an ideal gas, as assumed. 
 If the process is not reversible (as any realistic process) we expect the inequation
 
 .. math ::        
 
-    \Delta S^{(c, c+1)}_{DM} \geq \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  
+    \Delta S^{(c, c+1)}_{DM} \geq \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  \quad (E3)
 
 We can now make the sum of all entropy changes to obtain the change of the total entropy
 during one iteration in a realistic (non-reversible). The cooling system experiences an entropy grow
