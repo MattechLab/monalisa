@@ -23,7 +23,7 @@ memory in the same way that a each engine can lower the entropy of an ideal gas.
 As the reader will notice, this discussion can be applied to any iterative
 algorithm that solves an inverse problem. The MRI reconstruction process is used here
 as a representent example for any iterative inverse-problem solving process. Given the generality
-of the statments exposed in this discussion, we can consider it as an attempt to 
+of the statements exposed in this discussion, we can consider it as an attempt to 
 formulate a classical (non-quantum) physical theory of information. 
 
 
@@ -58,7 +58,7 @@ some heurisitcs methods are inspired from the conventional ones
 but perform some heuristic update at each iteration. These methods converge in some cases but they do not 
 minimize a given objective function and their convergence is not necessarily guaranteed by any mathematical formalism. 
 Some examples of such heuristic reconstruction are iterative methods where some updates of the image or other 
-dynamic variables are done by a statistical model. It is an example of use of artificial inteligence for MRI reconstruction. 
+dynamic variables are done by a statistical model. It is an example of use of artificial intelligence for MRI reconstruction. 
 
 Heuristic or not, we consider in the following iterative reconstructions that converges for some given dataset. 
 From the view point of discrete dynamical system theory, we can summarize an iterative reconstruction as follows. 
@@ -66,7 +66,7 @@ An iterative reconstruction is given by a map :math:`\Phi` from :math:`X \times 
 which is parametrized by a list of parameters *param* and the measured data :math:`y`. 
 Here is :math:`X` the vector space of all MRI images of a given size, and :math:`Z` is the cartesian product of 
 all spaces that contain all other dynamical variables that we will write as a single list :math:`z`.
-We considere that a parameter is a constant, known, controlled number and :math:`param` is the list of those.
+We consider that a parameter is a constant, known, controlled number and :math:`param` is the list of those.
 It includes for example the regularization parameter :math:`\lambda`. 
  
 It holds then
@@ -103,7 +103,7 @@ converge in a single step since
     (x^{(c+1)}, z^{(c+1)}) = \Phi(x^{(c)}, z^{(c)}; y, param) = \phi(y, param) =  \Phi(x^{(0)}, h^{(0)}; y ,  param)
 
 
-Iterative reconstruction guided by (based on, unsing, enhenced by...) artificial inteligence 
+Iterative reconstruction guided by (based on, using, enhanced by...) artificial intelligence 
 can be seen as a dynamic system where the implelentation of :math:`\Phi` contains some 
 statistical model. For example, if :math:`\mathcal{N}` is a neuronal network trained to predict 
 some of the dynamical variables from the measured data set and from a database of good quality images, 
@@ -115,7 +115,7 @@ as a parameter of the map :math:`\Phi`:
 
 For futur needs, we define here our **phase space** of MRI reconstruction. For that, we will 
 get some inpiration from the physics. The spirit of phase space in physics is the 
-following. The phase space is a set so that each of its element corresponds to exaclty one 
+following. The phase space is a set so that each of its element corresponds to exactly one 
 of the state that the physical system under consideretion can occupy, 
 and each of these element carries the complete information about the system occupying that state. 
 In classical Hamiltonian mechanic for example, if one knows the position in phase space 
@@ -123,14 +123,14 @@ of a physical system at some time, then everything about the system is known at 
 time. In particular, it is then possible to predict all futur states of the system and 
 find all its past states. In our case of MRI reconstruction, the map :math:`\Phi` that 
 dictates the dynamic may not be invertible. We therefore cannot expect to recover 
-the past hisory of a position in phase space, but at least its future states. 
+the past history of a position in phase space, but at least its future states. 
 It makes therefore sense to define our phase space as
 
 .. math ::        
 
     \Gamma =  X \times Z
 
-The state of our system at a given time (a given iteration) is then gien by a 
+The state of our system at a given time (a given iteration) is then given by a 
 pair :math:`(x, z)` and its knowledge is sufficient to predict all future states 
 by iterating :math:`\Phi` on that pair. Note that the attractor :math:`\mathcal{A}` is 
 a proper subset of the phase-space :math:`\Gamma`. Instead of writing :math:`(x, z)` we 
@@ -153,7 +153,7 @@ An iterative reconstruction process can then be described in two steps:
     - to iterate :math:`\Phi` on :math:`\omega^{(0)}` until the obtained value :math:`\omega^{(c)} = \Phi^{(c)}(\omega^{(0)}; y, param)` is sufficiently close to the attractor :math:`\mathcal{A}`. 
 
 The description of the second step is however not appropriate to the thermodynamical description we are going to present. 
-In order to prepare the rest of the discussion, we need to reformulate thos two steps in term of sets and distributions.  
+In order to prepare the rest of the discussion, we need to reformulate those two steps in term of sets and distributions.  
 For a given subset :math:`\Omega \subset \Gamma` we define
 
 .. math ::
@@ -190,7 +190,7 @@ It holds in particular
 
 We then reformulate the two steps above as follows: 
 
-    - Instead of chosing an initial guess, we chose a probability measure :math:`\mu^{(0)}` on the set :math:`\Omega^{(0)}` so that :math:`\mu^{(0)}(\Omega^{(0)}) = 1` and so that the initial value :math:`\omega^{(0)}` is a random variable with PDF equal to :math:`p_{\mu^{(0)}}`. 
+    - Instead of choosing an initial guess, we chose a probability measure :math:`\mu^{(0)}` on the set :math:`\Omega^{(0)}` so that :math:`\mu^{(0)}(\Omega^{(0)}) = 1` and so that the initial value :math:`\omega^{(0)}` is a random variable with PDF equal to :math:`p_{\mu^{(0)}}`. 
     - We describe then the iteration process as a contraction of :math:`\Omega^{(0)}` by iterating on it the map :math:`\Phi` until :math:`\Phi^{(c)}(\Omega^{(0)}; y, param)` becomes sufficiently close to :math:`\mathcal{A}`. 
 
 Note that function :math:`p_{\mu^{(0)}}` can be extended over :math:`\Gamma`  be setting it equal to :math:`0` outside :math:`\Omega^{(0)}`. 
@@ -203,7 +203,7 @@ The following figre summarizes the situation.
 
 
 This description in term of sets and probability disctribution makes abstraction of the particular image guess and of the reconstructed image. It can be
-considered as a mathematical description of the reconstruction of all possible MRI images in parallel, that would be obtained by chosing all initial guess
+considered as a mathematical description of the reconstruction of all possible MRI images in parallel, that would be obtained by choosing all initial guess
 in :math:`\Omega^{(0)}` in parallel, with a given "density of choice" :math:`\mu`. 
 
 
@@ -238,7 +238,7 @@ From the facts listed above, it is intuitively clear that for a well-posed MRI r
 **energy** must be consumed at every iteration that performs an **image quality gain** *(IQG)*.  
 The reverse does however not need to be true: more energy consumption
 does not need to lead to a gain of image quality, since energy can be directly dissipated into heat. 
-A notion of **efficiency** is therefore missing and there is no obious definition for it. 
+A notion of **efficiency** is therefore missing and there is no obvious definition for it. 
 The only thing we can say is, that efficiency should to be defined in such a way that it expresses an *IQG* 
 related in some way to the energy consumed for that gain. As a consequence, the definition of efficiency must be 
 closely related to the definition of *IQG* (and by extension to image quality). We could be tempted to 
@@ -247,7 +247,7 @@ the author tried the following analogy between a heat engine and a computer (eng
 
 Work is the useful thing that a heat engine give to some part of the unisvers that we will call the **work environment**. 
 The heat engine performs some work in the work environment by transferring heat from a hot to a cold reservoir. 
-The heat engine and the working environment are two subsytems and the hot reservoir, cold reservoir and the *rest of the universe*
+The heat engine and the working environment are two subsystems and the hot reservoir, cold reservoir and the *rest of the universe*
 are three other subsystems. Their union being the universe (the total system). 
 
    .. image:: ../images/discussion/thermodyn_info/heat_engine_1.png
@@ -275,11 +275,11 @@ described in the following figure.
 
 
 It represents a heat engine that gives energy to a working environment (*WE*) in the form of a mechanical work amount *W*. 
-This work is used to compress an ideal gaz in a cylinder in thermal contact with the cold reservoir at temperatur :math:`T_C`. 
+This work is used to compress an ideal gaz in a cylinder in thermal contact with the cold reservoir at temperature :math:`T_C`. 
 In order to be able to evaluate entropy changes, we admit that no irreversible loss of energy happens. 
 This means that the heat engine is an ideal (reversible) heat engine, which is called a *Carnot engine*. It has therefore
 maximal efficiency. We also have to assume that the gaz compression is isothermal, which means
-that the movement has to be sufficiently slow as garantied by the coupling of the small and large wheels. 
+that the movement has to be sufficiently slow as guaranteed by the coupling of the small and large wheels. 
 We admit that there is a good isolation between the *rest of the universe* and to two subsystem implied in the process, 
 which are the heat engine and the WE. A flow of energy travels through the subsystem made of the pair *heat-engine + WE*. 
 At each cycle of the engine, a heat amount
@@ -288,7 +288,7 @@ At each cycle of the engine, a heat amount
 
     E_{in} = \lvert \Delta Q_H \rvert
 
-enters that subsytem and a heat amount
+enters that subsystem and a heat amount
 
 .. math::
 
@@ -303,7 +303,7 @@ The conservation of energy reads thus:
     \lvert \Delta Q_H \rvert = \lvert \Delta Q_C \rvert + \lvert \Delta Q_{WE} \rvert
 
 
-The volume of the ideal gaz is decreased by an ammount :math:`\lvert \Delta V \rvert` at each cycle.
+The volume of the ideal gaz is decreased by an amount :math:`\lvert \Delta V \rvert` at each cycle.
 We will write :math:`V > 0` the volume of the ideal gaz at the current cycle. 
 The change of entropy :math:`\lvert \Delta S_{WE} \rvert` is therefore negative and given by
 
@@ -314,13 +314,13 @@ The change of entropy :math:`\lvert \Delta S_{WE} \rvert` is therefore negative 
 where *n* in the chemical amount of ideal gaz and *R* is the ideal gaz constant. 
 
 
-During one cycle, the hot reservoir experiences a drope of entropy by an ammount
+During one cycle, the hot reservoir experiences a drope of entropy by an amount
 
 .. math::
 
     \Delta S_{H} = -\frac{\lvert \Delta Q_H \rvert}{T_H}
 
-while the cold reservoir experiences a grow of entropy by an ammount
+while the cold reservoir experiences a grow of entropy by an amount
 
 .. math::
 
@@ -338,7 +338,7 @@ Assuming the process to be reversible, the total entropy is conserved:
 If the process is now irreversible (like any realistic, non-ideal process), the entropy drope in the ideal gaz will 
 still be the same since the entropy is a function of state, but the heat exchanges will be different and
 this will lead to a positive entropy grow of the universe (the total system) by the second law of thermodynamic, 
-even if entropy was localy decreased in the ideal gaz: 
+even if entropy was locally decreased in the ideal gaz: 
 
 .. math::
 
@@ -351,14 +351,14 @@ in engineering and nature. Plants and animal do that all the time. We eat energy
 mechanical work such as moving from a place to the other, but a large part of the energy we eat 
 is expelled as thermal radiation associated to a drope of our entropy. In fact, our body continuously
 experiences injuries because chance unbuild things more often that it builds it. Those injuries are structural 
-changes that have a high probability to happen by chance alone and wich correspond to an increase of entropy of
+changes that have a high probability to happen by chance alone and which correspond to an increase of entropy of
 our body. Because of injuries, the entropy of our body tends to increase. In order to survive, 
 we have to consume energy to continuously put our body back to order i.e. to a state that has very little 
 chance to be reached by chance a lone, that is, a state a low entropy. Repairing our body implies thus to 
-consume energy to lower our entropy back to an organized state and that implies to expell an 
+consume energy to lower our entropy back to an organized state and that implies to expel an 
 associated amount of heat by radiation. This scheme is so universal that we will now try
 to apply it to computers in order to build an analogy with the eat engine. We will try that way to deduce
-a definition of *image quality gain (IQG)* and *efficiency* in the contet ot MRI reconstruction. 
+a definition of *image quality gain (IQG)* and *efficiency* in the context of MRI reconstruction. 
 
 In the case of MRI reconstruction, the *IQG* is the useful thing that the computer 
 produces by absorbing electrical energy and expelling it as heat in the cooling system of the HPC, 
@@ -379,12 +379,12 @@ Note that the union of these five parts is the universe.
       :alt: heat_engine_1
 
 We propose here to consider the computer as an engine and to interpret one iteration of the reconstruction
-process as one cycle of the engine. In fact, at the begining of each iteration, the state of the computer 
+process as one cycle of the engine. In fact, at the beginning of each iteration, the state of the computer 
 is the same since we consider all changing (dynamic) variables to be in the *dynamic memory*, 
 which is the analog of the work environment of the heat engine. The energy given to the computer is almost completely
-dissipated into heat transmitted to the cooling system at temperature :math:`T_C`. We neglect transmition of heat given to
+dissipated into heat transmitted to the cooling system at temperature :math:`T_C`. We neglect transmission of heat given to
 the *rest of the universe* because it should be much smaller. Also, there are some
-electro-magnetic radiations emited from to the computer to the *rest of the universe* and some eletrostatic energy
+electro-magnetic radiations emitted from to the computer to the *rest of the universe* and some eletrostatic energy
 that is stored in the memory, since writing information in it implies to set a certain configuration of charges
 with the associated electro-static energy. These two energy amounts are however so small as compared to the energy 
 dissipated in the cooling system that we will nelglect them. As a consequence of energy conservation we will therefore write
@@ -438,14 +438,14 @@ In addition, we are unable to continue the analogy between the computer and the 
 because we are for the moment unable to define what the computer is transmitting to the *DM*, 
 as pointed out by the quotation mark in the last figure. The reason is that the computer
 performs no mechanical work and we have to find a replacement for work in order to continue the 
-analogy. We need now to invent someting. 
+analogy. We need now to invent something. 
 
 We propose to solve our difficulties by the following heuristic (actually quite esotherique) construction, 
 because it is the best we have to the moment. Instead of considerng that the computer interacts 
 with the dynamic memory, we consider that nature is *as if* the computer was interacting with the 
 phase space. The variables stored in the *DM* represent one state in the phase space, 
 but since it could be any, the computer behaves in a way that would do the job for any state
-in the phase space. We considere therefore that it is a reasonable argument to say that the behaviour of the 
+in the phase space. We consider therefore that it is a reasonable argument to say that the behaviour of the 
 computer is related phase space and not related one particular representent. 
 The computer behaves as if it was reconstructing many MRI images at the same time. Instead of
 discussing endlessly how realistic or not that argumentation is, we propose here one implementation
@@ -472,8 +472,8 @@ that at each iteration, a part of the energy given to the computer is transforme
       :align: center
       :alt: heat_engine_2
 
-We will imagine that any conected proper subsest :math:`\Omega` of phase space contains 
-a certain amount of our "phase space ideal gas". Inpired by the equation that describs 
+We will imagine that any connected proper subsest :math:`\Omega` of phase space contains 
+a certain amount of our "phase space ideal gas". Inpired by the equation that describes 
 an ideal gas with constant temperature, we set
 
 .. math ::        
@@ -500,11 +500,11 @@ We deduce that the work :math:`\Delta W` needed to compress :math:`\Omega` to a 
     \Delta W = - K_{\Gamma} \int_{\nu \left(\Omega \right)}^{\nu \left(\Omega' \right)} \frac{dV}{V} = - K_{\Gamma} \cdot log \left( \frac{\nu(\Omega')}{\nu(\Omega)} \right) 
 
 We will now label some quantities with the super-script :math:`(c, c+1)` to indicate that the quantity in question
-is associated to the iteration numner :math:`(c)`, which performs the transition from state :math:`(c)` to state :math:`(c+1)`. 
+is associated to the iteration number :math:`(c)`, which performs the transition from state :math:`(c)` to state :math:`(c+1)`. 
 We will also label a quantity with super-script :math:`(c)` in order to indicate that this quantity is associated to the transition
 from the initial state to the the state number :math:`(c)`.  
 
-For the comming comparison with information theory in the next subsection, 
+For the coming comparison with information theory in the next subsection, 
 we define the information gain associated the trasnsition 
 from :math:`\Omega^{(c)}` to :math:`\Omega^{(c+1)}` as
 
@@ -550,7 +550,7 @@ on the phase space :math:`\Delta W^{(c, c+1)}`:
 
 What we mean here is that at each cycle, an energy amount :math:`\Delta E_{in}^{(c, c+1)}` 
 is given to the computer, an amount :math:`\Delta E_{in}^{(c, c+1)} - \Delta W^{(c, c+1)}` is dissipated 
-to the cooling sytem by the computation at temperature :math:`T_C`, and another 
+to the cooling system by the computation at temperature :math:`T_C`, and another 
 amount :math:`\Delta W^{(c, c+1)}` is given as work to the phase space and then also dissipated 
 to the cooling system as a heat amount :math:`\lvert Q_{DM}^{(c, c+1)} \rvert` at 
 temperature :math:`T_C`. It holds thus
@@ -561,7 +561,7 @@ temperature :math:`T_C`. It holds thus
 
 We will name :math:`\lvert \Delta Q_{Comp}^{(c, c+1)} \rvert` the heat amount dissipated by the 
 computation directly to the cooling system. This is the part of the energy that is not 
-"transmited" to the phase space. The conservation of energy can then be rewritten as
+"transmitted" to the phase space. The conservation of energy can then be rewritten as
 
 .. math ::        
 
@@ -569,8 +569,8 @@ computation directly to the cooling system. This is the part of the energy that 
 
 Of course, the phase space is a mathematical, non-physical object and 
 the *work given to phase space* is a symbolic language. What we try to do is an 
-intelectual effort that consists in admiting that nature behaves *as if* the 
-computer was in fact transmiting work to the phase space. 
+intellectual effort that consists in admitting that nature behaves *as if* the 
+computer was in fact transmitting work to the phase space. 
 
 In order to complete the picture and for a comparison with information theory in the next sub-section, 
 we choose to identify the entropy drope in the *DM* during iteration number :math:`(c+1)` as
