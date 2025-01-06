@@ -18,6 +18,7 @@ classdef bmWitnessInfo < handle
         witness_name            = [];
         
         witness_ind             = [];
+        save_witnessIm_flag     = false; 
         witness_im              = [];
         witness_time            = [];
         
@@ -41,22 +42,18 @@ classdef bmWitnessInfo < handle
         
         function obj = bmWitnessInfo(varargin) % constructor
             
-            myVarargin_1 = [];
-            myVarargin_2 = [];
-            if ~isempty(varargin)
-                myVarargin_1 =  varargin{1};
-            end
-            if ~isempty(varargin)
-                myVarargin_2 =  varargin{2};
-            end
+            [myVarargin_1, myVarargin_2, myVarargin_3] = bmVarargin(varargin); 
             
             if isa(myVarargin_1, 'bmWitnessInfo')
                 
-                in_witnessInfo = myVarargin_1;
+                in_witnessInfo              = myVarargin_1;
+
+                obj.save_witnessIm_flag     = in_witnessInfo.save_witnessIm_flag; 
                 
                 obj.witness_name            = in_witnessInfo.witness_name;
                 
                 obj.witness_ind             = in_witnessInfo.witness_ind;
+                obj.save_witnessIm_flag     = in_witnessInfo.save_witnessIm_flag; 
                 obj.witness_im              = in_witnessInfo.witness_im;
                 obj.witness_time            = in_witnessInfo.witness_time;
                 
@@ -69,18 +66,25 @@ classdef bmWitnessInfo < handle
                 
             else
                 
-                obj.witness_name    = myVarargin_1;
+                if ~isempty(myVarargin_1)
+                    obj.witness_name        = myVarargin_1;
+                end
+                if ~isempty(myVarargin_2)
+                    obj.witness_ind         = myVarargin_2(:)';
+                end
+                if ~isempty(myVarargin_3)
+                    obj.save_witnessIm_flag = myVarargin_3;
+                end
                 
-                obj.witness_ind     = myVarargin_2(:)';
-                obj.witness_im      = [];
-                obj.witness_time    = [];
+                obj.witness_im          = [];
+                obj.witness_time        = [];
                 
-                obj.creationTime    = bmTimeInSecond;
-                obj.finalCallTime   = bmTimeInSecond;
-                obj.finalInd        = [];
+                obj.creationTime        = bmTimeInSecond;
+                obj.finalCallTime       = bmTimeInSecond;
+                obj.finalInd            = [];
                 
-                obj.param           = [];
-                obj.param_name      = [];
+                obj.param               = [];
+                obj.param_name          = [];
                 
             end
             
@@ -102,58 +106,63 @@ classdef bmWitnessInfo < handle
                     fprintf(  repmat('\b', [1, nCharBack])  );
                     fprintf('%d \n', curr_ind);
                 end
-                
             end
             
-            if ~isempty(obj.witness_ind)
-                
-                n_u = n_u(:)';
-                imDim = size(n_u(:), 1);
-                temp_im_ind = fix(n_u(1, imDim)/2)+1;
-                
-                if iscell(x)
-                    for i = 1:numel(x)
-                        x{i} = bmBlockReshape(x{i}, n_u);
+            if ~isempty(obj.witness_ind)                
+                if obj.save_witnessIm_flag
+                    
+                    n_u = n_u(:)';
+                    imDim = size(n_u(:), 1);
+                    temp_im_ind = fix(n_u(1, imDim)/2)+1;
+                    
+                    if iscell(x)
+                        for i = 1:numel(x)
+                            x{i} = bmBlockReshape(x{i}, n_u);
+                        end
+                    else
+                        x = bmBlockReshape(x, n_u);
                     end
+                    
+                    if imDim == 1
+                        if iscell(x)
+                            temp_im = (x{1});
+                        else
+                            temp_im = (x);
+                        end
+                        obj.witness_im = cat(2, obj.witness_im, temp_im);
+                        
+                    elseif imDim == 2
+                        if iscell(x)
+                            temp_im = (x{1});
+                        else
+                            temp_im = (x);
+                        end
+                        temp_im = bmBlockReshape(temp_im, n_u);
+                        obj.witness_im = cat(3, obj.witness_im, temp_im);
+                        
+                    elseif imDim == 3
+                        
+                        if iscell(x)
+                            temp_im = (x{1});
+                        else
+                            temp_im = (x);
+                        end
+                        
+                        temp_im         = bmBlockReshape(temp_im, n_u);
+                        temp_im_z       = squeeze(  (temp_im(:, :, temp_im_ind))  );
+                        temp_im_y       = squeeze(  (temp_im(:, temp_im_ind, :))  );
+                        temp_im_x       = squeeze(  (temp_im(temp_im_ind, :, :))  );
+                        temp_im         = cat(2, temp_im_x, temp_im_y, temp_im_z);
+                        %temp_im         = temp_im_z;
+                        
+                        obj.witness_im  = cat(3, obj.witness_im, temp_im);
+                        
+                    end
+                    
                 else
-                    x = bmBlockReshape(x, n_u);
+                    obj.witness_im = [];
                 end
-                
-                if imDim == 1
-                    if iscell(x)
-                        temp_im = (x{1});
-                    else
-                        temp_im = (x);
-                    end
-                    obj.witness_im = cat(2, obj.witness_im, temp_im);
                     
-                elseif imDim == 2
-                    if iscell(x)
-                        temp_im = (x{1});
-                    else
-                        temp_im = (x);
-                    end
-                    temp_im = bmBlockReshape(temp_im, n_u);
-                    obj.witness_im = cat(3, obj.witness_im, temp_im);
-                    
-                elseif imDim == 3
-                    
-                    if iscell(x)
-                        temp_im = (x{1}); 
-                    else
-                        temp_im = (x); 
-                    end
-                    
-                    temp_im         = bmBlockReshape(temp_im, n_u);
-                    temp_im_z       = squeeze(  (temp_im(:, :, temp_im_ind))  );
-                    temp_im_y       = squeeze(  (temp_im(:, temp_im_ind, :))  );
-                    temp_im_x       = squeeze(  (temp_im(temp_im_ind, :, :))  );
-                    temp_im         = cat(2, temp_im_x, temp_im_y, temp_im_z);
-                    %temp_im         = temp_im_z;
-                    
-                    obj.witness_im  = cat(3, obj.witness_im, temp_im);
-                    
-                end
                 
                 obj.witness_time    = cat(2, obj.witness_time, bmTimeInSecond);
                 obj.finalCallTime   = bmTimeInSecond;

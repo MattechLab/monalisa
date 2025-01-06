@@ -55,7 +55,7 @@ dX_u                    = single(  (1./single(dK_u))./single(N_u)  );
 HX                      = single(  prod(dX_u(:))  );
 HZ1                     = single(HX);
 HZ2                     = single(HX);
-HY                      = single(private_ve_to_HY(ve, ve_max, y)); 
+HY                      = bmSingle(private_ve_to_HY(ve, ve_max, y)); 
 
 
 
