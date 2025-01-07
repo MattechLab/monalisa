@@ -45,13 +45,13 @@ Download the data needed for tutorial 1, this can take a while depending on your
 .. code-block:: bash
     
     # Make the folder writable (to download the data)
-    cd /monalisa/demo/data_demo/
+    cd monalisa/demo/data_demo/
     chmod u+w data_8_tutorial_1
     cd data_8_tutorial_1
     # Make the sh file executable
     chmod +x downloadData.sh 
     # Execute the file: Download the data
-    downloadData.sh
+    ./downloadData.sh
 
 Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.
 
@@ -61,7 +61,7 @@ Step 1: Compute Coil Sensitivity
 
 The first step is to compute **coil sensitivity maps**, which describe how each coil "sees" the object being scanned. This is crucial for proper reconstruction.
 
-For this step, we use the provided `coilSensitivityEstimation.m` script.  
+For this step, we use the provided `coilSensitivityEstimation_script.m` script that can be found in monalisa/demo/script_demo/script_tutorial_1.  
 The only parameter you need to adjust is the **virtual Cartesian grid size** (`N_u`).  
 
 .. note::
@@ -70,7 +70,7 @@ The only parameter you need to adjust is the **virtual Cartesian grid size** (`N
 
 Script Overview:
 -----------------
-Below is the main structure of the `coilSensitivityEstimation.m` script:
+Below is the main structure of the `coilSensitivityEstimation_script.m` script:
 
 .. code-block:: matlab
 
