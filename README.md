@@ -2,6 +2,7 @@
 
 This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
 Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
+Visit our documentation here : https://mattechlab.github.io/monalisa/
 
 ## Usage and installation
 To get started with the MRI reconstruction code, follow these steps:
