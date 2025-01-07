@@ -193,12 +193,12 @@ is 1, so that the tripple :math:`\left(P, \mathcal{L}_{P}, \nu \right)` is a pro
 
 .. math ::
 
-    f_{\nu}(\omega) > 0 \quad \forall \omega \in \Gamma_{P}
+    f_{\nu}(\omega) > 0 \quad \forall \omega \in P
 
 in order to avoid some division by 0. There are then mainly two choices of 
-interest for :math:`\Gamma_{P}` in our discussion. In the first case, we will 
-set :math:`\Gamma_{P}` equal to :math:`\Gamma`, while in the second case, we will 
-set :math:`\Gamma_{P}` equal to :math:`\Omega^{(0)}`, as define hereafter.  
+interest for :math:`P` in our discussion. In the first case, we will 
+set :math:`P` equal to :math:`\Gamma`, while in the second case, we will 
+set :math:`P` equal to :math:`\Omega^{(0)}`, as define hereafter.  
 
 We will write :math:`\Omega^{(0)}` the subset of :math:`\Gamma` in which the initial value is chosen
 and we will set on it the restriction :math:`\mathcal{A} \subset \Omega^{(0)}`. 
@@ -767,21 +767,29 @@ prudent for the moment. What we where able to show is, that interpreting the *Wo
 as a virtual work that contract a portion of phase space like an ideal gas leads to a relation between energy
 and information that is very similar to the Principle of Landauer. 
 
-Equation (E2) suggest a definition for the entropy of the form
+
+The entropy of an ideal gas, for a constant number of particles :math:`N` and constant temperature, can be expressed up
+to a constant as
+
+.. math ::
+
+    S = N \ K_B \ log(V) + const.
+
+An analogy with our ideal phase space gas and equation (E2) suggests, for the entropy of the dynamic memory, an expression of the form: 
 
 .. math ::
 
     S = k_{\Gamma} \  log\left(\frac{\nu \left(\Omega\right) }{\nu \left(P\right)} \right) = k_{\Gamma} \  log\left( \nu \left(\Omega\right) \right)
 
-because by our definitions is :math:`\nu(P)` equal to :math:`1`. This equation is very similar to the equation of Boltzmann
+because by our definitions is :math:`\nu(P)` equal to :math:`1`. Our theory can be considered of a physical assumbtion about the entropy of the 
+dynamic memory. We have no way to prove that the true (physical) thermodynamic entropy of the dynamic memory is realy given by our expression. 
+It is a claim we did and that tried to test it by exploring some of the consequences. Interestingly, 
+this equation for entropy is very similar to the equation of Boltzmann
 
 .. math ::
 
-    S = k_{\Gamma} \  log\left( \Omega \right)
+    S = k_B \  log\left( \Omega \right)
 
-where :math:`\Omega` is the area of the surface in phase space occupied by all the micro states of a given energy 
-allowed by the macroscopical constaints on the physical system under consideration 
-(it is the "number" of allowed mirco states, if one prefers). 
-
-
+where :math:`\Omega` is the area of the surface in phase space occupied by all the possible micro states of a given energy 
+for the physical system under consideration (it is the "number" of allowed mirco states, if one prefers). 
 
