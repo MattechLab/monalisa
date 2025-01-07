@@ -741,7 +741,7 @@ notion of information-theoretical information that we will write :math:`J`.
 Discussion
 ----------
 
-By defining the total usefull total energy consumed by the reconstruciton as
+By defining the total useful energy consumed by the reconstruction as
 
 .. math ::
     
@@ -753,19 +753,20 @@ equation (E4) can be rewritten as
     
     k_{\Gamma} \ T_C \  \Delta I^{tot} \leq   \Delta E^{tot}_{useful} \quad (E5)
 
-This equation is very similar to the principle of Laundauer, which reads
+This equation is very similar to the principle of Landauer, which reads
 
 .. math ::
     
     k_{B} \ T \  log(2) \leq   \Delta E
 
 where :math:`k_{B}` is the Boltzmann constant, :math:`T` is the temperature of the computer
-(which can be identified with our temperature :math:`T_C`) and :math:`\Delta E` is the energy amount that 
-is needed to erase a *bit* of information. This similarity suggests that equation (E5) could be seen 
-as an generalisation of Landauer principle to the context of MRI reconstruction, but we have to stay 
-prudent for the moment. What we where able to show is, that interpreting the *Work* of the computer
-as a virtual work that contract a portion of phase space like an ideal gas leads to a relation between energy
-and information that is very similar to the Principle of Landauer. 
+(which can be identified with the temperature of the cooling system :math:`T_C`) and :math:`\Delta E` 
+is the practical energy amount that is needed to erase a *bit* of information. This similarity suggests 
+that equation (E5) could be seen as an generalisation of Landauer principle in the context of MRI 
+reconstruction, but we have to stay prudent for the moment. What we were able to show is, 
+that interpreting the "work" of the computer as a virtual work that contracts a portion of phase 
+space like an ideal gas leads to a relation between energy and information that is very similar 
+to the Principle of Landauer. 
 
 
 The entropy of an ideal gas, for a constant number of particles :math:`N` and constant temperature, can be expressed up
@@ -773,7 +774,7 @@ to a constant as
 
 .. math ::
 
-    S = N \ K_B \ log(V) + const.
+    S = N \ k_B \ log(V) + const.
 
 An analogy with our ideal phase space gas and equation (E2) suggests, for the entropy of the dynamic memory, an expression of the form: 
 
@@ -792,4 +793,10 @@ this equation for entropy is very similar to the equation of Boltzmann
 
 where :math:`\Omega` is the area of the surface in phase space occupied by all the possible micro states of a given energy 
 for the physical system under consideration (it is the "number" of allowed mirco states, if one prefers). 
+There is in fact an analogy between the set of allowed microstates of a physical system and our phase space: 
+our set :math:`\Omega^{(0)}` is the set of possible states of the dynamic memory and after :math:`c` iterations, 
+the set of possible states of the dynamic memory is the set :math:`\Omega^{(c)}`. The numbers 
+:math:`\nu\left(\Omega^{(0)}\right)` resp. :math:`\nu\left(\Omega^{(c)}\right)` can be considered as 
+the numbers of states in those sets.  
+
 
