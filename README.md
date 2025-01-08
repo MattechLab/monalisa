@@ -33,4 +33,8 @@ If you have to install a compiler we reccomend:
    
 # Getting started: 
 
-For better installation guidelines and much more check the Monalisa documentation [here](https://mattechlab.github.io/monalisa/)!
+For better installation guidelines and much more **check Monalisa's documentation** [here](https://mattechlab.github.io/monalisa/)!
+
+# Help us improve: 
+
+Monalisa is still very young. If you encounter an issue, please consider **opening a GitHub issue** in the repository. If you know how to fix the problem, feel free to submit a pull request!
