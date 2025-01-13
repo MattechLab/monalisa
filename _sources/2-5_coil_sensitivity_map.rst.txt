@@ -8,23 +8,23 @@ Coil Sensitivity Map Estimation
 This section explains how to generate an estimate of the coil sensitivity map using this framework.
 
 .. warning::
-   For this an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw datas.
+   For this, an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw data sets.
    For the moment we only support ISMRMRD (.mrd) and Siemens raw data (.dat) files.
 
 Coil sensitivity from pre-scan images
 =====================================
 
-Computing coil senstivity from pre-scan images is simpler but yields a worst estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.  
+Computing coil sensitivity from pre-scan images is simpler but yields a worse estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.  
 
 .. warning::
    
    The FOV position and orientation of the images should be the same.
 
-This script https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m illustrates how to run the coilsensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:
-1. In the first step the user should define a pre-scan mask on the ROI using the body coil image, this helps to estimate the coil sensitivity excluding the noise.
-2. In the secon step the function bmCoilSense_prescan_coilSense is called, to estimate the acquisition coils sentitivities.
+This script https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m illustrates how to run the coil sensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:
+1. In the first step, the user should define a pre-scan mask on the ROI using the body coil image, this helps to estimate the coil sensitivity excluding the noise.
+2. In the second step, the function bmCoilSense_prescan_coilSense is called to estimate the acquisition coils sensitivities.
 
-The images are required to be 3D matlab arrays.
+The images are required to be 3D MATLAB arrays.
 
 Coil sensitivity from raw data pre-scans
 ========================================
@@ -49,8 +49,8 @@ The resulting map is only saved if the save flag is set to true.
    % Flag; saves the coil sensitivity map if true
    doSave = true;
 
-If the paths aren't set in the script, a file selection dialog box will pop up at run time, where the user has to select the pre-scan .mdr files.
-In order the body coil file,  the surface coil file and the directory where the result is saved (if the flag is set to true).
+If the paths aren't set in the script, a file selection dialog box will pop up at run time, where the user has to select the pre-scan .mrd files.
+In order: the body coil file, the surface coil file, and the directory where the result is saved (if the flag is set to true).
 
 .. _automatedEstimation:
 
@@ -76,7 +76,7 @@ Two of these figures will open, during which the code execution is interrupted u
 
    The minimum and maximum values can only be changed directly in manual estimation.
 
-After checking that the ROI is correct, the selction has to be confirmed by pressing on the "Confirm Selection" button.
+After checking that the ROI is correct, the selection has to be confirmed by pressing the "Confirm Selection" button.
 
 The rest of the estimation is done automatically and the resulting matrix is saved in the given folder with the following naming convention:
 
@@ -86,7 +86,7 @@ Manual Estimation
 =================
 
 Using the manual estimation requires some more confirmation from the user. Namely of the parameters extracted and the threshold to differentiate between noise and data.
-There will be more figures shown that allow to check the region of interest in more detail as well as the effect of the secondary coil sensitivity estimation.
+There will be more figures shown that allow checking the region of interest in more detail as well as the effect of the secondary coil sensitivity estimation.
 
 Acquisition Parameters
 ----------------------
@@ -103,7 +103,7 @@ The table allows the user to modify the extracted acquisition parameters in the 
 On the right, the navigation and the trajectory type can be selected, as well as an option to remove oversampled data.
 
 .. note::
-   Only the non-cartesian trajectory and the navigation using the SI line is implemented.
+   Only the non-cartesian trajectory and the navigation using the SI line are implemented.
 
 This has to be done for the body coil first and then for the surface coils.
 To select a good number for the shots to be dropped as they are taken before the steady state is reached, a figure is shown.
@@ -130,16 +130,16 @@ To achieve this, thresholds and a region of interest (ROI) selection are used to
 Threshold
 ^^^^^^^^^
 
-To ensure that the estimation is only done for voxels that contain meaningful data, a threshold is used to seperate noise from data.
+To ensure that the estimation is only done for voxels that contain meaningful data, a threshold is used to separate noise from data.
 One threshold is for the RMS value of the voxels, which is calculated over all the body coils and the other is for the MIP value.
-Both of them are set seperately by dragging the two lines in the figure below:
+Both of them are set separately by dragging the two lines in the figure below:
 
 .. image:: ../images/thresholdRMSMIP.png
    :width: 70 %
    :align: center
    :alt: The thresholds are determined by looking at the images and dragging the lines.
 
-The figure allows to change the view of the two images as well as changing between a binary and a continuous representation.
+The figure allows changing the view of the two images as well as changing between a binary and a continuous representation.
 While dragging the lines in the graph in the top half, the images update the voxels to show which are below the threshold. 
 
 .. _roiFigures:
@@ -168,7 +168,7 @@ Alternatively, the left mouse button can be used to click on a pixel, which show
 
 To further inspect the threshold, MATLAB's "Adjust Contrast Tool" can be used by pressing Ctrl + e.
 By reducing the range of the allowed contrast, the image can be shown in a binary representation and a threshold value can be selected using the lower limit of the range.
-Using Shift + e before changing the image allows to apply the adjusted contrast to the whole image and scrolling through it to observe the effect of the set threshold.
+Using Shift + e before changing the image allows applying the adjusted contrast to the whole image and scrolling through it to observe the effect of the set threshold.
 
 Here is an example:
 
@@ -178,23 +178,23 @@ Here is an example:
    :alt: Changing the contrast of the image.
 
 .. note::
-   The view can be changed by pressing Ctrl + Shift + x , y or z.
+   The view can be changed by pressing Ctrl + Shift + x, y, or z.
 
    Note that the coordinates shown change as well depending on the view. 
-   They are not always reprented as (x, y, z), but depend on the axes shown.
+   They are not always represented as (x, y, z), but depend on the axes shown.
 
-   By pressing the key "h", the help information for the figure is written in the Matlab console. 
-   This information explains all the possible options to manipulated the visualization of the data.
+   By pressing the key "h", the help information for the figure is written in the MATLAB console. 
+   This information explains all the possible options to manipulate the visualization of the data.
 
 The third figure allows visual confirmation of the accuracy of the created mask. 
-Keep in mind that the goal of the tresholding is to remove as much noise as possible, 
-but to keep most of the information intact to achieve the best coil sensivity estimation. 
-The example shown, give you an idea of a correct thresholding, with most of the brain data mantained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.
+Keep in mind that the goal of the thresholding is to remove as much noise as possible, 
+but to keep most of the information intact to achieve the best coil sensitivity estimation. 
+The example shown gives you an idea of correct thresholding, with most of the brain data maintained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.
 
 Sensitivity Approximation
 -------------------------
 
-After the first estimation of the coil sensitivity, a heuretic gradient descent algorithm is applied to improve on this estimation.
+After the first estimation of the coil sensitivity, a heuristic gradient descent algorithm is applied to improve on this estimation.
 This is done iteratively for a number of iterations that can be set in the script. For further explanation see `ImprovedEstimation`_.
 
 After each gradient descent step, an image is generated that shows the combined image using the coils. This can be used to control the effects of the gradient descent.
@@ -207,8 +207,8 @@ This part goes into a bit more detail of the code, which allows to more easily m
 Path selection
 --------------
 
-The script starts out by setting the two flags mentioned above. Afterwards the paths of the files and the destination folder are set.
-These can be set directly in the scrip to skip the selection during execution.
+The script starts out by setting the two flags mentioned above. Afterwards, the paths of the files and the destination folder are set.
+These can be set directly in the script to skip the selection during execution.
 
 .. code-block:: matlab
 
@@ -237,7 +237,7 @@ As this is the object used for the extraction of the data, this step can be skip
    myMriAcquisition_node.FoV = 240;
    reconFoV = 240;
 
-The estimation is done on a low resolution image to improve the result. The grid, which defines the resolution is set at the end of the section.
+The estimation is done on a low-resolution image to improve the result. The grid, which defines the resolution is set at the end of the section.
 
 .. code-block:: matlab
 
@@ -260,7 +260,7 @@ In the function `bmCoilSense_nonCart_dataFromISMRMRD`, the raw data is extracted
 
 .. note::
    Both the trajectory and the volume element computation method have to be changed manually and the trajectory is not yet read out of the ISMRM raw data file.
-   Later on, the option to choose should be implemented in a gui element.
+   Later on, the option to choose should be implemented in a GUI element.
 
 Within the function `bmCoilSense_nonCart_dataFromTwix`:
 
@@ -272,7 +272,7 @@ Within the function `bmCoilSense_nonCart_dataFromTwix`:
 
 - The volume elements are computed using the function `bmVolumeElement`.
 
-   - Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function. For example, in the following case, the voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).
+   - Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function. For example, in the following case, the Voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).
 
    .. code-block:: matlab
 
@@ -285,7 +285,7 @@ Within the function `bmCoilSense_nonCart_dataFromTwix`:
    - This preserves the lower frequencies, removing any high frequency detail, resulting in a lower resolution.
 
 The same function is used once again to extract the raw data of the selected array coils. 
-The number of coils are updated to match the selected array coils.
+The number of coils is updated to match the selected array coils.
 
 .. code-block:: matlab
 
@@ -311,7 +311,7 @@ Here, `Gn` and `Gut` perform the backward transformation (from non-Cartesian to 
 Mask Creation
 -------------
 
-The creation of the mask is done using two thresholds to exclude artifacts from regions without signals, such as air in the lungs, and a ROI selection to exlude artifacts outside the ROI.
+The creation of the mask is done using two thresholds to exclude artifacts from regions without signals, such as air in the lungs, and a ROI selection to exclude artifacts outside the ROI.
 This is particularly relevant for the center region of the coil sensitivity plot and is done in the function `bmCoilSense_nonCart_mask_automatic`.
 
 .. code-block:: matlab
@@ -323,7 +323,7 @@ The function also accepts predefined values for the thresholds and the ROI inste
 Coil Sensitivity Estimation
 ---------------------------
 
-The first estimation is done using the following to functions:
+The first estimation is done using the following two functions:
 
 .. code-block:: matlab
 

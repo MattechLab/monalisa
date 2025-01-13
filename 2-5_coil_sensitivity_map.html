@@ -77,20 +77,20 @@
 <p>This section explains how to generate an estimate of the coil sensitivity map using this framework.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>For this an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw datas.
+<p>For this, an acquisition of the body coil pre-scan and the selected acquisition coil pre-scan data is required. Either you need pre-scan images or two pre-scan raw data sets.
 For the moment we only support ISMRMRD (.mrd) and Siemens raw data (.dat) files.</p>
 </div>
 <section id="coil-sensitivity-from-pre-scan-images">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Coil sensitivity from pre-scan images</a><a class="headerlink" href="#coil-sensitivity-from-pre-scan-images" title="Link to this heading">¶</a></h2>
-<p>Computing coil senstivity from pre-scan images is simpler but yields a worst estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.</p>
+<p>Computing coil sensitivity from pre-scan images is simpler but yields a worse estimation of the real coil sensitivity. You need two body coil images and one image per acquisition coil.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The FOV position and orientation of the images should be the same.</p>
 </div>
-<p>This script <a class="reference external" href="https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m">https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m</a> illustrates how to run the coilsensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:
-1. In the first step the user should define a pre-scan mask on the ROI using the body coil image, this helps to estimate the coil sensitivity excluding the noise.
-2. In the secon step the function bmCoilSense_prescan_coilSense is called, to estimate the acquisition coils sentitivities.</p>
-<p>The images are required to be 3D matlab arrays.</p>
+<p>This script <a class="reference external" href="https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m">https://github.com/MattechLab/monalisa/blob/main/examples/scripts/coilSense_from_prescan_images_script.m</a> illustrates how to run the coil sensitivity estimation from prescan images. The estimation of the coil sensitivity is done in two steps:
+1. In the first step, the user should define a pre-scan mask on the ROI using the body coil image, this helps to estimate the coil sensitivity excluding the noise.
+2. In the second step, the function bmCoilSense_prescan_coilSense is called to estimate the acquisition coils sensitivities.</p>
+<p>The images are required to be 3D MATLAB arrays.</p>
 </section>
 <section id="coil-sensitivity-from-raw-data-pre-scans">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">Coil sensitivity from raw data pre-scans</a><a class="headerlink" href="#coil-sensitivity-from-raw-data-pre-scans" title="Link to this heading">¶</a></h2>
@@ -110,8 +110,8 @@ The resulting map is only saved if the save flag is set to true.</p>
 <span class="n">doSave</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>If the paths aren’t set in the script, a file selection dialog box will pop up at run time, where the user has to select the pre-scan .mdr files.
-In order the body coil file,  the surface coil file and the directory where the result is saved (if the flag is set to true).</p>
+<p>If the paths aren’t set in the script, a file selection dialog box will pop up at run time, where the user has to select the pre-scan .mrd files.
+In order: the body coil file, the surface coil file, and the directory where the result is saved (if the flag is set to true).</p>
 </section>
 <section id="automated-estimation">
 <span id="automatedestimation"></span><h2><a class="toc-backref" href="#id5" role="doc-backlink">Automated Estimation</a><a class="headerlink" href="#automated-estimation" title="Link to this heading">¶</a></h2>
@@ -129,7 +129,7 @@ Two of these figures will open, during which the code execution is interrupted u
 If this option doesn’t create a usable image, please use the <a class="reference internal" href="#roifigures"><span class="std std-ref">figures</span></a> in the manual estimation mode.</p>
 <p>The minimum and maximum values can only be changed directly in manual estimation.</p>
 </div>
-<p>After checking that the ROI is correct, the selction has to be confirmed by pressing on the “Confirm Selection” button.</p>
+<p>After checking that the ROI is correct, the selection has to be confirmed by pressing the “Confirm Selection” button.</p>
 <p>The rest of the estimation is done automatically and the resulting matrix is saved in the given folder with the following naming convention:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">coil_sensitivity_map_yyyy-mm-dd-hh-mm.mat</span></code></p>
@@ -138,7 +138,7 @@ If this option doesn’t create a usable image, please use the <a class="referen
 <section id="manual-estimation">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">Manual Estimation</a><a class="headerlink" href="#manual-estimation" title="Link to this heading">¶</a></h2>
 <p>Using the manual estimation requires some more confirmation from the user. Namely of the parameters extracted and the threshold to differentiate between noise and data.
-There will be more figures shown that allow to check the region of interest in more detail as well as the effect of the secondary coil sensitivity estimation.</p>
+There will be more figures shown that allow checking the region of interest in more detail as well as the effect of the secondary coil sensitivity estimation.</p>
 <section id="acquisition-parameters">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">Acquisition Parameters</a><a class="headerlink" href="#acquisition-parameters" title="Link to this heading">¶</a></h3>
 <p>The acquisition parameters are automatically extracted from the ISMRM raw data files and presented in the following figure. Make sure that the values displayed are correct.</p>
@@ -149,7 +149,7 @@ The table allows the user to modify the extracted acquisition parameters in the 
 On the right, the navigation and the trajectory type can be selected, as well as an option to remove oversampled data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Only the non-cartesian trajectory and the navigation using the SI line is implemented.</p>
+<p>Only the non-cartesian trajectory and the navigation using the SI line are implemented.</p>
 </div>
 <p>This has to be done for the body coil first and then for the surface coils.
 To select a good number for the shots to be dropped as they are taken before the steady state is reached, a figure is shown.
@@ -170,12 +170,12 @@ The changes to the other parameters have to be done in the second figure for the
 To achieve this, thresholds and a region of interest (ROI) selection are used to create the mask.</p>
 <section id="threshold">
 <h4><a class="toc-backref" href="#id9" role="doc-backlink">Threshold</a><a class="headerlink" href="#threshold" title="Link to this heading">¶</a></h4>
-<p>To ensure that the estimation is only done for voxels that contain meaningful data, a threshold is used to seperate noise from data.
+<p>To ensure that the estimation is only done for voxels that contain meaningful data, a threshold is used to separate noise from data.
 One threshold is for the RMS value of the voxels, which is calculated over all the body coils and the other is for the MIP value.
-Both of them are set seperately by dragging the two lines in the figure below:</p>
+Both of them are set separately by dragging the two lines in the figure below:</p>
 <a class="reference internal image-reference" href="_images/thresholdRMSMIP.png"><img alt="The thresholds are determined by looking at the images and dragging the lines." class="align-center" src="_images/thresholdRMSMIP.png" style="width: 70%;" />
 </a>
-<p>The figure allows to change the view of the two images as well as changing between a binary and a continuous representation.
+<p>The figure allows changing the view of the two images as well as changing between a binary and a continuous representation.
 While dragging the lines in the graph in the top half, the images update the voxels to show which are below the threshold.</p>
 </section>
 <section id="region-of-interest">
@@ -195,27 +195,27 @@ Alternatively, the left mouse button can be used to click on a pixel, which show
 </a>
 <p>To further inspect the threshold, MATLAB’s “Adjust Contrast Tool” can be used by pressing Ctrl + e.
 By reducing the range of the allowed contrast, the image can be shown in a binary representation and a threshold value can be selected using the lower limit of the range.
-Using Shift + e before changing the image allows to apply the adjusted contrast to the whole image and scrolling through it to observe the effect of the set threshold.</p>
+Using Shift + e before changing the image allows applying the adjusted contrast to the whole image and scrolling through it to observe the effect of the set threshold.</p>
 <p>Here is an example:</p>
 <a class="reference internal image-reference" href="_images/filtering.png"><img alt="Changing the contrast of the image." class="align-center" src="_images/filtering.png" style="width: 90%;" />
 </a>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The view can be changed by pressing Ctrl + Shift + x , y or z.</p>
+<p>The view can be changed by pressing Ctrl + Shift + x, y, or z.</p>
 <p>Note that the coordinates shown change as well depending on the view.
-They are not always reprented as (x, y, z), but depend on the axes shown.</p>
-<p>By pressing the key “h”, the help information for the figure is written in the Matlab console.
-This information explains all the possible options to manipulated the visualization of the data.</p>
+They are not always represented as (x, y, z), but depend on the axes shown.</p>
+<p>By pressing the key “h”, the help information for the figure is written in the MATLAB console.
+This information explains all the possible options to manipulate the visualization of the data.</p>
 </div>
 <p>The third figure allows visual confirmation of the accuracy of the created mask.
-Keep in mind that the goal of the tresholding is to remove as much noise as possible,
-but to keep most of the information intact to achieve the best coil sensivity estimation.
-The example shown, give you an idea of a correct thresholding, with most of the brain data mantained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.</p>
+Keep in mind that the goal of the thresholding is to remove as much noise as possible,
+but to keep most of the information intact to achieve the best coil sensitivity estimation.
+The example shown gives you an idea of correct thresholding, with most of the brain data maintained with only a small amount of residual noise in the corners, that will be filtered out by the bounding box selection.</p>
 </section>
 </section>
 <section id="sensitivity-approximation">
 <h3><a class="toc-backref" href="#id11" role="doc-backlink">Sensitivity Approximation</a><a class="headerlink" href="#sensitivity-approximation" title="Link to this heading">¶</a></h3>
-<p>After the first estimation of the coil sensitivity, a heuretic gradient descent algorithm is applied to improve on this estimation.
+<p>After the first estimation of the coil sensitivity, a heuristic gradient descent algorithm is applied to improve on this estimation.
 This is done iteratively for a number of iterations that can be set in the script. For further explanation see <a class="reference internal" href="#improvedestimation">ImprovedEstimation</a>.</p>
 <p>After each gradient descent step, an image is generated that shows the combined image using the coils. This can be used to control the effects of the gradient descent.</p>
 </section>
@@ -225,8 +225,8 @@ This is done iteratively for a number of iterations that can be set in the scrip
 <p>This part goes into a bit more detail of the code, which allows to more easily modify the coil sensitivity estimation process.</p>
 <section id="path-selection">
 <h3><a class="toc-backref" href="#id13" role="doc-backlink">Path selection</a><a class="headerlink" href="#path-selection" title="Link to this heading">¶</a></h3>
-<p>The script starts out by setting the two flags mentioned above. Afterwards the paths of the files and the destination folder are set.
-These can be set directly in the scrip to skip the selection during execution.</p>
+<p>The script starts out by setting the two flags mentioned above. Afterwards, the paths of the files and the destination folder are set.
+These can be set directly in the script to skip the selection during execution.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">bodyCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
 <span class="n">arrayCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[];</span>
 
@@ -249,7 +249,7 @@ As this is the object used for the extraction of the data, this step can be skip
 <span class="n">reconFoV</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">240</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>The estimation is done on a low resolution image to improve the result. The grid, which defines the resolution is set at the end of the section.</p>
+<p>The estimation is done on a low-resolution image to improve the result. The grid, which defines the resolution is set at the end of the section.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">N_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">];</span>
 </pre></div>
 </div>
@@ -268,7 +268,7 @@ As this is the object used for the extraction of the data, this step can be skip
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Both the trajectory and the volume element computation method have to be changed manually and the trajectory is not yet read out of the ISMRM raw data file.
-Later on, the option to choose should be implemented in a gui element.</p>
+Later on, the option to choose should be implemented in a GUI element.</p>
 </div>
 <p>Within the function <cite>bmCoilSense_nonCart_dataFromTwix</cite>:</p>
 <ul>
@@ -283,7 +283,7 @@ Later on, the option to choose should be implemented in a gui element.</p>
 <li><p>The volume elements are computed using the function <cite>bmVolumeElement</cite>.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function. For example, in the following case, the voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).</p></li>
+<li><p>Different options are implemented for different types of trajectories and for different computation methods. The options are all listed in the documentation of the function. For example, in the following case, the Voronoi algorithm is used to calculate the volume given a 3D radial trajectory (t).</p></li>
 </ul>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ve</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmVolumeElement</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;voronoi_full_radial3&#39;</span><span class="p">)</span>
 </pre></div>
@@ -302,7 +302,7 @@ Later on, the option to choose should be implemented in a gui element.</p>
 </li>
 </ul>
 <p>The same function is used once again to extract the raw data of the selected array coils.
-The number of coils are updated to match the selected array coils.</p>
+The number of coils is updated to match the selected array coils.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">myMriAcquisition_node</span><span class="p">.</span><span class="n">nCh</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">nCh_array</span><span class="p">;</span>
 <span class="n">y_array</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_dataFromISMRMRD</span><span class="p">(</span>
 <span class="w">            </span><span class="n">arrayCoilFile</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
@@ -321,7 +321,7 @@ The number of coils are updated to match the selected array coils.</p>
 </section>
 <section id="id2">
 <h3><a class="toc-backref" href="#id17" role="doc-backlink">Mask Creation</a><a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
-<p>The creation of the mask is done using two thresholds to exclude artifacts from regions without signals, such as air in the lungs, and a ROI selection to exlude artifacts outside the ROI.
+<p>The creation of the mask is done using two thresholds to exclude artifacts from regions without signals, such as air in the lungs, and a ROI selection to exclude artifacts outside the ROI.
 This is particularly relevant for the center region of the coil sensitivity plot and is done in the function <cite>bmCoilSense_nonCart_mask_automatic</cite>.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_mask_automatic</span><span class="p">(</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">autoFlag</span><span class="p">);</span>
 </pre></div>
@@ -330,7 +330,7 @@ This is particularly relevant for the center region of the coil sensitivity plot
 </section>
 <section id="coil-sensitivity-estimation">
 <h3><a class="toc-backref" href="#id18" role="doc-backlink">Coil Sensitivity Estimation</a><a class="headerlink" href="#coil-sensitivity-estimation" title="Link to this heading">¶</a></h3>
-<p>The first estimation is done using the following to functions:</p>
+<p>The first estimation is done using the following two functions:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">y_ref</span><span class="p">,</span><span class="w"> </span><span class="n">C_ref</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_ref</span><span class="p">(</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">,</span><span class="w"> </span><span class="p">[]);</span>
 <span class="n">C_array_prime</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_primary</span><span class="p">(</span><span class="n">y_array</span><span class="p">,</span><span class="w"> </span><span class="n">y_ref</span><span class="p">,</span><span class="w"> </span><span class="n">C_ref</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">);</span>
 </pre></div>
