@@ -45,7 +45,7 @@ We will write "**DFT**"" for "discrete Fourier transform". We will write :math:`
 The **inverse DFT** only exist for cartesian trajectories. 
 
 For partial cartesian and non-cartesian trajectories we 
-will call an **approx-inverse** any linear map that leads approximatively 
+will call an **approx-inverse** any linear map that leads approximately 
 to the identity when it is composed with the forward DFT. 
 
 The **adjoint DFT** always exist.
@@ -57,16 +57,16 @@ general.
 
 We use the following supper script for DFTs:
 
-    - The matrix of the adjoint DFT will be written with supper scrpit :math:`\dagger`. 
-    - The matrix of the star DFT will be written with supper scrpit :math:`*`.
-    - The matrix of the inverse DFT, if it exists, will be written with supper scrpit :math:`-1`.  
-    - The matrix of any approx-inverse DFT will be written with supper scrpit :math:`\sim  1`.  
+    - The matrix of the adjoint DFT will be written with supper script :math:`\dagger`. 
+    - The matrix of the star DFT will be written with supper script :math:`*`.
+    - The matrix of the inverse DFT, if it exists, will be written with supper script :math:`-1`.  
+    - The matrix of any approx-inverse DFT will be written with supper script :math:`\sim  1`.  
 
 .. note:: 
     The fast Fourier transform (**FFT**) algorithm is an algorithm that perform the DFT and inverse DFT for cartesian 
     trajectories in a rapid way. But the FFT algorithm do not realizes all kind of DFTs. 
 
-The following tables summarizes the mathematical symboles that designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
+The following tables summarizes the mathematical symbols that designate each of the 12 kind of DFTs involved in our MRI reconstructions. 
 
 .. list-table:: 
     :header-rows: 1
@@ -152,5 +152,5 @@ Here is the current list of our reconstructions:
 Iterative reconstructions for Cartesian trajectories are not implemented yet in Monalisa. But all DFTs for that purpose 
 are already present in the toolbox. Also, many partial-cartesian reconstructions are not implemented as compared to non-cartesian reconstructions. 
 
-Feel free to try implementating some reconstructions missing in our list. We would be happy to test it and include it in Monalisa
+Feel free to try implementing some reconstructions missing in our list. We would be happy to test it and include it in Monalisa
 if it works. In that case you would be the author of the reconstruction function that you wrote.  

@@ -66,7 +66,7 @@ as described more in detail below. You can then run the section.</p>
 
 <span class="n">nMask</span><span class="w">                       </span><span class="p">=</span><span class="w"> </span><span class="mi">18</span><span class="p">;</span><span class="w"> </span><span class="c">% Should be adapted to heart_rate.</span>
 <span class="n">maskWidth</span><span class="w">                   </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c">% A width of 1 expresses no overlap.</span>
-<span class="w">                                  </span><span class="c">% A width of 1.2 expresses 20% overlapp.</span>
+<span class="w">                                  </span><span class="c">% A width of 1.2 expresses 20% overlap.</span>
 
 <span class="n">nSignal_to_select</span><span class="w">           </span><span class="p">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"> </span><span class="c">% 15 to 25 for card. binning.</span>
 
@@ -130,7 +130,7 @@ generated later.</p>
 <p>Run the section and you will see a graphical interface appear.
 You ca npress ctr+E to open the imcontrast interface tool of Matlab.</p>
 <p>You may be able to adjust to contrast in order to see some vertical
-strikes that are typical of cardiac mouvement, as on the following figure.</p>
+strikes that are typical of cardiac movement, as on the following figure.</p>
 <p>Press shift + E to freeze the chosen contrast, else it will be lost.</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_01.png"><img alt="cardiac_binning_01" class="align-center" src="_images/cardiac_binning_01.png" style="width: 90%;" />
 </a>
@@ -152,7 +152,7 @@ if possible (it is not critical but do your best).</p>
 </a>
 <p>In order to avoid pathologies in the even extension of the reference signal,
 we will select the left and right ends (yellow vertical bars) of the
-horizontal window either in two maxima of the respiratory patern, or in two minima.
+horizontal window either in two maxima of the respiratory pattern, or in two minima.
 You can zoom with the loop to click precisely.</p>
 <p>In the case of cardiac binning,
 it may be trycky to tarjet two minima or maxima. We suggest to put the vertical lines
@@ -167,7 +167,7 @@ window.</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_03.png"><img alt="cardiac_binning_03" class="align-center" src="_images/cardiac_binning_03.png" style="width: 90%;" />
 </a>
 <p>You have now to define the lower and upper bound of the vertical window that
-contains the some caracteristic patterns of cardiac motion. The best way to do it
+contains the some characteristic patterns of cardiac motion. The best way to do it
 is to select some vertical window that seems to contain some cardiac pattern
 and then adjust it as described below. Make two clicks as follows:</p>
 <blockquote>
@@ -176,7 +176,7 @@ and then adjust it as described below. Make two clicks as follows:</p>
 <li><p>Do <cite>x + Right Click</cite> to set the upper end of the window.</p></li>
 </ul>
 </div></blockquote>
-<p>After these two clicks you may see someting like this:</p>
+<p>After these two clicks you may see something like this:</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_04.png"><img alt="cardiac_binning_04" class="align-center" src="_images/cardiac_binning_04.png" style="width: 90%;" />
 </a>
 <p>The red line is the reference signal generated from the selected windows.
@@ -190,7 +190,7 @@ You have now to adjust it:</p>
 <li><p>press the ctrl+left-arrow to decrease the width of vertical window,</p></li>
 </ul>
 </div></blockquote>
-<p>You can also play with the displayed signal without chaning its values internally,
+<p>You can also play with the displayed signal without changing its values internally,
 by using following keys:</p>
 <blockquote>
 <div><ul class="simple">
@@ -201,21 +201,21 @@ by using following keys:</p>
 </div></blockquote>
 <p>After playing with those adjustments, you may be able to end up with a reference
 signal that is synchronized with the strikes due to cardiac motion. If you are lucky,
-you may see someting like this:</p>
+you may see something like this:</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_05.png"><img alt="cardiac_binning_05" class="align-center" src="_images/cardiac_binning_05.png" style="width: 90%;" />
 </a>
 <p>If the strikes due to cardiac movement are not visible, just set a vertical window
 that you suspect to contain information about cardiat motion. The filtering
 of the signal below may reveal some cardiac dependent signal.</p>
 <p>Finally, chose a vertical window that will serve for display purpose
-only in the rest of the precedure.</p>
+only in the rest of the procedure.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>press n + left-click to select the lower bound of the display window,</p></li>
 <li><p>press n + right-click to select the upper bound of the display window.</p></li>
 </ul>
 </div></blockquote>
-<p>After those clicks, you should see someting like this:</p>
+<p>After those clicks, you should see something like this:</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_06.png"><img alt="cardiac_binning_06" class="align-center" src="_images/cardiac_binning_06.png" style="width: 90%;" />
 </a>
 <p>You can now close the windows and the chosen reference signal will
@@ -235,24 +235,24 @@ automatically be saved.</p>
 <span class="w">                                        </span><span class="n">imNav</span><span class="w">   </span><span class="p">);</span>
 </pre></div>
 </div>
-<p>You should then see the graphical frequency selector appear. In the left pannel is the
-frequency spectrum of the reference signal displayed, and the right pannel
+<p>You should then see the graphical frequency selector appear. In the left panel is the
+frequency spectrum of the reference signal displayed, and the right panel
 is the reference signal displayed.
-On the left pannel, in the upper line of buttons, press the more right button the stretch
+On the left panel, in the upper line of buttons, press the more right button the stretch
 the frequency axis to the right until you see a similar picture like the following.</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_07.png"><img alt="cardiac_binning_07" class="align-center" src="_images/cardiac_binning_07.png" style="width: 90%;" />
 </a>
-<p>Still on the left pannel, in the lower line of buttons, on the right, press the “&lt;&lt;&lt;” button
-to decrese the value of the maximum frequency of the filter. You may have to press many times
+<p>Still on the left panel, in the lower line of buttons, on the right, press the “&lt;&lt;&lt;” button
+to decrease the value of the maximum frequency of the filter. You may have to press many times
 until the effect appears on the displayed range of frequencies. You can also use the buttons
-“&lt;&lt;” and “&lt;” to be more precise. Try to identify the peak arround the base frequency of
+“&lt;&lt;” and “&lt;” to be more precise. Try to identify the peak around the base frequency of
 the cardiac signal, and create a lowpass filter that include that peak. Then increase the
-minimum frequency of the filter to make it bandpass, so that only the frequencies arround
+minimum frequency of the filter to make it bandpass, so that only the frequencies around
 the base frequency of the cardiac signal are accepted by the filter. Here is an example:</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_08.png"><img alt="cardiac_binning_08" class="align-center" src="_images/cardiac_binning_08.png" style="width: 90%;" />
 </a>
 <p>Then press the button “Filter Signal”.
-The filtered signal appears then in blue on the right pannel.
+The filtered signal appears then in blue on the right panel.
 You can press “Hide Yelow” to discard the reference signal.</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_09.png"><img alt="cardiac_binning_09" class="align-center" src="_images/cardiac_binning_09.png" style="width: 90%;" />
 </a>
@@ -264,11 +264,11 @@ There should ideally be no ringing in the filtered signal. If needed, you can
 re-adjust the filter and press “Filter Signal” again,
 until the filtered signal looks like a modulated sinusoid.</p>
 <p>You can change the contrast of the background in the right
-pannel with the imcontrast tool of Matlab by pressing the “imcontrast” button.
-But once you have changed the contrast, press the “fix contrast” buton, else
+panel with the imcontrast tool of Matlab by pressing the “imcontrast” button.
+But once you have changed the contrast, press the “fix contrast” button, else
 the changes in contrast will be lost.</p>
 <p>By adjusting the contrast, you should observe
-that the filtered signal oscilated together with the vertical strikes due to
+that the filtered signal oscillated together with the vertical strikes due to
 cardiac motion. This confirms that the correct peak was selected in the frequency
 spectrum. If you cannot see those strikes, a good rule of thumb is that the first
 peak in the frequency spectrum is due to respiratory motion, and the second
@@ -279,7 +279,7 @@ is due do cardiac motion.</p>
 </div></blockquote>
 <p>You can now close the window and the filter will be saved.</p>
 </li>
-<li><p><strong>Reformating the Filtered Signal</strong></p>
+<li><p><strong>Reformatting the Filtered Signal</strong></p>
 <p>Just execute the following automatic section.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% reformated_signal_ref</span>
 <span class="n">check_image</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rmsSI</span><span class="p">(</span><span class="n">ind_SI_min</span><span class="p">:</span><span class="n">ind_SI_max</span><span class="p">,</span><span class="w"> </span><span class="p">:);</span>
@@ -292,8 +292,8 @@ is due do cardiac motion.</p>
 <span class="w">                                                      </span><span class="n">check_image</span><span class="w">   </span><span class="p">);</span>
 </pre></div>
 </div>
-<p>A figure appears then to show the filtered signal reformated with the correct size.
-You can check on that figure that the filtered signal oscillate toghether with the
+<p>A figure appears then to show the filtered signal reformatted with the correct size.
+You can check on that figure that the filtered signal oscillate together with the
 background.</p>
 <a class="reference internal image-reference" href="_images/cardiac_binning_11.png"><img alt="resp_confirm" class="align-center" src="_images/cardiac_binning_11.png" style="width: 90%;" />
 </a>
@@ -336,9 +336,9 @@ create a phase. Just execute it and go to the next section.</p>
 </li>
 <li><p><strong>Selecting the Best Candidate Signals</strong></p>
 <p>After executing the following section, you will see a sequence of figures appear
-showing some candidate signales in their phase space. After closing the window
+showing some candidate signals in their phase space. After closing the window
 of a candidate signal, answer if you accept of reject the signal. A signal that
-spins arround the center without crossing the center is considered of good
+spins around the center without crossing the center is considered of good
 quality to evaluate a phase and should be accepted. A signal that crosses the
 center is considered of bad quality to evaluate a phase and should be rejected.</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% computing card phase</span>
@@ -403,7 +403,7 @@ of the script.</p>
 <aside class="footnote brackets" id="id2" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Piccini D, Littmann A, Nielles-Vallespin S, Zenge MO. Spiral phyllotaxis: The natural way to construct
-a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reson Med. 2011
+a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reason Med. 2011
 Oct;66(4):1049–56.</p>
 </aside>
 </aside>

@@ -50,10 +50,10 @@ reconstruction (one single frame) and other are dynamic (multiple-frames) with 1
 <section id="input-arguments-for-reconstruction-functions">
 <h2>Input Arguments for Reconstruction Functions<a class="headerlink" href="#input-arguments-for-reconstruction-functions" title="Link to this heading">¶</a></h2>
 <p>The input arguments that involve no or little preparation, and which are “easy” to define, and which are occupies little memory will be qualified as <strong>leight</strong>.</p>
-<p>The input arguments that either need some carfull preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as <strong>heavy</strong>.</p>
+<p>The input arguments that either need some careful preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as <strong>heavy</strong>.</p>
 <p>For static (single frame) reconstructions, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code> and <code class="docutils literal notranslate"><span class="pre">ve</span></code> are arrays, while for dynamic reconstructions
 they are cell-arrays with one cell per data-bin and per frame.</p>
-<p>For static recontructions are:</p>
+<p>For static reconstructions are:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the raw data. <strong>Complex-valued, sinlge-precision, heavy.</strong> Its size is <code class="docutils literal notranslate"><span class="pre">[nPt,</span> <span class="pre">nCh]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points and <code class="docutils literal notranslate"><span class="pre">nCh</span></code> is the number of channels.</p></li>
@@ -61,7 +61,7 @@ they are cell-arrays with one cell per data-bin and per frame.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">ve</span></code>: the volume elements (inverse density compensation). <strong>Single precision, heavy</strong>.  Its size is <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">nPt]</span></code> where <code class="docutils literal notranslate"><span class="pre">nPt</span></code> is the number of trajectory-points.</p></li>
 </ul>
 </div></blockquote>
-<p>For multiple-frame (dynamic) recontructions are</p>
+<p>For multiple-frame (dynamic) reconstructions are</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: the cell-array of raw-data bins. <strong>Each cell is complex-valued, sinlge-precision, heavy.</strong></p></li>
@@ -117,7 +117,7 @@ The reconstruction FoV is set by the choice of <code class="docutils literal not
 <p>In order to avoid numerical problems due to large differences between volume elements, we have to limit them by a user defined upper bound that we called</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ve_max</span></code>: the maxium volume element value that serves to limite <code class="docutils literal notranslate"><span class="pre">ve</span></code> in order to to avoid some convergence problems. <em>Single, scalar, leight</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ve_max</span></code>: the maximum volume element value that serves to limit <code class="docutils literal notranslate"><span class="pre">ve</span></code> in order to to avoid some convergence problems. <em>Single, scalar, leight</em>.</p></li>
 </ul>
 </div></blockquote>
 <p>For iterative reconstruction, the reconstruction function need a start ismage as input that we use to write</p>
@@ -135,16 +135,16 @@ The reconstruction FoV is set by the choice of <code class="docutils literal not
 </ul>
 </div></blockquote>
 <p>For iterative reconstructions,  <code class="docutils literal notranslate"><span class="pre">nIter</span></code> is the number of iterations of the ADMM algorithm (outer loop) and <code class="docutils literal notranslate"><span class="pre">nCGD</span></code> is the number of CGD (inner loop) iterations.
-For least square reconstructions, <code class="docutils literal notranslate"><span class="pre">nIter</span></code> is the nubmer of iterations of the CGD algorithm.</p>
+For least square reconstructions, <code class="docutils literal notranslate"><span class="pre">nIter</span></code> is the number of iterations of the CGD algorithm.</p>
 <p>All least-square regularized reconstructions need a regularization weight. We provide an <strong>adaptive</strong> (automatic) and <strong>normal</strong>
-(manual) way to provide that weight. The choice is done by setting the parametter</p>
+(manual) way to provide that weight. The choice is done by setting the parameter</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">regul_mode</span></code> : Regularization mode. <strong>String, leght</strong>. You can set it to <strong>normal</strong> or <strong>adaptive</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regul_mode</span></code> : Regularization mode. <strong>String, length</strong>. You can set it to <strong>normal</strong> or <strong>adaptive</strong>.</p></li>
 </ul>
 </div></blockquote>
 <p>If <code class="docutils literal notranslate"><span class="pre">regul_mode</span></code> is set to <em>adaptive</em>, the reconstruction function makes an automatic choice for the
-regularization weigth in order to reach an equilibrium between the the data-fidelity term and the regularization term
+regularization weight in order to reach an equilibrium between the the data-fidelity term and the regularization term
 in the objective function.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">regul_mode</span></code> is set to <strong>normal</strong>, then is the regularization weight given by the input argument</p>
 <blockquote>
@@ -156,11 +156,11 @@ in the objective function.</p>
 If <code class="docutils literal notranslate"><span class="pre">delta</span></code> is a vector of length <cite>nIter</cite>, iteration number <cite>c</cite> is performed with the regularization weight equal to the value
 at position <cite>c</cite> in the vector <code class="docutils literal notranslate"><span class="pre">delta</span></code>.
 If <code class="docutils literal notranslate"><span class="pre">delta</span></code> is a list of 2 values <code class="docutils literal notranslate"><span class="pre">[delta_min,</span> <span class="pre">delta_max]</span></code> with <cite>delta_min &lt; delta_max</cite>, then is  <code class="docutils literal notranslate"><span class="pre">delta</span></code> replaced
-by a list of length <cite>nIter</cite> by interpolating linearily <cite>nIter</cite> values between <cite>delta_min</cite> and <cite>delta_max</cite>.</p>
-<p>The ADMM algorithm (for l1 regularization) needs an aditional <strong>convergence paramter</strong> that we will write</p>
+by a list of length <cite>nIter</cite> by interpolating linearly <cite>nIter</cite> values between <cite>delta_min</cite> and <cite>delta_max</cite>.</p>
+<p>The ADMM algorithm (for l1 regularization) needs an additional <strong>convergence parameter</strong> that we will write</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> : Convergence parameter for the ADMM algorithm. <strong>Single precision, scalar, leight.</strong> A rule of thumb is to set <code class="docutils literal notranslate"><span class="pre">rho</span></code> equal to a multiple (from 1 to 20) of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> (We don’t say it is the best choice, we don’t take any responsability for this).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> : Convergence parameter for the ADMM algorithm. <strong>Single precision, scalar, leight.</strong> A rule of thumb is to set <code class="docutils literal notranslate"><span class="pre">rho</span></code> equal to a multiple (from 1 to 20) of <code class="docutils literal notranslate"><span class="pre">lambda</span></code> (We don’t say it is the best choice, we don’t take any responsibility for this).</p></li>
 </ul>
 </div></blockquote>
 <p>For any non-cartesian reconstrucitons are</p>
@@ -170,7 +170,7 @@ by a list of length <cite>nIter</cite> by interpolating linearily <cite>nIter</c
 <li><p><code class="docutils literal notranslate"><span class="pre">Gut</span></code>: The transposed matrix of <code class="docutils literal notranslate"><span class="pre">Gu</span></code> used for backward (not inverse) gridding in our iterative non-cartesian reconstructions. <strong>Of class `bmSparseMat`, heavy.</strong></p></li>
 </ul>
 </div></blockquote>
-<p>For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:</p>
+<p>For the the sake of completeness and understanding of gridding, the construction of following sparase matrix is also implemented:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Gn</span></code>: The gridding (sparse) matrix that attempts to realize an “inverse” operation performed by <code class="docutils literal notranslate"><span class="pre">Gu</span></code>. <strong>Of class `bmSparseMat`, heavy.</strong>  The inverse of <code class="docutils literal notranslate"><span class="pre">Gu</span></code> does not exist but <code class="docutils literal notranslate"><span class="pre">Gn</span></code> is constructed so that the composition <code class="docutils literal notranslate"><span class="pre">Gn</span> <span class="pre">Gu</span></code> is as close as possible to the identity.</p></li>
@@ -188,8 +188,8 @@ by a list of length <cite>nIter</cite> by interpolating linearily <cite>nIter</c
 <li><p><code class="docutils literal notranslate"><span class="pre">Tut</span></code>       : the transposed matrix of <code class="docutils literal notranslate"><span class="pre">Tut</span></code> for backward deformation. <strong>Of class `bmSparseMat`, heavy.</strong></p></li>
 </ul>
 </div></blockquote>
-<p>Note that matrix <code class="docutils literal notranslate"><span class="pre">Tut</span></code> do not perform an inverse deformation. It realizes the transposed opperation of the forward deformation.</p>
-<p>For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:</p>
+<p>Note that matrix <code class="docutils literal notranslate"><span class="pre">Tut</span></code> do not perform an inverse deformation. It realizes the transposed operation of the forward deformation.</p>
+<p>For the the sake of completeness and understanding of gridding, the construction of following sparase matrix is also implemented:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Tn</span></code>: The gridding (sparse) matrix that attempts to realize an “inverse” operation performed by <code class="docutils literal notranslate"><span class="pre">Tu</span></code>. <strong>Of class `bmSparseMat`, heavy.</strong> The inverse of <code class="docutils literal notranslate"><span class="pre">Tu</span></code> may or may  not exist. In any case, <code class="docutils literal notranslate"><span class="pre">Tn</span></code> is constructed so that the composition <code class="docutils literal notranslate"><span class="pre">Tn</span> <span class="pre">Tu</span></code> is as close as possible to the identity.</p></li>
@@ -198,7 +198,7 @@ by a list of length <cite>nIter</cite> by interpolating linearily <cite>nIter</c
 <p>In order to monitor what is happening during a reconstruction (typically if this is taking lany hours) or just to have a track recoord of process after the reconstruction is finished, the following class has been implemented:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>: Monitoring object to give as input argument to any iterative reconstruction function. <strong>Of the classe `bmWitnessInfo`, Leight.</strong> It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">witnessInfo</span></code>: Monitoring object to give as input argument to any iterative reconstruction function. <strong>Of the class `bmWitnessInfo`, Leight.</strong> It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration.</p></li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
@@ -233,7 +233,7 @@ that you can also find in the <cite>script_demo</cite> directory of Monalisa.</p
 <p>Mathilda is our gridded, zero-padded, inverse DFT reconstruction for non-cartesian trajectories.
 If the data are well sampled, then leads Mathilda already to a descent image.
 For iterative reconstruction of under sampled data, we mostly use Mathilda to perform the initial guess <code class="docutils literal notranslate"><span class="pre">x0</span></code></p>
-<p>Here is the funciton call:</p>
+<p>Here is the function call:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">x0</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmMathilda</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">frSize</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="p">[]);</span>
 </pre></div>
 </div>
@@ -300,8 +300,8 @@ where reularizaiton is the l&amp;-norm of spatial gradient of the image.</p>
 </section>
 <section id="deformation-fields">
 <h2>Deformation-Fields<a class="headerlink" href="#deformation-fields" title="Link to this heading">¶</a></h2>
-<p>The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with mouvement compensation.
-The multiplication of an image vector by a deformation matrix defroms the image accroding to the deformation-field
+<p>The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with movement compensation.
+The multiplication of an image vector by a deformation matrix defroms the image according to the deformation-field
 encoded in the deformation-matrix. A deformation-field must therefore be estimated prior to the definition of any deformation matrix.</p>
 <p>Here is a possible way to estimate deformation-fields. In that example, the deformation-field
 between each frame and its (past and future) temporal neighboring frame is estimated with the <cite>imregdemons</cite> function of Matlab.</p>
@@ -318,7 +318,7 @@ between each frame and its (past and future) temporal neighboring frame is estim
 </pre></div>
 </div>
 <p>Note that the deformation-fields can be estimated by any tool as chosen by the user. Here is the use of <cite>imregdemons</cite> just an example.</p>
-<p>The computed deformation-matrices can be strored and re-used many times with different functions described below.</p>
+<p>The computed deformation-matrices can be stored and re-used many times with different functions described below.</p>
 </section>
 <section id="non-cartesian-chain-reconstructions">
 <h2>Non-Cartesian Chain Reconstructions<a class="headerlink" href="#non-cartesian-chain-reconstructions" title="Link to this heading">¶</a></h2>

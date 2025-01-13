@@ -46,7 +46,7 @@
 <p>For instance, in a visual stimulation study, delayed activation in the brain’s visual processing regions can be captured without assumptions about the shape of the haemodynamic response. This is done by combining readouts from several trials and reconstruct images that reflect the average response across trials, minimizing the effect of noise from activations that are uncorrelated with the stimulation.</p>
 <a class="reference internal image-reference" href="_images/hifi_fMRI_binning.png"><img alt="Task-based fMRI binning" class="align-center" src="_images/hifi_fMRI_binning.png" style="width: 90%;" />
 </a>
-<p>To implement this binning strategy, we generate a logical array, <cite>hifiMask</cite>, of size <cite>[nBins, nLines]</cite>, where <cite>hifiMask(i, j)</cite> is true if the j-th measurement corresponds to the i-th bin. The number of bins is determined by the total duration of the trial and the temporal resolution we aim to achieve for the haemodynamic response. Of course you need to have enogh lines in each bin if you want to successfully reconstruct images.</p>
+<p>To implement this binning strategy, we generate a logical array, <cite>hifiMask</cite>, of size <cite>[nBins, nLines]</cite>, where <cite>hifiMask(i, j)</cite> is true if the j-th measurement corresponds to the i-th bin. The number of bins is determined by the total duration of the trial and the temporal resolution we aim to achieve for the haemodynamic response. Of course you need to have enough lines in each bin if you want to successfully reconstruct images.</p>
 <section id="steps-for-hi-fi-binning">
 <h2>Steps for Hi-Fi Binning:<a class="headerlink" href="#steps-for-hi-fi-binning" title="Link to this heading">¶</a></h2>
 <ol class="arabic">

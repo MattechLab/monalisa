@@ -356,7 +356,7 @@ The processed data is saved in the `mitosius` directory. This output is now read
 Efficient Workflow: Local Preprocessing, HPC Reconstruction
 ============================================================
 
-A key feature of the **Monalisa** workflow is its ability to minimize the computational and data transfer burdens. Instead of directly transferring raw datasets to a High-Performance Computing (HPC) system, **we reccomend to preprocess the data locally on your laptop** untill the **mitosius** step. This approach ensures that only the essential preprocessed data is transferred, significantly reducing file size and optimizing HPC utilization.
+A key feature of the **Monalisa** workflow is its ability to minimize the computational and data transfer burdens. Instead of directly transferring raw datasets to a High-Performance Computing (HPC) system, **we recommend to preprocess the data locally on your laptop** until the **mitosius** step. This approach ensures that only the essential preprocessed data is transferred, significantly reducing file size and optimizing HPC utilization.
 
 Why This Approach?
 -------------------
