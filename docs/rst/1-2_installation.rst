@@ -38,6 +38,9 @@ Linux
 macOS
 -----
 
+.. warning::  
+   If you are using a Mac with Apple Silicon architecture, ensure that you have installed the MATLAB version specifically designed for Apple Silicon. Installing the version intended for Intel architecture may lead to compilation errors.
+
 1. **Install Xcode Command Line Tools**:
 
    .. code-block:: bash
