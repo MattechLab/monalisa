@@ -8,21 +8,21 @@ If you like it, please cite us! Here\'s how:
 
 Cite the Article
 ----------------
-Users must cite the article when utilizing the work. 
+We would kindly ask the users to cite the following article when utilizing the work. 
 
 * Citation of [arxiv link] to be released.
 
 Reference the Repository and SOPs
 ---------------------------------
-Any use of the work must include a reference to the repository and any available Standard Operating Procedures (SOPs).
+We also would like to ask that the use of our work includes a reference to the repository and any available Standard Operating Procedures (SOPs).
 
 * `Monalisa GitHub Repository <https://github.com/MattechLab/monalisa>`_
 * `Monalisa Documentation <https://mattechlab.github.io/monalisa/>`_
 
 
 Contact for Significant Advancements or Commercial Use
--------------------------------------------------------
-For significant advancements or commercial purposes, users must contact the partner institutions (HES-SO and CHUV-UNIL) through `the reference people <https://sites.google.com/view/mat-tech-lab/team?authuser=0>`_.
+------------------------------------------------------
+For significant advancements or commercial purposes, please contact the partner institutions (HES-SO and CHUV-UNIL) through `the reference people <https://sites.google.com/view/mat-tech-lab/team?authuser=0>`_.
 
 We welcome all contributions, questions, and feedback! If you're interested in contributing to this project or have any inquiries, please don't hesitate to reach out to us. 
 You can contact us via email at: `MatTech Email <mailto:mathematical.technologies.lab@gmail.com>`_
@@ -55,9 +55,12 @@ Acknowledgements
 This work was supported by the following institutions and organizations:
 
 - `Swiss National Science Foundation (SNSF) <https://www.snf.ch/en>`_ for funding support (Grants: \#220433 \#229214, PI: Prof. Franceschiello). 
+- `Swiss National Science Foundation (SNSF) <https://www.snf.ch/en>`_ for funding support (Grant: \#320030B_201292).
 - `School of Engineering of the HES-SO Valais-Wallis <https://www.hes-so.ch/domaines-et-hautes-ecoles/hautes-ecoles/hes-so-valais-wallis/haute-ecole-dingenierie-hei>`_ for hosting and supporting our research efforts  (Grant: \#129816/IA-RECHERCHE23-19, co-PI\:Prof Franceschiello).
 - `The Sense Innovation and Research Center <https://www.the-sense.ch/?lang=en>`_ for fostering a highly interdisciplinary and collaborative environment for its members (Grant\: KiCk fMRI, PI\: Prof. Franceschiello with Dr. Juliane Schneider).
-- CHUV (Centre Hospitalier Universitaire Vaudois) for their support and collaboration.
+- CHUV (Centre Hospitalier Universitaire Vaudois) and UNIL (university of Lausanne) for their support and collaboration.
+ 
+
 
 We sincerely thank all contributors and organizations whose support has made this project possible.
 

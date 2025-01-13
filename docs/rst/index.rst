@@ -33,6 +33,7 @@ Welcome to Monalisa's documentation!
 
    5_docker
    6_ack_contribution
+   7_discussions
 
 .. Indices and tables
 .. ==================
