@@ -1,11 +1,8 @@
 # Monalisa : a reconstruction tool-box for non-cartesian and cartesian MRI data
 
-This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data.
-Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function.
-
-## Getting started
-
-Check the Monalisa documentation [here](https://mattechlab.github.io/monalisa/)!
+This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data. 
+Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
+For more infos visit our documentation [here](https://mattechlab.github.io/monalisa/). If you find this useful, please leave us a star!
 
 ## Usage and installation
 
@@ -30,8 +27,16 @@ If you have to install a compiler, we recommend:
 
 - g++ for Linux,
 - Xcode Clang++ for macOS,
-- Visual Studio C++ or MinGW for Windows. Normally, the compiler from Visual Studio C++ will work. If it fails, you can also install MinGW alternatively following the instructions [here](https://ch.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-fortran-compiler). After downloading MinGW, such as `mingw81`, run the command `% configuremingw('\path\to\mingw81')`, then you are ready to compile Monalisa!
+- Visual studio c++ or MinGW for windows. Normally, the compiler from Visual studio c++ will work. If it fails, you can also install MinGW alternatively following the instructions [here](https://ch.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-fortran-compiler). After downloading the MinGW, such as `mingw81`, run the command `% configuremingw('\path\to\mingw81')`,then you are ready to compile Monalisa!
 
-3. Compile the C++ code using the script [compileScript.m](https://github.com/MattechLab/monalisa/blob/main/src/bmMex/m/compileScript.m). On macOS, you should change the libomp_dirs directory [here](https://github.com/MattechLab/monalisa/blob/5febe05d39f822f6c3b5c830fbc99311d195e237/src/bmMex/m/compileScript.m#L61). If you are using brew for the installations, you can find the path by running: `brew --prefix libomp`. You need libomp as explained [here](https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x).
+3. Compile the cpp code using the [script](https://github.com/MattechLab/monalisa/blob/main/src/bmMex/m/compile_mex_for_monalisa.m) . On macOS you should change the libomp_dirs directory here: https://github.com/MattechLab/monalisa/blob/0669b36852b1cf2a0284f8c0e69d8b873e46b89b/src/bmMex/m/compile_mex_for_monalisa.m#L62 If you are using brew for the installations, you can find the libomp_dirs path by running: brew --prefix libomp. (you need libomp as explained here: https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x)
+   
+4. Test your compilation step worked successfully using the example script: https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m
+   
+# Getting started: 
 
-4. Test your compilation step worked successfully using the [example script](https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m).
+For better installation guidelines and much more **check Monalisa's documentation** [here](https://mattechlab.github.io/monalisa/)!
+
+# Help us improve: 
+
+Monalisa is still very young. If you encounter an issue, please consider **opening a GitHub issue** in the repository. If you know how to fix the problem, feel free to submit a pull request!
