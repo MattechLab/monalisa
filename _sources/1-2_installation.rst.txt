@@ -87,7 +87,7 @@ Add Monalisa source path to your MATLAB path
 Compile the C++ Source
 =======================
 
-   After checking that the compiler is succesfully installed (mex -setup C++), run `compile_mex_for_monalisa.m` function in MATLAB:
+   After checking that the compiler is successfully installed (mex -setup C++), run `compile_mex_for_monalisa.m` function in MATLAB:
 
    .. code-block:: matlab
 
