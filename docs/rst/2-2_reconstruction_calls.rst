@@ -261,7 +261,7 @@ Steva
 -----
 
 Single-frame Least-square Regularized Reconstruction, 
-where reularizaiton is the l&-norm of spatial gradient of the image. 
+where reularizaiton is the l1-norm of spatial gradient of the image. 
 
 witness_label = 'steva_demo';
 
