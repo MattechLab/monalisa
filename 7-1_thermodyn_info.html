@@ -46,29 +46,40 @@
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <p>The present section is a non-formal essay to sketch some basic features of what could be a
-thermodynamical theory of MRI reconstruction. Our idea is to convince the reader that a
-general picture may be sketched in the future,
+thermodynamical theory of MRI reconstruction, or more generally, a thermodynamical
+theory of information for iterative algorithms.</p>
+<p>Our idea is to convince the reader that a general picture may be sketched in the future,
 which includes MRI reconstructions, an entropy notion, computers, electrical power,
-reconstruction time, image quality gain, and artificial intelligence.
+reconstruction time, information gain, and artificial intelligence.
 Placing Monalisa in that picture allows in particular to understand the intuition that
 motivated the design of our toolbox: to efficiently consume a
 maximum amount of energy with a high performance computer (HPC).</p>
 <p>What we do in fact in this text is an analogy between a heat engine and a computer.
 In particular, we find a way to describe a computer performing an MRI reconstruction
-in the same way that a heat engine that compresses an ideal gaz in a cylinder. We try
+in the same way that a heat engine is compressing an ideal gaz in a cylinder. We try
 to describe an iterative reconstruction as a machine that compresses the space of the
 dynamical variables of the reconstruction, and thus lowering the entropy of the computer
 memory in the same way that a each engine can lower the entropy of an ideal gas.</p>
 <p>As the reader will notice, this discussion can be applied to any iterative
 algorithm that solves an inverse problem. The MRI reconstruction process is used here
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+as a representent example for any iterative inverse-problem solving process.
+Given the generality of the statments exposed in this discussion,
+we can consider it as an attempt to formulate a classical (non-quantum)
+physical theory of information. In the discussion section, we will make some
+connection with the of <strong>Landauer’s principle</strong>, which makes the bridge
+between physics and information theory by providing an equivalence between
+energy and information.
+=======
 as a representent example for any iterative inverse-problem solving process. Given the generality
 of the statements exposed in this discussion, we can consider it as an attempt to
 formulate a classical (non-quantum) physical theory of information. In the discussion section,
 we will in fact make some connection with the principle of Landauer, which makes the bridge
-petween physics and information theory by providing an equivalence between energy and information.</p>
+petween physics and information theory by providing an equivalence between energy and information.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 </section>
-<section id="iterative-reconstructions-and-phase-space">
-<h2>Iterative Reconstructions and Phase Space<a class="headerlink" href="#iterative-reconstructions-and-phase-space" title="Link to this heading">¶</a></h2>
+<section id="iterative-reconstructions">
+<h2>Iterative Reconstructions<a class="headerlink" href="#iterative-reconstructions" title="Link to this heading">¶</a></h2>
 <p>Before anything, we would like to indicate that the MRI reconstructions under consideration
 here are iterative reconstructions. These reconstructions appeared historically as iterative
 algorithms to find a minimizer of the non-constrained optimization problem</p>
@@ -77,8 +88,8 @@ algorithms to find a minimizer of the non-constrained optimization problem</p>
 <p>where <span class="math notranslate nohighlight">\(FC\)</span> is the linear model of the reconstruction, <span class="math notranslate nohighlight">\(X\)</span> is the set of MRI images,
 <span class="math notranslate nohighlight">\(x\)</span> is the candidate MRI image, <span class="math notranslate nohighlight">\(Y\)</span> is the set of MRI data,
 <span class="math notranslate nohighlight">\(y\)</span> is the measured MRI data, <span class="math notranslate nohighlight">\(\lambda\)</span> is the regularization parameter,
-and <span class="math notranslate nohighlight">\(R\)</span> is a regulariztion function with some nice properties (typically is <span class="math notranslate nohighlight">\(R\)</span> chosen to be proper,
-closed, convex). The objective function of the above optimization problem is made of</p>
+and <span class="math notranslate nohighlight">\(R\)</span> is a regulariztion function with some nice properties (typically is <span class="math notranslate nohighlight">\(R\)</span> chosen to be proper
+closed convex). The objective function of the above optimization problem is made of</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>a data-fidelity term, which is small when the modeled data <span class="math notranslate nohighlight">\(FCx\)</span> is close to the measured data <span class="math notranslate nohighlight">\(y\)</span>,</p></li>
@@ -86,58 +97,109 @@ closed, convex). The objective function of the above optimization problem is mad
 </ul>
 </div></blockquote>
 <p>In this formalism, the choice of a regularization function implements a choice of prior-knowledge.</p>
-<p>This <em>argmin</em> problem is the conventional modern formulation of the general MRI reconstruction problem.
-For many choices of regularization function, the reconstruction problem has some minimizers and
+<p>This <em>argmin</em>-problem is the conventional modern formulation of the
+general MRI reconstruction problem as an optimisation problem.
+For many choices of regularization function,
+the reconstruction problem has some minimizers and
 there exists some iterative algorithm that converge to one of the minimizers,
 which depends usually on the initial image guess.
-Those algorithms applied to the MRI reconstruction problems are the conventional
-iterative reconstruction method. In addition to these conventional methods,
+The iterative algorithms that solve the above <em>argmin</em>-problem are the conventional
+iterative reconstruction methods. In addition to these conventional methods,
 some heurisitcs methods are inspired from the conventional ones
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+but perform some heuristic update of some dynamical variables at each iteration.
+These methods converge in some cases but they do not
+minimize a given objective function and their convergence is not necessarily
+guaranteed by any mathematical formalism. Some examples of such heuristic reconstruction
+are iterative methods where some updates of the image or other
+dynamic variables are done by a statistical model.
+It is an example of use of artificial inteligence for MRI reconstruction.
+=======
 but perform some heuristic update at each iteration. These methods converge in some cases but they do not
 minimize a given objective function and their convergence is not necessarily guaranteed by any mathematical formalism.
 Some examples of such heuristic reconstruction are iterative methods where some updates of the image or other
-dynamic variables are done by a statistical model. It is an example of use of artificial intelligence for MRI reconstruction.</p>
+dynamic variables are done by a statistical model. It is an example of use of artificial intelligence for MRI reconstruction.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <p>Heuristic or not, we consider in the following iterative reconstructions that converges for some given dataset.
 From the view point of discrete dynamical system theory, we can summarize an iterative reconstruction as follows.
 An iterative reconstruction is given by a map <span class="math notranslate nohighlight">\(\Phi\)</span> from <span class="math notranslate nohighlight">\(X \times Z\)</span> to <span class="math notranslate nohighlight">\(X \times Z\)</span>,
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+which is parametrized by a list of scalar parameters <em>param</em> and the measured data <span class="math notranslate nohighlight">\(y\)</span>, that we also consider
+as a parameter. Here is <span class="math notranslate nohighlight">\(X\)</span> the vector space of all MRI images of a given size,
+and <span class="math notranslate nohighlight">\(Z\)</span> is the cartesian product of all spaces that contain all other dynamical
+variables that we will write as a single list <span class="math notranslate nohighlight">\(z\)</span>. We considere that a scalar parameter is a
+constant, known, controlled number and <span class="math notranslate nohighlight">\(param\)</span> is the list of those.
+=======
 which is parametrized by a list of parameters <em>param</em> and the measured data <span class="math notranslate nohighlight">\(y\)</span>.
 Here is <span class="math notranslate nohighlight">\(X\)</span> the vector space of all MRI images of a given size, and <span class="math notranslate nohighlight">\(Z\)</span> is the cartesian product of
 all spaces that contain all other dynamical variables that we will write as a single list <span class="math notranslate nohighlight">\(z\)</span>.
 We consider that a parameter is a constant, known, controlled number and <span class="math notranslate nohighlight">\(param\)</span> is the list of those.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 It includes for example the regularization parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <p>It holds then</p>
 <div class="math notranslate nohighlight">
-\[(x^{(c+1)}, z^{(c+1)}) =  \Phi(x^{(c)}, z^{(c)}; y, param) = \Phi^{(c)}(x^{(0)}, z^{(0)}; y, param)\]</div>
+\[(x^{(c+1)}, z^{(c+1)}) =  \Phi(x^{(c)}, z^{(c)}; \  y, \  param) = \Phi^{(c)}(x^{(0)}, z^{(0)}; \ y, \ param)\]</div>
 <p>Note that we write parameters after the “;” and the dynamical variables before.</p>
 <p>We expect from that dynamical system that for any initial value <span class="math notranslate nohighlight">\((x^{(0)}, z^{(0)})\)</span> the sequence
 converges to a pair <span class="math notranslate nohighlight">\((x^{(inf)}, z^{(inf)})\)</span>,  which may depend on the initial value. The set
 of all limits is the <strong>attractor</strong> of the dynamical system, that we will write <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>.
 The stability of each element <em>a</em> of the attractor may then be analyzed by the tool of dynamic system theory.
-Note that in practice, the attractor is larger than a single point and the <strong>bassin of attaction</strong> <span class="math notranslate nohighlight">\(\mathcal{B}(a)\)</span>.
+But from the point of view of application, it makes sense to assume the attractor to not be chaotic.
+Note that in practice, the attractor is larger than a single point and the <strong>bassin of attaction</strong> <span class="math notranslate nohighlight">\(\mathcal{B}(a)\)</span>
 of an elemment <em>a</em> of the attractor (the set of initial values that lead to a sequence converging to <em>a</em>)
 is also lager than a single point.</p>
 <p>For a given objective function to minimize, the art of building an algorithm that finds a minimizer
-consists of building a map <span class="math notranslate nohighlight">\(\Phi\)</span> for which the projection of its bassin of attraction on the
-space <span class="math notranslate nohighlight">\(X\)</span> co-inside with the set of minimizer of the objective function (or a subset of it).</p>
+consists of building a map <span class="math notranslate nohighlight">\(\Phi\)</span> for which the projection of its attractor on the
+space <span class="math notranslate nohighlight">\(X\)</span> co-inside with the set of minimizer of the objective function (or a subset of it).
+But as we said, some heuristic iterative reconstruction algorithms are not finding some minimizer of
+any objective function. We will therefore consider the projection of <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> on <span class="math notranslate nohighlight">\(X\)</span>
+as the set of possible reconstructed images.</p>
 <p>We further would like to point out that a non-iterative (single step) reconstruction can
 be seen as an iterative reconstruction.
 For that, we only have to realize that a non-iterative reconstruction is given by a map <span class="math notranslate nohighlight">\(\phi\)</span>
 that does not depends on <span class="math notranslate nohighlight">\((x, z)\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\Phi(x^{(c)}, z^{(c)}; y, param) = \phi(y, param)\]</div>
-<p>In that sense, all reconstruction are iterative and those we called “non-iterative”
+\[\Phi(x^{(c)}, z^{(c)}; \  y, \ param) = \phi(y, \ param)\]</div>
+<p>In that sense, all reconstruction are iterative, and those we called “non-iterative”
 converge in a single step since</p>
 <div class="math notranslate nohighlight">
-\[(x^{(c+1)}, z^{(c+1)}) = \Phi(x^{(c)}, z^{(c)}; y, param) = \phi(y, param) =  \Phi(x^{(0)}, h^{(0)}; y ,  param)\]</div>
+\[(x^{(c+1)}, z^{(c+1)}) = \Phi(x^{(c)}, z^{(c)}; \  y, \ param) = \phi(y, param) =  \Phi(x^{(0)}, h^{(0)}; \ y ,  \ param)\]</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Iterative reconstruction guided by (based on, unsing, enhenced by…) an artificial inteligence of any kind
+can be seen as a dynamic system where the implementation of <span class="math notranslate nohighlight">\(\Phi\)</span> contains some
+=======</p>
 <p>Iterative reconstruction guided by (based on, using, enhanced by…) artificial intelligence
 can be seen as a dynamic system where the implelentation of <span class="math notranslate nohighlight">\(\Phi\)</span> contains some
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 statistical model. For example, if <span class="math notranslate nohighlight">\(\mathcal{N}\)</span> is a neuronal network trained to predict
 some of the dynamical variables from the measured data set and from a database of good quality images,
 it can be used to update that dynamical variable as each iteration. We can then see <span class="math notranslate nohighlight">\(\mathcal{N}\)</span>
 as a parameter of the map <span class="math notranslate nohighlight">\(\Phi\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[(x^{(c+1)}, z^{(c+1)}) =  \Phi(x^{(c)}, z^{(c)}; y , \mathcal{N}, param)\]</div>
-<p>For futur needs, we define here our <strong>phase space</strong> of MRI reconstruction. For that, we will
+\[(x^{(c+1)}, z^{(c+1)}) =  \Phi(x^{(c)}, z^{(c)}; \ y , \  \mathcal{N}, \  param)\]</div>
+<p>In the following, we will not make a distinction between the image <span class="math notranslate nohighlight">\(x\)</span> and
+the list of other dynalic variables <span class="math notranslate nohighlight">\(z\)</span>. We will write the current state of all
+dynamic variables as</p>
+<div class="math notranslate nohighlight">
+\[\omega = (x, z)\]</div>
+<p>The initial value <span class="math notranslate nohighlight">\((x^{(0)}, z^{(0)})\)</span> will thus be written <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span>
+and the current list of all dynamic variables at step <span class="math notranslate nohighlight">\(c\)</span> will be written <span class="math notranslate nohighlight">\(\omega^{(c)}\)</span>.
+Also, we will write the list of all parameters as a single list <span class="math notranslate nohighlight">\(\theta\)</span> such as</p>
+<div class="math notranslate nohighlight">
+\[\theta = (y, \  param)\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[\theta = (y, \  \mathcal{N}, \  param)\]</div>
+<p>We can thus summarise an iterative reconstruction by the formula</p>
+<div class="math notranslate nohighlight">
+\[\omega^{(c)} =  \Phi^{(c)}(\omega^{(0)}; \ \theta)\]</div>
+<p>In summary, an iterative reconstruction is a discrete dynamical system given by a map <span class="math notranslate nohighlight">\(\Phi\)</span>
+with a attractor <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>, where each element <span class="math notranslate nohighlight">\(a \in  \mathcal{A}\)</span> has
+its own bassin of attraction <span class="math notranslate nohighlight">\(\mathcal{B}(a)\)</span>.</p>
+</section>
+<section id="the-phase-space">
+<h2>The Phase Space<a class="headerlink" href="#the-phase-space" title="Link to this heading">¶</a></h2>
+<p>We define here our <strong>phase space</strong> of MRI reconstruction. For that, we will
 get some inpiration from the physics. The spirit of phase space in physics is the
 following. The phase space is a set so that each of its element corresponds to exactly one
 of the state that the physical system under consideretion can occupy,
@@ -154,26 +216,40 @@ It makes therefore sense to define our phase space as</p>
 <p>The state of our system at a given time (a given iteration) is then given by a
 pair <span class="math notranslate nohighlight">\((x, z)\)</span> and its knowledge is sufficient to predict all future states
 by iterating <span class="math notranslate nohighlight">\(\Phi\)</span> on that pair. Note that the attractor <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> is
-a proper subset of the phase-space <span class="math notranslate nohighlight">\(\Gamma\)</span>. Instead of writing <span class="math notranslate nohighlight">\((x, z)\)</span> we
-will also write just <span class="math notranslate nohighlight">\(\omega\)</span>. We will write the initial value as</p>
+a proper subset of the phase-space <span class="math notranslate nohighlight">\(\Gamma\)</span>. As said earlier, instead of
+writing <span class="math notranslate nohighlight">\((x, z)\)</span> we will just write <span class="math notranslate nohighlight">\(\omega\)</span>. The phase space is
+therefore the set of possible <span class="math notranslate nohighlight">\(\omega\)</span> and the map <span class="math notranslate nohighlight">\(\Phi\)</span> is
+from <span class="math notranslate nohighlight">\(\Gamma\)</span> to <span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<p>We can resonably assume that for any application, <span class="math notranslate nohighlight">\(\omega\)</span>
+can be considered to be a large array of <span class="math notranslate nohighlight">\(n\)</span> complex or real numbers.
+Since the theory of MRI reconstructions is naturally
+formulated with complex numbers, we will consider that</p>
 <div class="math notranslate nohighlight">
-\[\omega^{(0)} = (x^{(0)}, z^{(0)})\]</div>
-<p>and we we will write the state after <span class="math notranslate nohighlight">\(c\)</span> iterations as</p>
-<div class="math notranslate nohighlight">
-\[\omega^{(c)} = (x^{(c)}, z^{(c)}) = \Phi^{(c)}(x^{(0)}, z^{(0)}; y, param) = \Phi^{(c)}(\omega^{(0)}; y, param)\]</div>
+\[\Gamma \simeq  \mathbb{C}^{n/2} \simeq \mathbb{R}^n\]</div>
+<p>for a positive and even integer <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <p>An iterative reconstruction process can then be described in two steps:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>to choose an initial guess for the image and the other dynamic variables in a set <span class="math notranslate nohighlight">\(\Omega^{(0)} \subset \Gamma\)</span>. We will call that initial guess <span class="math notranslate nohighlight">\(\omega^{(0)} = (x^{(0)}, z^{(0)}) \in \Omega^{(0)}\)</span>.</p></li>
-<li><p>to iterate <span class="math notranslate nohighlight">\(\Phi\)</span> on <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> until the obtained value <span class="math notranslate nohighlight">\(\omega^{(c)} = \Phi^{(c)}(\omega^{(0)}; y, param)\)</span> is sufficiently close to the attractor <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>.</p></li>
+<li><p>to choose an initial guess <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> in a set <span class="math notranslate nohighlight">\(\Omega^{(0)} \subset \Gamma\)</span>.</p></li>
+<li><p>to iterate <span class="math notranslate nohighlight">\(\Phi\)</span> on <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> until the obtained value <span class="math notranslate nohighlight">\(\omega^{(c)} = \Phi^{(c)}(\omega^{(0)}; \ \theta)\)</span> is sufficiently close to the attractor <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>.</p></li>
 </ul>
 </div></blockquote>
-<p>The description of the second step is however not appropriate to the thermodynamical description we are going to present.
-In order to prepare the rest of the discussion, we need to reformulate those two steps in term of sets and distributions.
-For a given subset <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span> we define</p>
+<p>Here is <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> the set in which we allow to chose the initial values.</p>
+<p>The description of the second step is however not appropriate to the
+thermodynamical description we are going to present. In order to prepare
+the rest of the discussion, we need to reformulate those two steps in
+term of sets and distributions.  For a given subset <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span>
+we define</p>
 <div class="math notranslate nohighlight">
-\[\Phi^{(c)}(\Omega; y, param) := \{\Phi^{(c)}(\omega; y, param) | \omega \in \Omega\}\]</div>
-<p>Our phase space <span class="math notranslate nohighlight">\(\Gamma\)</span> can be considered as isomorphic to <span class="math notranslate nohighlight">\(\mathbb{C}^n\)</span> for some
+\[\Phi^{(c)}(\Omega;  \ \theta) := \{\Phi^{(c)}(\omega; \ \theta) \  | \  \omega \in \Omega\}\]</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+As already said, our phase space <span class="math notranslate nohighlight">\(\Gamma\)</span> can be considered as isomorphic to <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> for some
+positive interger <span class="math notranslate nohighlight">\(n\)</span>. We can thus consider that <span class="math notranslate nohighlight">\(\Gamma\)</span> can be equiped with the <span class="math notranslate nohighlight">\(\sigma\)</span>-algebra
+of Lebesgue measurable sets, that we will write <span class="math notranslate nohighlight">\(\mathcal{L}\)</span>, so that  <span class="math notranslate nohighlight">\((\Gamma, \mathcal{L})\)</span> is a measurable space.
+We further provide this measurable space with the Lebesgue measure that we will write <span class="math notranslate nohighlight">\(\lambda\)</span> to obtain a measure space
+<span class="math notranslate nohighlight">\(\left( \Gamma, \mathcal{L}, \lambda \right)\)</span>.
+=======
+Our phase space <span class="math notranslate nohighlight">\(\Gamma\)</span> can be considered as isomorphic to <span class="math notranslate nohighlight">\(\mathbb{C}^n\)</span> for some
 positive integer <span class="math notranslate nohighlight">\(n\)</span> in our context of MRI reconstruction.
 Topologically, it is thus identical to <span class="math notranslate nohighlight">\(\mathbb{R}^{2n}\)</span>. We will write <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> the <span class="math notranslate nohighlight">\(\sigma\)</span>-algebra
 of the Lebesgue measurable sets of <span class="math notranslate nohighlight">\(\Gamma\)</span> so that the pair <span class="math notranslate nohighlight">\((\Gamma, \mathcal{L})\)</span> is a measurable space.
@@ -200,21 +276,35 @@ interest for <span class="math notranslate nohighlight">\(P\)</span> in our disc
 set <span class="math notranslate nohighlight">\(P\)</span> equal to <span class="math notranslate nohighlight">\(\Gamma\)</span>, while in the second case, we will
 set <span class="math notranslate nohighlight">\(P\)</span> equal to <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>, as define hereafter.</p>
 <p>We will write <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> the subset of <span class="math notranslate nohighlight">\(\Gamma\)</span> in which the initial value is chosen
-and we will set on it the restriction <span class="math notranslate nohighlight">\(\mathcal{A} \subset \Omega^{(0)}\)</span>.</p>
+and we will set on it the restriction <span class="math notranslate nohighlight">\(\mathcal{A} \subset \Omega^{(0)}\)</span>.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <p>We will write <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> the subset of <span class="math notranslate nohighlight">\(\Gamma\)</span> defined by</p>
 <div class="math notranslate nohighlight">
-\[\Omega^{(c)} := \Phi^{(c)}(\Omega^{(0)}; y, param)\]</div>
-<p>It is the set that contains <span class="math notranslate nohighlight">\(\omega^{(c)}\)</span>, whatever the initial value of the reconstruction process is.</p>
-<p>Let be <span class="math notranslate nohighlight">\(\mu^{(0)}\)</span> a probability measure on <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> with probability distribution
-function (PDF) <span class="math notranslate nohighlight">\(p_{\mu^{(0)}}\)</span> so that the probability that the random variable associated to
-<span class="math notranslate nohighlight">\(\mu^{(0)}\)</span> appears in a set <span class="math notranslate nohighlight">\(\Omega \subset \Omega^{(0)}\)</span> is given by</p>
+\[\Omega^{(c)} := \Phi^{(c)}(\Omega^{(0)}; \  \theta)\]</div>
+<p>It is the set that contains <span class="math notranslate nohighlight">\(\omega^{(c)}\)</span>, whatever the initial value
+of the reconstruction process, as long as it is in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>.</p>
+<p>Note that given the subset <span class="math notranslate nohighlight">\(\Omega^{(0)} \subset \Gamma\)</span>, the set of parts</p>
 <div class="math notranslate nohighlight">
-\[\mu^{(0)} \left( \Omega \right) = \int_{\Omega}  d\mu^{(0)} = \int_{\Omega}  p_{\mu^{(0)}}(\omega) d\nu\]</div>
-<p>where <span class="math notranslate nohighlight">\(p_{\mu^{(0)}}\)</span> is the Radon-Nikodym derivative of <span class="math notranslate nohighlight">\(\mu^{(0)}\)</span> with respect to <span class="math notranslate nohighlight">\(\nu\)</span>.
+\[\mathcal{L}\left(\Omega^{(0)}\right):= \{ \Omega^{(0)} \cap \Omega \  | \  \Omega \subset \mathcal{L} \}\]</div>
+<p>is a <span class="math notranslate nohighlight">\(\sigma\)</span>-algerba on <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>. More generally, for a subset <span class="math notranslate nohighlight">\(S \subset \Gamma\)</span> we will define
+the <span class="math notranslate nohighlight">\(\sigma\)</span>-algerba <span class="math notranslate nohighlight">\(\mathcal{L}\left(S\right)\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}\left(S\right):= \{ S \cap \Omega \  | \  \Omega \subset \mathcal{L} \}\]</div>
+<p>Let be <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> a probability measure on <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> with probability distribution
+function (PDF) given by <span class="math notranslate nohighlight">\(p_{\tilde{\mu}^{(0)}}\)</span> so that the probability that the random variable associated to
+<span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> appears in a set <span class="math notranslate nohighlight">\(\Omega \subset \Omega^{(0)}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mu}^{(0)} \left( \Omega \right) = \int_{\Omega}  d\tilde{\mu}^{(0)} = \int_{\Omega}  p_{\tilde{\mu}^{(0)}}(\omega) d\lambda\]</div>
+<p>It means that <span class="math notranslate nohighlight">\(p_{\tilde{\mu}^{(0)}}\)</span> is the Radon-Nikodym derivative
+of <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> with respect to <span class="math notranslate nohighlight">\(\lambda\)</span>.
 It holds in particular</p>
 <div class="math notranslate nohighlight">
-\[\mu^{(0)} \left( \Omega^{(0)} \right) = 1\]</div>
-<p>We then reformulate the two steps above as follows:</p>
+\[\tilde{\mu}^{(0)} \left( \Omega^{(0)} \right) = 1\]</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+so that the tripple <span class="math notranslate nohighlight">\(\left( \Omega^{(0)}, \mathcal{L}\left(\Omega^{(0)}\right), \tilde{\mu}^{(0)} \right)\)</span> is a probability space (i.e. a measure space
+where the measure of the entire set is 1). The following figure summarizes the situation.
+=======
+We then reformulate the two steps above as follows:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Instead of choosing an initial guess, we chose a probability measure <span class="math notranslate nohighlight">\(\mu^{(0)}\)</span> on the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> so that <span class="math notranslate nohighlight">\(\mu^{(0)}(\Omega^{(0)}) = 1\)</span> and so that the initial value <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> is a random variable with PDF equal to <span class="math notranslate nohighlight">\(p_{\mu^{(0)}}\)</span>.</p></li>
@@ -222,45 +312,125 @@ It holds in particular</p>
 </ul>
 </div></blockquote>
 <p>Note that function <span class="math notranslate nohighlight">\(p_{\mu^{(0)}}\)</span> can be extended over <span class="math notranslate nohighlight">\(\Gamma\)</span>  be setting it equal to <span class="math notranslate nohighlight">\(0\)</span> outside <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>.
-The following figure summarizes the situation.</p>
+The following figure summarizes the situation.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <a class="reference internal image-reference" href="_images/information.png"><img alt="information" class="align-center" src="_images/information.png" style="width: 40%;" />
 </a>
+<p>We now reformulate the two steps of an MRI reconstruction process as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Instead of chosing an initial guess, we chose a probability measure <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> as above so that the initial value <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> is a random variable with PDF equal to <span class="math notranslate nohighlight">\(p_{\tilde{\mu}^{(0)}}\)</span>.</p></li>
+<li><p>We describe then the iteration process as a contraction of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> by iterating on it the map <span class="math notranslate nohighlight">\(\Phi\)</span> until <span class="math notranslate nohighlight">\(\Phi^{(c)}(\Omega^{(0)}; \ \theta)\)</span> becomes sufficiently close to <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>.</p></li>
+</ul>
+</div></blockquote>
 <p>This description in term of sets and probability disctributions makes abstraction
 of the particular image guess and of the reconstructed image. It can be
 considered as a mathematical description of the reconstruction of all possible MRI
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+images in parallel, that would be obtained by chosing all initial guess
+in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> in parallel, with a given “density of choice” <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span>.
+=======
 images in parallel, that would be obtained by choosing all initial guess
-in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> in parallel, with a given “density of choice” <span class="math notranslate nohighlight">\(\mu^{(0)}\)</span>.</p>
+in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> in parallel, with a given “density of choice” <span class="math notranslate nohighlight">\(\mu^{(0)}\)</span>.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 </section>
-<section id="the-heat-engine-and-the-computer">
-<h2>The Heat Engine and the Computer<a class="headerlink" href="#the-heat-engine-and-the-computer" title="Link to this heading">¶</a></h2>
-<p>Here are a few empirically facts. If the reader does not agree with them,
-just consider that they are assumptions. We assume furthermore that the iterative reconstruction
-in question is correctly implemented.</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Some iterative reconstructions are converging for some given data.</p></li>
-<li><p>Given some data and an iterative reconstruction that verifies points 1., the image quality along iterations improves then monotonically, at least in average in some temporal window.</p></li>
-<li><p>Each iteration of an iterative reconstruction consumes electric power and time, the product of both (or time integral of power) being the energy consumed by that iteration.</p></li>
-<li><p>An image is physically a certain state of the memory of the computer. A reconstruction process, in particular a converging iterative reconstruction, is a process that changes the state of the computer memory until the resulting image do not longer significantly changes.</p></li>
-<li><p>During an iterative reconstruction process, if the reconstructed image improves and converges (at least in average in some temporal window), the computer absorbs electrical energy, a part of that energy serves to set its memory in a certain state, and most of the absorbed energy is released in the environment as heat.</p></li>
-<li><p>A reconstructed image of good quality is an image that models the measured data reasonably well (relative to a given model), and which satisfies some prior knowledge reasonably well. Both criteria result in a low value of the objective function if that function exist.</p></li>
-<li><p>An image of good quality is a certain state of the computer memory that has very little chance to be found by chance alone, for example by a random search for a good image.</p></li>
-</ol>
-</div></blockquote>
-<p>It is not the intention of the author to build some axioms of a mathematical theory.
-The empirical facts above are in fact redundant to some extends, but we don’t
-really care. We just want to build an intuition for a thermodynamic theory of MRI reconstruction.</p>
-<p>Since the reconstruction we want to consider has to verify point 2 mentioned above, we do the following definition:</p>
-<blockquote>
-<div><p>An iterative MRI reconstruction (an implementation) is <strong>well-posed</strong> for some given measured data if</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>The reconstruction is converging for the given data,</p></li>
-<li><p>After a finit number of iterations, the image quality along iterations improves monotonically, at least in average (at least in average in some temporal window).</p></li>
-</ul>
-</div></blockquote>
-</div></blockquote>
-<p>From the facts listed above, it is intuitively clear that for a well-posed MRI reconstruction (for some given data),
+<section id="the-space-of-memory-states">
+<h2>The Space of Memory States<a class="headerlink" href="#the-space-of-memory-states" title="Link to this heading">¶</a></h2>
+<p>The description of the reconstruction in term of phase space, sets and distribution is a mathematical
+description with a phase space isomorphic to <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. This finite dimensional vector
+space is very convinient for the mathematical description of the dynamical system, and therefore of
+the reconstruction algorithm. In practice however, <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> is not the space where things
+are happening. The algorithm is the physical evolution of a physical system that we call a “computer” and
+the set of states that this physical system can occupy is not <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>. We will
+call <strong>dynamic memory</strong> (DM) the part of the computer memory that is allocated to the dynamic
+variables of the iterative algorithm under consideration. The dynamic memory contains all the variables
+that are changing during the iterative process. One state of the DM corresponds thus to one possible choice
+of the dynamic variable. We will simplify the set of physical states that the computer can occupy by identifying
+it with the set of states of the DM.</p>
+<p>Since the DM is the part of the computer where the state <span class="math notranslate nohighlight">\(\omega\)</span> is written, it follows that each
+state of the DM correspond to excactly one <span class="math notranslate nohighlight">\(\omega \in \Gamma\)</span>. We will write <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span> the finite
+subset of phase space that contains all possible states of the DM. The finite set <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>
+is thus a proper subset of the phase space <span class="math notranslate nohighlight">\(\Gamma\)</span>.</p>
+<p>We will furthermore define the set <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span>
+to be a compact, proper closed convex subset of <span class="math notranslate nohighlight">\(\Gamma\)</span> which contains <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>. We will think of
+<span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> as a set that is just a bit larger than the smallest compact closed convex set that contains
+<span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>. By “just a bit larger” we want to mean that we allow a minimal “security” distance between
+the boundary of <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> and every element of <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>.</p>
+<p>By the definition of <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span>, it is resonable to set the restriction</p>
+<div class="math notranslate nohighlight">
+\[\Omega^{(0)} \subset \bar{\Gamma}\]</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+We can then say informally that <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> is the compact set where everthing happens,
+so that we don’t have to care about the huge set <span class="math notranslate nohighlight">\(\Gamma\)</span>. For any set <span class="math notranslate nohighlight">\(\Omega \subset \bar{\Gamma}\)</span>
+we systematically write its intersection with <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\Omega_{DM}:= \Omega \cap \Gamma_{DM}\]</div>
+<p>The situation is summarized in the following figure.</p>
+<a class="reference internal image-reference" href="_images/information_2.png"><img alt="information_2" class="align-center" src="_images/information_2.png" style="width: 40%;" />
+</a>
+<p>We now define the measure <span class="math notranslate nohighlight">\(\nu\)</span> on the <span class="math notranslate nohighlight">\(\sigma\)</span>-algebra <span class="math notranslate nohighlight">\(\mathcal{L}\left(\bar{\Gamma}\right)\)</span> as
+follows. For a given set <span class="math notranslate nohighlight">\(\Omega \in \bar{\Gamma}\)</span> we count the number of memory states that <span class="math notranslate nohighlight">\(\Omega\)</span> contains
+and we define it to be <span class="math notranslate nohighlight">\(\nu \left( \Omega\right)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\nu \left( \Omega \right) := \# \left(\Omega \cap \Gamma_{DM} \right) = \# \left(\Omega_{DM} \right)\]</div>
+<p>where “#” returns the cardinality of a set. One can check as an exercices that is in fact define a measure.</p>
+<p>The measure <span class="math notranslate nohighlight">\(\nu\)</span> allows to define the measure space
+<span class="math notranslate nohighlight">\(\left(\bar{\Gamma}, \mathcal{L}\left(\bar{\Gamma}\right), \nu\right)\)</span>.
+In order to work with the same set <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> and the same <span class="math notranslate nohighlight">\(\sigma\)</span>-algebra
+<span class="math notranslate nohighlight">\(\mathcal{L}\left(\bar{\Gamma}\right)\)</span> for all measures, we extend the above introduced
+measure <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> over <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> by defining</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mu}^{(0)} \left(\Omega\right):= \tilde{\mu}^{(0)} \left(\Omega \cap \Omega^{(0)} \right)\]</div>
+<p>for all <span class="math notranslate nohighlight">\(\Omega \in \bar{\Gamma}\)</span>. It follows that the <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> measure of any
+set that does not intersect <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is zero. The PDF <span class="math notranslate nohighlight">\(p_{\tilde{\mu}^{(0)}}\)</span> can be extended
+from <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> to <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> by setting it equl to <span class="math notranslate nohighlight">\(0\)</span> for any state outside <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>.</p>
+<p>Since we defined a measure <span class="math notranslate nohighlight">\(\nu\)</span>, there exist the temptation to work with its distribution function,
+but such a function does not exist unfortunately. The best we can think of as a PDF for <span class="math notranslate nohighlight">\(\nu\)</span> could be</p>
+<div class="math notranslate nohighlight">
+\[f_{\tilde{\nu}}(\omega):= \frac{\# \left(B_{\epsilon}(\omega) \cap \Gamma_{DM} \right)}{\lambda\left(B_{\epsilon}(\omega)\right)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(B_{\epsilon}(\omega)\)</span> is the open ball of radius <span class="math notranslate nohighlight">\(\epsilon\)</span> centered in <span class="math notranslate nohighlight">\(\omega\)</span>. This function defines a measure
+<span class="math notranslate nohighlight">\(\tilde{\nu}\)</span> on <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> by</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\nu}\left(\Omega\right) = \int_{\Omega} d\tilde{\nu} = \int_{\Omega}  f_{\tilde{\nu}}(\omega) \ d\lambda \approx \nu\left(\Omega\right)\]</div>
+<p>Although the function <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span> is interesting from a theoretical point of view,
+it leads only an approximation of <span class="math notranslate nohighlight">\(\nu\)</span>. In the following, we will work with <span class="math notranslate nohighlight">\(\nu\)</span>
+and we will not need <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span>.</p>
+<p>We note finally that the measure <span class="math notranslate nohighlight">\(\nu \left(\Omega\right)\)</span> is linked to the number of bit that are needed to encode all states
+of the memory that are in <span class="math notranslate nohighlight">\(\Omega\)</span>. Since <span class="math notranslate nohighlight">\(\nu \left(\Omega\right)\)</span> is the number of such states, we can write
+the number of bits needed to encode them as</p>
+<div class="math notranslate nohighlight">
+\[nB \left(\Omega\right) := log_2\left(\nu \left(\Omega\right)\right)\]</div>
+<p>It follows from that definition that</p>
+<div class="math notranslate nohighlight">
+\[\nu \left(\Omega\right) = 2^{nB \left(\Omega\right)}\]</div>
+<p>If we now start the iterative algorithm by an initial guess in the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> and iterative
+the map <span class="math notranslate nohighlight">\(\Phi\)</span> until <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is compressed to <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>, the number of
+bits needed to encode all states in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> shriked to the the number of bits needed to encode all
+states in <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>. This reduction of needed number of bits is</p>
+<div class="math notranslate nohighlight">
+\[nB \left(\Omega^{(0)}\right) - nB \left(\Omega^{(c)}\right)  = log_2\left(\nu \left(\Omega^{(0)}\right)\right) - log_2\left(\nu \left(\Omega^{(c)}\right)\right) = - log_2\left(    \frac{  \nu \left(\Omega^{(c)}\right)  }{\nu \left(\Omega^{(0)}\right)}     \right)\]</div>
+<p>Rewritting this reduction of bit number as <span class="math notranslate nohighlight">\(\Delta B^{(c)}\)</span> we get</p>
+<div class="math notranslate nohighlight">
+\[\Delta B^{(c)}  = - \frac{1}{log(2)} \  log\left(    \frac{  \nu \left(\Omega^{(c)}\right)  }{\nu \left(\Omega^{(0)}\right)}     \right)\]</div>
+<p>In the next sub-section, we will define the information gain <span class="math notranslate nohighlight">\(\Delta I^{(c)}\)</span> associated to the compression of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> to
+<span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\Delta I^{(c)} := -log\left(    \frac{  \nu \left(\Omega^{(c)}\right)  }{\nu \left(\Omega^{(0)}\right)}     \right)\]</div>
+<p>It follows from those definition that the relation between the reduction of bit number and information gain is</p>
+<div class="math notranslate nohighlight">
+\[log(2) \ \Delta B^{(c)}  = \Delta I^{(c)}\]</div>
+<p>In the discussion sub-section, we will argument that Landauer’s erasure can be re-interpreted as this reduction of
+bit number.</p>
+</section>
+<section id="the-heat-engine">
+<h2>The Heat Engine<a class="headerlink" href="#the-heat-engine" title="Link to this heading">¶</a></h2>
+<p>Work is the useful thing that a heat engine give to some part of the unisvers that we will call the <strong>work environment</strong>.
+Although this “work environment” is usually not part of the thermodynamic descriptions, there is nothing wrong about it:
+it is just the part of the universe the heat engine is acting on. This notion will appear to be convenient for the rest of
+the text. The heat engine performs some work in the work environment by transferring heat from a hot to a cold reservoir.
+The <em>heat engine</em> and the <em>working environment</em> are two subsytems and the hot reservoir, cold reservoir and the <em>rest of the universe</em>
+=======
+From the facts listed above, it is intuitively clear that for a well-posed MRI reconstruction (for some given data),
 <strong>energy</strong> must be consumed at every iteration that performs an <strong>image quality gain</strong> <em>(IQG)</em>.
 The reverse does however not need to be true: more energy consumption
 does not need to lead to a gain of image quality, since energy can be directly dissipated into heat.
@@ -273,9 +443,10 @@ the author tried the following analogy between a heat engine and a computer (eng
 <p>Work is the useful thing that a heat engine give to some part of the unisvers that we will call the <strong>work environment</strong>.
 The heat engine performs some work in the work environment by transferring heat from a hot to a cold reservoir.
 The heat engine and the working environment are two subsystems and the hot reservoir, cold reservoir and the <em>rest of the universe</em>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 are three other subsystems. Their union being the universe (the total system).</p>
 <blockquote>
-<div><a class="reference internal image-reference" href="_images/heat_engine_1.png"><img alt="heat_engine_1" class="align-center" src="_images/heat_engine_1.png" style="width: 90%;" />
+<div><a class="reference internal image-reference" href="_images/heat_engine_1.png"><img alt="heat_engine_1" class="align-center" src="_images/heat_engine_1.png" style="width: 50%;" />
 </a>
 </div></blockquote>
 <p>The heat engine operates in a cyclic way so that its state is the same at the beginning of each new cycle.
@@ -290,11 +461,16 @@ Since the entropy is a function of state, the entropy of the heat engine is the 
 <p>For a the coming comparison between a computer and a heat engine, we would like to focus on the special case
 described in the following figure.</p>
 <blockquote>
-<div><a class="reference internal image-reference" href="_images/heat_engine_2.png"><img alt="heat_engine_2" class="align-center" src="_images/heat_engine_2.png" style="width: 90%;" />
+<div><a class="reference internal image-reference" href="_images/heat_engine_2.png"><img alt="heat_engine_2" class="align-center" src="_images/heat_engine_2.png" style="width: 50%;" />
 </a>
 </div></blockquote>
-<p>It represents a heat engine that gives energy to a working environment (<em>WE</em>) in the form of a mechanical work amount <em>W</em>.
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+It represents a heat engine that gives energy to a working environment (<em>WE</em>) in the form of a mechanical work amount <span class="math notranslate nohighlight">\(\Delta W\)</span>.
+This work is used to compress an ideal gaz in a cylinder in thermal contact with the cold reservoir at temperatur <span class="math notranslate nohighlight">\(T_C\)</span>.
+=======
+It represents a heat engine that gives energy to a working environment (<em>WE</em>) in the form of a mechanical work amount <em>W</em>.
 This work is used to compress an ideal gaz in a cylinder in thermal contact with the cold reservoir at temperature <span class="math notranslate nohighlight">\(T_C\)</span>.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 In order to be able to evaluate entropy changes, we admit that no irreversible loss of energy happens.
 This means that the heat engine is an ideal (reversible) heat engine, which is called a <em>Carnot engine</em>. It has therefore
 maximal efficiency. We also have to assume that the gaz compression is isothermal, which means
@@ -316,8 +492,8 @@ The conservation of energy reads thus:</p>
 We will write <span class="math notranslate nohighlight">\(V &gt; 0\)</span> the volume of the ideal gaz at the current cycle.
 The change of entropy <span class="math notranslate nohighlight">\(\lvert \Delta S_{WE} \rvert\)</span> is therefore negative and given by</p>
 <div class="math notranslate nohighlight">
-\[\Delta S_{WE} = n \cdot R \cdot log(1-\lvert \Delta V \rvert/V) &lt; 0\]</div>
-<p>where <em>n</em> in the chemical amount of ideal gaz and <em>R</em> is the ideal gaz constant.</p>
+\[\Delta S_{WE} = N \cdot k_B \cdot log\left(\frac{V-\lvert \Delta V \rvert}{V}\right) &lt; 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the number of particle of the ideal gaz and <span class="math notranslate nohighlight">\(k_B\)</span> is the Boltzman konstant.</p>
 <p>During one cycle, the hot reservoir experiences a drope of entropy by an amount</p>
 <div class="math notranslate nohighlight">
 \[\Delta S_{H} = -\frac{\lvert \Delta Q_H \rvert}{T_H}\]</div>
@@ -334,7 +510,8 @@ still be the same since the entropy is a function of state, but the heat exchang
 this will lead to a positive entropy grow of the universe (the total system) by the second law of thermodynamic,
 even if entropy was locally decreased in the ideal gaz:</p>
 <div class="math notranslate nohighlight">
-\[\Delta S_{C} + \Delta S_{H} + \Delta S_{WE} &gt; 0\]</div>
+\[\Delta S_{C} + \Delta S_{H} + \Delta S_{WE} + \Delta S_{Rest} &gt; 0\]</div>
+<p>where the subscript <span class="math notranslate nohighlight">\(Rest\)</span> refers to the <em>rest of the universe</em>.</p>
 <p>This scheme of producing an energy flow through a system in order to drain out some of its entropy
 (a side effect being an entropy grow of the universe) is a general scheme encountered everywhere
 in engineering and nature. Plants and animal do that all the time. We eat energy to produce
@@ -348,11 +525,46 @@ chance to be reached by chance a lone, that is, a state a low entropy. Repairing
 consume energy to lower our entropy back to an organized state and that implies to expel an
 associated amount of heat by radiation. This scheme is so universal that we will now try
 to apply it to computers in order to build an analogy with the eat engine. We will try that way to deduce
-a definition of <em>image quality gain (IQG)</em> and <em>efficiency</em> in the context of MRI reconstruction.</p>
-<p>In the case of MRI reconstruction, the <em>IQG</em> is the useful thing that the computer
-produces by absorbing electrical energy and expelling it as heat in the cooling system of the HPC,
-which may be interpreted as the cold reservoir. In order to make an analogy between the computer and
-the heat engine, we define the following parts of the universe:</p>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+a definition of thermodynamical quantities in the contet of iterative algorithms.
+=======
+a definition of <em>image quality gain (IQG)</em> and <em>efficiency</em> in the context of MRI reconstruction.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
+</section>
+<section id="the-computer-as-an-engine">
+<h2>The Computer as an Engine<a class="headerlink" href="#the-computer-as-an-engine" title="Link to this heading">¶</a></h2>
+<p>Here are a few empirically facts. If the reader does not agree with them,
+just consider that they are assumptions. We assume furthermore that the iterative reconstruction
+in question is correctly implemented.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Given a converging iterative reconstruction for some given data, the image quality along iterations improves then monotonically, at least in average in some temporal window.</p></li>
+<li><p>Each iteration of an iterative reconstruction consumes electric power and time, the product of both (or time integral of power) being the energy consumed by that iteration.</p></li>
+<li><p>An image, together with the other dynamic variables of the algorithm, is physically a state of the dynamic memory. A converging reconstruction process is a process that changes the state of that memory until the resulting state do not longer significantly changes.</p></li>
+<li><p>During an iterative reconstruction process, if the reconstructed image improves and converges (at least in average in some temporal window), the computer absorbs electrical energy, a part of that energy serves to set its memory in a certain state, and most of the absorbed energy is released in the environment as heat.</p></li>
+<li><p>A reconstructed image of good quality is an image that models the measured data reasonably well (relative to a given model), and which satisfies some prior knowledge reasonably well. Both criteria result in a low value of the objective function if that function exist.</p></li>
+<li><p>An image of good quality corresponds to somes states of the dynamic memory that have very little chance to be found by chance alone, for example by a random search for a good image.</p></li>
+</ol>
+</div></blockquote>
+<p>It is not the intention of the author to build some axioms of a mathematical theory.
+The empirical facts above are in fact redundant to some extends, but we don’t
+really care. We just want to build an intuition for a thermodynamic theory of MRI reconstruction.</p>
+<p>The intuition following from those fact is that the computer consumes <strong>energy</strong> to set its memory in a state of low <strong>entropy</strong>,
+and that those states of low entropy are the element of the attractor of the algorithm i.e. the elements that are solution
+of the problem our iterative algorithm is solving. It is intuitively clear that an iteration that moves the current state <span class="math notranslate nohighlight">\(\omega\)</span>
+towards the attractor (and thus lower the entropy of the memory) must consume energy, but the reverse does however not need to be true:
+more energy consumption does not need to lead to an image quality gain, since energy can be directly dissipated into heat.
+A notion of <strong>efficiency</strong> is therefore missing and there is no obious definition for it. Intuitively, it makes sense to define
+efficiency in such a way that it expresses an gain in the result quality related in some way to the energy consumed for that gain.
+But there is no obvious definition for that efficiency.</p>
+<p>Instead of trying to force a definition, we propose to develope a thermodynamic theory of the computer in order
+identify what could be the natural notion for thermodynamical quantities in that context. We will build a “computer engine”
+in analogy to the heat engine in order to inherite some notions from thermodynamic to the context of information and algorithms.
+We will then propose some definition of efficieny, thermodynamical entropy, information theoretical entropy and information
+along the way.</p>
+<p>During an algorithm is running, electrical energy given to the computer and is expelled as heat
+in the cooling system, which may be interpreted as the cold reservoir. In order to make an analogy between the computer and
+the heat engine, we define the following virtual partition of the universe:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>the <strong>electric power supply system</strong> <em>(PS)</em>, which transfers energy to the computer,</p></li>
@@ -364,12 +576,20 @@ the heat engine, we define the following parts of the universe:</p>
 </div></blockquote>
 <p>Note that the union of these five parts is the universe.</p>
 <blockquote>
-<div><a class="reference internal image-reference" href="_images/computer_engine_1.png"><img alt="heat_engine_1" class="align-center" src="_images/computer_engine_1.png" style="width: 90%;" />
+<div><a class="reference internal image-reference" href="_images/computer_engine_1.png"><img alt="heat_engine_1" class="align-center" src="_images/computer_engine_1.png" style="width: 50%;" />
 </a>
 </div></blockquote>
+<p>A very important fact about our description is that the dynamic memory (DM) is considered to be out of the computer,
+which was not explicitely stated until now in our description. It means that the DM is virtualy separated from the rest of the computer
+in our virtual separtion of the universe in subsystems. The DM is the analog of the working environment for the heat engine.</p>
 <p>We propose here to consider the computer as an engine and to interpret one iteration of the reconstruction
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+process as one cycle of the engine. In fact, at the begining of each iteration, the state of the computer
+is the same since we consider all changing (dynamic) variables to be in the DM,
+=======
 process as one cycle of the engine. In fact, at the beginning of each iteration, the state of the computer
 is the same since we consider all changing (dynamic) variables to be in the <em>dynamic memory</em>,
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 which is the analog of the work environment of the heat engine. The energy given to the computer is almost completely
 dissipated into heat transmitted to the cooling system at temperature <span class="math notranslate nohighlight">\(T_C\)</span>. We neglect transmission of heat given to
 the <em>rest of the universe</em> because it should be much smaller. Also, there are some
@@ -382,9 +602,10 @@ for one cycle</p>
 \[\Delta E_{in} = \lvert \Delta Q_C \rvert\]</div>
 <p>That means that all the energy entering the computer is dissipated as heat in the cooling system.
 Following the intuition that this flow of energy drains out some (thermodynamical) entropy from the
-dynamic memory (<em>DM</em>) as it brings it in a state that can harldy be reached by chance alone,
-we expect that a negative entropy change <span class="math notranslate nohighlight">\(-\lvert \Delta S_{DM} \rvert\)</span> is produced in the <em>DM</em> during one
-cycle (one iteration) of the MRI reconstruction process. We know that it holds</p>
+dynamic memory (DM) as it brings it in a state that can harldy be reached by chance alone,
+we expect that a negative entropy change <span class="math notranslate nohighlight">\(-\lvert \Delta S_{DM} \rvert\)</span> is produced in the DM during one
+cycle (one iteration) of the MRI reconstruction process. If our intuition is correct, the second law of thermodynamic
+implies then</p>
 <div class="math notranslate nohighlight">
 \[\Delta S_{DM} \geq \frac{\Delta Q_C}{T_C}\]</div>
 <p>where equality holds for a reversible process. But the quantities <span class="math notranslate nohighlight">\(\Delta S_{DM}\)</span> and <span class="math notranslate nohighlight">\(\Delta Q_C\)</span> are signed in that expression.
@@ -393,25 +614,39 @@ Assuming <span class="math notranslate nohighlight">\(\Delta S_{DM}\)</span> to 
 \[\lvert \Delta S_{DM} \rvert \leq \frac{\lvert \Delta Q_C \rvert}{T_C}\]</div>
 <p>Since the computer is in the same state at the beginning of each iteration, it experiences no entropy change
 between each start of a new iteration. The entropy change in the system <em>computer + DM</em> is therefore
-to be attributed to the entropy change in the <em>DM</em> only. The previous inequation means that for an entropy drope
-of magnitude <span class="math notranslate nohighlight">\(\lvert \Delta S_{DM} \rvert\)</span> in the <em>DM</em>, there must be a heat amount of magnitude at least
+to be attributed to the entropy change in the DM only. The previous inequation means that for an entropy drope
+of magnitude <span class="math notranslate nohighlight">\(\lvert \Delta S_{DM} \rvert\)</span> in the DM, there must be a heat amount of magnitude at least
 <span class="math notranslate nohighlight">\(T_C \lvert \Delta S_{DM} \rvert\)</span> expelled to the cooling system. We will write <span class="math notranslate nohighlight">\(E^{tot}\)</span> the total amount
 of energy given to the computer for the reconstruction and <span class="math notranslate nohighlight">\(\lvert \Delta S_{DM}^{tot} \rvert\)</span> the magnitude
 of the total entropy drope in the <em>DM</em> during reconstruction. It follows from the previous equation,
 from our formula for energy conservation and from the fact the temperature of the cooling system is constant, that</p>
 <div class="math notranslate nohighlight">
-\[\lvert \Delta S_{DM}^{tot} \rvert \leq \frac{E^{tot}}{T_C}\]</div>
+\[\lvert \Delta S_{DM}^{tot} \rvert \leq \frac{E^{tot}}{T_C} \quad (E1)\]</div>
 <p>If we express <span class="math notranslate nohighlight">\(E^{tot}\)</span> as the multiplication of the input electric power <span class="math notranslate nohighlight">\(P\)</span> and the total
 reconstruction time <span class="math notranslate nohighlight">\(\Delta t^{tot}\)</span>, we get</p>
 <div class="math notranslate nohighlight">
 \[\lvert \Delta S_{DM}^{tot} \rvert \leq \frac{P \Delta t^{tot}}{T_C}\]</div>
-<p>If we can find a way to establish the magnitude of the total entropy drope in the <em>DM</em> associated
-to a desired image quality gain (<em>IQG</em>), for a known electric power, we could then deduce a minimal
-reconstruction time for the desired <em>IQG</em>. We however still face the difficulty to define <em>IQG</em>.
-In addition, we are unable to continue the analogy between the computer and the heat engine
-because we are for the moment unable to define what the computer is transmitting to the <em>DM</em>,
+<p>If we can find a way to establish the magnitude of the total entropy drope in the DM associated
+to a desired quality of result, for a known electric power, we could then deduce a minimal
+reconstruction time for the desired MRI quality.</p>
+<p>We have done a first analysis of what could be a computer engine by formulating the first and second law
+of thermodynamic for the chosen virtual partition of universe.
+The analogy between the computer and the heat engine is however limited
+because we are for the moment unable to define what the computer is transmitting to the DM,
 as pointed out by the quotation mark in the last figure. The reason is that the computer
 performs no mechanical work and we have to find a replacement for work in order to continue the
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+analogy. We implement a solution to the problem in the next subsection.</p>
+</section>
+<section id="a-postulate-for-the-thermodynamical-entropy-of-the-dynamic-memory">
+<h2>A Postulate for the Thermodynamical Entropy of the Dynamic Memory<a class="headerlink" href="#a-postulate-for-the-thermodynamical-entropy-of-the-dynamic-memory" title="Link to this heading">¶</a></h2>
+<p>We propose to solve our difficulties by the following heuristic (actually quite esotherique) construction.
+Instead of considerng that the computer interacts with the dynamic memory, we consider that
+nature is <em>as if</em> the computer was interacting with the phase space. The variables stored
+in the DM represents one state in the phase space, but since it could be any, the computer
+behaves in a way that would do the job for any state in the phase space. We considere therefore
+that it is a reasonable argument to say that the behaviour of the
+=======
 analogy. We need now to invent something.</p>
 <p>We propose to solve our difficulties by the following heuristic (actually quite esotherique) construction,
 because it is the best we have to the moment. Instead of considerng that the computer interacts
@@ -419,6 +654,7 @@ with the dynamic memory, we consider that nature is <em>as if</em> the computer 
 phase space. The variables stored in the <em>DM</em> represent one state in the phase space,
 but since it could be any, the computer behaves in a way that would do the job for any state
 in the phase space. We consider therefore that it is a reasonable argument to say that the behaviour of the
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 computer is related phase space and not related one particular representent.
 The computer behaves as if it was reconstructing many MRI images at the same time. Instead of
 discussing endlessly how realistic or not that argumentation is, we propose here one implementation
@@ -427,38 +663,50 @@ of that idea and we will pragmatically try to see what are the implications.</p>
 is compressing a portion <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> of phase space by iterating the map <span class="math notranslate nohighlight">\(\Phi\)</span> that dictates
 the evolution of the iterative MRI reconstruction algoritme. We chose <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> to be the
 region of phase space where there is a non-zero probabiliy that our initial value <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span>
-is chosen. For convenience, we will like to think of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> as a proper, closed, convex set.
+is chosen. For convenience, we will like to think of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> as a proper closed convex set.
 We recall that it contains the attractor <span class="math notranslate nohighlight">\(\mathcal{A}\)</span> of the dynamical system. We define the set</p>
 <div class="math notranslate nohighlight">
 \[\Omega^{(c)} := \Phi^{(c)}(\Omega^{(0)}; y, param)\]</div>
 <p>We imagine that <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> <em>is</em> the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> compressed by <span class="math notranslate nohighlight">\(\Phi\)</span> after
 <span class="math notranslate nohighlight">\((c)\)</span> iterations. We imagine that <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> contains an ideal <em>phase space gas</em> and
 that at each iteration, a part of the energy given to the computer is transformed in a kind of
-<em>informatic work W</em> to compresse that phase space gas. The situation is described in the following figure.</p>
+<em>informatic work</em> <span class="math notranslate nohighlight">\(\Delta W\)</span> to compresse that phase space gas. We will therefore
+call <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> the <strong>compressed set</strong> at iteration <span class="math notranslate nohighlight">\(c\)</span>.
+The situation is described in the following figure.</p>
 <blockquote>
-<div><a class="reference internal image-reference" href="_images/computer_engine_2.png"><img alt="heat_engine_2" class="align-center" src="_images/computer_engine_2.png" style="width: 90%;" />
+<div><a class="reference internal image-reference" href="_images/computer_engine_2.png"><img alt="heat_engine_2" class="align-center" src="_images/computer_engine_2.png" style="width: 50%;" />
 </a>
 </div></blockquote>
-<p>We will imagine that any connected proper subsest <span class="math notranslate nohighlight">\(\Omega\)</span> of phase space contains
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+We will imagine that any connected proper subsest <span class="math notranslate nohighlight">\(\Omega\)</span> of phase space with non-zero Lebesgue measure
+contains a certain amount of our “phase space ideal gas”. Inpired by the equation that describs
+an ideal gas with constant temperature <span class="math notranslate nohighlight">\(T_C\)</span>, we set
+=======
+We will imagine that any connected proper subsest <span class="math notranslate nohighlight">\(\Omega\)</span> of phase space contains
 a certain amount of our “phase space ideal gas”. Inpired by the equation that describes
-an ideal gas with constant temperature, we set</p>
+an ideal gas with constant temperature, we set
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <div class="math notranslate nohighlight">
-\[P \cdot V = K_{\Gamma}\]</div>
-<p>where <em>P</em> is the pressure of our phase space gas, <em>V</em> is its volume given by the measure <span class="math notranslate nohighlight">\(\nu\)</span> as</p>
+\[p \cdot V = T_C \cdot k_{\Gamma}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is the pressure of our phase space gas, <span class="math notranslate nohighlight">\(V\)</span> is its volume given by the measure <span class="math notranslate nohighlight">\(\nu\)</span> as</p>
 <div class="math notranslate nohighlight">
 \[V = \nu \left(\Omega \right)\]</div>
-<p>and <span class="math notranslate nohighlight">\(K_{\Gamma}\)</span> is the ideal gas constant of our phase space gas for a given temperature.
+<p>and <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span> is the ideal gas constant of our phase space gas.
 It follows that</p>
 <div class="math notranslate nohighlight">
-\[P \cdot dV = K_{\Gamma} \cdot \frac{dV}{V}\]</div>
+\[p \cdot dV = T_C \cdot k_{\Gamma} \cdot \frac{dV}{V}\]</div>
 <p>We deduce that the work <span class="math notranslate nohighlight">\(\Delta W\)</span> needed to compress <span class="math notranslate nohighlight">\(\Omega\)</span> to a smaller subset is <span class="math notranslate nohighlight">\(\Omega'\)</span> is</p>
 <div class="math notranslate nohighlight">
-\[\Delta W = - K_{\Gamma} \int_{\nu \left(\Omega \right)}^{\nu \left(\Omega' \right)} \frac{dV}{V} = - K_{\Gamma} \cdot log \left( \frac{\nu(\Omega')}{\nu(\Omega)} \right)\]</div>
+\[\Delta W = - k_{\Gamma} \ T_C \  \int_{\nu \left(\Omega \right)}^{\nu \left(\Omega' \right)} \frac{dV}{V} = - k_{\Gamma} \ T_C  \  log \left( \frac{\nu(\Omega')}{\nu(\Omega)} \right)\]</div>
 <p>We will now label some quantities with the super-script <span class="math notranslate nohighlight">\((c, c+1)\)</span> to indicate that the quantity in question
 is associated to the iteration number <span class="math notranslate nohighlight">\((c)\)</span>, which performs the transition from state <span class="math notranslate nohighlight">\((c)\)</span> to state <span class="math notranslate nohighlight">\((c+1)\)</span>.
 We will also label a quantity with super-script <span class="math notranslate nohighlight">\((c)\)</span> in order to indicate that this quantity is associated to the transition
 from the initial state to the the state number <span class="math notranslate nohighlight">\((c)\)</span>.</p>
-<p>For the coming comparison with information theory in the next subsection,
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+We can now express the conservation of energy (the first law of thermodynamic) as follows.
+An energy amount <span class="math notranslate nohighlight">\(\Delta E_{in}^{(c, c+1)}\)</span>
+=======
+For the coming comparison with information theory in the next subsection,
 we define the information gain associated the trasnsition
 from <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> to <span class="math notranslate nohighlight">\(\Omega^{(c+1)}\)</span> as</p>
 <div class="math notranslate nohighlight">
@@ -485,6 +733,7 @@ on the phase space <span class="math notranslate nohighlight">\(\Delta W^{(c, c+
 <div class="math notranslate nohighlight">
 \[\eta^{(c, c+1)} := \frac{\Delta W^{(c, c+1)}}{E_{in}^{(c, c+1)}} =  K_{\Gamma} \cdot \frac{\Delta I^{(c, c+1)}}{E_{in}^{(c, c+1)}}\]</div>
 <p>What we mean here is that at each cycle, an energy amount <span class="math notranslate nohighlight">\(\Delta E_{in}^{(c, c+1)}\)</span>
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749
 is given to the computer, an amount <span class="math notranslate nohighlight">\(\Delta E_{in}^{(c, c+1)} - \Delta W^{(c, c+1)}\)</span> is dissipated
 to the cooling system by the computation at temperature <span class="math notranslate nohighlight">\(T_C\)</span>, and another
 amount <span class="math notranslate nohighlight">\(\Delta W^{(c, c+1)}\)</span> is given as work to the phase space and then also dissipated
@@ -492,126 +741,389 @@ to the cooling system as a heat amount <span class="math notranslate nohighlight
 temperature <span class="math notranslate nohighlight">\(T_C\)</span>. It holds thus</p>
 <div class="math notranslate nohighlight">
 \[\lvert \Delta Q_{DM}^{(c, c+1)} \rvert = \Delta W^{(c, c+1)}\]</div>
-<p>We will name <span class="math notranslate nohighlight">\(\lvert \Delta Q_{Comp}^{(c, c+1)} \rvert\)</span> the heat amount dissipated by the
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+and we define</p>
+<div class="math notranslate nohighlight">
+\[\Delta Q_{Comp}^{(c, c+1)} := \Delta E_{in}^{(c, c+1)} - \Delta W^{(c, c+1)}\]</div>
+<p>the heat amount dissipated by the computation directly to the cooling system. This is the part of the energy that is not
+“transmited” to the phase space. The conservation of energy can then be rewritten as
+=======
+We will name <span class="math notranslate nohighlight">\(\lvert \Delta Q_{Comp}^{(c, c+1)} \rvert\)</span> the heat amount dissipated by the
 computation directly to the cooling system. This is the part of the energy that is not
-“transmitted” to the phase space. The conservation of energy can then be rewritten as</p>
+“transmitted” to the phase space. The conservation of energy can then be rewritten as
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <div class="math notranslate nohighlight">
 \[\Delta E_{in}^{(c, c+1)} = \lvert \Delta Q_{Comp}^{(c, c+1)} \rvert + \lvert \Delta Q_{DM}^{(c, c+1)} \rvert\]</div>
 <p>Of course, the phase space is a mathematical, non-physical object and
 the <em>work given to phase space</em> is a symbolic language. What we try to do is an
 intellectual effort that consists in admitting that nature behaves <em>as if</em> the
 computer was in fact transmitting work to the phase space.</p>
-<p>In order to complete the picture and for a comparison with information theory in the next sub-section,
-we choose to identify the entropy drope in the <em>DM</em> during iteration number <span class="math notranslate nohighlight">\((c+1)\)</span> as
-the entropy drope in the associated phase space ideal gas:</p>
+<p>From analogy of phase space with an ieal gaz, we postulate that
+the (physical) thermodynamical entropy drope in the <em>DM</em> during iteration number <span class="math notranslate nohighlight">\((c+1)\)</span> is</p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c, c+1)}_{DM} = \frac{K_{\Gamma}}{T_C} \cdot log \left( \frac{\nu(\Omega^{(c+1)})}{\nu(\Omega^{(c)})} \right)\]</div>
+\[\Delta S^{(c, c+1)}_{DM} = k_{\Gamma} \cdot log \left( \frac{\nu(\Omega^{(c+1)})}{\nu(\Omega^{(c)})} \right)\]</div>
 <p>The total entropy drope due to all iterations until (and with) iteration number <span class="math notranslate nohighlight">\((c)\)</span> is therefore</p>
 <div class="math notranslate nohighlight">
 \[\Delta S^{(c)}_{DM} = \Delta S^{(0, 1)}_{DM} + ... + \Delta S^{(c-1, c)}_{DM}\]</div>
 <p>and thus</p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c)}_{DM} = \frac{K_{\Gamma}}{T_C} \left(log \left( \frac{\nu(\Omega^{(1)})}{\nu(\Omega^{(0)})} \right) + ... + log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(c-1)})} \right)\right) = \frac{K_{\Gamma}}{T_C} log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right)\]</div>
-<p>It follows</p>
+\[\Delta S^{(c)}_{DM} = k_{\Gamma} \left(log \left( \frac{\nu(\Omega^{(1)})}{\nu(\Omega^{(0)})} \right) + ... + log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(c-1)})} \right)\right) = k_{\Gamma} \  log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right)\]</div>
+<p>Our postulate for the entropy change of the DM can also be express from state <span class="math notranslate nohighlight">\(0\)</span> to state <span class="math notranslate nohighlight">\(c\)</span> as</p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c)}_{DM} = - \frac{K_{\Gamma}}{T_C} \Delta I^{(c)}\]</div>
-<p>We note at that point that it makes sense to consider the information <span class="math notranslate nohighlight">\(I\)</span> as a state variable of the <em>DM</em> which should not depends on
-the temperature of the cooling system <span class="math notranslate nohighlight">\(T_C\)</span>. Moreover, for consistency with thermodynamic, the entropy in <em>DM</em> has to be a state variable too and should
-therefore not depends on <span class="math notranslate nohighlight">\(T_C\)</span>. The last equation is therefore paradoxical. To resolve that paradox, we will assign the temperature <span class="math notranslate nohighlight">\(T_C\)</span>
-to our <em>phase space ideal gas</em>. This implies that <span class="math notranslate nohighlight">\(K_{\Gamma}\)</span> can be expressed by the multiplication of <span class="math notranslate nohighlight">\(T_C\)</span> and another constant
-that we will write <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span>:</p>
+\[\Delta S^{(c)}_{DM} = k_{\Gamma} \cdot log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right)\]</div>
+<p>Assuming that DM and cooling system are in thermal equilibrium, the process is then reversible and the second law of thermodynamic implies</p>
 <div class="math notranslate nohighlight">
-\[K_{\Gamma} = T_C \cdot k_{\Gamma}\]</div>
-<p>It follows that</p>
-<div class="math notranslate nohighlight">
-\[\Delta S^{(c)}_{DM} = - k_{\Gamma} \cdot \Delta I^{(c)} = k_{\Gamma} log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right) \quad (E2)\]</div>
-<p>From our equivalence between energy and information (E1), it follows</p>
-<div class="math notranslate nohighlight">
-\[\Delta S^{(c, c+1)}_{DM} = - \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}\]</div>
+\[\Delta S^{(c)}_{DM} =  -\frac{\lvert \Delta Q_{DM}^{(c)} \rvert}{T_C} = k_{\Gamma} \cdot log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right)\]</div>
 <p>This is consistent with a reversible isothermal compression of an ideal gas, as assumed.
-If the process is not reversible (as any realistic process) we expect the inequation</p>
+We will assume that the <em>rest of the universe</em> experiences no heat exchange during a reversible process so
+that the entropy of that part is unchanged. Since the computer is a cyclic engine, it is also
+experiencing no changes of entropy between the begining or each new cycle. The non-zero entropy changes during the reversible process
+are therefore those of the power supply system <span class="math notranslate nohighlight">\(\Delta S^{(c, c+1)}_{PS}\)</span>,
+of the cooling system <span class="math notranslate nohighlight">\(\Delta S^{(c, c+1)}_{C}\)</span>, and of the DM written <span class="math notranslate nohighlight">\(\Delta S^{(c, c+1)}_{DM}\)</span>.
+For a reversible transformation holds thus</p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c, c+1)}_{DM} \geq \frac{\Delta Q_{DM}^{(c, c+1)}}{T_C}  \quad (E3)\]</div>
-<p>We can now make the sum of all entropy changes to obtain the change of the total entropy
-during one iteration in a realistic (non-reversible). The cooling system experiences an entropy grow</p>
+\[\Delta S^{(c, c+1)}_{PS} + \Delta S^{(c, c+1)}_{C} + \Delta S^{(c, c+1)}_{DM} = 0\]</div>
+<p>The entropy change of the cooling system can be evaluated as</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c, c+1)}_{C} = \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} + \frac{\lvert \Delta Q^{(c, c+1)}_{DM} \rvert }{T_C}\]</div>
+<p>By substitution of the above formulas holds</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c, c+1)}_{PS} + \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} = 0\]</div>
+<p>This is the expression of second law for the total system in the case of a reversible process.
+If the process is not reversible (as any realistic process) we expect inequations instead of the equations above.
+For the dynamic memory, the second laws for an irreversible heat transfer implies</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c, c+1)}_{DM} \geq - \frac{\rvert \Delta Q_{DM}^{(c, c+1)} \lvert }{T_C} \quad (E2)\]</div>
+<p>For the cooling system, the second law implies</p>
 <div class="math notranslate nohighlight">
 \[\Delta S^{(c, c+1)}_{C} \geq \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} + \frac{\lvert \Delta Q^{(c, c+1)}_{DM} \rvert }{T_C}\]</div>
-<p>while the entropy change of the computer over one iteration is zero and the entropy change in the <em>DM</em> is</p>
+<p>For the power supply system, we simply assume that the second law implies</p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c, c+1)}_{DM} \geq \frac{-\lvert \Delta Q^{(c, c+1)}_{DM} \rvert }{T_C}\]</div>
-<p>The total entropy change over one iteration is therefore</p>
+\[\Delta S^{(c, c+1)}_{PS} \geq 0\]</div>
+<p>and similarily for the <em>rest of the universe</em></p>
 <div class="math notranslate nohighlight">
-\[\Delta S^{(c, c+1)}_{tot} \geq \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} + \frac{\lvert \Delta Q^{(c, c+1)}_{DM} \rvert }{T_C}  + \frac{-\lvert \Delta Q^{(c, c+1)}_{DM} \rvert }{T_C} = \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} &gt; 0\]</div>
+\[\Delta S^{(c, c+1)}_{Rest} \geq 0\]</div>
+<p>Where the subscript <span class="math notranslate nohighlight">\(Rest\)</span> reffers to the <em>rest of the universe</em>.
+As mentioned above, the entropy change of the computer over one cycle is zero.
+The entropy change for the total system reads then</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c, c+1)}_{PS} + \frac{\lvert \Delta Q^{(c, c+1)}_{Comp} \rvert }{T_C} + \Delta S^{(c, c+1)}_{Rest} \geq 0\]</div>
+<p>We have thus formulated the first law for the total system as well as the second low for the total system in the case of
+a reversible process and an irreversible process.</p>
+<p>The key notion introduced in the present subsection is a postulate for the physical, thermodynamical
+entropy of the DM. We postulate that the physical entropy drope in the DM can be described in term of
+a mathematical compression of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> instead of physical quantities.</p>
+</section>
+<section id="information-and-efficiency">
+<h2>Information and Efficiency<a class="headerlink" href="#information-and-efficiency" title="Link to this heading">¶</a></h2>
+<p>For the comming comparison with information theory in the next subsection,
+we define the information gain associated the trasnsition
+from <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> to <span class="math notranslate nohighlight">\(\Omega^{(c+1)}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\Delta I^{(c, c+1)} := - log \left( \frac{\nu(\Omega^{(c+1)})}{\nu(\Omega^{(c)})} \right)\]</div>
+<p>We define as well the gain of information associated to all iterations until (and with) iteration number <span class="math notranslate nohighlight">\(c\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\Delta I^{(c)} := \Delta I^{(0, 1)} + ... +\Delta I^{(c-1, c)}\]</div>
+<p>it follows</p>
+<div class="math notranslate nohighlight">
+\[\Delta I^{(c)} = - \left( log \left( \frac{\nu(\Omega^{(1)})}{\nu(\Omega^{(0)})} \right) + ... + log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(c-1)})} \right) \right) = - log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right)\]</div>
+<p>By our postulate for the entropy change in the dynamic memory, and by our definition of
+information gain it holds</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c)}_{DM} = - k_{\Gamma} \  \Delta I^{(c)} = k_{\Gamma} \  log \left( \frac{\nu(\Omega^{(c)})}{\nu(\Omega^{(0)})} \right) \quad (E3)\]</div>
+<p>We get then a relation between physical work (in Joule <em>J</em>) and information, for iteration number <span class="math notranslate nohighlight">\({c+1}\)</span>, given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta W^{(c, c+1)} = T_C \cdot k_{\Gamma} \cdot \Delta I^{(c, c+1)}\]</div>
+<p>Alternatively, for all iteration until (and with) iteration number <span class="math notranslate nohighlight">\({c}\)</span>, we obtain</p>
+<div class="math notranslate nohighlight">
+\[\Delta W^{(c)} = T_C \  k_{\Gamma} \  \Delta I^{(c)} \quad (E4)\]</div>
+<p>It follows in particular from these last two equations that,
+whatever the unit of information is, the constant <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span> must
+have the unit <em>J/K/[Unit of Information]</em>. We are now able to define
+a notion of <em>efficiency</em> <span class="math notranslate nohighlight">\(\eta^{(c, c+1)}\)</span> as the ratio of the input energy
+<span class="math notranslate nohighlight">\(\Delta E_{in}^{(c, c+1)}\)</span> (during one cycle) and the work performed
+on the phase space <span class="math notranslate nohighlight">\(\Delta W^{(c, c+1)}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\eta^{(c, c+1)} := \frac{\Delta W^{(c, c+1)}}{E_{in}^{(c, c+1)}} =  T_C \  k_{\Gamma} \  \frac{\Delta I^{(c, c+1)}}{E_{in}^{(c, c+1)}}\]</div>
 <p>If we admit that the <em>DM</em> experiences an entropy drope of
 magnitude <span class="math notranslate nohighlight">\(\lvert \Delta S^{(c, c+1)}_{DM} \rvert\)</span> during one
 iteration. We deduce from (E3) that</p>
 <div class="math notranslate nohighlight">
 \[\lvert \Delta S^{(c, c+1)}_{DM} \rvert \leq \frac{\lvert \Delta Q_{DM}^{(c, c+1)} \rvert}{T_C} = \frac{\Delta W^{(c, c+1)}}{T_C} = \frac{\eta^{(c, c+1)} \cdot E_{in}^{(c, c+1)}}{T_C}\]</div>
-<p>If the efficiency is constantly equal to a number <span class="math notranslate nohighlight">\(\eta\)</span>, summing up all contribution of the entire reconstruction duration leads</p>
+<p>If the efficiency is constantly equal to a number <span class="math notranslate nohighlight">\(\eta\)</span>, summing up all contribution
+of the entire reconstruction duration leads</p>
 <div class="math notranslate nohighlight">
 \[\lvert \Delta S^{tot}_{DM} \rvert \leq \frac{\eta \cdot E_{in}^{tot}}{T_C} = \eta \frac{ P \cdot \Delta t^{tot}}{T_C}\]</div>
 <p>which is a more severe constraint on the entropy drope of the <em>DM</em> as compared to the one we got earlier. It follows in
 particular that</p>
 <div class="math notranslate nohighlight">
-\[\Delta I^{tot} \leq  \frac{\eta}{k_{\Gamma}} \frac{ P \cdot \Delta t^{tot}}{T_C} \quad (E4)\]</div>
-<p>This inequation is the curiosity of our theory because of its temperature dependency.
-We will come back to it in the discussion section.</p>
-<p>We also note that, the definition of <em>IQG</em> we were hoping for, did not appear, although we
-have defined all basic thermodynamical quantity that where needed for an analogy between
-the computer and the heat engine. We will also come back to that point in the
-discussion section.</p>
+\[\Delta I^{tot} \leq  \frac{\eta}{k_{\Gamma}} \frac{ P \cdot \Delta t^{tot}}{T_C} \quad (E5)\]</div>
+<p>This inequation is the main result of our theory. We will see in a next section that it is actually
+equivalent to Landauer’s principle if we set <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span> equal to the Boltzmann constant.
+We will also deduce a new interpretation of Landauer’s erasure
+in term of bit number reduction needed to encode the states in the compressed set.</p>
 </section>
-<section id="connections-with-the-theory-of-information">
-<h2>Connections with the Theory of Information<a class="headerlink" href="#connections-with-the-theory-of-information" title="Link to this heading">¶</a></h2>
+<section id="connection-with-the-theory-of-information">
+<h2>Connection with the Theory of Information<a class="headerlink" href="#connection-with-the-theory-of-information" title="Link to this heading">¶</a></h2>
 <p>In the previous subsection, we introduced some relation between the physical energy <em>E</em>
 and the thermodynamical entropy <em>S</em> as well as a notion of information <em>I</em> with some
 relation to <em>E</em> and <em>S</em>.</p>
 <p>In this section, we will introduce some relations that relates the
-thermodynamical entropy <em>S</em> to the information theoretical entropy <em>H</em> as well as to
-the relative entropy <span class="math notranslate nohighlight">\(D_{KL}\)</span>, also known as <em>Kullback-Leibler divergence</em>.
-Also, we will relate our notion of information <em>I</em> to the
-notion of information-theoretical information that we will write <span class="math notranslate nohighlight">\(J\)</span>.</p>
-<p><em>Work in Progress</em></p>
+thermodynamical entropy <em>S</em> to the information theoretical entropy <em>H</em>.
+The entropy <em>H</em> is always defined on a probability distribution while we defined an entropy notion
+<em>S</em> for some subset <span class="math notranslate nohighlight">\(\Omega\)</span> of the phase space <span class="math notranslate nohighlight">\(\Gamma\)</span>. The simplest way to relate them
+is to define a probability function for any given subset <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span>. We proced as follows.</p>
+<p>Since <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span> is a finit set, we will call <span class="math notranslate nohighlight">\(nDM\)</span> its cardinality.
+It is the number of states that can be stored in the dynamic memory.
+Let be <span class="math notranslate nohighlight">\(\omega_i\)</span>, the element number <span class="math notranslate nohighlight">\(i\)</span> in <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>,
+where <span class="math notranslate nohighlight">\(i\)</span> runs from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(nDM\)</span>. For a given subset <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span>,
+we define the probability <span class="math notranslate nohighlight">\(p_i\)</span> for <span class="math notranslate nohighlight">\(\omega_i \in \Gamma_{DM}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_i=
+\left\{
+\begin{array}{ll}
+\frac{1}{\nu\left(\Omega\right)} &amp; \text{for} \ \omega_i \in \Omega \\
+\text{0} &amp; \text{else}
+\end{array}
+\right.\end{split}\]</div>
+<p>This assigns to each <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span> a probability distribution on the set <span class="math notranslate nohighlight">\(\Gamma_{DM}\)</span>.
+We can then evaluate its entropy <em>H</em> as</p>
+<div class="math notranslate nohighlight">
+\[H = - \sum_{i = 1}^{nDM} p_i \ log(p_i) = log\left(\nu\left(\Omega\right)\right)\]</div>
+<p>and therefore</p>
+<div class="math notranslate nohighlight">
+\[H = log\left(\frac{\nu\left(\Omega\right)}{\nu\left(\Omega^{(0)}\right)}\right) + log\left(\nu\left(\Omega^{(0)}\right)\right)\]</div>
+<p>Since this entropy is associated with the set <span class="math notranslate nohighlight">\(\Omega\)</span>, we will write it <span class="math notranslate nohighlight">\(H \left(\Omega\right)\)</span>.
+We now identify <span class="math notranslate nohighlight">\(\Omega\)</span> with the compression of <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> by <span class="math notranslate nohighlight">\(c\)</span> iterations, which is the set <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>.
+The associated information theoretical entropy is then</p>
+<div class="math notranslate nohighlight">
+\[H \left(\Omega^{(c)}\right) = log\left(\frac{\nu\left(\Omega^{(c)}\right)}{\nu\left(\Omega^{(0)}\right)}\right) + H \left(\Omega^{(0)}\right)\]</div>
+<p>We define the change of information theoretical entropy <span class="math notranslate nohighlight">\(\Delta H^{(c)}\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[\Delta H^{(c)} := H \left(\Omega^{(c)}\right) - H \left(\Omega^{(0)}\right)\]</div>
+<p>By definition of the information gain <span class="math notranslate nohighlight">\(\Delta I^{(c)}\)</span>, the (thermodinamical) entropy change of the DM <span class="math notranslate nohighlight">\(\Delta S_{DM}^{(c)}\)</span>,
+and the number of bit reduction <span class="math notranslate nohighlight">\(\Delta B^{(c)}\)</span>, we obtain</p>
+<div class="math notranslate nohighlight">
+\[k_{\Gamma} \ \Delta H^{(c)} = -k_{\Gamma} \ \Delta I^{(c)} =  \Delta S_{DM}^{(c)} = - k_{\Gamma} \  log(2) \ \Delta B^{(c)}\]</div>
+<p>If our definition are well chosen, these four notions are, up to a factor, different names for the same thing.</p>
 </section>
-<section id="discussion">
-<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">¶</a></h2>
-<p>By defining the total useful energy consumed by the reconstruction as</p>
+<section id="parallel-computing">
+<h2>Parallel Computing<a class="headerlink" href="#parallel-computing" title="Link to this heading">¶</a></h2>
+<p>We redefine in this section our notion of entropy change <span class="math notranslate nohighlight">\(\Delta S\)</span>,
+information theoretical entropy change <span class="math notranslate nohighlight">\(\Delta H\)</span>,
+information gain <span class="math notranslate nohighlight">\(\Delta I\)</span>, and number of bit reduction <span class="math notranslate nohighlight">\(\Delta B\)</span>
+in the case of <span class="math notranslate nohighlight">\(N\)</span> copies of the dynamic memory being updated in parallel by the same
+iterative algorithm. In this context, each copy of the dynamic memory
+is storing its onwn dynamic variable independently
+of each other. The <span class="math notranslate nohighlight">\(N\)</span> copies of the dynamic memory are physicaly different memory storage systems
+that are physically very identical, which are informatically identical, but which all have their individual existence.
+We will write  <span class="math notranslate nohighlight">\(\omega_i\)</span> the dynamic variable stored in the dynamic memory number
+<span class="math notranslate nohighlight">\(i\)</span>. Each <span class="math notranslate nohighlight">\(\omega_i\)</span> can be different from the others and they are all independant.</p>
+<p>In order to describe that system, we define a new single state <span class="math notranslate nohighlight">\(\omega\)</span> as the list</p>
 <div class="math notranslate nohighlight">
-\[\Delta E^{tot}_{useful} =  \eta \cdot P \cdot \Delta t^{tot}\]</div>
-<p>equation (E4) can be rewritten as</p>
+\[\omega = \left(\omega_1, ..., \omega_N \right)\]</div>
+<p>in the new phase space</p>
 <div class="math notranslate nohighlight">
-\[k_{\Gamma} \ T_C \  \Delta I^{tot} \leq   \Delta E^{tot}_{useful} \quad (E5)\]</div>
+\[\Gamma^N := \Gamma \times ... \times \Gamma\]</div>
+<p>which obeys to all definition we did until now. We only have to replace
+<span class="math notranslate nohighlight">\(\Gamma\)</span> by <span class="math notranslate nohighlight">\(\Gamma^N\)</span> and <span class="math notranslate nohighlight">\(\omega\)</span> by
+<span class="math notranslate nohighlight">\(\left(\omega_1, ..., \omega_N \right)\)</span> in all our definitions.</p>
+<p>We will ow do that but we will keep the same definition for <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> and
+<span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span> as above. Since the algorithm is behaving in the same way irrespectively of the
+particular state of each dynamic memory, the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is the same for all
+DMs and so is the set <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>. Only the particular representent <span class="math notranslate nohighlight">\(\omega_i\)</span>
+can differ between DMs. The start value <span class="math notranslate nohighlight">\(\omega^{(0)}\)</span> is in the set <span class="math notranslate nohighlight">\({\Omega^{(0)}}^N\)</span>
+and the state <span class="math notranslate nohighlight">\(\omega^{(c)}\)</span> at iteration <span class="math notranslate nohighlight">\((c)\)</span> is in the set <span class="math notranslate nohighlight">\({\Omega^{(c)}}^N\)</span> given by</p>
+<div class="math notranslate nohighlight">
+\[{\Omega^{(c)}}^N = \Phi^{(c)} \left({ \Omega^{(0)} }^N ; \theta \right)\]</div>
+<p>In that expression, we silently redefined <span class="math notranslate nohighlight">\(\Phi\)</span> on <span class="math notranslate nohighlight">\(\omega \in \Gamma^N\)</span> componentwise by</p>
+<div class="math notranslate nohighlight">
+\[\Phi \left( \omega \right) := \left(\Phi\left(\omega_1\right), ..., \Phi\left(\omega_N\right)  \right)\]</div>
+<p>For a subset <span class="math notranslate nohighlight">\(\Omega \subset \Gamma\)</span>, the number of states in <span class="math notranslate nohighlight">\({\Omega}^N \subset {\Gamma}^N\)</span>
+is simply <span class="math notranslate nohighlight">\({\nu \left(\Omega\right)}^N\)</span>.  That means</p>
+<div class="math notranslate nohighlight">
+\[\nu\left( {\Omega}^N \right) = {\nu \left(\Omega\right)}^N\]</div>
+<p>By our definition of the entropy change <span class="math notranslate nohighlight">\(\Delta S^{(c)}\)</span>, the compression from <span class="math notranslate nohighlight">\({\Omega^{(0)}}^N\)</span>
+to <span class="math notranslate nohighlight">\({\Omega^{(c)}}^N\)</span> corresponds to an entropy change</p>
+<div class="math notranslate nohighlight">
+\[\Delta S^{(c)} = k_{\Gamma} \  log \left(\frac{{\nu \left(\Omega^{(c)}\right)}^N}{{\nu \left(\Omega^{(0)}\right)}^N}\right) = N k_{\Gamma} \  log \left( \frac{\nu \left(\Omega^{(c)}\right)}{\nu \left(\Omega^{(0)}\right)}\right) \quad (E6)\]</div>
+<p>In a similar way, we deduce that the work to perform that compression is given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta W =  - N \  k_{\Gamma} \  T_C  \  log \left( \frac{    \nu \left(\Omega^{(c)}\right)    }{   \nu \left(\Omega^{(0)}\right)    }\right)\]</div>
+<p>Since the informatic work <span class="math notranslate nohighlight">\(\Delta W\)</span> to perform the set compression is equal, by our assumption, to the heat releazed by the dynamic memory,
+it follows that this heat amout is also multiplied by <span class="math notranslate nohighlight">\(N\)</span> for the parallel execution of the algorithm on <span class="math notranslate nohighlight">\(N\)</span> dynamic variables.</p>
+<p>The definitions of <span class="math notranslate nohighlight">\(\Delta I\)</span>, <span class="math notranslate nohighlight">\(\Delta H\)</span> and <span class="math notranslate nohighlight">\(\Delta B\)</span> are equal to <span class="math notranslate nohighlight">\(\Delta S\)</span> up to a constant,
+they are also all multiplied by <span class="math notranslate nohighlight">\(N\)</span> for the parallel computing. We conserve thus the relation</p>
+<div class="math notranslate nohighlight">
+\[k_{\Gamma} \ \Delta H^{(c)} = -k_{\Gamma} \ \Delta I^{(c)} =  \Delta S_{DM}^{(c)} = - k_{\Gamma} \  log(2) \ \Delta B^{(c)}\]</div>
+<p>We note finally that the  work <span class="math notranslate nohighlight">\(\Delta W\)</span> is the mechanical work that would be needed to compress a gaz verifying the law</p>
+<div class="math notranslate nohighlight">
+\[p \ V = N \ k_{\Gamma} \ T_C\]</div>
+<p>which is similar, up to the constatn <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span>, to the ideal gas law. The
+formulas are as if the <span class="math notranslate nohighlight">\(N\)</span> independent dynamical variables <span class="math notranslate nohighlight">\(\left(\omega_1, ..., \omega_N \right)\)</span>
+were living in the same volume inside phase space <span class="math notranslate nohighlight">\(\Gamma\)</span> in a similar way like <span class="math notranslate nohighlight">\(N\)</span> particles of an
+ideal gas are evolving in the same physical volume without interacting between each other.</p>
+</section>
+<section id="connection-with-the-landauer-s-principle">
+<h2>Connection with the Landauer’s Principle<a class="headerlink" href="#connection-with-the-landauer-s-principle" title="Link to this heading">¶</a></h2>
+<p>By writing the total consumed energy as <span class="math notranslate nohighlight">\(\Delta E^{tot}\)</span>, and by writing the tempreture <span class="math notranslate nohighlight">\(T_C\)</span> as <span class="math notranslate nohighlight">\(T\)</span>
+(which is the temperature at which the computer operates), equation (E5) can be rewritten as</p>
+<div class="math notranslate nohighlight">
+\[k_{\Gamma} \ T \  \Delta I^{tot} \leq  \eta \  \Delta E^{tot} \quad (E7)\]</div>
 <p>This equation is very similar to the principle of Landauer, which reads</p>
 <div class="math notranslate nohighlight">
 \[k_{B} \ T \  log(2) \leq   \Delta E\]</div>
-<p>where <span class="math notranslate nohighlight">\(k_{B}\)</span> is the Boltzmann constant, <span class="math notranslate nohighlight">\(T\)</span> is the temperature of the computer
-(which can be identified with the temperature of the cooling system <span class="math notranslate nohighlight">\(T_C\)</span>) and <span class="math notranslate nohighlight">\(\Delta E\)</span>
-is the practical energy amount that is needed to erase a <em>bit</em> of information. This similarity suggests
-that equation (E5) could be seen as an generalisation of Landauer principle in the context of MRI
-reconstruction, but we have to stay prudent for the moment. What we were able to show is,
-that interpreting the “work” of the computer as a virtual work that contracts a portion of phase
-space like an ideal gas leads to a relation between energy and information that is very similar
-to the Principle of Landauer.</p>
+<p>where <span class="math notranslate nohighlight">\(k_{B}\)</span> is the Boltzmann constant, <span class="math notranslate nohighlight">\(T\)</span> is the temperature of the computer and <span class="math notranslate nohighlight">\(\Delta E\)</span>
+is the practical energy amount that is needed to erase a <em>bit</em> of information.
+Since Landauer’s principle is formulated “per bit”, we can write it more generally for <span class="math notranslate nohighlight">\(\Delta B\)</span> bits as</p>
+<div class="math notranslate nohighlight">
+\[k_{B} \ T \  log(2) \Delta B_{erazed} \leq   \Delta E \quad (E8)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta E\)</span> is now the energy needed to erase <span class="math notranslate nohighlight">\(\Delta B_{erazed}\)</span> bits. If we substitute <span class="math notranslate nohighlight">\(\Delta I^{tot}\)</span>
+by the equivalent expression for the number of bit reduction <span class="math notranslate nohighlight">\(\Delta B\)</span>,
+equation (E7) becomes</p>
+<div class="math notranslate nohighlight">
+\[k_{\Gamma} \ T \  log(2) \Delta B \leq  \eta \  \Delta E^{tot} \quad (E9)\]</div>
+<p>which is now very close to Landauer’s principle. The main difference is the presence of constant <span class="math notranslate nohighlight">\(k_{\Gamma}\)</span>
+instead of <span class="math notranslate nohighlight">\(k_B\)</span>. This suggests to set</p>
+<div class="math notranslate nohighlight">
+\[k_{\Gamma} = k_B\]</div>
+<p>Equation E9 becomes then</p>
+<div class="math notranslate nohighlight">
+\[k_B \ T \  log(2) \Delta B \leq  \eta \  \Delta E^{tot} \quad (E10)\]</div>
+<p>By interpreting the usefull energy <span class="math notranslate nohighlight">\(\eta \ E^{tot}\)</span> as being <span class="math notranslate nohighlight">\(\Delta E\)</span>, and by interpreting the
+number of erased bits <span class="math notranslate nohighlight">\(\Delta B_{erazed}\)</span> as the number of bit reduction <span class="math notranslate nohighlight">\(\Delta B\)</span> in the context of iterative algorithms,
+Landauer’s principle E8 is equivalent to E10, which is the equation that follows from our postulate for the change of entropy in the
+dynamic memory. We have thus demonstated that our postulate for the entropy of the dynamic memory leads to an expression that can be interpreted to be
+to Landauer’s principle extended to the iterative elgorithms.</p>
+<p>Given the temperature dependency of E8 and E10, which is so that the information gain
+explodes when temperature is going to <span class="math notranslate nohighlight">\(0\)</span>, it is natural to wonder weather these equations could be the classical
+limit of a quantum equation, since the nature of quantum computing is to expoit the properties of matter for
+very low temperature. Although it is purely speculative, it may then be that the number of particle <span class="math notranslate nohighlight">\(N\)</span> becomes the
+number of dynamic variables that are existing in parallel in the quantum algorithm.</p>
+</section>
+<section id="connection-with-statistical-mechanic">
+<h2>Connection with Statistical Mechanic<a class="headerlink" href="#connection-with-statistical-mechanic" title="Link to this heading">¶</a></h2>
 <p>The entropy of an ideal gas, for a constant number of particles <span class="math notranslate nohighlight">\(N\)</span> and constant temperature, can be expressed up
 to a constant as</p>
 <div class="math notranslate nohighlight">
 \[S = N \ k_B \ log(V) + const.\]</div>
-<p>An analogy with our ideal phase space gas and equation (E2) suggests, for the entropy of the dynamic memory, an expression of the form:</p>
+<p>An analogy with our ideal phase space gas and equation (E6) suggests, for the entropy of the dynamic memory, an expression of the form:</p>
 <div class="math notranslate nohighlight">
-\[S = k_{\Gamma} \  log\left(\frac{\nu \left(\Omega\right) }{\nu \left(P\right)} \right) = k_{\Gamma} \  log\left( \nu \left(\Omega\right) \right)\]</div>
+\[S = k_B \  log\left( {\nu \left(\Omega\right)}^N \right) + const = N \  k_B \  log\left( \nu \left(\Omega\right) \right) + const\]</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Neglecting the constant leads</p>
+<div class="math notranslate nohighlight">
+\[S = k_B \  log\left( \nu \left({\Omega}^N\right) \right)\]</div>
+</section>
+</section>
+<section id="the-boltzman-entropy-formula-reads">
+<h1>The Boltzman entropy formula reads<a class="headerlink" href="#the-boltzman-entropy-formula-reads" title="Link to this heading">¶</a></h1>
 <p>because by our definitions is <span class="math notranslate nohighlight">\(\nu(P)\)</span> equal to <span class="math notranslate nohighlight">\(1\)</span>. Our theory can be considered of a physical assumbtion about the entropy of the
 dynamic memory. We have no way to prove that the true (physical) thermodynamic entropy of the dynamic memory is really given by our expression.
 It is a claim we did and that tried to test it by exploring some of the consequences. Interestingly,
-this equation for entropy is very similar to the equation of Boltzmann</p>
+this equation for entropy is very similar to the equation of Boltzmann
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; f5b9b5f46b00306c3cb087dc67f816d3b3049749</p>
 <div class="math notranslate nohighlight">
 \[S = k_B \  log\left( \Omega \right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Omega\)</span> is the area of the surface in phase space occupied by all the possible micro states of a given energy
 for the physical system under consideration (it is the “number” of allowed mirco states, if one prefers).
-There is in fact an analogy between the set of allowed microstates of a physical system and our phase space:
-our set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is the set of possible states of the dynamic memory and after <span class="math notranslate nohighlight">\(c\)</span> iterations,
-the set of possible states of the dynamic memory is the set <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>. The numbers
-<span class="math notranslate nohighlight">\(\nu\left(\Omega^{(0)}\right)\)</span> resp. <span class="math notranslate nohighlight">\(\nu\left(\Omega^{(c)}\right)\)</span> can be considered as
-the numbers of states in those sets.</p>
+Both entropy formula are very similar because the meaning of <span class="math notranslate nohighlight">\(\Omega\)</span> in Boltzman formula has a similar meaning like
+the symbol <span class="math notranslate nohighlight">\(\nu \left({\Omega}^N\right)\)</span> : it is the number of states that the system under consideration can occupy.</p>
+<p>It seems therefore that a connection between our theory with statistical mechanic may be possible. But for the moment both
+theories are quite different, mainly because our notion is volume is equal to the number of states that DM can occupy,
+while in statistical mechanic are volume and number of possible states different notions. A unification will therefore need
+a work of reformulation.</p>
+<section id="artificial-inteligence-as-an-amplification-of-efficiency">
+<h2>Artificial Inteligence as an Amplification of Efficiency<a class="headerlink" href="#artificial-inteligence-as-an-amplification-of-efficiency" title="Link to this heading">¶</a></h2>
+<p>We will not speculate of what artificial inteligence (AI) could be in the future and what it could achieve potentially.
+Rather, we will considere it as what it is for the moment in the context of MRI reconstruction:
+artificial intelligence in MRI reconstruction consists in replacing the evaluation of some dynamical variable
+(image, deformation field or other algorithm variable) by some statistical prediction that are faster to perform
+if the model could be trained in advance on some good quality groundtruth data.</p>
+<p>For the moment, it seems therefore that the use of AI allows the same gain of information as the non AI algorithms
+but in a smaller amount of time, and therefore by consuming less energy. It may seems at first sight that AI
+can allow to violate some lower energy bound set some physical principle, such as Landauer’s principle. But if we think
+that training an AI consummes actually a large amount of energy and that the data the AI is trained on also needs
+a large energy amount to be reconstructed, it becomes clear that a carefull sum of all energy contributions must be
+done in order to perform a correct analysis.</p>
+<p>We will call <span class="math notranslate nohighlight">\(E \left(GT\right)\)</span> the energy amount needed to produce the data that serves to train the AI
+(“GT” stands for “ground truth”) and we will call <span class="math notranslate nohighlight">\(E \left(\mathcal{N}\right)\)</span> the energy needed to train
+the statistical model (i.e. the AI). We will write <span class="math notranslate nohighlight">\(E_i\)</span> the energy needed to perfom a non AI algorithm
+on data number <span class="math notranslate nohighlight">\(i\)</span> in order to obtain a certain quality in the result. Finally, we will write <span class="math notranslate nohighlight">\(E^{AI}_i\)</span> the
+energy needed by an AI informed algorithm that leads to the same quality of its non AI counterpart for data
+numner <span class="math notranslate nohighlight">\(i\)</span>. We run now <span class="math notranslate nohighlight">\(R\)</span> times the non AI algorithm on <span class="math notranslate nohighlight">\(R\)</span> different data. The total consumed energy is
+therefore</p>
+<div class="math notranslate nohighlight">
+\[E_{tot} = E_1 + ... + E_R\]</div>
+<p>If we run the AI infromed algorithms on the same data until the same quality of result is obtained, the total consumed
+energy is</p>
+<div class="math notranslate nohighlight">
+\[E^{AI}_{tot} = E^{AI}_1 + ... + E^{AI}_R + E \left(GT\right) + E \left(\mathcal{N}\right)\]</div>
+<p>The assumption that the AI reconstruction consumes less energy that its non AI counterpart reads</p>
+<div class="math notranslate nohighlight">
+\[E^{AI}_i &lt; E_i\]</div>
+<p>For a large enough <span class="math notranslate nohighlight">\(R\)</span> we can then reach</p>
+<div class="math notranslate nohighlight">
+\[E^{AI}_{tot} &lt; E_{tot}\]</div>
+<p>This means that the initial energy investment <span class="math notranslate nohighlight">\(E \left(GT\right) + E \left(\mathcal{N}\right)\)</span>
+becomes valuable for sufficiently many reconstructions.</p>
+<p>We will call <span class="math notranslate nohighlight">\(\langle E \rangle\)</span> the average energy consumption of the non AI alrogithm so that</p>
+<div class="math notranslate nohighlight">
+\[E_{tot} = R \cdot \langle E \rangle\]</div>
+<p>and will call <span class="math notranslate nohighlight">\(\langle E^{AI} \rangle\)</span> the average energy consumption of the AI alrogithm so that</p>
+<div class="math notranslate nohighlight">
+\[E^{AI}_{tot} = R \cdot \langle E^{AI} \rangle\]</div>
+<p>It follows that for sufficiently many run of the algorithms holds</p>
+<div class="math notranslate nohighlight">
+\[\langle E^{AI} \rangle &lt; \langle E \rangle\]</div>
+<p>We will write <span class="math notranslate nohighlight">\(\Delta I^{tot}\)</span> the total information gain of all non AI reconstruction,
+which is by our definitions also equal to the total information gain of all AI reconstruction.
+By our definition of efficiency, and assuming it to be constant for simplicity, it follows
+that the efficient of the non AI reconstruciton is given by</p>
+<div class="math notranslate nohighlight">
+\[\eta = k_{\Gamma} \ T_C \ \frac{\Delta I_{tot}}{R \ \langle E \rangle}\]</div>
+<p>and that the efficiency of the AI reconstruction is given by</p>
+<div class="math notranslate nohighlight">
+\[\eta_{AI} = k_{\Gamma} \ T_C \ \frac{\Delta I_{tot}}{R \ \langle E_{AI} \rangle}\]</div>
+<p>Their ratio verifies</p>
+<div class="math notranslate nohighlight">
+\[\frac{\eta_{AI}}{\eta} = \frac{\langle E \rangle}{\langle E_{AI} \rangle}\]</div>
+<p>and therefore</p>
+<div class="math notranslate nohighlight">
+\[\eta_{AI} = \eta \ \frac{\langle E \rangle}{\langle E_{AI} \rangle} &gt; \eta\]</div>
+<p>The efficiency of the AI algorithm is then an amplification of the efficiency of the non AI algorithm.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">¶</a></h2>
+<p>We have done two postulates on the entropy change of the <em>Dynamic Memory</em> (DM) of a computer (the part of memory that is changed by
+the iterative algorithm):</p>
+<ul class="simple">
+<li><p>At each iteration of the algorithm, the entropy of the DM experience a negative change <span class="math notranslate nohighlight">\(\Delta S\)</span>.</p></li>
+<li><p>This negative change is given quantitatively by</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\Delta S = N \ k_B \ log\left(\frac{\nu\left({\Omega}^{(c+1)}\right)}{\nu\left({\Omega}^{(c)}\right)}\right)\]</div>
+<p>In the second postulate is <span class="math notranslate nohighlight">\(N\)</span> is the number of parallel instances of the memory that the algorithm
+is updating (which is <span class="math notranslate nohighlight">\(1\)</span> for non-parallel computing), <span class="math notranslate nohighlight">\(k_B\)</span> is the Boltzman constant,
+<span class="math notranslate nohighlight">\({\Omega}^{(c)}\)</span> is the phase space sub-set that contains with 100% chance the dynamic variable of any of the
+mermory instance at iteration number <span class="math notranslate nohighlight">\(c\)</span>, and <span class="math notranslate nohighlight">\(\nu\left({\Omega}^{(c)}\right)\)</span> is the number of
+memory state (for a single memory instance) that is contained in the phase space sub-set <span class="math notranslate nohighlight">\({\Omega}^{(c)}\)</span>.</p>
+<p>We have thus postulated some expression for the physical entropy change in the dynamic memory of a computer
+which rely on the mathematical dynamic variables of the algorithm rather than on some physical quantities.
+That way, we builded a bridge between the physical word and the mathematical world of information.
+We did not prove that our statement for the physical entropy change in the dynamic memory
+was correct or wrong, but we showed that by a clever definition of information gain, our statement
+was very close to the known Landauer’s principle. That connection is interesing in itself.</p>
+<p>Although less strong, we also showed some connection from our entropy postulate to the theory of information
+as well as to statistical mechanic.</p>
+<p>We also showed that from our definition of efficieny follows, that the use of AI in iterative algorithms
+to update some of the dynamic variables at each iteration results in an efficieny amplification.
+In this context, AI appears like a technology that allows to directly re-use some of the information gained during
+the groundtruth data construction, instead of re-computing everything again
+for every new data to treat, as it is done by non AI algorithm. If our view is correct, AI allows to indirectly
+re-use a part of the energy used to construct ground truth data. In that case, it should be advantageous to consume
+a maximum ammount of energy to build good quality ground truth data.
+This is motivation behind Monalisa.</p>
 </section>
 </section>
 
@@ -660,10 +1172,22 @@ the numbers of states in those sets.</p>
 <li class="toctree-l1 current"><a class="reference internal" href="7_discussions.html">Discussion</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sketching a Classical Thermodynamic Theory of Information for MRI Reconstructions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#iterative-reconstructions-and-phase-space">Iterative Reconstructions and Phase Space</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-heat-engine-and-the-computer">The Heat Engine and the Computer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#connections-with-the-theory-of-information">Connections with the Theory of Information</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#discussion">Discussion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iterative-reconstructions">Iterative Reconstructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-phase-space">The Phase Space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-space-of-memory-states">The Space of Memory States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-heat-engine">The Heat Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-computer-as-an-engine">The Computer as an Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-postulate-for-the-thermodynamical-entropy-of-the-dynamic-memory">A Postulate for the Thermodynamical Entropy of the Dynamic Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#information-and-efficiency">Information and Efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connection-with-the-theory-of-information">Connection with the Theory of Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parallel-computing">Parallel Computing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connection-with-the-landauer-s-principle">Connection with the Landauer’s Principle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connection-with-statistical-mechanic">Connection with Statistical Mechanic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#the-boltzman-entropy-formula-reads">The Boltzman entropy formula reads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#artificial-inteligence-as-an-amplification-of-efficiency">Artificial Inteligence as an Amplification of Efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>
