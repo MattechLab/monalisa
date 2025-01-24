@@ -12,18 +12,18 @@ Input Arguments for Reconstruction Functions
 
 The input arguments that involve no or little preparation, and which are "easy" to define, and which are occupies little memory will be qualified as **leight**.
 
-The input arguments that either need some carfull preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as **heavy**.
+The input arguments that either need some careful preparation, or need some technical user defined choices, or occupies a lot of memory will be qualified as **heavy**.
 
 For static (single frame) reconstructions, ``y``, ``t`` and ``ve`` are arrays, while for dynamic reconstructions 
 they are cell-arrays with one cell per data-bin and per frame. 
 
-For static recontructions are: 
+For static reconstructions are: 
 
     - ``y``: the raw data. **Complex-valued, sinlge-precision, heavy.** Its size is ``[nPt, nCh]`` where ``nPt`` is the number of trajectory-points and ``nCh`` is the number of channels. 
     - ``t``: the trajectory. **Double-precision, heavy**. Its size is ``[frDim, nPt]`` where the frame-dimension ``frDim`` is the spatial dimension of the frames (2 or 3) and ``nPt`` is the number of trajectory-points. 
     - ``ve``: the volume elements (inverse density compensation). **Single precision, heavy**.  Its size is ``[1, nPt]`` where ``nPt`` is the number of trajectory-points. 
 
-For multiple-frame (dynamic) recontructions are 
+For multiple-frame (dynamic) reconstructions are 
 
     - ``y``: the cell-array of raw-data bins. **Each cell is complex-valued, sinlge-precision, heavy.**
     - ``t``: the cell-array of trajectory bins. **Each cell is double precision, heavy.**  
@@ -92,7 +92,7 @@ The reconstruction FoV is set by the choice of ``dK_u``, or reversely, ``dK_u`` 
 
 In order to avoid numerical problems due to large differences between volume elements, we have to limit them by a user defined upper bound that we called
 
-    - ``ve_max``: the maxium volume element value that serves to limite ``ve`` in order to to avoid some convergence problems. *Single, scalar, leight*. 
+    - ``ve_max``: the maximum volume element value that serves to limit ``ve`` in order to to avoid some convergence problems. *Single, scalar, leight*. 
 
 
 For iterative reconstruction, the reconstruction function need a start ismage as input that we use to write
@@ -107,16 +107,16 @@ The number of iterations in reconstruction functions are given by
     - ``nCGD``: the number of iterations of the inner loop for the conjugate-gradient-descent. **Double precision, scalar, leight.**
 
 For iterative reconstructions,  ``nIter`` is the number of iterations of the ADMM algorithm (outer loop) and ``nCGD`` is the number of CGD (inner loop) iterations.   
-For least square reconstructions, ``nIter`` is the nubmer of iterations of the CGD algorithm.
+For least square reconstructions, ``nIter`` is the number of iterations of the CGD algorithm.
 
 
 All least-square regularized reconstructions need a regularization weight. We provide an **adaptive** (automatic) and **normal** 
-(manual) way to provide that weight. The choice is done by setting the parametter
+(manual) way to provide that weight. The choice is done by setting the parameter
 
-    - ``regul_mode`` : Regularization mode. **String, leght**. You can set it to **normal** or **adaptive**. 
+    - ``regul_mode`` : Regularization mode. **String, length**. You can set it to **normal** or **adaptive**. 
 
 If ``regul_mode`` is set to *adaptive*, the reconstruction function makes an automatic choice for the 
-regularization weigth in order to reach an equilibrium between the the data-fidelity term and the regularization term 
+regularization weight in order to reach an equilibrium between the the data-fidelity term and the regularization term 
 in the objective function.  
 
 If ``regul_mode`` is set to **normal**, then is the regularization weight given by the input argument
@@ -127,11 +127,11 @@ If ``delta`` is a scalar, that number is used as regularization weight for each 
 If ``delta`` is a vector of length `nIter`, iteration number `c` is performed with the regularization weight equal to the value 
 at position `c` in the vector ``delta``. 
 If ``delta`` is a list of 2 values ``[delta_min, delta_max]`` with `delta_min < delta_max`, then is  ``delta`` replaced 
-by a list of length `nIter` by interpolating linearily `nIter` values between `delta_min` and `delta_max`.   
+by a list of length `nIter` by interpolating linearly `nIter` values between `delta_min` and `delta_max`.   
 
-The ADMM algorithm (for l1 regularization) needs an aditional **convergence paramter** that we will write
+The ADMM algorithm (for l1 regularization) needs an additional **convergence parameter** that we will write
 
-    - ``rho`` : Convergence parameter for the ADMM algorithm. **Single precision, scalar, leight.** A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsability for this).    
+    - ``rho`` : Convergence parameter for the ADMM algorithm. **Single precision, scalar, leight.** A rule of thumb is to set ``rho`` equal to a multiple (from 1 to 20) of ``lambda`` (We don't say it is the best choice, we don't take any responsibility for this).    
 
 
 For any non-cartesian reconstrucitons are
@@ -139,7 +139,7 @@ For any non-cartesian reconstrucitons are
     - ``Gu`` : The gridding (sparse) matrix used for forward gridding in our iterative non-cartesian reconstructions. **Of class `bmSparseMat`, heavy.** 
     - ``Gut``: The transposed matrix of ``Gu`` used for backward (not inverse) gridding in our iterative non-cartesian reconstructions. **Of class `bmSparseMat`, heavy.** 
 
-For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:
+For the the sake of completeness and understanding of gridding, the construction of following sparase matrix is also implemented:
 
     - ``Gn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Gu``. **Of class `bmSparseMat`, heavy.**  The inverse of ``Gu`` does not exist but ``Gn`` is constructed so that the composition ``Gn Gu`` is as close as possible to the identity.   
 
@@ -156,15 +156,15 @@ For image (not k-space) motion compensation are
     - ``Tu``        : the deformation (sparse) matrix used for forward deformation in our motion compensated reconstructions. **Of class `bmSparseMat`, heavy.** 
     - ``Tut``       : the transposed matrix of ``Tut`` for backward deformation. **Of class `bmSparseMat`, heavy.** 
 
-Note that matrix ``Tut`` do not perform an inverse deformation. It realizes the transposed opperation of the forward deformation. 
+Note that matrix ``Tut`` do not perform an inverse deformation. It realizes the transposed operation of the forward deformation. 
 
-For the the sake of completness and understanding of gridding, the construction of following sparase matrix is also implemented:
+For the the sake of completeness and understanding of gridding, the construction of following sparase matrix is also implemented:
 
     - ``Tn``: The gridding (sparse) matrix that attempts to realize an "inverse" operation performed by ``Tu``. **Of class `bmSparseMat`, heavy.** The inverse of ``Tu`` may or may  not exist. In any case, ``Tn`` is constructed so that the composition ``Tn Tu`` is as close as possible to the identity.   
 
 In order to monitor what is happening during a reconstruction (typically if this is taking lany hours) or just to have a track recoord of process after the reconstruction is finished, the following class has been implemented: 
     
-    - ``witnessInfo``: Monitoring object to give as input argument to any iterative reconstruction function. **Of the classe `bmWitnessInfo`, Leight.** It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration. 
+    - ``witnessInfo``: Monitoring object to give as input argument to any iterative reconstruction function. **Of the class `bmWitnessInfo`, Leight.** It serves to store some monitoring information about the execution of the reconstruction process, in partocular some information about convergence and some 2D images at each iteration. 
 
 
 .. note::
@@ -210,7 +210,7 @@ Mathilda is our gridded, zero-padded, inverse DFT reconstruction for non-cartesi
 If the data are well sampled, then leads Mathilda already to a descent image. 
 For iterative reconstruction of under sampled data, we mostly use Mathilda to perform the initial guess ``x0``  
 
-Here is the funciton call: 
+Here is the function call: 
 
 .. code-block:: matlab
 
@@ -261,7 +261,7 @@ Steva
 -----
 
 Single-frame Least-square Regularized Reconstruction, 
-where reularizaiton is the l&-norm of spatial gradient of the image. 
+where reularizaiton is the l1-norm of spatial gradient of the image. 
 
 witness_label = 'steva_demo';
 
@@ -304,8 +304,8 @@ Single-frame Least-square Regularized Reconstruction, where reularizaiton is the
 Deformation-Fields
 ==================
 
-The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with mouvement compensation. 
-The multiplication of an image vector by a deformation matrix defroms the image accroding to the deformation-field 
+The deformation matrices (and their corresponding transposed matrices) serves to perform temporal regularization with movement compensation. 
+The multiplication of an image vector by a deformation matrix defroms the image according to the deformation-field 
 encoded in the deformation-matrix. A deformation-field must therefore be estimated prior to the definition of any deformation matrix. 
 
 Here is a possible way to estimate deformation-fields. In that example, the deformation-field
@@ -332,7 +332,7 @@ Once the deformation-fields are estimated, the deformation-matrices can simply b
 
 Note that the deformation-fields can be estimated by any tool as chosen by the user. Here is the use of `imregdemons` just an example. 
 
-The computed deformation-matrices can be strored and re-used many times with different functions described below.   
+The computed deformation-matrices can be stored and re-used many times with different functions described below.   
 
 
 
