@@ -4,7 +4,7 @@ The Mitosius
 
 Creating the Mitosius is the last preparation step before the reconstruction. This section covers how to prepare the mitosius.
 
-You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-4_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :)).
+You have already run the coil sensitivity estimation or had an estimate of coil sensitivity by your own procedure (see the :doc:`Coil Sensitivity Map Estimation <2-5_coil_sensitivity_map>`). You need to have access to the raw data of the acquisition (of course :)).
 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
@@ -221,8 +221,8 @@ You can create your own custom trajectory as long as you follows the following r
 
 Examples: 
 
-    - 1. If your acquisiton trajectory corresponds to a FoV of ``[200, 300]`` in `mm` (milimeter), the step size in `kx`-direction of k-space must then be 1/200 (in `1/mm`), and the step size in `ky`-direction of k-space must be 1/300 (in `1/mm`). 
-    - 2. If your acquisiton trajectory is a radial trajectory for a FoV of ``[360, 360]`` in `mm`, the space between two consecutive points on a radial trajectory line must be `1/360` (in `1/mm`). 
+    - 1. If your acquisition trajectory corresponds to a FoV of ``[200, 300]`` in `mm` (millimeter), the step size in `kx`-direction of k-space must then be 1/200 (in `1/mm`), and the step size in `ky`-direction of k-space must be 1/300 (in `1/mm`). 
+    - 2. If your acquisition trajectory is a radial trajectory for a FoV of ``[360, 360]`` in `mm`, the space between two consecutive points on a radial trajectory line must be `1/360` (in `1/mm`). 
 
 .. raw:: html
 
@@ -234,7 +234,7 @@ Examples:
 
    <br><br><br><br>
 
-If you already computed your trajectory and that it is scalled in the unit-cube (between `-0.5` and `+0.5` in each direction), you can make the 
+If you already computed your trajectory and that it is scaled in the unit-cube (between `-0.5` and `+0.5` in each direction), you can make the 
 following rescaling to adapt your trejectory for Monalisa. 
 
 For that you need to identify: 
@@ -245,7 +245,7 @@ Let then be :math:`[k_x, k_y, k_z]` the coordinate of a trajectory point. Then r
 
     :math:`[k_x, k_y, k_z] \rightarrow [k_x \cdot aN_x/aL_x, \quad  k_y \cdot aN_y/aL_y,  \quad k_z \cdot aN_z/aL_z]` 
 
-In another scenario, you may already have your trajectory with the convention that :math:`k_x` is scalled between :math:`-aN_x/2` and :math:`aN_x/2 - 1` and :math:`k_y, k_z` are scalled acoordingly. 
+In another scenario, you may already have your trajectory with the convention that :math:`k_x` is scaled between :math:`-aN_x/2` and :math:`aN_x/2 - 1` and :math:`k_y, k_z` are scaled accordingly. 
 Then you can simply rescal your trajectory as
 
     
@@ -256,7 +256,7 @@ The trajectory is not a reconstruction quantity in the sense that it cannot be c
 is set at acquisition and cannot be changed anymore. We have thus to guess how the scanner defined the trajectory. There is no algorithm for that because it
 depends on arbitrary conventions used on each MRI scanner.  
 
-We don't work with arbitray units in Monalisa. For example, we do not admit that the edge length of voxels is 1, which corresponds to a scaling ot the 
+We don't work with arbitrary units in Monalisa. For example, we do not admit that the edge length of voxels is 1, which corresponds to a scaling of the 
 trajectory in the unit-cube. This strategy of working with physical (non-arbitrary) units allows for example to work with different voxel-size for 
 the same data without having scaling problems in the reconstructed images. 
 

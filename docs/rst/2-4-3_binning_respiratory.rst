@@ -55,7 +55,7 @@ Steps for Respiratory Binning using SI projections:
    -	`filter_type` must be set to `lowPass` for respiratory binning. 
    -	`nMask` is the number of masks (or bins) that we want in the output. 
    -	`maskWidth` expresses how much the bins can overlap between neighbors. A value of 1 expresses no overlap. A value of 1.2 expresses 20% overlap. 
-   -	`signal_exploration_level` is irrelevent for respiratory binning. It is needed for cardiac binning.   
+   -	`signal_exploration_level` is irrelevant for respiratory binning. It is needed for cardiac binning.   
    -	`nCh` is the number of channels in the raw data. 
    -	`N` is the number of points per acquired lines. 
    -	`nSeg` is the number of segments per shot in the sequence. 
@@ -103,7 +103,7 @@ Steps for Respiratory Binning using SI projections:
                                                     nShot); 
    
    Run the section and you will see a graphical interface appear. 
-   You should be able to recognize the respiratory patern. 
+   You should be able to recognize the respiratory pattern. 
 
    .. image:: ../images/respiratory_binning/ref_signal_1.png
       :width: 90%
@@ -133,7 +133,7 @@ Steps for Respiratory Binning using SI projections:
    
    In order to avoid pathologies in the even extension of the reference signal, 
    we will select the left and right ends (yellow vertical bars) of the 
-   horizontal window either in two maxima of the respiratory patern, or in two minima.
+   horizontal window either in two maxima of the respiratory pattern, or in two minima.
    You can zoom with the loop to click precisely.  
    
    Note that the left end of that horizontal window also serve to exclude the 
@@ -155,14 +155,14 @@ Steps for Respiratory Binning using SI projections:
 
 
    You have now to define the lower and upper bound of the vertical window that
-   contains some caracteristic pattern of respiration. The best way to do it
+   contains some characteristic pattern of respiration. The best way to do it
    is to select some vertical window that seems to contain some respiratory pattern
    and then adjust it as described below. Make two clicks as follows: 
 
       - Do `x + Left Click` to set the lower bound of the window.
       - Do `x + Right Click` to set the upper end of the window.
 
-   After the first click you shou see someting like this: 
+   After the first click you shou see something like this: 
 
    .. image:: ../images/respiratory_binning/lower_bound.png
       :width: 90%
@@ -170,7 +170,7 @@ Steps for Respiratory Binning using SI projections:
       :alt: Lower bound vertical window
 
 
-   And after the second click you shou see someting like that: 
+   And after the second click you shou see something like that: 
 
    .. image:: ../images/respiratory_binning/upper_bound.png
       :width: 90%
@@ -207,13 +207,13 @@ Steps for Respiratory Binning using SI projections:
 
 
    Finally, chose a vertical window that will serve for display purpose 
-   only in the rest of the precedure.
+   only in the rest of the procedure.
 
       - press n + left-click to select the lower bound of the display window, 
       - press n + right-click to select the upper bound of the display window. 
 
 
-   After the first click you shou see someting like this: 
+   After the first click you shou see something like this: 
 
    .. image:: ../images/respiratory_binning/ref_signal_4.png
       :width: 90%
@@ -221,7 +221,7 @@ Steps for Respiratory Binning using SI projections:
       :alt: ref_signal_4
 
 
-   And after the second click you shou see someting like that: 
+   And after the second click you shou see something like that: 
 
    .. image:: ../images/respiratory_binning/ref_signal_5.png
       :width: 90%
@@ -253,10 +253,10 @@ Steps for Respiratory Binning using SI projections:
                                             imNav); 
                                                                
 
-   You should then see the graphical frequency selector appear. In the left pannel is the 
-   frequency spectrum of the reference signal displayed, and the right pannel 
+   You should then see the graphical frequency selector appear. In the left panel is the 
+   frequency spectrum of the reference signal displayed, and the right panel 
    is the reference signal displayed.  
-   On the left pannel, in the upper line of buttons, press the more right button the stretch 
+   On the left panel, in the upper line of buttons, press the more right button the stretch 
    the frequency axis to the right until you see a similar picture like the following.  
 
    .. image:: ../images/respiratory_binning/freq_select_1.png
@@ -264,10 +264,10 @@ Steps for Respiratory Binning using SI projections:
       :align: center
       :alt: freq_select_1  
 
-   Still on the left pannel, in the lower line of buttons, on the right, press the "<<<" button
-   to decrese the value of the maximum frequency of the filter. You may have to press many times 
+   Still on the left panel, in the lower line of buttons, on the right, press the "<<<" button
+   to decrease the value of the maximum frequency of the filter. You may have to press many times 
    until the effect appears on the displayed range of frequencies. You can also use the buttons 
-   "<<" and "<" to be more precise. Try to identify the peak arround the base frequency of 
+   "<<" and "<" to be more precise. Try to identify the peak around the base frequency of 
    the respiratory signal, and create a lowpass filter that include that peak, like on the 
    following figure. 
 
@@ -281,7 +281,7 @@ Steps for Respiratory Binning using SI projections:
    filter (bandpass will be for cardiac binning). 
    
    Then press the button "Filter Signal". 
-   The filtered signal appears then in blue on the right pannel. 
+   The filtered signal appears then in blue on the right panel. 
    You can press "Hide Yelow" to discard the reference signal. 
    
    .. image:: ../images/respiratory_binning/freq_select_3.png
@@ -308,12 +308,12 @@ Steps for Respiratory Binning using SI projections:
    window and the filter will be saved.
 
    Note that you can change the contrast of the background in the right 
-   pannel with the imcontrast tool of Matlab by pressing the "imcontrast" button. 
-   But once you have changed the contrast, press the "fix contrast" buton, else
+   panel with the imcontrast tool of Matlab by pressing the "imcontrast" button. 
+   But once you have changed the contrast, press the "fix contrast" button, else
    changes in contrast will be lost.  
  
 
-5. **Reformating the Filtered Signal**
+5. **Reformatting the Filtered Signal**
 
    Just execute the following automatic section. 
 
@@ -330,8 +330,8 @@ Steps for Respiratory Binning using SI projections:
                                                          check_image);
                                                                               
 
-   A figure appears then to show the filtered signal reformated with the correct size. 
-   You can check on that figure that the filtered signal oscillate toghether with the 
+   A figure appears then to show the filtered signal reformatted with the correct size. 
+   You can check on that figure that the filtered signal oscillate together with the 
    background. 
 
    .. image:: ../images/respiratory_binning/resp_confirm.png
@@ -434,7 +434,7 @@ Steps for Respiratory Binning using SI projections:
    The binning mask are displayed and stored in the variable rMask. Note that
    some first lines are excuded by the masks, in accordance with the choice of the
    horizontal window, which was chosen to exclude non-steady state acquired lines
-   at the begining of the precedure. 
+   at the beginning of the procedure. 
 
    You can then save rMask on the disk for a future purpose.                                           
    
@@ -442,5 +442,5 @@ Steps for Respiratory Binning using SI projections:
 
 
 .. [1] Piccini D, Littmann A, Nielles-Vallespin S, Zenge MO. Spiral phyllotaxis: The natural way to construct
-   a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reson Med. 2011
+   a 3D radial trajectory in MRI: Spiral Phyllotaxis Radial 3D Trajectory. Magn Reason Med. 2011
    Oct;66(4):1049–56.
