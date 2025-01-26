@@ -355,7 +355,7 @@ set that does not intersect :math:`\Omega^{(0)}` is zero. The PDF :math:`p_{\til
 from :math:`\Omega^{(0)}` to :math:`\bar{\Gamma}` by setting it equl to :math:`0` for any state outside :math:`\Omega^{(0)}`. 
 
 Since we defined a measure :math:`\nu`, there exist the temptation to work with its distribution function, 
-but such a function does not exist unfortunately. The best we can think of as a PDF for :math:`\nu` could be
+but such a function does not exist unfortunately. The best we can think of as a density function for :math:`\nu` could be
 
 .. math ::
 
@@ -368,7 +368,7 @@ where :math:`B_{\epsilon}(\omega)` is the open ball of radius :math:`\epsilon` c
 
     \tilde{\nu}\left(\Omega\right) = \int_{\Omega} d\tilde{\nu} = \int_{\Omega}  f_{\tilde{\nu}}(\omega) \ d\lambda \approx \nu\left(\Omega\right)
 
-Although the function :math:`\tilde{\nu}` is interesting from a theoretical point of view, 
+Although the function :math:`f_{\tilde{\nu}}` is interesting from a theoretical point of view, 
 it leads only an approximation of :math:`\nu`. In the following, we will work with :math:`\nu`
 and we will not need :math:`\tilde{\nu}`.
 
@@ -386,7 +386,7 @@ It follows from that definition that
 
     \nu \left(\Omega\right) = 2^{nB \left(\Omega\right)}
 
-If we now start the iterative algorithm by an initial guess in the set :math:`\Omega^{(0)}` and iterative 
+If we now start the iterative algorithm by an initial guess in the set :math:`\Omega^{(0)}` and iterate 
 the map :math:`\Phi` until :math:`\Omega^{(0)}` is compressed to :math:`\Omega^{(c)}`, the number of
 bits needed to encode all states in :math:`\Omega^{(0)}` shrinks to the number of bits needed to encode all
 states in :math:`\Omega^{(c)}`. This reduction of needed number of bits is

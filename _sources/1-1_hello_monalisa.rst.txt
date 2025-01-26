@@ -19,7 +19,7 @@ as soon as the compilation step is done (see next section):
     - The `sheet_recon_calls_script <https://github.com/MattechLab/monalisa/blob/main/demo/script_demo/script_recon_calls/sheet_recon_calls_script.m>`_ performs the tests for *sheet reconstructions* (multiple frames with two non-spatial dimension). 
 
 Use it to test rapidely our reconstruction framework.  
-Find `in that course <https://drive.google.com/file/d/12z9JCFhwBJhDW4_3Uy4bhSXCnvPod0os/view?pli=1>`_ the mathematics behind our implementations, with references to the literature. 
+Find in `A mathematical Language for MRI Reconstructions <https://zenodo.org/record/8195815>`_ the mathematics behind our implementations, with references to the literature. 
 
 If you are here, you are probably considering our framework for image reconstruction. 
 Please be aware that you need a coil sensitivity estimation to run our iterative reconstructions. You can estimate the 

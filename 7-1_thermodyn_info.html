@@ -309,14 +309,14 @@ measure <span class="math notranslate nohighlight">\(\tilde{\mu}^{(0)}\)</span> 
 set that does not intersect <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is zero. The PDF <span class="math notranslate nohighlight">\(p_{\tilde{\mu}^{(0)}}\)</span> can be extended
 from <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> to <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> by setting it equl to <span class="math notranslate nohighlight">\(0\)</span> for any state outside <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span>.</p>
 <p>Since we defined a measure <span class="math notranslate nohighlight">\(\nu\)</span>, there exist the temptation to work with its distribution function,
-but such a function does not exist unfortunately. The best we can think of as a PDF for <span class="math notranslate nohighlight">\(\nu\)</span> could be</p>
+but such a function does not exist unfortunately. The best we can think of as a density function for <span class="math notranslate nohighlight">\(\nu\)</span> could be</p>
 <div class="math notranslate nohighlight">
 \[f_{\tilde{\nu}}(\omega):= \frac{\# \left(B_{\epsilon}(\omega) \cap \Gamma_{DM} \right)}{\lambda\left(B_{\epsilon}(\omega)\right)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(B_{\epsilon}(\omega)\)</span> is the open ball of radius <span class="math notranslate nohighlight">\(\epsilon\)</span> centered in <span class="math notranslate nohighlight">\(\omega\)</span>. This function defines a measure
 <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span> on <span class="math notranslate nohighlight">\(\bar{\Gamma}\)</span> by</p>
 <div class="math notranslate nohighlight">
 \[\tilde{\nu}\left(\Omega\right) = \int_{\Omega} d\tilde{\nu} = \int_{\Omega}  f_{\tilde{\nu}}(\omega) \ d\lambda \approx \nu\left(\Omega\right)\]</div>
-<p>Although the function <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span> is interesting from a theoretical point of view,
+<p>Although the function <span class="math notranslate nohighlight">\(f_{\tilde{\nu}}\)</span> is interesting from a theoretical point of view,
 it leads only an approximation of <span class="math notranslate nohighlight">\(\nu\)</span>. In the following, we will work with <span class="math notranslate nohighlight">\(\nu\)</span>
 and we will not need <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span>.</p>
 <p>We note finally that the measure <span class="math notranslate nohighlight">\(\nu \left(\Omega\right)\)</span> is linked to the number of bit that are needed to encode all states
@@ -327,7 +327,7 @@ the number of bits needed to encode them as</p>
 <p>It follows from that definition that</p>
 <div class="math notranslate nohighlight">
 \[\nu \left(\Omega\right) = 2^{nB \left(\Omega\right)}\]</div>
-<p>If we now start the iterative algorithm by an initial guess in the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> and iterative
+<p>If we now start the iterative algorithm by an initial guess in the set <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> and iterate
 the map <span class="math notranslate nohighlight">\(\Phi\)</span> until <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> is compressed to <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>, the number of
 bits needed to encode all states in <span class="math notranslate nohighlight">\(\Omega^{(0)}\)</span> shrinks to the number of bits needed to encode all
 states in <span class="math notranslate nohighlight">\(\Omega^{(c)}\)</span>. This reduction of needed number of bits is</p>
