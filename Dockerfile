@@ -24,6 +24,8 @@ ARG MATLAB_RELEASE=r2024a
 # Specify the list of products to install into MATLAB.
 ARG MATLAB_PRODUCT_LIST="MATLAB Statistics_and_Machine_Learning_Toolbox"
 
+
+
 # Specify MATLAB Install Location.
 ARG MATLAB_INSTALL_LOCATION="/opt/matlab/${MATLAB_RELEASE}"
 
@@ -51,6 +53,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     g++ \
     git \
     expect \
+    libgtk2.0-0 \
+    build-essential \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -61,6 +65,9 @@ RUN adduser --shell /bin/bash --disabled-password --gecos "" matlab \
     && chmod 0440 /etc/sudoers.d/matlab
 
 # Set user and work directory.
+# USER root
+# RUN apt-get update && apt-get install -y libgtk2.0-0 build-essential
+
 USER matlab
 WORKDIR /home/matlab
 
@@ -76,7 +83,7 @@ RUN wget -q https://www.mathworks.com/mpm/glnxa64/mpm \
     || (echo "MPM Installation Failure. See below for more information:" && cat /tmp/mathworks_root.log && false) \
     && sudo rm -rf mpm /tmp/mathworks_root.log \
     && sudo ln -s ${MATLAB_INSTALL_LOCATION}/bin/matlab /usr/local/bin/matlab
-
+# wanted to remove the `sudo` above, but error about permission occurred, so added them back
 # Note: Uncomment one of the following two ways to configure the license server.
 
 # Option 1. Specify the host and port of the machine that serves the network licenses
@@ -102,6 +109,11 @@ ENV MW_DDUX_FORCE_ENABLE=true MW_CONTEXT_TAGS=MATLAB:DOCKERFILE:V1
 WORKDIR /usr/src/app
 # Copy the entire local monalisa directory into the container
 COPY . /usr/src/app
+
+# Yiwei: add this line for changing the permission.
+USER root 
+RUN chmod -R ugo+x /usr/src/app
+
 # Set the working directory to the folder containing your script
 WORKDIR /usr/src/app/examples/scripts
 # DEBUG LOGGING: Check if the directory /usr/src/app/src/bmFourierN exists
@@ -115,6 +127,7 @@ RUN if [ -d "/usr/src/app/src/bmFourierN" ]; then \
 ENTRYPOINT ["matlab"]
 
 # I am using root otherwise I encountered permission errors, not sure it's safe (INITIAL)
-USER root
+# Yiwei: comment it, avoid root permission...
+USER root 
 # Compile c++ code
 CMD ["matlab", "-batch", "testDocker"]
