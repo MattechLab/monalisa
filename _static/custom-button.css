@@ -1,0 +1,20 @@
+/* Back to Top Button */
+#back-to-top {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button 20px from the bottom */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it stays on top */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #555; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+}
+
+#back-to-top:hover {
+    background-color: #333; /* Darker background on hover */
+}
