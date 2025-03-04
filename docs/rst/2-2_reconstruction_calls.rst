@@ -332,7 +332,7 @@ Once the deformation-fields are estimated, the deformation-matrices can simply b
 
 Note that the deformation-fields can be estimated by any tool as chosen by the user. Here is the use of `imregdemons` just an example. 
 
-The computed deformation-matrices can be stored and re-used many times with different functions described below.   
+The computed deformation-matrices can be stored and reused many times with different functions described below.   
 
 
 
