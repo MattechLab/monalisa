@@ -51,3 +51,6 @@
 /temp/*.txt
 /temp/*.*
 /temp/*
+
+# VS Code
+.vscode/
