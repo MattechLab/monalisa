@@ -443,7 +443,7 @@ should be rejected in the following dialog box:
 After you gave an answer for every of the candidate signals, 
 two graph are displayed: 
 
-   - one showing each phase computed from each accepted signals. All the phases have to approximatelly agree together. That means that all signals measure the same cardiac phase. 
+   - one showing each phase computed from each accepted signals. All the phases have to approximately agree together. That means that all signals measure the same cardiac phase. 
    - another showing the combination of all phases computed from each accepted signals. That phase will be used to create the binning masks. 
 
 Here a are some example of these two graphs: 
