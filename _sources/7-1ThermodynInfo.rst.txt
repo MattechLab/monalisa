@@ -218,7 +218,7 @@ we define
     \Phi^{(c)}(\Omega;  \ \theta) := \{\Phi^{(c)}(\omega; \ \theta) \  | \  \omega \in \Omega\}
 
 As already said, our phase space :math:`\Gamma` can be considered as isomorphic to :math:`\mathbb{R}^n` for some 
-positive interger :math:`n`. We can thus consider that :math:`\Gamma` can be equipped with the :math:`\sigma`-algebra
+positive integer :math:`n`. We can thus consider that :math:`\Gamma` can be equipped with the :math:`\sigma`-algebra
 of Lebesgue measurable sets, that we will write :math:`\mathcal{L}`, so that  :math:`(\Gamma, \mathcal{L})` is a measurable space. 
 We further provide this measurable space with the Lebesgue measure that we will write :math:`\lambda` to obtain a measure space 
 :math:`\left( \Gamma, \mathcal{L}, \lambda \right)`. 
@@ -262,7 +262,7 @@ It holds in particular
 
     \tilde{\mu}^{(0)} \left( \Omega^{(0)} \right) = 1 
 
-so that the tripple :math:`\left( \Omega^{(0)}, \mathcal{L}\left(\Omega^{(0)}\right), \tilde{\mu}^{(0)} \right)` is a probability space (i.e. a measure space
+so that the triple :math:`\left( \Omega^{(0)}, \mathcal{L}\left(\Omega^{(0)}\right), \tilde{\mu}^{(0)} \right)` is a probability space (i.e. a measure space
 where the measure of the entire set is 1). The following figure summarizes the situation. 
 
 .. image:: ../images/discussion/thermodyn_info/information.png
@@ -352,7 +352,7 @@ measure :math:`\tilde{\mu}^{(0)}` over :math:`\bar{\Gamma}` by defining
 
 for all :math:`\Omega \in \bar{\Gamma}`. It follows that the :math:`\tilde{\mu}^{(0)}` measure of any 
 set that does not intersect :math:`\Omega^{(0)}` is zero. The PDF :math:`p_{\tilde{\mu}^{(0)}}` can be extended
-from :math:`\Omega^{(0)}` to :math:`\bar{\Gamma}` by setting it equl to :math:`0` for any state outside :math:`\Omega^{(0)}`. 
+from :math:`\Omega^{(0)}` to :math:`\bar{\Gamma}` by setting it equal to :math:`0` for any state outside :math:`\Omega^{(0)}`. 
 
 Since we defined a measure :math:`\nu`, there exist the temptation to work with its distribution function, 
 but such a function does not exist unfortunately. The best we can think of as a density function for :math:`\nu` could be
@@ -1094,7 +1094,7 @@ ideal gas are evolving in the same physical volume without interacting between e
 Connection with the Landauer's Principle
 ----------------------------------------
 
-By writing the total consumed energy as :math:`\Delta E^{tot}`, and by writing the tempreture :math:`T_C` as :math:`T` 
+By writing the total consumed energy as :math:`\Delta E^{tot}`, and by writing the temperature :math:`T_C` as :math:`T` 
 (which is the temperature at which the computer operates), equation (E5) can be rewritten as
 
 .. math ::
@@ -1238,7 +1238,7 @@ For a large enough :math:`R` we can then reach
 This means that the initial energy investment :math:`E \left(GT\right) + E \left(\mathcal{N}\right)`
 becomes valuable for sufficiently many reconstructions. 
 
-We will call :math:`\langle E \rangle` the average energy consumption of the non AI alrogithm so that
+We will call :math:`\langle E \rangle` the average energy consumption of the non AI algorithm so that
 
 .. math ::
 
@@ -1336,9 +1336,9 @@ and therefore
     \eta^{AI} \approx \eta \ \left(1 + \frac{\langle\Delta E\rangle}{\langle E^{AI}\rangle} \right) > \eta
 
 
-This situation is as if AI was a way to re-use information contained in the ground truth in order to complete
+This situation is as if AI was a way to reuse information contained in the ground truth in order to complete
 the information that has to be computed to treat the supplementary data set numbered from :math:`1` to :math:`R`. 
-The re-use of the ground truth information requires an addition cost of energy to train a statistical model. 
+The reuse of the ground truth information requires an addition cost of energy to train a statistical model. 
 But since this energy investment has to be done only once, it becomes valuable for a large :math:`R`.
 The situation is depicted in the following figure. 
 
@@ -1383,9 +1383,9 @@ as well as to statistical mechanic.
 
 We also showed that from our definition of efficiency follows, that the use of AI in iterative algorithms
 to update some of the dynamic variables at each iteration results in an efficiency amplification. 
-In this context, AI appears like a technology that allows to directly re-use some of the information gained during 
+In this context, AI appears like a technology that allows to directly reuse some of the information gained during 
 the ground truth data construction, instead of re-computing everything again 
 for every new data to treat, as it is done by non AI algorithm. If our view is correct, AI allows to indirectly 
-re-use a part of the energy used to construct ground truth data. In that case, it should be advantageous to consume
+reuse a part of the energy used to construct ground truth data. In that case, it should be advantageous to consume
 a maximum amount of energy to build good quality ground truth data. 
 This is motivation behind Monalisa.
