@@ -17,36 +17,18 @@ addpath(genpath(src_dir));
 % three following demonstration dataset: 
 
 % demo_data_1 -------------------------------------------------------------
-% load([  monalisa_dir, filesep, ...
-%         'demo', filesep, ...
-%         'data_demo', filesep, ...
-%         'data_1_static_radial_simulated_from_XCAT', filesep, ...
-%         'data.mat']); 
-%    
-% This dataset was simulated with the XCAT phantom. 
-%
-% W. P. Segars, G. Sturgeon, S. Mendonca, J. Grimes, and B. M. W. Tsui, 
-% ‘4D XCAT phantom for multimodality imaging research’, 
-% Med. Phys., vol. 37, no. 9, Art. no. 9, Sep. 2010, 
-% doi: 10.1118/1.3480985.
-%     
-% END_demo_data_1 ---------------------------------------------------------
-
-
-
-% demo_data_2 -------------------------------------------------------------
 load([  monalisa_dir, filesep, ...
         'demo', filesep, ...
         'data_demo', filesep, ...
-        'data_2_static_radial_simulated_from_cartesian', filesep, ...
+        'data_1_static_radial_simulated_from_cartesian', filesep, ...
         'data.mat']); 
 
 % This radial data-set was acquired on a healthy volunteer (one of the main 
 % invesigator of the monalisa toolbox) in accordance with the local 
-% ethical rules. That data-set ca be used by anybody for any academical 
+% ethical rules. That data-set can be used by anybody for any academical 
 % research purpose. 
 % 
-% END_demo_data_2 ---------------------------------------------------------
+% END_demo_data_1 ---------------------------------------------------------
 
 
 
@@ -60,7 +42,7 @@ load([  monalisa_dir, filesep, ...
 % This radial data-set was simulated from a cartesian data set acquired  
 % on a healthy volunteer (one of the main invesigator of the monalisa  
 % toolbox)in accordance with the local ethical rules. 
-% That data-set ca be used by anybody for any academical research purpose. 
+% That data-set can be used by anybody for any academical research purpose. 
 % 
 % demo_data_3 -------------------------------------------------------------
 
