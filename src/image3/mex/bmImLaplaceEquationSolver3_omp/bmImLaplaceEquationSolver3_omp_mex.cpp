@@ -1,0 +1,380 @@
+// Bastien Milani
+// CHUV and UNIL
+// Lausanne - Switzerland
+// May 2023
+
+#include "mex.h"
+#include <omp.h>
+#include <cmath>
+#include <cstdio>
+
+
+void bmImLaplaceEquationSolver3_omp(int size_x, int size_y, int size_z, float* imStart_ptr0, bool* m_ptr0, float* out_ptr0, int nIter, int nBlockPerThread); 
+void bmImCrossMean3_omp(int size_x, int size_y, int size_z, float* in_ptr0, float* out_ptr0, int nBlockPerThread);
+void bmClampVal(int N, float* x, bool* m, float* c); 
+int myModulo(int a, int b); 
+
+/* The gateway function */
+void mexFunction(int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
+{
+
+
+	// input arguments initial    
+	int  size_x;
+	int  size_y;
+	int  size_z;
+	float* imStart_ptr0;
+	bool* m_ptr0;
+	int nIter; 
+	int nBlockPerThread; 
+
+	// output arguments initial
+	float* out_ptr0;
+
+
+
+
+	// input arguments definition
+	size_x  = (int)mxGetScalar(prhs[0]);
+	size_y  = (int)mxGetScalar(prhs[1]);
+	size_z  = (int)mxGetScalar(prhs[2]);
+	imStart_ptr0 = (float*)mxGetPr(prhs[3]);
+	m_ptr0  = (bool*)mxGetPr(prhs[4]);
+	nIter = (int)mxGetScalar(prhs[5]);
+	nBlockPerThread = (int)mxGetScalar(prhs[6]);
+
+	// output arguments definition
+	mwSize* out_size = new mwSize[3];
+	out_size[0]      = (mwSize)size_x;
+	out_size[1]      = (mwSize)size_y;
+	out_size[2]		 = (mwSize)size_z;
+	mwSize out_ndims = (mwSize)3;
+
+
+	plhs[0] = mxCreateNumericArray(out_ndims, out_size, mxSINGLE_CLASS, mxREAL);
+	out_ptr0 = (float*)mxGetPr(plhs[0]);
+
+
+
+	// function call
+	bmImLaplaceEquationSolver3_omp(size_x, size_y, size_z, imStart_ptr0, m_ptr0, out_ptr0, nIter, nBlockPerThread); 
+
+	// delete[]
+	delete[] out_size;
+}
+
+
+void bmImLaplaceEquationSolver3_omp(int size_x, int size_y, int size_z, float* imStart_ptr0, bool* m_ptr0, float* out_ptr0, int nIter, int nBlockPerThread)
+{
+
+	int N = size_x*size_y*size_z;
+	
+	float* imStart_run = imStart_ptr0;
+	bool*  m_run = m_ptr0; 
+	float* out_run = out_ptr0;
+
+	float* out2_ptr0 = new float[N];
+	float* out2_run  = out2_ptr0; 
+
+	int i; 
+	
+	// we devide nIer by 2 because we do double iterations
+	nIter = (int)ceil((double)nIter / 2.0); 
+
+
+
+	// initial out and out2
+	for (i = 0; i < N; i++)
+	{
+		*out_run++	= *imStart_run;
+		*out2_run++ = *imStart_run++;
+	}
+	out_run   = out_ptr0;
+	out2_run  = out2_ptr0;
+	imStart_run = imStart_ptr0;
+	
+
+
+	for (i = 0; i < nIter; i++)
+	{
+		bmImCrossMean3_omp(size_x, size_y, size_z, out_ptr0, out2_ptr0, nBlockPerThread);
+
+		bmClampVal(N, out2_ptr0, m_ptr0, imStart_ptr0);
+		
+		bmImCrossMean3_omp(size_x, size_y, size_z, out2_ptr0, out_ptr0, nBlockPerThread);
+
+		bmClampVal(N, out_ptr0, m_ptr0, imStart_ptr0);
+ 
+	}
+
+
+	delete[] out2_ptr0; 
+}
+
+
+
+
+
+void bmImCrossMean3_omp(int size_x_shared, int size_y_shared, int size_z_shared, float* in_ptr0_shared, float* out_ptr0_shared, int nBlockPerThread)
+{
+
+	// blockLength_small and blockLength_rest for the main surface
+	int iMax_mainVolume = size_x_shared*size_y_shared*(size_z_shared - 2);
+	const int myThreadProcRatio = 1;
+	const int myBlockThreadRatio = nBlockPerThread;
+	int numOfThread = omp_get_num_procs()*myThreadProcRatio;
+	int numOfBlock = numOfThread * myBlockThreadRatio;
+	int blockLength_small = (int)(iMax_mainVolume / numOfBlock);
+	int blockLength_rest = (int)(iMax_mainVolume - numOfBlock*blockLength_small);
+	omp_set_num_threads(numOfThread);
+
+	//printf("numOfThread : %d. \n", numOfThread); 
+	//printf("numOfBlock  : %d. \n", numOfBlock);
+	//printf("blockLength_small : %d. \n", blockLength_small);
+	//printf("blockLength_rest  : %d. \n", blockLength_rest);
+
+
+
+#pragma omp parallel shared(size_x_shared, size_y_shared, size_z_shared, in_ptr0_shared, out_ptr0_shared, numOfBlock, blockLength_small, blockLength_rest)
+	{
+
+		//printf("This is thread number %d  .\n", omp_get_thread_num());
+
+
+		int currentBlockLength;
+		int currentBlockStart;
+
+		int i_thread;
+		int iMax_thread;
+		int N_max_thread = size_x_shared*size_y_shared*size_z_shared;
+
+		float* out_ptr_run;
+		float* cent_ptr_run;
+		float* xPos_ptr_run;
+		float* xNeg_ptr_run;
+		float* yPos_ptr_run;
+		float* yNeg_ptr_run;
+		float* zPos_ptr_run;
+		float* zNeg_ptr_run;
+
+
+
+		// cross for the main volume
+		float* out_ptr1 = out_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* cent_ptr1 = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* xPos_ptr1 = in_ptr0_shared + myModulo((0 + 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* xNeg_ptr1 = in_ptr0_shared + myModulo((0 - 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* yPos_ptr1 = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 1) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* yNeg_ptr1 = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 - 1) + size_x_shared*size_y_shared*(1 + 0), N_max_thread);
+		float* zPos_ptr1 = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 + 1), N_max_thread);
+		float* zNeg_ptr1 = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(1 - 1), N_max_thread);
+
+
+#pragma omp for nowait
+		for (int currentBlockInd = 0; currentBlockInd < numOfBlock; currentBlockInd++)
+		{
+			if (currentBlockInd < blockLength_rest)
+			{
+				currentBlockLength = blockLength_small + 1;
+				currentBlockStart = currentBlockInd*currentBlockLength;
+			}
+			else
+			{
+				currentBlockLength = blockLength_small;
+				currentBlockStart = (blockLength_small + 1)*blockLength_rest + (currentBlockInd - blockLength_rest)*blockLength_small;
+			}
+
+
+			// main_volume ---------------------------------------------------------------------------------
+
+			out_ptr_run = out_ptr1 + currentBlockStart;
+			cent_ptr_run = cent_ptr1 + currentBlockStart;
+			xPos_ptr_run = xPos_ptr1 + currentBlockStart;
+			xNeg_ptr_run = xNeg_ptr1 + currentBlockStart;
+			yPos_ptr_run = yPos_ptr1 + currentBlockStart;
+			yNeg_ptr_run = yNeg_ptr1 + currentBlockStart;
+			zPos_ptr_run = zPos_ptr1 + currentBlockStart;
+			zNeg_ptr_run = zNeg_ptr1 + currentBlockStart;
+
+			for (i_thread = 0; i_thread < currentBlockLength; i_thread++)
+			{
+				*out_ptr_run++ = (*cent_ptr_run++  + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+			}
+			// main_volume ---------------------------------------------------------------------------------
+		} // end para for
+
+
+
+
+#pragma omp sections
+		{
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 1. \n", omp_get_thread_num()); 
+
+				// start face ---------------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((0 + 1) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((0 - 1) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 + 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 - 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(1 + 0) + size_x_shared*size_y_shared*(0 - 1), N_max_thread);
+
+				iMax_thread = size_x_shared*(size_y_shared - 1);
+				for (i_thread = 0; i_thread < iMax_thread; i_thread++)
+				{
+					*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				}
+				// start face ---------------------------------------------------------------------------------
+			}// end section
+
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 2. \n", omp_get_thread_num());
+
+				// end face ----------------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((0 + 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((0 - 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 - 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 - 1), N_max_thread);
+
+
+				iMax_thread = size_x_shared*(size_y_shared - 1);
+				for (i_thread = 0; i_thread < iMax_thread; i_thread++)
+				{
+					*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				}
+				// end face ----------------------------------------------------------------------------------
+			}// end section
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 1. \n", omp_get_thread_num()); 
+
+				// start edge ---------------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((1 + 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((1 - 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 + 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 - 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((1 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 - 1), N_max_thread);
+
+
+				iMax_thread = size_x_shared - 1;
+				for (i_thread = 0; i_thread < iMax_thread; i_thread++)
+				{
+					*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				}
+				// start edge ---------------------------------------------------------------------------------
+			}// end section
+
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 2. \n", omp_get_thread_num());
+
+				// end edge ----------------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((0 + 1) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((0 - 1) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 + 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 - 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 - 1), N_max_thread);
+
+
+				iMax_thread = size_x_shared - 1;
+				for (i_thread = 0; i_thread < iMax_thread; i_thread++)
+				{
+					*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				}
+				// end edge ----------------------------------------------------------------------------------
+			}// end section
+
+
+
+
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 3. \n", omp_get_thread_num());
+
+				// start corner --------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((0 + 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((0 - 1) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 - 1) + size_x_shared*size_y_shared*(0 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((0 + 0) + size_x_shared*(0 + 0) + size_x_shared*size_y_shared*(0 - 1), N_max_thread);
+
+				*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				// start corner --------------------------------------------------------------------------
+			}// end section
+
+
+
+
+#pragma omp section
+			{
+				//printf("Thread number %d do section 4. \n", omp_get_thread_num());
+
+				// end corner -----------------------------------------------------------------------------
+				out_ptr_run = out_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				cent_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xPos_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 1) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				xNeg_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 - 1) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yPos_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 + 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				yNeg_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 - 1) + size_x_shared*size_y_shared*(size_z_shared - 1 + 0), N_max_thread);
+				zPos_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 + 1), N_max_thread);
+				zNeg_ptr_run = in_ptr0_shared + myModulo((size_x_shared - 1 + 0) + size_x_shared*(size_y_shared - 1 + 0) + size_x_shared*size_y_shared*(size_z_shared - 1 - 1), N_max_thread);
+
+				*out_ptr_run++ = (*cent_ptr_run++ + *xPos_ptr_run++ + *xNeg_ptr_run++ + *yPos_ptr_run++ + *yNeg_ptr_run++ + *zPos_ptr_run++ + *zNeg_ptr_run++) / 7;
+				// end corner ------------------------------------------------------------------------------
+			}// end section
+
+
+
+		}// end sections
+	} // end OMP
+} // end function
+
+
+
+int myModulo(int a, int b)
+{
+	int c = a % b;
+	if (c < 0)
+	{
+		c = (c + b) % b;
+	}
+	return c;
+}
+
+
+
+void bmClampVal(int N, float* x, bool* m, float* c)
+{
+	for (int i = 0; i < N; i++)
+	{
+		if (*m)
+		{
+			*x = *c;
+		}
+		x++; 
+		m++; 
+		c++; 
+	}
+}
