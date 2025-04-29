@@ -1,6 +1,6 @@
 
 % 
-% Berk Can A�ikg�z
+% Berk Can Acikgoz
 % University of Bern and Insel Spital
 % Bern - Switzerland
 % February 2025
