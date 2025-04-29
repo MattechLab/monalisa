@@ -1,3 +1,17 @@
+%% Setting Path
+
+% This should store the path to the monalisa directory in the variable 
+% 'monalisa_dir'. If it does not work just do it manually.  
+[monalisa_dir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  ); 
+for i = 1:3
+    [monalisa_dir, ~, ~] = fileparts(monalisa_dir); 
+end
+
+% Add the paths to all Monalisa subdirectories.  
+src_dir = [monalisa_dir, filesep, 'src']; 
+addpath(genpath(src_dir));
+
+
 %% preparing data for simulation
 
 N_u         = [64, 64]; 
