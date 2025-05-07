@@ -17,11 +17,18 @@ nShot_off       = mriAcquisition_node.nShot_off;
 t = []; 
 if strcmp(traj_type, 'full_radial3_phylotaxis')
     t = bmTraj_fullRadial3_phyllotaxis_lineAssym2(mriAcquisition_node);
+elseif strcmp(traj_type, 'uphy') %uniform phyllotaxis
+    disp('Using the uniform phyllotaxis')
+    t = bmTraj_fullRadial3_phyllotaxis_uniform_lineAssym2(mriAcquisition_node);
+elseif strcmp(traj_type, 'flexyphy') %flexyphy: uniform phyllotaxis with polar angle randomization
+    disp('Using polar randomization')
+    t = bmTraj_fullRadial3_phyllotaxis_random_lineAssym2(mriAcquisition_node);
 elseif strcmp(traj_type, 'full_radial3_phylotaxis_chris')
     t = bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2(mriAcquisition_node);
 else
-    error(['bmTraj : traj_type is unknown. This probably means your ' ...
-        'trajectory is not implemented, you need to implement it yourself']);
+    error(['bmTraj: Unknown traj_type "' traj_type '". ' ...
+           'This probably means your trajectory is not implemented. ' ...
+           'You need to implement it yourself.']);
 end
 
 end
