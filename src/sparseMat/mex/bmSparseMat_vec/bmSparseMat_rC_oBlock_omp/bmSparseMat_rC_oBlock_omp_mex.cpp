@@ -81,7 +81,7 @@ void myFunction(int r_size_shared, int* r_jump_ptr0_shared, int* r_nJump_ptr0_sh
 		omp_set_num_threads(n_vec_32_shared);
 #pragma omp parallel shared(r_size_shared, r_jump_ptr0_shared, r_nJump_ptr0_shared, m_val_ptr0_shared, l_size_shared, l_jump_ptr0_shared, l_nJump_shared, v_ptr0_shared, n_vec_32_shared, w_ptr0_shared)
 		{
-			printf("This is thread number %d .\n", omp_get_thread_num()); 
+			// printf("This is thread number %d .\n", omp_get_thread_num()); 
 
 			long long n_vec_64 = (long long)n_vec_32_shared;
 
