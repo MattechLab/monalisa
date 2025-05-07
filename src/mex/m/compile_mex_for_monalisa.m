@@ -63,6 +63,8 @@ function compile_mex_for_monalisa()
                 
                 if isempty(libomp_dirs)
                     error('libomp not found. Install libomp or adjust path accordingly.');
+                else
+                    disp(['Using libomp: ',libomp_dirs(1).folder]) 
                 end
                 
                 LIBOMP_ROOT = libomp_dirs(1).folder;
