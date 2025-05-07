@@ -1,10 +1,11 @@
 function varargout = bmCoilSense_nonCart_data(reader, N_u)
 % varargout = bmCoilSense_nonCart_data(reader, N_u)
 %
-% This function constraints data from a non cartesian 3D radial trajectory 
-% to fit into the given cartesian grid, adapting the resolution of the 
-% image. The data is read from a ISMRMRD file. It is assumed that the
-% acquisition is done with self navigation
+% This function constraints non cartesian raw data to fit into a given Box centered 
+% at the k-space center of size N_u*dK_u, effectively adapting the resolution of the reconstructed image. 
+% N_u is the input parameter, while dK_u is estimated from the reader MriAcquisitionNode FOV.
+% For more information about why Keeping the central regions, corresponds to lowering the image resolution,
+% visit: https://mriquestions.com/field-of-view-fov.html
 %
 % Authors:
 %   Bastien Milani
@@ -14,7 +15,7 @@ function varargout = bmCoilSense_nonCart_data(reader, N_u)
 %
 % Contributors:
 %   Dominik Helbing (Documentation & Comments)
-%   Mauro Leidi
+%   Mauro Leidi (Code adaptation)
 %
 % Parameters:
 %   reader (RawDataReader): Object to parse the file which 
@@ -41,10 +42,8 @@ dK_u_raw    = [1, 1, 1]./myMriAcquisition_node.FoV;
 y = reader.readRawData(true,true);
 
 % Compute trajectory and express it as points in 3 dimensions [3, #points]
-% Maybe we can input as argument the trajectory to avoid the call
-% bmTraj_fullRadial3_phyllotaxis_lineAssym2 that assumes a trajectory type
-t = bmPointReshape(...
-    bmTraj_fullRadial3_phyllotaxis_lineAssym2(myMriAcquisition_node));
+t = bmTraj(myMriAcquisition_node);
+t = bmPointReshape(t);
 
 
 % Compute volume elements if third output is required

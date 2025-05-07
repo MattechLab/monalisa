@@ -1,25 +1,15 @@
-function [theta, phi] = bmPhyllotaxisAngle3(nseg, nshot, varargin)
-% [theta, phi] = bm3DimPhyllotaxisAngle(nseg, nshot, varargin)
+function [theta, phi] = mlUphyAngle3(nseg, nshot, varargin)
+% [theta, phi] = mlUphyAngle3(nseg, nshot, varargin)
 %
 % Calculates spherical coordinates for all points (nseg * nshot) of the
-% phyllotaxis spiral. This spiral covers the north hemisphere only. The 
-% radius r is constant and not defined by this function.
+% uniform phyllotaxis spiral UPhy. This spiral covers the north hemisphere only. 
+% The radius r is constant and not defined by this function.
 %
 % Authors:
-%   Bastien Milani
-%   CHUV and UNIL
+%   Mauro Leidi
+%   HES-SO
 %   Lausanne - Switzerland
-%   May 2023
-% 
-% This fucntion was written based on the code of 
-%
-%   Davide Piccini
-%
-% More information can be found in
-%
-%   "Spiral phyllotaxis: the natural way to 
-%   construct a 3D radial trajectory in MRI", 
-%   MRM 2011.
+%   May 2025
 %
 % Parameters:
 %   nseg (int): Number of segments per shot
@@ -52,7 +42,7 @@ else
 end
 
 % Ratio for polar angle theta
-q = pi/(2*sqrt(nseg_pure)); 
+q = pi/2; 
 
 % Set up arrays
 phi     = zeros(1, nseg_tot);
@@ -72,7 +62,7 @@ for i = 1:nseg
         else
             % Calculate angle for each segment
             phi(myIndex) = mod(myCounter*goldAngle, (2*pi));
-            theta(myIndex) = q*sqrt(myCounter);
+            theta(myIndex) = q*arcos(1 - myCounter/nseg_pure);
             myCounter = myCounter + 1;
         end
     end
