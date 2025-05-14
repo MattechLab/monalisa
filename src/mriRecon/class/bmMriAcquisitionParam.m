@@ -11,6 +11,7 @@ classdef bmMriAcquisitionParam < handle
         
         name            = 'void'; 
         mainFile_name   = 'void';
+        pulseqTrajFile_name   = 'void';
         
         imDim           = double([]);
         N               = double([]); 

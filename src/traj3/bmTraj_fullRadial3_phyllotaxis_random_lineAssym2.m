@@ -72,7 +72,7 @@ z = reshape(R.*cos(theta),           [1, N_n, nSeg, nShot]);
 
 % Combine cartesian coordinates to points and scale to have the correct
 % distance between the points (The coordinates where made with d=1)
-myTraj = cat(1, x, y, z)*N_n*dK_n; 
+myTraj = cat(1, x, y, z)*N_n*dK_n; % HERE SIZE IS [nDim,N,nSeg,nShot]
 % Remove first few shots and the first segments depending on the arguments
 if flagSelfNav
    myTraj(:, :, 1, :) = [];  
@@ -80,7 +80,7 @@ end
 if nShot_off > 0
    myTraj(:, :, :, 1:nShot_off) = [];  
 end
-% Resize to shape [3, N, nSeg, nShot] considering nShot_off and flagSelfNav
+% Resize to shape [3, N, (nSeg - flagselfnav) * (nShot - nshotoff)] considering nShot_off and flagSelfNav
 mySize = size(myTraj); 
 mySize = mySize(:)'; 
 myTraj = reshape(myTraj, [mySize(1, 1), mySize(1, 2), mySize(1, 3)*mySize(1, 4)]); 
