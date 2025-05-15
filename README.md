@@ -31,7 +31,7 @@ If you have to install a compiler, we recommend:
 
 3. Compile the cpp code using the [function](https://github.com/MattechLab/monalisa/blob/main/src/bmMex/m/compile_mex_for_monalisa.m) . On macOS you should change the libomp_dirs directory here: <https://github.com/MattechLab/monalisa/blob/0669b36852b1cf2a0284f8c0e69d8b873e46b89b/src/bmMex/m/compile_mex_for_monalisa.m#L62>. If you are using brew for the installations, you can find the libomp_dirs path by running: brew --prefix libomp. (you need libomp as explained [here](https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>))
 
-4. Test your compilation step worked successfully using the example script: <https://github.com/MattechLab/monalisa/blob/main/example/imDim_plus_card/script.m>
+4. Great, installation is done! You are now ready to run the first [tutorial](https://mattechlab.github.io/monalisa/3-1_example1.html)
 
 ## Getting started
 
