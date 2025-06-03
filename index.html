@@ -41,8 +41,18 @@
             
   <section id="welcome-to-monalisa-s-documentation">
 <h1>Welcome to Monalisa’s documentation!<a class="headerlink" href="#welcome-to-monalisa-s-documentation" title="Link to this heading">¶</a></h1>
+<p>First of all, why should you use Monalisa?</p>
+<ol class="arabic simple">
+<li><p><strong>Monalisa targets non-Cartesian reconstructions, motion-resolved reconstructions, and partial Cartesian reconstructions.</strong>
+It offers great tools especially for radial imaging and motion-resolved reconstructions. These are the best use cases for the current toolbox.</p></li>
+<li><p><strong>Monalisa is easy to install and well documented</strong> – as you can see!</p></li>
+<li><p><strong>Monalisa is great for learning non-Cartesian iterative reconstruction methods.</strong></p></li>
+</ol>
 <a class="reference internal image-reference" href="_images/Bastien.jpeg"><img alt="_images/Bastien.jpeg" src="_images/Bastien.jpeg" style="width: 100%;" />
 </a>
+<a class="reference internal image-reference" href="_images/monalisaworkflow.png"><img alt="_images/monalisaworkflow.png" src="_images/monalisaworkflow.png" style="width: 100%;" />
+</a>
+<p>Here you can see a simplified schematic of the pipeline in Monalisa. Information from the acquisition raw data files is processed through multiple stages, together with additional information, such as the trajectory, volume elements, and user-defined binning and reconstruction parameters. Colored blocks indicate the degree of user control: red denotes acquisition-specific steps that are fixed and cannot be modified after acquisition; yellow highlights configurable steps that are rarely changed but can be customized or improved; green represents user-defined steps that must be adapted for each reconstruction. Initially, the workflow defines binning masks alongside coil sensitivity estimation and volume element computation. This is followed by the mitosius preparation, and finally, image reconstruction. The sections below are explaining each step extensively. Need more help? Consider opening a GitHub issue on our repository.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a><ul>
