@@ -35,7 +35,7 @@ Monalisa provides a selector function to generate standard trajectories:
 
     t = bmTraj(mriAcquisitionNode)
 
-This function supports various predefined trajectories, including those extracted directly from PulSeq `.seq` files [Layton2017]_. This allows easy integration of vendor-neutral sequence designs into Monalisa reconstructions.
+This function supports various predefined trajectories, including those extracted directly from PulSeq `.seq` files. This allows easy integration of vendor-neutral sequence designs into Monalisa reconstructions.
 
 However, please note:
 
@@ -46,9 +46,7 @@ However, please note:
 Custom Trajectories
 --------------------
 
-You may provide a custom trajectory, but it must follow these conventions:
-
-1. The coordinates must be in **physical units** matching the **true acquisition FoV**(e.g., `1/mm`)
+You may provide a custom trajectory, but coordinates must be in **physical units** matching the **true acquisition FoV** (e.g., `1/mm`).
 
 For instance, if you have a trajectory defined in a unit cube (e.g., scaled between `-0.5` and `+0.5`), you can rescale it with:
 

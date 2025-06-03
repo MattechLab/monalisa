@@ -520,32 +520,28 @@ thMIP (int): The threshold value above which the MIP values are kept.</p>
 
 <dl class="mat function">
 <dt class="sig sig-object mat" id="mlComputeCoilSensitivity">
-<span class="sig-name descname"><span class="pre">mlComputeCoilSensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">BCreader</span></em>, <em class="sig-param"><span class="pre">HCreader</span></em>, <em class="sig-param"><span class="pre">CoilSensitivityFrameSize</span></em>, <em class="sig-param"><span class="pre">autoFlag</span></em>, <em class="sig-param"><span class="pre">nIter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mlComputeCoilSensitivity" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mlComputeCoilSensitivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">BCreader</span></em>, <em class="sig-param"><span class="pre">SCreader</span></em>, <em class="sig-param"><span class="pre">CoilSensitivityFrameSize</span></em>, <em class="sig-param"><span class="pre">autoFlag</span></em>, <em class="sig-param"><span class="pre">nIter</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mlComputeCoilSensitivity" title="Link to this definition">¶</a></dt>
 <dd><p>mlComputeCoilSensitivity computes the coil sensitivity map using 
-prescan acquisitions from body and surface coils.</p>
-<p>This function assumes the rawDataReaders are ready to be used</p>
-<p>This function estimates the coil sensitivity profiles of the surface 
+prescan acquisitions from body and surface coils.
+This function assumes that the input rawDataReaders are ready to be used.
+This function estimates the coil sensitivity profiles of the surface 
 coils using body coil data as a reference. The estimation process 
 is too complex to be described here. Detailed description can be found
-int the Monalisa original paper.</p>
-<dl>
+in Monalisa’s original paper.</p>
+<dl class="simple">
 <dt>Authors:</dt><dd><p>Mauro Leidi
 HES-SO
 Lausanne - Switzerland
 May 2025</p>
 </dd>
 <dt>Parameters:</dt><dd><p>BCreader (struct): Acquisition reader object for the body coil prescan
-HCreader (struct): Acquisition reader object for the surface coil prescan
-CoilSensitivityFrameSize (1x3 array, optional): Size of the frame</p>
-<blockquote>
-<div><p>used for sensitivity estimation (e.g., [48, 48, 48]). Default is [48, 48, 48].</p>
-</div></blockquote>
-<dl class="simple">
-<dt>autoFlag (bool, optional): Flag to enable automatic mask generation.</dt><dd><p>If true, automatic masking is applied. Default is true.</p>
-</dd>
-<dt>nIter (int, optional): Number of iterations for coil sensitivity refinement.</dt><dd><p>Default is 5.</p>
-</dd>
-</dl>
+SCreader (struct): Acquisition reader object for the surface coils prescan
+CoilSensitivityFrameSize (1x3 array, optional): Size of the frame 
+used for sensitivity estimation (e.g., [48, 48, 48]). Default is [48, 48, 48].
+autoFlag (bool, optional): Flag to enable automatic mask generation.
+If true, automatic masking is applied. Default is true.
+nIter (int, optional): Number of iterations for coil sensitivity refinement.
+Default is 5.</p>
 </dd>
 <dt>Returns:</dt><dd><p>C (array): Estimated coil sensitivity map</p>
 </dd>
@@ -5899,23 +5895,21 @@ line</p>
 <dd><p>myTraj = mlTraj_fullRadial3_phyllotaxis_random_lineAssym2(varargin)</p>
 <p>This function creates and returns a flexyphy trajectory. 
 This is basically a more uniform phyllotaxis spiral that is compatible with real time binning.</p>
-<dl>
+<dl class="simple">
 <dt>Authors:</dt><dd><p>Mauro Leidi
 HES-SO
 Lausanne - Switzerland
 May 2025</p>
 </dd>
 <dt>Parameters:</dt><dd><p>varargin: This input is either an bmMriAcquisitionParam object
-containing the needed variables or the 6 variables seperatly:</p>
-<blockquote>
-<div><p>N (int): Number of points on line
+containing the needed variables or the 6 variables seperatly:
+N (int): Number of points on line
 nSeg (int): Number of segments
 nShot (int): Number of shots
 dK_n (double): Distance between points of trajectory (1/FoV)
 flagSelfNav (bool): First segment of each shot is at the top of the
 sphere if true
 nShot_off (int): Number of shots to be discarded</p>
-</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><p>myTraj (array): Containing the trajectory in the shape [3, N, M], where
 M = (nShot - nShot_off) * (nSeg - flagSelfNav)</p>
@@ -5999,23 +5993,21 @@ spiral</p>
 <span class="sig-name descname"><span class="pre">bmTraj_fullRadial3_phyllotaxis_uniform_lineAssym2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bmTraj_fullRadial3_phyllotaxis_uniform_lineAssym2" title="Link to this definition">¶</a></dt>
 <dd><p>myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)</p>
 <p>This function creates and returns a uniform version uphy of the phyllotaxis trajectory.</p>
-<dl>
+<dl class="simple">
 <dt>Authors:</dt><dd><p>Mauro Leidi
 HES-SO 
 Lausanne - Switzerland
 May 2025</p>
 </dd>
 <dt>Parameters:</dt><dd><p>varargin: This input is either an bmMriAcquisitionParam object
-containing the needed variables or the 6 variables seperatly:</p>
-<blockquote>
-<div><p>N (int): Number of points on line
+containing the needed variables or the 6 variables seperatly:
+N (int): Number of points on line
 nSeg (int): Number of segments
 nShot (int): Number of shots
 dK_n (double): Distance between points of trajectory (1/FoV)
 flagSelfNav (bool): First segment of each shot is at the top of the
 sphere if true
 nShot_off (int): Number of shots to be discarded</p>
-</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><p>myTraj (array): Containing the trajectory in the shape [3, N, M], where
 M = (nShot - nShot_off) * (nSeg - flagSelfNav)</p>
@@ -6159,36 +6151,28 @@ of <cite>traj_type</cite> in the input struct.</p>
 </dd>
 </dl>
 <p>The returned trajectory is scaled and shaped for use in reconstruction.</p>
-<dl>
+<dl class="simple">
 <dt>Authors:</dt><dd><p>Bastien Milani
 CHUV and UNIL
 Lausanne - Switzerland
 May 2023</p>
 </dd>
 <dt>Parameters:</dt><dd><p>mriAcquisition_node (struct): A structure containing acquisition parameters.
-Required fields:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>traj_type (string): Type of trajectory to use</p></li>
-<li><p>imDim (int): Number of spatial dimensions (2 or 3)</p></li>
-<li><p>nSeg (int): Number of readout segments</p></li>
-<li><p>nShot (int): Number of shots</p></li>
-<li><p>N (int): Number of points per readout</p></li>
-<li><p>selfNav_flag (bool): Whether the first segment is a navigator</p></li>
-<li><p>nShot_off (int): Number of shots to discard</p></li>
-<li><p>pulseq_path (string, optional): Path to Pulseq .seq file (required if traj_type = ‘pulseq’)</p></li>
-</ul>
-</div></blockquote>
+Required fields:
+- traj_type (string): Type of trajectory to use
+- imDim (int): Number of spatial dimensions (2 or 3)
+- nSeg (int): Number of readout segments
+- nShot (int): Number of shots
+- N (int): Number of points per readout
+- selfNav_flag (bool): Whether the first segment is a navigator
+- nShot_off (int): Number of shots to discard
+- pulseq_path (string, optional): Path to Pulseq .seq file (required if traj_type = ‘pulseq’)</p>
 </dd>
 <dt>Returns:</dt><dd><p>t (array): The normalized k-space trajectory, of shape 
-[nDim, N, Nlines], where:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>nDim: Acquisition dimensionality (2 or 3)</p></li>
-<li><p>N: Number of points per readout</p></li>
-<li><p>Nlines: Effective number of lines = (nSeg - selfNav_flag) * (nShot - nShot_off)</p></li>
-</ul>
-</div></blockquote>
+[nDim, N, Nlines], where:
+- nDim: Acquisition dimensionality (2 or 3)
+- N: Number of points per readout
+- Nlines: Effective number of lines = (nSeg - selfNav_flag) * (nShot - nShot_off)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6204,7 +6188,7 @@ HES-SO
 May 2025</p>
 </dd>
 <dt>Parameters:</dt><dd><p>mriAcquisition_node (struct): A struct that must contain the field
-‘pulseq_path’ pointing to the Pulseq sequence file (<a href="#id27"><span class="problematic" id="id28">*</span></a>.seq)</p>
+‘pulseq_path’ pointing to the Pulseq sequence file (filename.seq)</p>
 </dd>
 <dt>Returns:</dt><dd><p>t (array): Normalized trajectory array of shape [N, nSeg, nShot, 3],
 scaled to have maximum absolute value of 0.5</p>
