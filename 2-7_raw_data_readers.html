@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reading Raw Data &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Volume Elements or Density Compensation" href="2-8_volume_elements.html" />
+    <link rel="prev" title="Acquisition Guidelines for Coil Sensitivity Estimation using Prescans" href="2-6_prescan_acquisition.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reading-raw-data">
+<h1>Reading Raw Data<a class="headerlink" href="#reading-raw-data" title="Link to this heading">¶</a></h1>
+<p>Before any reconstruction or analysis, we need to parse k-space raw data into MATLAB objects. However, different users may work with different raw data formats — such as Siemens Twix or ISMRMRD.</p>
+<p>Monalisa provides two ready-to-use readers for these formats:
+- Siemens raw data (Twix format)
+- ISMRMRD format</p>
+<p>If your data is in another format, the simplest solution is to <strong>convert it to ISMRMRD</strong>.</p>
+<section id="basic-usage">
+<h2><strong>Basic Usage</strong><a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
+<p>Using the data readers is easy. Monalisa provides the <code class="docutils literal notranslate"><span class="pre">createRawDataReader</span></code> function, which automatically detects the file format and returns the appropriate reader object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/your/path/to/raw_data/rawdata.fileExtension&#39;</span><span class="p">;</span>
+<span class="n">autoFlag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">      </span><span class="c">% Set to true to enable interactive validation</span>
+<span class="c">% Automatically create the appropriate reader</span>
+<span class="n">reader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">autoFlag</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is probable that the parser cannot correctly identify the metadata correctly, since different sequence implementation follow different conventions. That is why we prompt the user with a validation table where it is fundamental to correct any wrong entries:</p>
+<img alt="_images/param_extract.png" src="_images/param_extract.png" />
+<p>Once the values in the yellow columns are selected, click confirm, to create the reader object. This reader object is passed as input to Monalisa functions, which then use it internally to access raw data and metadata.</p>
+</section>
+<section id="advanced-details-for-developers">
+<h2><strong>Advanced Details for Developers</strong><a class="headerlink" href="#advanced-details-for-developers" title="Link to this heading">¶</a></h2>
+<p>Monalisa handles raw data abstraction using the <code class="docutils literal notranslate"><span class="pre">RawDataReader</span></code> interface class. This base class defines a standard interface for reading raw MRI data in a vendor-agnostic way.</p>
+<p>It defines two main methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">readMetaData</span></code>
+Parses header information and acquisition parameters from the file, such as:
+- Number of coils
+- Acquisition lines
+- Echo counts
+- Field of view (FOV)
+It also analyzes the signal to estimate when steady state is reached.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readRawData</span></code>
+Loads and reshapes the actual k-space data into a MATLAB array. Typical dimensions include:
+- Coils
+- Readout points
+- Acquisition lines
+This method can optionally remove unwanted or non–steady-state lines based on flags.</p></li>
+</ul>
+<p>These methods provide a unified interface, abstracting vendor-specific details while ensuring compatibility across the Monalisa pipeline.</p>
+<p><strong>Implemented Readers</strong></p>
+<p>Monalisa currently includes two subclasses of <code class="docutils literal notranslate"><span class="pre">RawDataReader</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">siemens</span></code>
+Uses the <strong>mapVBVD</strong> library to read Siemens raw data.
+Source: <a class="reference external" href="https://github.com/MattechLab/monalisa/tree/main/src/rawDataReader/siemens">https://github.com/MattechLab/monalisa/tree/main/src/rawDataReader/siemens</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ismrmrd</span></code>
+Supports the ISMRMRD file format.
+Source: <a class="reference external" href="https://github.com/MattechLab/monalisa/tree/main/src/rawDataReader/ismrmrd">https://github.com/MattechLab/monalisa/tree/main/src/rawDataReader/ismrmrd</a></p></li>
+</ul>
+<p><strong>Note on mapVBVD</strong></p>
+<p>The Siemens reader uses the external toolbox <strong>mapVBVD</strong>, originally developed by Philipp Ehses:
+<a class="reference external" href="https://github.com/pehses/mapVBVD">https://github.com/pehses/mapVBVD</a></p>
+<p>Please note that these functions are <strong>not part of the core Monalisa toolbox</strong> and are located in:
+<code class="docutils literal notranslate"><span class="pre">monalisa/third_part/twix_for_monalisa/</span></code></p>
+<p><strong>Extending for Other Formats</strong></p>
+<p>If you need to support a different file format, you have two options:</p>
+<ul class="simple">
+<li><p>Convert your dataset to ISMRMRD (recommended if possible)</p></li>
+<li><p>Implement a new subclass of <code class="docutils literal notranslate"><span class="pre">RawDataReader</span></code> and override:
+- <code class="docutils literal notranslate"><span class="pre">readMetaData</span></code>
+- <code class="docutils literal notranslate"><span class="pre">readRawData</span></code></p></li>
+</ul>
+<p>Source for the base class:
+<a class="reference external" href="https://github.com/MattechLab/monalisa/blob/main/src/rawDataReader/mleRawDataReader.m">https://github.com/MattechLab/monalisa/blob/main/src/rawDataReader/mleRawDataReader.m</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reading Raw Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-usage"><strong>Basic Usage</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-details-for-developers"><strong>Advanced Details for Developers</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-8_volume_elements.html">Volume Elements or Density Compensation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_ack_contribution.html">Acknowledgment and Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_discussions.html">Discussion</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="2_contents.html">Contents</a><ul>
+      <li>Previous: <a href="2-6_prescan_acquisition.html" title="previous chapter">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+      <li>Next: <a href="2-8_volume_elements.html" title="next chapter">Volume Elements or Density Compensation</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/2-7_raw_data_readers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
