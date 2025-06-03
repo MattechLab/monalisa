@@ -3,127 +3,162 @@ API
 
  Author : Jaime Barranco
 
-bmArrayUtility
---------------
-.. automodule:: bmArrayUtility
+arrayUtility
+------------
+.. automodule:: arrayUtility
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmCoilSense
+bmGridding123
+-------------
+mex
+^^^
+bmImage1
+--------
+mex
+^^^
+bmImage2
+--------
+mex
+^^^
+bmImage3
+--------
+mex
+^^^
+bmMex
+-----
+mex
+^^^
+bmSparseMat
 -----------
+mex
+^^^
+bmSparseMat_help_function
+~~~~~~~~~~~~~~~~~~~~~~~~~
+bmSparseMat_vec
+~~~~~~~~~~~~~~~
+coilSense
+---------
 automatic
 ^^^^^^^^^
-.. automodule:: bmCoilSense.automatic
+.. automodule:: coilSense.automatic
     :members:
     :undoc-members:
     :show-inheritance:
 
 from_prescan
 ^^^^^^^^^^^^
-.. automodule:: bmCoilSense.from_prescan
+.. automodule:: coilSense.from_prescan
     :members:
     :undoc-members:
     :show-inheritance:
 
 map
 ^^^
-.. automodule:: bmCoilSense.map
+.. automodule:: coilSense.map
     :members:
     :undoc-members:
     :show-inheritance:
 
 nonCart
 ^^^^^^^
-.. automodule:: bmCoilSense.nonCart
+.. automodule:: coilSense.nonCart
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmDialog
---------
-.. automodule:: bmDialog
+simu
+^^^^
+.. automodule:: coilSense.simu
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmDicom
--------
-.. automodule:: bmDicom
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmElastix
----------
-.. automodule:: bmElastix
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFieldDisp2
-------------
-.. automodule:: bmFieldDisp2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFieldDisp3
-------------
-.. automodule:: bmFieldDisp3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFit1
+dialog
 ------
-.. automodule:: bmFit1
+.. automodule:: dialog
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmFourier1
+dicom
+-----
+.. automodule:: dicom
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+elastix
+-------
+.. automodule:: elastix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fieldDisp2
 ----------
-.. automodule:: bmFourier1
+.. automodule:: fieldDisp2
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmFourier123
-------------
+fieldDisp3
+----------
+.. automodule:: fieldDisp3
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fit1
+----
+.. automodule:: fit1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fourier1
+--------
+.. automodule:: fourier1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+fourier123
+----------
 map_function
 ^^^^^^^^^^^^
 cartesian
 ~~~~~~~~~
-.. automodule:: bmFourier123.map_function.cartesian
+.. automodule:: fourier123.map_function.cartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
 nonCartesian
 ~~~~~~~~~~~~
-.. automodule:: bmFourier123.map_function.nonCartesian
+.. automodule:: fourier123.map_function.nonCartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
 partialCartesian
 ~~~~~~~~~~~~~~~~
-.. automodule:: bmFourier123.map_function.partialCartesian
+.. automodule:: fourier123.map_function.partialCartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
 other_function
 ^^^^^^^^^^^^^^
-.. automodule:: bmFourier123.other_function
+.. automodule:: fourier123.other_function
     :members:
     :undoc-members:
     :show-inheritance:
 
 prep_function
 ^^^^^^^^^^^^^
-.. automodule:: bmFourier123.prep_function
+.. automodule:: fourier123.prep_function
     :members:
     :undoc-members:
     :show-inheritance:
@@ -134,14 +169,14 @@ imDim
 ~~~~~
 nonCartesian
 ~~~~~~~~~~~~
-.. automodule:: bmFourier123.solver_function.imDim.nonCartesian
+.. automodule:: fourier123.solver_function.imDim.nonCartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
 partialCartesian
 ~~~~~~~~~~~~~~~~
-.. automodule:: bmFourier123.solver_function.imDim.partialCartesian
+.. automodule:: fourier123.solver_function.imDim.partialCartesian
     :members:
     :undoc-members:
     :show-inheritance:
@@ -150,396 +185,179 @@ imDim_morphosia
 ~~~~~~~~~~~~~~~
 nonCartesian
 ~~~~~~~~~~~~
-.. automodule:: bmFourier123.solver_function.imDim_morphosia.nonCartesian
+.. automodule:: fourier123.solver_function.imDim_morphosia.nonCartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
 partialCartesian
 ~~~~~~~~~~~~~~~~
-.. automodule:: bmFourier123.solver_function.imDim_morphosia.partialCartesian
+.. automodule:: fourier123.solver_function.imDim_morphosia.partialCartesian
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmFourier2
-----------
-.. automodule:: bmFourier2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFourier3
-----------
-.. automodule:: bmFourier3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFourierN
-----------
-.. automodule:: bmFourierN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmFunction1
------------
-.. automodule:: bmFunction1
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGeom1
--------
-.. automodule:: bmGeom1
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGeom123
----------
-.. automodule:: bmGeom123
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGeom2
--------
-.. automodule:: bmGeom2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGeom3
--------
-.. automodule:: bmGeom3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGeomN
--------
-.. automodule:: bmGeomN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmGridding123
--------------
-m
-^^^
-.. automodule:: bmGridding123.m
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-mex
-^^^
-bmImage1
+fourier2
 --------
-m
-^^^
-.. automodule:: bmImage1.m
+.. automodule:: fourier2
     :members:
     :undoc-members:
     :show-inheritance:
 
-mex
-^^^
-bmImage123
-----------
-.. automodule:: bmImage123
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmImage2
+fourier3
 --------
-m
-^^^
-.. automodule:: bmImage2.m
+.. automodule:: fourier3
     :members:
     :undoc-members:
     :show-inheritance:
 
-mex
-^^^
-bmImage3
+fourierN
 --------
-m
-^^^
-.. automodule:: bmImage3.m
+.. automodule:: fourierN
     :members:
     :undoc-members:
     :show-inheritance:
 
-mex
-^^^
-bmImageN
---------
-.. automodule:: bmImageN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmImDisp
---------
-.. automodule:: bmImDisp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmImReg
--------
-class
-^^^^^
-.. automodule:: bmImReg.class
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-m
-^^^
-.. automodule:: bmImReg.m
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmInterp1
+function1
 ---------
-.. automodule:: bmInterp1
+.. automodule:: function1
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmInterp2
----------
-.. automodule:: bmInterp2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmInterp3
----------
-.. automodule:: bmInterp3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmLinAlg2
----------
-.. automodule:: bmLinAlg2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmLinAlg3
----------
-.. automodule:: bmLinAlg3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmLinSpace
-----------
-.. automodule:: bmLinSpace
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMask123
----------
-.. automodule:: bmMask123
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMask2
--------
-.. automodule:: bmMask2
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMask3
--------
-.. automodule:: bmMask3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMaskN
--------
-.. automodule:: bmMaskN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMathDisp
-----------
-.. automodule:: bmMathDisp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMathOp
---------
-.. automodule:: bmMathOp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmMex
+geom1
 -----
+.. automodule:: geom1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+geom123
+-------
+.. automodule:: geom123
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+geom2
+-----
+.. automodule:: geom2
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+geom3
+-----
+.. automodule:: geom3
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+geomN
+-----
+.. automodule:: geomN
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+gridding123
+-----------
 m
 ^^^
-.. automodule:: bmMex.m
+.. automodule:: gridding123.m
     :members:
     :undoc-members:
     :show-inheritance:
 
 mex
 ^^^
-bmMitosius
-----------
-.. automodule:: bmMitosius
+image1
+------
+m
+^^^
+.. automodule:: image1.m
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmMriPhi
+mex
+^^^
+image123
 --------
-.. automodule:: bmMriPhi
+.. automodule:: image123
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmMriRecon
-----------
+image2
+------
+m
+^^^
+.. automodule:: image2.m
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mex
+^^^
+image3
+------
+m
+^^^
+.. automodule:: image3.m
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mex
+^^^
+imageN
+------
+.. automodule:: imageN
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+imDisp
+------
+.. automodule:: imDisp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+imReg
+-----
 class
 ^^^^^
-.. automodule:: bmMriRecon.class
+.. automodule:: imReg.class
     :members:
     :undoc-members:
     :show-inheritance:
 
-function
-^^^^^^^^
-.. automodule:: bmMriRecon.function
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmOptim
--------
-.. automodule:: bmOptim
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmPartition
------------
-.. automodule:: bmPartition
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmPhaseLift
------------
-.. automodule:: bmPhaseLift
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmPhysicNum
------------
-.. automodule:: bmPhysicNum
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmQuickSolve
-------------
-.. automodule:: bmQuickSolve
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmReadWrite
------------
-.. automodule:: bmReadWrite
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmSparseMat
------------
 m
 ^^^
-.. automodule:: bmSparseMat.m
+.. automodule:: imReg.m
     :members:
     :undoc-members:
     :show-inheritance:
 
-mex
-^^^
-bmSparseMat_help_function
-~~~~~~~~~~~~~~~~~~~~~~~~~
-bmSparseMat_vec
-~~~~~~~~~~~~~~~
-bmTime
-------
-.. automodule:: bmTime
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmTraj1
+interp1
 -------
-.. automodule:: bmTraj1
+.. automodule:: interp1
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmTraj123
----------
-.. automodule:: bmTraj123
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmTraj2
+interp2
 -------
-.. automodule:: bmTraj2
+.. automodule:: interp2
     :members:
     :undoc-members:
     :show-inheritance:
 
-bmTraj3
+interp3
 -------
-.. automodule:: bmTraj3
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmTrajN
--------
-.. automodule:: bmTrajN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmTwix
-------
-.. automodule:: bmTwix
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-bmVarargin
-----------
-.. automodule:: bmVarargin
+.. automodule:: interp3
     :members:
     :undoc-members:
     :show-inheritance:
@@ -547,6 +365,145 @@ bmVarargin
 ISMRMRD
 -------
 .. automodule:: ISMRMRD
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+linAlg2
+-------
+.. automodule:: linAlg2
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+linAlg3
+-------
+.. automodule:: linAlg3
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+linSpace
+--------
+.. automodule:: linSpace
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mask123
+-------
+.. automodule:: mask123
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mask2
+-----
+.. automodule:: mask2
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mask3
+-----
+.. automodule:: mask3
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+maskN
+-----
+.. automodule:: maskN
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mathDisp
+--------
+.. automodule:: mathDisp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mathOp
+------
+.. automodule:: mathOp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mex
+---
+m
+^^^
+.. automodule:: mex.m
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mex
+^^^
+mitosius
+--------
+.. automodule:: mitosius
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mriPhi
+------
+.. automodule:: mriPhi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mriRecon
+--------
+class
+^^^^^
+.. automodule:: mriRecon.class
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+function
+^^^^^^^^
+.. automodule:: mriRecon.function
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+optim
+-----
+.. automodule:: optim
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+partition
+---------
+.. automodule:: partition
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+phaseLift
+---------
+.. automodule:: phaseLift
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+physicNum
+---------
+.. automodule:: physicNum
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+quickSolve
+----------
+.. automodule:: quickSolve
     :members:
     :undoc-members:
     :show-inheritance:
@@ -568,6 +525,84 @@ ismrmrd
 siemens
 ^^^^^^^
 .. automodule:: rawDataReader.siemens
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+readWrite
+---------
+.. automodule:: readWrite
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sparseMat
+---------
+m
+^^^
+.. automodule:: sparseMat.m
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mex
+^^^
+bmSparseMat_help_function
+~~~~~~~~~~~~~~~~~~~~~~~~~
+bmSparseMat_vec
+~~~~~~~~~~~~~~~
+time
+----
+.. automodule:: time
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+traj1
+-----
+.. automodule:: traj1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+traj123
+-------
+.. automodule:: traj123
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+traj2
+-----
+.. automodule:: traj2
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+traj3
+-----
+.. automodule:: traj3
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+trajN
+-----
+.. automodule:: trajN
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+twix
+----
+.. automodule:: twix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+varargin
+--------
+.. automodule:: varargin
     :members:
     :undoc-members:
     :show-inheritance:
