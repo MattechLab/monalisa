@@ -24,21 +24,21 @@ function t = bmTraj(mriAcquisition_node)
 % Parameters:
 %   mriAcquisition_node (struct): A structure containing acquisition parameters.
 %   Required fields:
-%       - traj_type (string): Type of trajectory to use
-%       - imDim (int): Number of spatial dimensions (2 or 3)
-%       - nSeg (int): Number of readout segments
-%       - nShot (int): Number of shots
-%       - N (int): Number of points per readout
-%       - selfNav_flag (bool): Whether the first segment is a navigator
-%       - nShot_off (int): Number of shots to discard
-%       - pulseq_path (string, optional): Path to Pulseq .seq file (required if traj_type = 'pulseq')
+%   - traj_type (string): Type of trajectory to use
+%   - imDim (int): Number of spatial dimensions (2 or 3)
+%   - nSeg (int): Number of readout segments
+%   - nShot (int): Number of shots
+%   - N (int): Number of points per readout
+%   - selfNav_flag (bool): Whether the first segment is a navigator
+%   - nShot_off (int): Number of shots to discard
+%   - pulseq_path (string, optional): Path to Pulseq .seq file (required if traj_type = 'pulseq')
 %
 % Returns:
 %   t (array): The normalized k-space trajectory, of shape 
 %   [nDim, N, Nlines], where:
-%       - nDim: Acquisition dimensionality (2 or 3)
-%       - N: Number of points per readout
-%       - Nlines: Effective number of lines = (nSeg - selfNav_flag) * (nShot - nShot_off)
+%   - nDim: Acquisition dimensionality (2 or 3)
+%   - N: Number of points per readout
+%   - Nlines: Effective number of lines = (nSeg - selfNav_flag) * (nShot - nShot_off)
 
 % Sanity check and extract trajectory type
 assert(isprop(mriAcquisition_node, 'traj_type'), ['Missing required field: ', 'traj_type']);

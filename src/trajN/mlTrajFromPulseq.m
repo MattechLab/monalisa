@@ -11,7 +11,7 @@ function t = mlTrajFromPulseq(mriAcquisition_node)
 %
 % Parameters:
 %   mriAcquisition_node (struct): A struct that must contain the field
-%   'pulseq_path' pointing to the Pulseq sequence file (*.seq)
+%   'pulseq_path' pointing to the Pulseq sequence file (filename.seq)
 %
 % Returns:
 %   t (array): Normalized trajectory array of shape [N, nSeg, nShot, 3],
