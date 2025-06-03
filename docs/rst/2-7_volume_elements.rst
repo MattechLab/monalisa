@@ -137,3 +137,7 @@ In **Cartesian sampling**, all :math:`\Delta k_p` are constant, so we write:
     \int_{\mathbb{R}^3} f(\mathbf{k})\,d^3\mathbf{k} \approx \Delta k \sum_{p=1}^{N} f(\mathbf{k}_p).
 
 And therefore can be ignored since anyways raw data are usually normalized. However, in **non-Cartesian sampling**, the density of points varies across space, hence we need to estimate the :math:`\Delta k_p` for each point to correctly approximate the integral. For example **Radial** sampling oversamples the center. Historically, this concept is referred to as "density compensation" in MRI, originating from the transition from uniform trajectories, where the density is constant and can be neglected, to non-uniform trajectories. Although non-uniform density was once viewed as a problem to be “compensated”, it is in fact the general case, with uniform sampling being a special scenario.
+
+Need More Help?
+
+- `Open an issue on GitHub <https://github.com/mattechlab/monalisa/issues>`_
