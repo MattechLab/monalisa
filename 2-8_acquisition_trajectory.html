@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Trajectory Definition in Monalisa &#8212; Monalisa 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-navigation.css?v=899df2ba" />
+    <link rel="stylesheet" type="text/css" href="_static/custom-button.css?v=35775deb" />
+    <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
+    <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
+    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "displayMath": [["$$", "$$"], ["\\[", "\\]"]]}, "TeX": {"Macros": {"coloneqq": "\\mathrel{\\mathpalette\\coloneqq@{}}", "parallel": "\\parallel"}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/custom.js?v=35170ed4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reading Raw Data" href="2-9_raw_data_readers.html" />
+    <link rel="prev" title="Volume Elements or Density Compensation" href="2-7_volume_elements.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+  <div role="main">
+    
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="trajectory-definition-in-monalisa">
+<h1>Trajectory Definition in Monalisa<a class="headerlink" href="#trajectory-definition-in-monalisa" title="Link to this heading">¶</a></h1>
+<section id="what-is-a-trajectory-basic-usage">
+<h2>What is a Trajectory? Basic Usage<a class="headerlink" href="#what-is-a-trajectory-basic-usage" title="Link to this heading">¶</a></h2>
+<p>The raw MRI signal does not contain information about where in k-space each measurement was taken. It only contains <cite>nSamp</cite> complex-valued values. To reconstruct an image accurately, we must know the <strong>spatial k-space location</strong> of each sample. This sampling pattern is referred to as the <strong>trajectory</strong>.</p>
+<p>In <strong>Monalisa</strong>, a trajectory is represented as a double-precision array:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="w">  </span><span class="s">%</span><span class="w"> </span><span class="s">size</span><span class="w"> </span><span class="s">[frDim,</span><span class="w"> </span><span class="s">nPt]</span>
+</pre></div>
+</div>
+<p>Each <strong>column</strong> of <cite>t</cite> corresponds to a single k-space point (sample), and each <strong>row</strong> corresponds to a spatial dimension (e.g., <cite>kx</cite>, <cite>ky</cite>, <cite>kz</cite>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All trajectories must be defined in <strong>physical units</strong>, consistent with the scanner’s true input Field of View (FoV). We do <strong>not</strong> support arbitrary units (e.g., [-0.5, 0.5] unit cube).</p>
+</div>
+<p>Example: Let’s say your acquisition FoV is <code class="docutils literal notranslate"><span class="pre">[200,</span> <span class="pre">300]</span></code> mm. Then:</p>
+<ul class="simple">
+<li><p>The step size along <cite>kx</cite> must be <cite>1 / 200</cite> (in <cite>1/mm</cite>)</p></li>
+<li><p>The step size along <cite>ky</cite> must be <cite>1 / 300</cite> (in <cite>1/mm</cite>)</p></li>
+</ul>
+<p>Similarly, for a radial trajectory with FoV of <code class="docutils literal notranslate"><span class="pre">[360,</span> <span class="pre">360]</span></code> mm, the spacing between points on each spoke must be <cite>1 / 360</cite>.</p>
+<img alt="Example of a radial trajectory in k-space" src="_images/trajectory_ct_radial.png" />
+<p>Monalisa provides a selector function to generate standard trajectories:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj</span><span class="p">(</span><span class="n">mriAcquisitionNode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function supports various predefined trajectories, including those extracted directly from PulSeq <cite>.seq</cite> files <span id="id1">[Layton2017]</span>. This allows easy integration of vendor-neutral sequence designs into Monalisa reconstructions.</p>
+<p>However, please note:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Even when using the same nominal trajectory (e.g., radial), different sequence implementations or vendors may produce <strong>slightly different actual coordinate sets</strong>. Always verify that the trajectory used in reconstruction <strong>matches the one used during acquisition</strong>.</p>
+</div>
+</section>
+<section id="custom-trajectories">
+<h2>Custom Trajectories<a class="headerlink" href="#custom-trajectories" title="Link to this heading">¶</a></h2>
+<p>You may provide a custom trajectory, but it must follow these conventions:</p>
+<ol class="arabic simple">
+<li><p>The coordinates must be in <strong>physical units</strong> matching the <a href="#id2"><span class="problematic" id="id3">**</span></a>true acquisition FoV**(e.g., <cite>1/mm</cite>)</p></li>
+</ol>
+<p>For instance, if you have a trajectory defined in a unit cube (e.g., scaled between <cite>-0.5</cite> and <cite>+0.5</cite>), you can rescale it with:</p>
+<div class="math notranslate nohighlight">
+\[[k_x, k_y, k_z] \rightarrow \left[
+    k_x \cdot \frac{aN_x}{aL_x}, \quad
+    k_y \cdot \frac{aN_y}{aL_y}, \quad
+    k_z \cdot \frac{aN_z}{aL_z}
+\right]\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(aN_x, aN_y, aN_z\)</span> = matrix size in each direction (e.g., 256 × 256)</p></li>
+<li><p><span class="math notranslate nohighlight">\(aL_x, aL_y, aL_z\)</span> = true FoV in each direction (in <cite>mm</cite>)</p></li>
+</ul>
+<p>Alternatively, if your trajectory is scaled from <cite>-aN/2</cite> to <cite>aN/2 - 1</cite>, apply:</p>
+<div class="math notranslate nohighlight">
+\[[k_x, k_y, k_z] \rightarrow \left[
+    \frac{k_x}{aL_x}, \quad
+    \frac{k_y}{aL_y}, \quad
+    \frac{k_z}{aL_z}
+\right]\]</div>
+<p>Need More Help?</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/mattechlab/monalisa/issues">Open an issue on GitHub</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>  <!-- This includes the original document content -->
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" id="back-to-top" title="Go to top">↑</button>
+  </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Monalisa</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="2_contents.html">Contents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2-1_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-2_reconstruction_calls.html">Reconstruction Calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-3_mitosius_prepare.html">The Mitosius</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-7_volume_elements.html">Volume Elements or Density Compensation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Trajectory Definition in Monalisa</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-a-trajectory-basic-usage">What is a Trajectory? Basic Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-trajectories">Custom Trajectories</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2-9_raw_data_readers.html">Reading Raw Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="4_api.html">API</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="5_docker.html">Docker for Monalisa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_ack_contribution.html">Acknowledgment and Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7_discussions.html">Discussion</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="2_contents.html">Contents</a><ul>
+      <li>Previous: <a href="2-7_volume_elements.html" title="previous chapter">Volume Elements or Density Compensation</a></li>
+      <li>Next: <a href="2-9_raw_data_readers.html" title="next chapter">Reading Raw Data</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Bastien Milani.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/2-8_acquisition_trajectory.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

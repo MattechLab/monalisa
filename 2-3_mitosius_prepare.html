@@ -49,7 +49,7 @@
 <p>This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output “mitosius”. The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section <a class="reference internal" href="#custom-acquisition"><span class="std std-ref">Using a Custom Acquisition Trajectory</span></a>).</p>
+<p>Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section <span class="xref std std-ref">custom_acquisition</span>).</p>
 </div>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
@@ -232,54 +232,6 @@ For your own trajectory, you can find your own way.</p>
 <li><p>The raw data normalization step ensures that the average value in the selected ROI ranges around the mean of 1 in the reconstructed images. This allows the standardization of the regularization weights.</p></li>
 </ul>
 </section>
-<section id="using-a-custom-acquisition-trajectory">
-<span id="custom-acquisition"></span><h2>Using a Custom Acquisition Trajectory<a class="headerlink" href="#using-a-custom-acquisition-trajectory" title="Link to this heading">¶</a></h2>
-<p>You can use any trajectory with our reconstruction as long as you can provide the volume elements (inverse density compensation)
-for your trajectory. These volume elements can be estimated by one of our volume-element functions if your trajectory is supported by Monalisa.
-Else you have to implement your own volume-element function.</p>
-<p>You can create your own custom trajectory as long as you follows the following rule:</p>
-<blockquote>
-<div><p>The trajectory points in k-space must be given in physical units according to your FoV.</p>
-</div></blockquote>
-<p>Examples:</p>
-<blockquote>
-<div><ul class="simple">
-<li><ol class="arabic simple">
-<li><p>If your acquisition trajectory corresponds to a FoV of <code class="docutils literal notranslate"><span class="pre">[200,</span> <span class="pre">300]</span></code> in <cite>mm</cite> (millimeter), the step size in <cite>kx</cite>-direction of k-space must then be 1/200 (in <cite>1/mm</cite>), and the step size in <cite>ky</cite>-direction of k-space must be 1/300 (in <cite>1/mm</cite>).</p></li>
-</ol>
-</li>
-<li><ol class="arabic simple" start="2">
-<li><p>If your acquisition trajectory is a radial trajectory for a FoV of <code class="docutils literal notranslate"><span class="pre">[360,</span> <span class="pre">360]</span></code> in <cite>mm</cite>, the space between two consecutive points on a radial trajectory line must be <cite>1/360</cite> (in <cite>1/mm</cite>).</p></li>
-</ol>
-</li>
-</ul>
-</div></blockquote>
-<br><br><img alt="_images/trajectory_ct_radial.png" src="_images/trajectory_ct_radial.png" />
-<br><br><br><br><p>If you already computed your trajectory and that it is scaled in the unit-cube (between <cite>-0.5</cite> and <cite>+0.5</cite> in each direction), you can make the
-following rescaling to adapt your trejectory for Monalisa.</p>
-<dl class="simple">
-<dt>For that you need to identify:</dt><dd><ul class="simple">
-<li><p>the true acquisition matrix size <span class="math notranslate nohighlight">\([aN_x, aN_y, aN_z]\)</span> i.e. the one that corresponds to your raw data, not the one that appears on the scanner interface.</p></li>
-<li><p>the true acquisition field of view <span class="math notranslate nohighlight">\([aL_x, aL_y, aL_z]\)</span> i.e. the one without croping, as it can be done on images reconstructed on the scanner if you chose to acquire with some “over-sampling”.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Let then be <span class="math notranslate nohighlight">\([k_x, k_y, k_z]\)</span> the coordinate of a trajectory point. Then rescale it as</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\([k_x, k_y, k_z] \rightarrow [k_x \cdot aN_x/aL_x, \quad  k_y \cdot aN_y/aL_y,  \quad k_z \cdot aN_z/aL_z]\)</span></p>
-</div></blockquote>
-<p>In another scenario, you may already have your trajectory with the convention that <span class="math notranslate nohighlight">\(k_x\)</span> is scaled between <span class="math notranslate nohighlight">\(-aN_x/2\)</span> and <span class="math notranslate nohighlight">\(aN_x/2 - 1\)</span> and <span class="math notranslate nohighlight">\(k_y, k_z\)</span> are scaled accordingly.
-Then you can simply rescal your trajectory as</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\([k_x, k_y, k_z] \rightarrow [k_x/aL_x, \quad  k_y/aL_y, \quad  k_z/aL_z]\)</span></p>
-</div></blockquote>
-<p>The trajectory is not a reconstruction quantity in the sense that it cannot be chosen flexibly for the reconstruction. It is an acquisition quantity that
-is set at acquisition and cannot be changed anymore. We have thus to guess how the scanner defined the trajectory. There is no algorithm for that because it
-depends on arbitrary conventions used on each MRI scanner.</p>
-<p>We don’t work with arbitrary units in Monalisa. For example, we do not admit that the edge length of voxels is 1, which corresponds to a scaling of the
-trajectory in the unit-cube. This strategy of working with physical (non-arbitrary) units allows for example to work with different voxel-size for
-the same data without having scaling problems in the reconstructed images.</p>
-</section>
 </section>
 
 
@@ -322,14 +274,14 @@ the same data without having scaling problems in the reconstructed images.</p>
 <li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#usage-instructions">Usage instructions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#notes">Notes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#using-a-custom-acquisition-trajectory">Using a Custom Acquisition Trajectory</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="2-4_binning_masks.html">Binning: Flexible Readout Rearrangement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2-5_coil_sensitivity_map.html">Coil Sensitivity Map Estimation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2-6_prescan_acquisition.html">Acquisition Guidelines for Coil Sensitivity Estimation using Prescans</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-7_raw_data_readers.html">Reading Raw Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="2-8_volume_elements.html">Volume Elements or Density Compensation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-7_volume_elements.html">Volume Elements or Density Compensation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-8_acquisition_trajectory.html">Trajectory Definition in Monalisa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2-9_raw_data_readers.html">Reading Raw Data</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="3_examples.html">Examples</a></li>
