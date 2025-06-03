@@ -67,7 +67,7 @@
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj</span><span class="p">(</span><span class="n">mriAcquisitionNode</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This function supports various predefined trajectories, including those extracted directly from PulSeq <cite>.seq</cite> files <span id="id1">[Layton2017]</span>. This allows easy integration of vendor-neutral sequence designs into Monalisa reconstructions.</p>
+<p>This function supports various predefined trajectories, including those extracted directly from PulSeq <cite>.seq</cite> files. This allows easy integration of vendor-neutral sequence designs into Monalisa reconstructions.</p>
 <p>However, please note:</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -76,10 +76,7 @@
 </section>
 <section id="custom-trajectories">
 <h2>Custom Trajectories<a class="headerlink" href="#custom-trajectories" title="Link to this heading">¶</a></h2>
-<p>You may provide a custom trajectory, but it must follow these conventions:</p>
-<ol class="arabic simple">
-<li><p>The coordinates must be in <strong>physical units</strong> matching the <a href="#id2"><span class="problematic" id="id3">**</span></a>true acquisition FoV**(e.g., <cite>1/mm</cite>)</p></li>
-</ol>
+<p>You may provide a custom trajectory, but coordinates must be in <strong>physical units</strong> matching the <strong>true acquisition FoV</strong> (e.g., <cite>1/mm</cite>).</p>
 <p>For instance, if you have a trajectory defined in a unit cube (e.g., scaled between <cite>-0.5</cite> and <cite>+0.5</cite>), you can rescale it with:</p>
 <div class="math notranslate nohighlight">
 \[[k_x, k_y, k_z] \rightarrow \left[
