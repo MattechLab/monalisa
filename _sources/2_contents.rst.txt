@@ -13,6 +13,7 @@ Contents
    2-4_binning_masks
    2-5_coil_sensitivity_map
    2-6_prescan_acquisition
-   2-7_raw_data_readers
-   2-8_volume_elements
+   2-7_volume_elements
+   2-8_acquisition_trajectory
+   2-9_raw_data_readers
    
