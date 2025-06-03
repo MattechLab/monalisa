@@ -48,7 +48,7 @@
 - ISMRMRD format</p>
 <p>If your data is in another format, the simplest solution is to <strong>convert it to ISMRMRD</strong>.</p>
 <section id="basic-usage">
-<h2><strong>Basic Usage</strong><a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
 <p>Using the data readers is easy. Monalisa provides the <code class="docutils literal notranslate"><span class="pre">createRawDataReader</span></code> function, which automatically detects the file format and returns the appropriate reader object:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;/your/path/to/raw_data/rawdata.fileExtension&#39;</span><span class="p">;</span>
 <span class="n">autoFlag</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">      </span><span class="c">% Set to true to enable interactive validation</span>
@@ -61,7 +61,7 @@
 <p>Once the values in the yellow columns are selected, click confirm, to create the reader object. This reader object is passed as input to Monalisa functions, which then use it internally to access raw data and metadata.</p>
 </section>
 <section id="advanced-details-for-developers">
-<h2><strong>Advanced Details for Developers</strong><a class="headerlink" href="#advanced-details-for-developers" title="Link to this heading">¶</a></h2>
+<h2>Advanced Details for Developers<a class="headerlink" href="#advanced-details-for-developers" title="Link to this heading">¶</a></h2>
 <p>Monalisa handles raw data abstraction using the <code class="docutils literal notranslate"><span class="pre">RawDataReader</span></code> interface class. This base class defines a standard interface for reading raw MRI data in a vendor-agnostic way.</p>
 <p>It defines two main methods:</p>
 <ul class="simple">
@@ -151,8 +151,8 @@ Source: <a class="reference external" href="https://github.com/MattechLab/monali
 <li class="toctree-l2"><a class="reference internal" href="2-7_volume_elements.html">Volume Elements or Density Compensation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2-8_acquisition_trajectory.html">Trajectory Definition in Monalisa</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Reading Raw Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#basic-usage"><strong>Basic Usage</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#advanced-details-for-developers"><strong>Advanced Details for Developers</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-details-for-developers">Advanced Details for Developers</a></li>
 </ul>
 </li>
 </ul>
