@@ -9,8 +9,8 @@ Monalisa provides two ready-to-use readers for these formats:
 
 If your data is in another format, the simplest solution is to **convert it to ISMRMRD**.
 
-**Basic Usage**
----------------
+Basic Usage
+------------
 
 Using the data readers is easy. Monalisa provides the ``createRawDataReader`` function, which automatically detects the file format and returns the appropriate reader object:
 
@@ -27,8 +27,8 @@ It is probable that the parser cannot correctly identify the metadata correctly,
 
 Once the values in the yellow columns are selected, click confirm, to create the reader object. This reader object is passed as input to Monalisa functions, which then use it internally to access raw data and metadata.
 
-**Advanced Details for Developers**
------------------------------------
+Advanced Details for Developers
+--------------------------------
 
 Monalisa handles raw data abstraction using the ``RawDataReader`` interface class. This base class defines a standard interface for reading raw MRI data in a vendor-agnostic way.
 
