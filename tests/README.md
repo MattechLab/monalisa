@@ -60,3 +60,12 @@ run_all_tests.m: Script to run all tests with detailed output.
 TestExample.m: A minimal example test — feel free to copy it as a starting point.
 Your own test files go here (e.g., TestSignalProcessing.m, TestImportData.m, etc.)
 If you're unsure where to start, copy TestExample.m, rename it, and modify it to test your own function.
+
+# Advanced Information / Something went wrong?
+As you can see in the GitHub actions workflow, we are using actions to run matlab tests:
+- name: Run Tests
+    uses: matlab-actions/run-tests@v2 # In theory this triggers all tests in the /tests folder
+    with:
+        source-folder: tests
+        select-by-folder: tests
+All the information about this GitHub Action is here https://github.com/marketplace/actions/run-matlab-tests. 
