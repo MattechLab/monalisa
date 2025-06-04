@@ -13,13 +13,13 @@ function myTraj = mlTraj_fullRadial3_phyllotaxis_random_lineAssym2(varargin)
 % Parameters:
 %   varargin: This input is either an bmMriAcquisitionParam object
 %   containing the needed variables or the 6 variables seperatly:
-%       N (int): Number of points on line
-%       nSeg (int): Number of segments
-%       nShot (int): Number of shots
-%       dK_n (double): Distance between points of trajectory (1/FoV)
-%       flagSelfNav (bool): First segment of each shot is at the top of the
-%       sphere if true
-%       nShot_off (int): Number of shots to be discarded
+%   N (int): Number of points on line
+%   nSeg (int): Number of segments
+%   nShot (int): Number of shots
+%   dK_n (double): Distance between points of trajectory (1/FoV)
+%   flagSelfNav (bool): First segment of each shot is at the top of the
+%   sphere if true
+%   nShot_off (int): Number of shots to be discarded
 %
 % Returns:
 %   myTraj (array): Containing the trajectory in the shape [3, N, M], where
@@ -72,7 +72,7 @@ z = reshape(R.*cos(theta),           [1, N_n, nSeg, nShot]);
 
 % Combine cartesian coordinates to points and scale to have the correct
 % distance between the points (The coordinates where made with d=1)
-myTraj = cat(1, x, y, z)*N_n*dK_n; 
+myTraj = cat(1, x, y, z)*N_n*dK_n; % HERE SIZE IS [nDim,N,nSeg,nShot]
 % Remove first few shots and the first segments depending on the arguments
 if flagSelfNav
    myTraj(:, :, 1, :) = [];  
@@ -80,7 +80,7 @@ end
 if nShot_off > 0
    myTraj(:, :, :, 1:nShot_off) = [];  
 end
-% Resize to shape [3, N, nSeg, nShot] considering nShot_off and flagSelfNav
+% Resize to shape [3, N, (nSeg - flagselfnav) * (nShot - nshotoff)] considering nShot_off and flagSelfNav
 mySize = size(myTraj); 
 mySize = mySize(:)'; 
 myTraj = reshape(myTraj, [mySize(1, 1), mySize(1, 2), mySize(1, 3)*mySize(1, 4)]); 
