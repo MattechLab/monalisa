@@ -1,13 +1,11 @@
-function C = mlComputeCoilSensitivity(BCreader, HCreader, CoilSensitivityFrameSize, autoFlag, nIter)
+function C = mlComputeCoilSensitivity(BCreader, SCreader, CoilSensitivityFrameSize, autoFlag, nIter)
 % mlComputeCoilSensitivity computes the coil sensitivity map using 
 % prescan acquisitions from body and surface coils.
-%
-% This function assumes the rawDataReaders are ready to be used
-%
+% This function assumes that the input rawDataReaders are ready to be used.
 % This function estimates the coil sensitivity profiles of the surface 
 % coils using body coil data as a reference. The estimation process 
 % is too complex to be described here. Detailed description can be found
-% int the Monalisa original paper.
+% in Monalisa's original paper.
 %
 % Authors:
 %   Mauro Leidi
@@ -17,13 +15,13 @@ function C = mlComputeCoilSensitivity(BCreader, HCreader, CoilSensitivityFrameSi
 %
 % Parameters:
 %   BCreader (struct): Acquisition reader object for the body coil prescan
-%   HCreader (struct): Acquisition reader object for the surface coil prescan
+%   SCreader (struct): Acquisition reader object for the surface coils prescan
 %   CoilSensitivityFrameSize (1x3 array, optional): Size of the frame 
-%       used for sensitivity estimation (e.g., [48, 48, 48]). Default is [48, 48, 48].
+%   used for sensitivity estimation (e.g., [48, 48, 48]). Default is [48, 48, 48].
 %   autoFlag (bool, optional): Flag to enable automatic mask generation.
-%       If true, automatic masking is applied. Default is true.
+%   If true, automatic masking is applied. Default is true.
 %   nIter (int, optional): Number of iterations for coil sensitivity refinement.
-%       Default is 5.
+%   Default is 5.
 %
 % Returns:
 %   C (array): Estimated coil sensitivity map
