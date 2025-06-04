@@ -1,8 +1,5 @@
 API
 ===
-
- Author : Jaime Barranco
-
 arrayUtility
 ------------
 .. automodule:: arrayUtility
@@ -10,34 +7,6 @@ arrayUtility
     :undoc-members:
     :show-inheritance:
 
-bmGridding123
--------------
-mex
-^^^
-bmImage1
---------
-mex
-^^^
-bmImage2
---------
-mex
-^^^
-bmImage3
---------
-mex
-^^^
-bmMex
------
-mex
-^^^
-bmSparseMat
------------
-mex
-^^^
-bmSparseMat_help_function
-~~~~~~~~~~~~~~~~~~~~~~~~~
-bmSparseMat_vec
-~~~~~~~~~~~~~~~
 coilSense
 ---------
 automatic
