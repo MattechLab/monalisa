@@ -1,0 +1,25 @@
+name: Run MATLAB Unit Tests
+
+on:
+  push:
+    branches: 
+      - main # Triggers test if push to main
+      - 'ci-*'   # note: use quotes for wildcard, this is only for testing ci in a specific branch
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # Build on top of linux 
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2  
+
+      - name: Run Tests
+        uses: matlab-actions/run-tests@v2 # In theory this triggers all tests in the /tests folder
+        with:
+          source-folder: tests
+          select-by-folder: tests
