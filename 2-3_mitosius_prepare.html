@@ -49,7 +49,7 @@
 <p>This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output “mitosius”. The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section <span class="xref std std-ref">custom_acquisition</span>).</p>
+<p>Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section <a class="reference internal" href="2-8_acquisition_trajectory.html#customtrajectories"><span class="std std-ref">Custom Trajectories</span></a>).</p>
 </div>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
@@ -120,7 +120,7 @@ For your own trajectory, you can find your own way.</p>
 <span class="c">% get &#39;full_radial3_phylotaxis&#39; trajectory without nshotoff and SI</span>
 <span class="n">t_tot</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
 <span class="c">% alternatively you can compute your own trajectory</span>
-<span class="c">% more details in &quot;Using a Custom Acquisition Trajectory&quot;</span>
+<span class="c">% more details in &quot;Using a Custom Acquisition Trajectory&quot; %TODO: correct ref</span>
 
 <span class="c">% compute volume elements (3D full radial trajectory in this case)</span>
 <span class="n">ve_tot</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="n">bmVolumeElement</span><span class="p">(</span><span class="n">t_tot</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;voronoi_full_radial3&#39;</span><span class="p">);</span>

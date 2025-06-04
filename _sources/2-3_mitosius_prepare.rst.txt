@@ -9,7 +9,7 @@ You have already run the coil sensitivity estimation or had an estimate of coil 
 This script is designed to process Siemens raw MRI data/ISMRMRD using various monalisa functions to load raw data, initialize parameters, compute trajectory points and volume elements, normalize the data, and generate the output "mitosius". The resulting mitosius contains raw data, the computed trajectory and the volume elements for each bin.
 
 .. important::
-    Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`custom_acquisition`).
+    Keep in mind that the trajectory must be supported by the toolbox; alternatively, you can define and implement a custom trajectory following our suggestion at the end of the section (see the section :ref:`Custom Trajectories <customTrajectories>`).
 
 
 Prerequisites
@@ -94,7 +94,7 @@ Read the raw data and compute trajectory points, volume elements
     % get 'full_radial3_phylotaxis' trajectory without nshotoff and SI
     t_tot = bmTraj(p); 
     % alternatively you can compute your own trajectory
-    % more details in "Using a Custom Acquisition Trajectory"
+    % more details in "Using a Custom Acquisition Trajectory" %TODO: correct ref
 
     % compute volume elements (3D full radial trajectory in this case)
     ve_tot  = bmVolumeElement(t_tot, 'voronoi_full_radial3');
