@@ -37,6 +37,21 @@ If you have to install a compiler, we recommend:
 
 For better installation guidelines and much more **check Monalisa's documentation** [here](https://mattechlab.github.io/monalisa/)!
 
+## Navigating This Repository
+
+This repository is organized into 5 main subfolders, each with a specific purpose:
+
+- **`demo/`** – Example scripts and tutorials demonstrating how to use the toolbox.
+
+- **`docs/`** – Documentation sources and build tools for generating the project’s documentation.
+
+- **`src/`** – Core source code of the Monalisa toolbox. This is where the main functionality is implemented.
+
+- **`third_part/`** – Third-party software dependencies (some with local modifications). These are distributed under licenses different from Monalisa’s.
+
+- **`tests/`** – Unit tests and validation scripts to ensure code reliability.
+
+
 ## Help us improve
 
 Monalisa is still very young. If you encounter an issue, please consider **opening a GitHub issue** in the repository. If you know how to fix the problem, feel free to submit a pull request!
