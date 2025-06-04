@@ -43,8 +43,10 @@ However, please note:
 
     Even when using the same nominal trajectory (e.g., radial), different sequence implementations or vendors may produce **slightly different actual coordinate sets**. Always verify that the trajectory used in reconstruction **matches the one used during acquisition**.
 
+.. _customTrajectories:
+
 Custom Trajectories
---------------------
+-------------------
 
 You may provide a custom trajectory, but coordinates must be in **physical units** matching the **true acquisition FoV** (e.g., `1/mm`).
 
