@@ -3,7 +3,6 @@ name: Run MATLAB Unit Tests
 on:
   push:
     branches: 
-      - main # Triggers test if push to main
       - 'ci-*'   # note: use quotes for wildcard, this is only for testing ci in a specific branch
   pull_request:
 
