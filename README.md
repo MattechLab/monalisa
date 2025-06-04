@@ -1,8 +1,11 @@
 # Monalisa : a reconstruction tool-box for non-cartesian and cartesian MRI data
 
 This repository contains code for performing MRI reconstruction with non-cartesian or cartesian data.
-Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. For more info visit our documentation [here](https://mattechlab.github.io/monalisa/).
-If you find this useful, please leave us a star!
+Several iterative reconstruction are implemented. They all consist in minimizing a regularized or non-regularized least-square objective function. 
+
+Make sure to **visit our [documentation](https://mattechlab.github.io/monalisa/)**.
+
+If you find this useful, **please leave us a star!**
 
 ## Usage and installation
 
