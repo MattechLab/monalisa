@@ -90,9 +90,6 @@ def write_rst_file():
     with open(rst_file_path, 'w') as rst_file:
         # Add the main title
         rst_content = underline_title("API", 0)
-
-        # Add some authors's name
-        rst_content += author_name("Jaime Barranco")
         
         # Generate RST for the root 'src' folder
         rst_content += generate_rst_for_folder(src_dir, level=0, parent="")
