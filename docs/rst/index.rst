@@ -9,8 +9,8 @@ Welcome to Monalisa's documentation!
 
 First of all, why should you use Monalisa?
 
-1. **Monalisa targets non-Cartesian reconstructions, motion-resolved reconstructions, and partial Cartesian reconstructions.**  
-   It offers great tools especially for radial imaging and motion-resolved reconstructions. These are the best use cases for the current toolbox.
+1. **Monalisa targets non-Cartesian reconstructions, motion-resolved/motion-corrected reconstructions, and partial Cartesian reconstructions.**  
+   It offers great tools especially for radial imaging and motion-resolved/motion-corrected reconstructions. These are the best use cases for the current toolbox.
 
 2. **Monalisa is easy to install and well documented** – as you can see!
 
