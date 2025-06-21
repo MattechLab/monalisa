@@ -18,7 +18,6 @@ for i = 1:numel(c)
         end
     end
 end
-
 % deleting white spaces at start of lines
 for i = 1:numel(c)
     if ~isempty(c{i})

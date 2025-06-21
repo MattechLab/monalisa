@@ -17,7 +17,7 @@ function compile_mex_for_monalisa()
     argDir = fileparts(fileparts(fileparts(currentScriptPath)));
     % Add the root directory and all its subdirectories to the MATLAB search path
     addpath(genpath(fileparts(argDir)));
-    mex_dir_file = fullfile(argDir, 'bmMex', 'txt', 'bmMex_dir_blanc.txt');
+    mex_dir_file = fullfile(argDir, 'mex', 'txt', 'bmMex_dir_blanc.txt');
     
     cuda_I_dir = [];
     cuda_L_dir = [];

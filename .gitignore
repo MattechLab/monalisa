@@ -2,6 +2,9 @@
 *.d
 /CodeChecker/
 
+# Personal folder for holding codes
+/holding/
+
 # Compiled Object files
 *.slo
 *.lo
@@ -52,5 +55,5 @@
 /temp/*.*
 /temp/*
 
-# VS Code
-.vscode/
+# large data
+*.dat
