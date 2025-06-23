@@ -6084,14 +6084,15 @@ scaled to have maximum absolute value of 0.5</p>
 based on the specified trajectory type. It acts as a trajectory selector,
 dispatching to the appropriate generation method depending on the value
 of <cite>traj_type</cite> in the input struct.</p>
-<dl class="simple">
+<dl>
 <dt>Supported trajectory types include:</dt><dd><ul class="simple">
-<li><p>‘full_radial3_phylotaxis’: Standard 3D phyllotaxis</p></li>
-<li><p>‘uphy’: Uniform phyllotaxis</p></li>
-<li><p>‘flexyphy’: Phyllotaxis with randomized polar angles</p></li>
-<li><p>‘full_radial3_phylotaxis_chris’: Shuffled phyllotaxis using Chris’ rule</p></li>
-<li><p>‘pulseq’: Load trajectory from a Pulseq (.seq) file</p></li>
+<li><p>‘full_radial3_phylotaxis’: Standard 3D phyllotaxis. See: <a class="reference external" href="https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.22898">https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.22898</a></p></li>
+<li><p>‘uphy’: Uniform phyllotaxis.</p></li>
+<li><p>‘flexyphy’: Phyllotaxis with randomized polar angles. See:</p></li>
 </ul>
+<p><a class="reference external" href="https://submissions.mirasmart.com/ISMRM2025/Itinerary/ConferenceMatrixEventDetail.aspx?ses=O-01">https://submissions.mirasmart.com/ISMRM2025/Itinerary/ConferenceMatrixEventDetail.aspx?ses=O-01</a>
+(need to add real reference)
+- ‘pulseq’: Load trajectory from a Pulseq (.seq) file</p>
 </dd>
 </dl>
 <p>The returned trajectory is scaled and shaped for use in reconstruction.</p>
