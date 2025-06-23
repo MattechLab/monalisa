@@ -5951,36 +5951,6 @@ spiral</p>
 <dd></dd></dl>
 
 <dl class="mat function">
-<dt class="sig sig-object mat" id="bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2">
-<span class="sig-name descname"><span class="pre">bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2" title="Link to this definition">¶</a></dt>
-<dd><p>myTraj = bmTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)</p>
-<p>This function creates and returns a phyllotaxis trajectory.</p>
-<dl class="simple">
-<dt>Authors:</dt><dd><p>Bastien Milani
-CHUV and UNIL
-Lausanne - Switzerland
-May 2023</p>
-</dd>
-<dt>Contributors:</dt><dd><p>Dominik Helbing (Documentation &amp; Comments)
-MattechLab 2024</p>
-</dd>
-<dt>Parameters:</dt><dd><p>varargin: This input is either an bmMriAcquisitionParam object
-containing the needed variables or the 6 variables seperatly:
-N (int): Number of points on line
-nSeg (int): Number of segments
-nShot (int): Number of shots
-dK_n (double): Distance between points of trajectory (1/FoV)
-flagSelfNav (bool): First segment of each shot is at the top of the
-sphere if true
-nShot_off (int): Number of shots to be discarded</p>
-</dd>
-<dt>Returns:</dt><dd><p>myTraj (array): Containing the trajectory in the shape [3, N, M], where
-M = (nShot - nShot_off) * (nSeg - flagSelfNav)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
 <dt class="sig sig-object mat" id="bmPhyllotaxisAngle3">
 <span class="sig-name descname"><span class="pre">bmPhyllotaxisAngle3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">nseg</span></em>, <em class="sig-param"><span class="pre">nshot</span></em>, <em class="sig-param"><span class="pre">varargin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bmPhyllotaxisAngle3" title="Link to this definition">¶</a></dt>
 <dd><p>[theta, phi] = bm3DimPhyllotaxisAngle(nseg, nshot, varargin)</p>
