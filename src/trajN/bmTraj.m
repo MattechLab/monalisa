@@ -7,10 +7,11 @@ function t = bmTraj(mriAcquisition_node)
 % of `traj_type` in the input struct.
 %
 % Supported trajectory types include:
-%   - 'full_radial3_phylotaxis': Standard 3D phyllotaxis
-%   - 'uphy': Uniform phyllotaxis
-%   - 'flexyphy': Phyllotaxis with randomized polar angles
-%   - 'full_radial3_phylotaxis_chris': Shuffled phyllotaxis using Chris' rule
+%   - 'full_radial3_phylotaxis': Standard 3D phyllotaxis. See: https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.22898
+%   - 'uphy': Uniform phyllotaxis. 
+%   - 'flexyphy': Phyllotaxis with randomized polar angles. See:
+%   https://submissions.mirasmart.com/ISMRM2025/Itinerary/ConferenceMatrixEventDetail.aspx?ses=O-01
+%   (need to add real reference)
 %   - 'pulseq': Load trajectory from a Pulseq (.seq) file
 %
 % The returned trajectory is scaled and shaped for use in reconstruction.
@@ -55,8 +56,6 @@ elseif strcmpi(traj_type, 'uphy') %uniform phyllotaxis
 elseif strcmpi(traj_type, 'flexyphy') %flexyphy: uniform phyllotaxis with polar angle randomization
     disp('Using polar randomization')
     t = bmTraj_fullRadial3_phyllotaxis_random_lineAssym2(mriAcquisition_node);
-elseif strcmpi(traj_type, 'full_radial3_phylotaxis_chris')
-    t = bmTraj_fullRadial3_phyllotaxis_chris_lineAssym2(mriAcquisition_node);
 % If you want to read a trajectory from the .seq pulseq file, use this
 elseif strcmpi(traj_type, 'pulseq')
     t = mlTrajFromPulseq(mriAcquisition_node);
