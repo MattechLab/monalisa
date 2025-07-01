@@ -17,6 +17,13 @@ addpath(genpath(helpfDir))
 bodyCoilFile = fullfile(dataDir, 'bodyCoil.dat');      % Body coil data
 headCoilFile = fullfile(dataDir, 'surfaceCoil.dat');% Surface coil data
 
+%% Check that the data was downloaded, otherwise throw an error
+if ~isfile(bodyCoilFile)
+    error(['The file "' bodyCoilFile '" was not found.' newline ...
+           'Please follow the instructions in:' newline ...
+           '/monalisa/demo/data_demo/data_8_tutorial_1/README.txt' newline ...
+           'to download the required data.']);
+end
 %% Load and Configure Data
 % Read data using the library's `createRawDataReader` function
 % This readers makes the usage of Siemens and ISMRMRD files equivalent for
@@ -24,15 +31,19 @@ headCoilFile = fullfile(dataDir, 'surfaceCoil.dat');% Surface coil data
 bodyCoilreader = createRawDataReader(bodyCoilFile, false);
 headCoilReader = createRawDataReader(headCoilFile, false);
 
-% Ensure consistency in number o1f shot-off points
+% Ensure consistency in number of shot-off points
 nShotOff = max(bodyCoilreader.acquisitionParams.nShot_off, ...
                headCoilReader.acquisitionParams.nShot_off);
 bodyCoilreader.acquisitionParams.nShot_off = nShotOff;
 headCoilReader.acquisitionParams.nShot_off = nShotOff;
 
+% Select the right trajectory type
+bodyCoilreader.acquisitionParams.traj_type = 'full_radial3_phylotaxis';
+headCoilReader.acquisitionParams.traj_type = 'full_radial3_phylotaxis';
+
 %% Parameters
 dK_u = [1, 1, 1] ./ headCoilReader.acquisitionParams.FoV;   % Cartesian grid spacing
-N_u = [48, 48, 48];             % Adjust this value as needed
+N_u = [48, 48, 48];             % This is the Frame size at which we estimate the coil sensitivity
 
 %% Compute Trajectory and Volume Elements
 [y_body, t, ve] = bmCoilSense_nonCart_data(bodyCoilreader, N_u);
@@ -69,3 +80,6 @@ saveName = fullfile(resultsDir, 'coil_sensitivity_map.mat');
 
 save(saveName, 'C');
 disp(['Coil sensitivity map saved to: ', saveName]);
+
+%% Note that you can now simplify your life by simply running
+C2 = mlComputeCoilSensitivity(BCreader, HCreader, N_u, true, 5);

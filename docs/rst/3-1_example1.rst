@@ -62,7 +62,7 @@ Step 1: Compute Coil Sensitivity
 The first step is to compute **coil sensitivity maps**, which describe how each coil "sees" the object being scanned. This is crucial for proper reconstruction.
 
 For this step, we use the provided `coilSensitivityEstimation_script.m` script that can be found in monalisa/demo/script_demo/script_tutorial_1.  
-The only parameter you need to adjust is the **virtual Cartesian grid size** (`N_u`).  
+The only parameter you can adjust is the **virtual Cartesian grid size** (`N_u`).  
 
 .. note::
 
@@ -88,7 +88,7 @@ Below is the main structure of the `coilSensitivityEstimation_script.m` script:
     bodyCoilFile = fullfile(dataDir, 'bodyCoil.dat');      % Body coil prescan
     surfaceCoilFile = fullfile(dataDir, 'surfaceCoil.dat');% Surface coil prescan
     
-    %% Load Data
+    %% Create raw data readers
     bodyreader = createRawDataReader(bodyCoilFile, true);
     surfaceReader = createRawDataReader(surfaceCoilFile, true);
 
@@ -97,11 +97,15 @@ Below is the main structure of the `coilSensitivityEstimation_script.m` script:
     N_u = [48, 48, 48];             % Adjust this value as needed
 
     %% Compute Coil Sensitivity
+
+    % 1. get low resolution data from the prescan files
     [y_body, t, ve] = bmCoilSense_nonCart_data(bodyreader, N_u);
     y_surface = bmCoilSense_nonCart_data(surfaceReader, N_u);
 
-    [Gn, ~, ~] = bmTraj2SparseMat(t, ve, N_u, dK_u);
-    % First we compute a binary mask to enhance our estimation
+    % 2. estimate gridding matrix
+    [Gn, Gu, Gut] = bmTraj2SparseMat(t, ve, N_u, dK_u);
+    % 3. We compute a binary mask to enhance our estimation
+    % This mask should optimally only contain the whole imaged region
     mask = bmCoilSense_nonCart_mask_automatic(y_body, Gn, true);
     %% Estimate Coil Sensitivity
     % Reference coil sensitivity using the body coils. This is used as 
@@ -114,6 +118,14 @@ Below is the main structure of the `coilSensitivityEstimation_script.m` script:
     saveName = fullfile(resultsDir, 'coil_sensitivity_map.mat');
     save(saveName, 'C');
     disp(['Coil sensitivity maps saved to: ', saveName]);
+
+    % Note: If you desire you can refine the coil sensitivity estimation
+    nIter = 5;
+    [Crefined, ~] = bmCoilSense_nonCart_secondary(y_surface, C, y_ref, C_ref, Gn, Gu, Gut, ve, nIter,false);
+
+    % Note2: You can simplify your life by running
+    Crefined = mlComputeCoilSensitivity(BCreader, HCreader, N_u, true, nIter);
+
 
 This script performs three main function calls:
 
