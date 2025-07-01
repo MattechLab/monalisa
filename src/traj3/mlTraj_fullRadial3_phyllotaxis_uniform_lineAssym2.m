@@ -1,12 +1,11 @@
-function myTraj = mlTraj_fullRadial3_phyllotaxis_random_lineAssym2(varargin)
-% myTraj = mlTraj_fullRadial3_phyllotaxis_random_lineAssym2(varargin)
+function myTraj = mlTraj_fullRadial3_phyllotaxis_uniform_lineAssym2(varargin)
+% myTraj = mlTraj_fullRadial3_phyllotaxis_lineAssym2(varargin)
 %
-% This function creates and returns a flexyphy trajectory. 
-% This is basically a more uniform phyllotaxis spiral that is compatible with real time binning.
+% This function creates and returns a uniform version uphy of the phyllotaxis trajectory.
 %
 % Authors:
 %   Mauro Leidi
-%   HES-SO
+%   HES-SO 
 %   Lausanne - Switzerland
 %   May 2025
 %
@@ -46,20 +45,20 @@ elseif length(varargin) == 6
     nShot       = varargin{3}; 
     dK_n        = varargin{4}; 
     flagSelfNav = varargin{5}; 
-    nShot_off   = varargin{6};
+    nShot_off   = varargin{6}; 
+    
 end
 
 if fix(N_n/2) ~= N_n/2
-   error('N_n must be even in ''bm3DimRadialTraj_phyllotaxis_2'' ! '); 
+   error('N_n must be even in ''mlTraj_fullRadial3_phyllotaxis_uniform_lineAssym2'' ! '); 
 end
 
 % Calculate spherical coordinates of phyllotaxis spiral given nSeg and
 % nShot
-[theta, phi] = mlFlexyphyAngle3(nSeg,nShot , flagSelfNav); 
+[theta, phi] = mlUphyAngle3(nSeg, nShot, flagSelfNav);
 
 % Create radius for every point on the line through the origin
-r = (-0.5 : 1/N_n : 0.5-(1/N_n)); 
-
+r = (-0.5 : 1/N_n : 0.5-(1/N_n));
 % Repeat matrices to match N x nSeg * nShot
 phi     = repmat(phi, [N_n, 1]);
 theta   = repmat(theta,[N_n, 1]);
@@ -72,7 +71,8 @@ z = reshape(R.*cos(theta),           [1, N_n, nSeg, nShot]);
 
 % Combine cartesian coordinates to points and scale to have the correct
 % distance between the points (The coordinates where made with d=1)
-myTraj = cat(1, x, y, z)*N_n*dK_n; % HERE SIZE IS [nDim,N,nSeg,nShot]
+myTraj = cat(1, x, y, z)*N_n*dK_n; 
+
 % Remove first few shots and the first segments depending on the arguments
 if flagSelfNav
    myTraj(:, :, 1, :) = [];  
@@ -80,9 +80,11 @@ end
 if nShot_off > 0
    myTraj(:, :, :, 1:nShot_off) = [];  
 end
-% Resize to shape [3, N, (nSeg - flagselfnav) * (nShot - nshotoff)] considering nShot_off and flagSelfNav
+
+% Resize to shape [3, N, nSeg, nShot] considering nShot_off and flagSelfNav
 mySize = size(myTraj); 
 mySize = mySize(:)'; 
 myTraj = reshape(myTraj, [mySize(1, 1), mySize(1, 2), mySize(1, 3)*mySize(1, 4)]); 
+
 
 end

@@ -21,6 +21,10 @@ function t = bmTraj(mriAcquisition_node)
 %   CHUV and UNIL
 %   Lausanne - Switzerland
 %   May 2023
+% Contributors:
+%   Leidi Mauro
+%   HES-SO Valais-Wallis 
+%   Jun 2025
 %
 % Parameters:
 %   mriAcquisition_node (struct): A structure containing acquisition parameters.
@@ -43,20 +47,20 @@ function t = bmTraj(mriAcquisition_node)
 
 % Sanity check and extract trajectory type
 assert(isprop(mriAcquisition_node, 'traj_type'), ['Missing required field: ', 'traj_type']);
-traj_type       = mriAcquisition_node.traj_type; 
+traj_type       = mriAcquisition_node.traj_type; % The trajectory type is defining which subfunction is selected
 
-t = []; 
+t = []; % Trajectory initialization
 
 % Trajectory selector: call selected trajectory implementation
-if strcmpi(traj_type, 'full_radial3_phylotaxis')
+if strcmpi(traj_type, 'full_radial3_phylotaxis') % Standard phyllotaxis spiral
     t = bmTraj_fullRadial3_phyllotaxis_lineAssym2(mriAcquisition_node);
-elseif strcmpi(traj_type, 'uphy') %uniform phyllotaxis
-    disp('Using the uniform phyllotaxis')
-    t = bmTraj_fullRadial3_phyllotaxis_uniform_lineAssym2(mriAcquisition_node);
-elseif strcmpi(traj_type, 'flexyphy') %flexyphy: uniform phyllotaxis with polar angle randomization
-    disp('Using polar randomization')
+elseif strcmpi(traj_type, 'uphy') % Uniform phyllotaxis
+    disp('Warning: Using the uniform phyllotaxis')
+    t = mlTraj_fullRadial3_phyllotaxis_uniform_lineAssym2(mriAcquisition_node);
+elseif strcmpi(traj_type, 'flexyphy') % Flexyphy: uniform phyllotaxis with polar angle randomization
+    disp('Warning: Using polar randomization')
     t = bmTraj_fullRadial3_phyllotaxis_random_lineAssym2(mriAcquisition_node);
-% If you want to read a trajectory from the .seq pulseq file, use this
+% read a trajectory from the .seq pulseq file
 elseif strcmpi(traj_type, 'pulseq')
     t = mlTrajFromPulseq(mriAcquisition_node);
 else
