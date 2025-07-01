@@ -93,7 +93,7 @@ chmod<span class="w"> </span>+x<span class="w"> </span>downloadData.sh
 <h2>Step 1: Compute Coil Sensitivity<a class="headerlink" href="#step-1-compute-coil-sensitivity" title="Link to this heading">¶</a></h2>
 <p>The first step is to compute <strong>coil sensitivity maps</strong>, which describe how each coil “sees” the object being scanned. This is crucial for proper reconstruction.</p>
 <p>For this step, we use the provided <cite>coilSensitivityEstimation_script.m</cite> script that can be found in monalisa/demo/script_demo/script_tutorial_1.
-The only parameter you need to adjust is the <strong>virtual Cartesian grid size</strong> (<cite>N_u</cite>).</p>
+The only parameter you can adjust is the <strong>virtual Cartesian grid size</strong> (<cite>N_u</cite>).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We recommend setting <cite>N_u</cite> between <strong>48</strong> and <strong>96</strong> for optimal results.</p>
@@ -115,7 +115,7 @@ The only parameter you need to adjust is the <strong>virtual Cartesian grid size
 <span class="n">bodyCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;bodyCoil.dat&#39;</span><span class="p">);</span><span class="w">      </span><span class="c">% Body coil prescan</span>
 <span class="n">surfaceCoilFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">dataDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;surfaceCoil.dat&#39;</span><span class="p">);</span><span class="c">% Surface coil prescan</span>
 
-<span class="c">%% Load Data</span>
+<span class="c">%% Create raw data readers</span>
 <span class="n">bodyreader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">bodyCoilFile</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 <span class="n">surfaceReader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">createRawDataReader</span><span class="p">(</span><span class="n">surfaceCoilFile</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 
@@ -124,11 +124,15 @@ The only parameter you need to adjust is the <strong>virtual Cartesian grid size
 <span class="n">N_u</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">];</span><span class="w">             </span><span class="c">% Adjust this value as needed</span>
 
 <span class="c">%% Compute Coil Sensitivity</span>
+
+<span class="c">% 1. get low resolution data from the prescan files</span>
 <span class="p">[</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_data</span><span class="p">(</span><span class="n">bodyreader</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
 <span class="n">y_surface</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_data</span><span class="p">(</span><span class="n">surfaceReader</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">);</span>
 
-<span class="p">[</span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
-<span class="c">% First we compute a binary mask to enhance our estimation</span>
+<span class="c">% 2. estimate gridding matrix</span>
+<span class="p">[</span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmTraj2SparseMat</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="n">dK_u</span><span class="p">);</span>
+<span class="c">% 3. We compute a binary mask to enhance our estimation</span>
+<span class="c">% This mask should optimally only contain the whole imaged region</span>
 <span class="n">mask</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_mask_automatic</span><span class="p">(</span><span class="n">y_body</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
 <span class="c">%% Estimate Coil Sensitivity</span>
 <span class="c">% Reference coil sensitivity using the body coils. This is used as</span>
@@ -141,6 +145,13 @@ The only parameter you need to adjust is the <strong>virtual Cartesian grid size
 <span class="n">saveName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">fullfile</span><span class="p">(</span><span class="n">resultsDir</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;coil_sensitivity_map.mat&#39;</span><span class="p">);</span>
 <span class="nb">save</span><span class="p">(</span><span class="n">saveName</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;C&#39;</span><span class="p">);</span>
 <span class="nb">disp</span><span class="p">([</span><span class="s">&#39;Coil sensitivity maps saved to: &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">saveName</span><span class="p">]);</span>
+
+<span class="c">% Note: If you desire you can refine the coil sensitivity estimation</span>
+<span class="n">nIter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="p">[</span><span class="n">Crefined</span><span class="p">,</span><span class="w"> </span><span class="o">~</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">bmCoilSense_nonCart_secondary</span><span class="p">(</span><span class="n">y_surface</span><span class="p">,</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">y_ref</span><span class="p">,</span><span class="w"> </span><span class="n">C_ref</span><span class="p">,</span><span class="w"> </span><span class="n">Gn</span><span class="p">,</span><span class="w"> </span><span class="n">Gu</span><span class="p">,</span><span class="w"> </span><span class="n">Gut</span><span class="p">,</span><span class="w"> </span><span class="n">ve</span><span class="p">,</span><span class="w"> </span><span class="n">nIter</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="c">% Note2: You can simplify your life by running</span>
+<span class="n">Crefined</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlComputeCoilSensitivity</span><span class="p">(</span><span class="n">BCreader</span><span class="p">,</span><span class="w"> </span><span class="n">HCreader</span><span class="p">,</span><span class="w"> </span><span class="n">N_u</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">nIter</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>This script performs three main function calls:</p>
