@@ -29,8 +29,11 @@ classdef bmImageViewerParam < handle
         imSize              = [];
         
         numOfImages         = [];
+        bluePoint           = []; % Interactive 3 views visualization point
+        bluePointHandles = [];      % one handle per subplot
+        blueLineHandles = [];      % one handle per subplot
         curImNum            = [];
-        
+
         numOfImages_4       = [];
         curImNum_4          = [];
         
@@ -163,8 +166,11 @@ classdef bmImageViewerParam < handle
                 obj.rotation            = eye(3);
                 
                 obj.numOfImages         = obj.imSize(1, 3);
-                obj.curImNum            = max(1, fix(  obj.numOfImages/2  ));
-                
+                obj.curImNum            = max(1, fix(  obj.numOfImages/2  )); 
+                obj.bluePoint = [obj.curImNum, obj.curImNum, obj.curImNum]; % 3 views visualization
+                obj.bluePointHandles = gobjects(3, 1);     % preallocate handles (1 per view)
+                obj.blueLineHandles = gobjects(3, 2);  % 3 views, 2 lines per view
+                %obj.bluePointHandles = cell(1, 3);  % One per subplot
             elseif argIn == 4
                 
                 obj.imSize              = obj.imSize(1, 1:3); 
