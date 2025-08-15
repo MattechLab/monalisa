@@ -32,7 +32,7 @@ If you have to install a compiler, we recommend:
 - Xcode Clang++ for macOS,
 - Visual studio c++ or MinGW for windows. Normally, the compiler from Visual studio c++ will work. If it fails, you can also install MinGW alternatively following these [instructions](https://ch.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-fortran-compiler). After downloading the MinGW, such as `mingw81`, run the command `% configuremingw('\path\to\mingw81')`,then you are ready to compile Monalisa!
 
-3. Compile the cpp code using the [function](https://github.com/MattechLab/monalisa/blob/main/src/mex/m/compile_mex_for_monalisa.m) . On macOS you should change the libomp_dirs directory here: <https://github.com/MattechLab/monalisa/blob/eed863def169abb2fc623a512aff6de688ddbcf1/src/mex/m/compile_mex_for_monalisa.m#L62>. If you are using brew for the installations, you can find the libomp_dirs path by running: brew --prefix libomp. (you need libomp as explained [here](https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>))
+3. Compile the cpp code using the [helper compiling function](https://github.com/MattechLab/monalisa/blob/main/src/mex/m/compile_mex_for_monalisa.m) . On macOS you should change the libomp_dirs directory here: <https://github.com/MattechLab/monalisa/blob/eed863def169abb2fc623a512aff6de688ddbcf1/src/mex/m/compile_mex_for_monalisa.m#L62>. If you are using brew for the installations, you can find the libomp_dirs path by running: brew --prefix libomp. (you need libomp as explained [here](https://stackoverflow.com/questions/25990296/how-to-include-omp-h-in-os-x>))
 
 4. Great, installation is done! You are now ready to run the first [tutorial](https://mattechlab.github.io/monalisa/3-1_example1.html)
 
