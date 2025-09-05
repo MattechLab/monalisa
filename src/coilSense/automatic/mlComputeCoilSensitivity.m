@@ -45,7 +45,7 @@ end
 [y_body, t, ve] = bmCoilSense_nonCart_data(BCreader, CoilSensitivityFrameSize);
 
 % Step 2: Load non-Cartesian surface coil data
-y_surface = bmCoilSense_nonCart_data(HCreader, CoilSensitivityFrameSize);
+y_surface = bmCoilSense_nonCart_data(SCreader, CoilSensitivityFrameSize);
 
 % Step 3: Compute k-space sampling step size from body coil FoV
 dK_u = [1, 1, 1] ./ BCreader.acquisitionParams.FoV;
