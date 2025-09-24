@@ -63,6 +63,12 @@ elseif strcmpi(traj_type, 'flexyphy') % Flexyphy: uniform phyllotaxis with polar
 % read a trajectory from the .seq pulseq file
 elseif strcmpi(traj_type, 'pulseq')
     t = mlTrajFromPulseq(mriAcquisition_node);
+% elseif strcmpi(traj_type, 'full_radial3_phylotaxis_flipxyz')
+%     disp('inverse xyz!')
+%     t = yjTraj_fullRadial3_phyllotaxis_inverseXyz(mriAcquisition_node);
+% elseif strcmpi(traj_type, 'full_radial3_phylotaxis_swapxy')
+%     disp('swap x and y!')
+%     t = yjTraj_fullRadial3_phyllotaxis_swapXy(mriAcquisition_node);
 else
     error(['bmTraj: Unknown traj_type "' traj_type '". ' ...
            'This probably means your trajectory is not implemented. ' ...
