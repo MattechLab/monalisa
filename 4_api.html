@@ -6153,16 +6153,20 @@ spiral</p>
 <span class="sig-name descname"><span class="pre">mlTrajFromPulseq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mriAcquisition_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mlTrajFromPulseq" title="Link to this definition">¶</a></dt>
 <dd><p>t = mlTrajFromPulseq(mriAcquisition_node)</p>
 <p>This function generates a k-space trajectory from a Pulseq sequence file.</p>
-<dl class="simple">
+<dl>
 <dt>Authors:</dt><dd><p>Mauro Leidi
 HES-SO
 May 2025</p>
+<p>Yiwei Jia
+extract traj from pulseq seq file
+fixed the mismatch between pulseq and monalisa
+July 2025</p>
 </dd>
 <dt>Parameters:</dt><dd><p>mriAcquisition_node (struct): A struct that must contain the field
 ‘pulseq_path’ pointing to the Pulseq sequence file (filename.seq)</p>
 </dd>
-<dt>Returns:</dt><dd><p>t (array): Normalized trajectory array of shape [N, nSeg, nShot, 3],
-scaled to have maximum absolute value of 0.5</p>
+<dt>Returns:</dt><dd><p>t (array): Normalized trajectory array of shape [3, N, nSeg, nShot],
+scaled to have maximum absolute value of 0.5*N*dk</p>
 </dd>
 </dl>
 </dd></dl>
