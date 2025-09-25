@@ -54,8 +54,13 @@ k_trj = reshape(kspace_traj, [size(kspace_traj,1), N, nSeg, nShot]);
 %   before eliminating non-steady state shots and self navigation segs
 %   to match the calculation with monalisa bmTraj*
 %   scale the range to [-0.5, 0.5-1/N] --> scale up to 0.5*N*dK == 0.5*N/FoV
-k_trj = k_trj/max(abs(k_trj(:)))*0.5*N/FoV;
 
+% compute distances from the k space center for each sampled point
+distances = vecnorm(k_trj, 2,1);
+% R: the maximum distance of the point from the trajectory in k-space to
+% the center
+R = max(distances(:));
+k_trj = k_trj/R*0.5*N/FoV;
 
 % 9) Filter out SI projections and non steady state readouts
 if flagSelfNav
