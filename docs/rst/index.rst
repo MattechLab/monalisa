@@ -16,8 +16,6 @@ First of all, why should you use Monalisa?
 
 3. **Monalisa is great for learning non-Cartesian iterative reconstruction methods.**
 
-.. image:: ../images/Bastien.jpeg
-   :width: 100 %
 
 .. image:: ../images/monalisaworkflow.png
    :width: 100 %
@@ -47,7 +45,6 @@ Here you can see a simplified schematic of the pipeline in Monalisa. Information
 
    5_docker
    6_ack_contribution
-   7_discussions
 
 .. Indices and tables
 .. ==================

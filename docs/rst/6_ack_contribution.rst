@@ -22,7 +22,7 @@ We also would like to ask that the use of our work includes a reference to the r
 
 Contact for Significant Advancements or Commercial Use
 ------------------------------------------------------
-For significant advancements or commercial purposes, please contact the partner institutions (HES-SO and CHUV-UNIL) through `the reference people <https://sites.google.com/view/mat-tech-lab/team?authuser=0>`_.
+For significant advancements or commercial purposes, please contact the partner institutions (HES-SO and CHUV-UNIL) through `the reference people <http://sites.google.com/view/mat-tech-lab/team/benedetta-franceschiello?authuser=0>`_.
 
 We welcome all contributions, questions, and feedback! If you're interested in contributing to this project or have any inquiries, please don't hesitate to reach out to us. 
 You can contact us via email at: `MatTech Email <mailto:mathematical.technologies.lab@gmail.com>`_
@@ -30,10 +30,9 @@ You can contact us via email at: `MatTech Email <mailto:mathematical.technologie
 
 The contributors behind Monalisa
 ================================
+- Mauro Leidi: the architect of order. He designed the documentation structure and  contributed extensively to example tutorials, benchmark tests, along with key component code contributions.
 
 - Bastien Milani: the brain of the project. He wrote the core codes and documentation for the toolkit. With this work, he significantly advanced the state of the art in Magnetic Resonance Imaging reconstruction through a sound mathematical reformulation - and implementation - of the functions. 
-
-- Mauro Leidi: the architect of order. He designed the documentation structure and  contributed extensively to example tutorials, benchmark tests, along with key component code contributions.
 
 - Yiwei Jia: “let-me-code-that-for-you” (LMCTFY). Besides writing documentation and participating in code review and maintenance, she developed key examples and tutorials, empowering users and testers. 
 
@@ -46,7 +45,6 @@ The contributors behind Monalisa
 - Benedetta Franceschiello: injected lymphatic fluid to the system. Lab leader and Principal Investigator (PI), she mentored the team, proposed novel applications and benchmark tests, coordinated meetings, ensured legal and financial support, and dedicated countless hours to ensuring the success of this project.
 
 
-.. image:: ../images/ack/monalisa_team.png
 
 
 Acknowledgements
