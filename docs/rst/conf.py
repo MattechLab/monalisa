@@ -8,8 +8,8 @@ import os
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Monalisa'
-copyright = '2024, Bastien Milani'
-author = 'Bastien Milani'
+copyright = '2024, MatTech Lab'
+author = 'MatTech Lab'
 release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------

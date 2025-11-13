@@ -6,11 +6,6 @@ Monalisa toolkit is the result of a collective effort involving contributions an
 
 If you like it, please cite us! Here\'s how:
 
-Cite the Article
-----------------
-We would kindly ask the users to cite the following article when utilizing the work. 
-
-* Citation of [arxiv link] to be released.
 
 Reference the Repository and SOPs
 ---------------------------------
@@ -64,12 +59,9 @@ We sincerely thank all contributors and organizations whose support has made thi
 
 .. container:: image-row
 
-   .. image:: ../images/ack/MatTech.png
-      :width: 30%
-
    .. image:: ../images/ack/SNF_logo_standard_web_color_pos_e-300x68.png
-      :width: 30%
+      :width: 45%
 
    .. image:: ../images/ack/en_hei.png
-      :width: 30%
+      :width: 45%
 
