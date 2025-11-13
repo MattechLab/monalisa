@@ -18,7 +18,7 @@ as soon as the compilation step is done (see next section):
     - Use the `chain_recon_calls_script     <https://github.com/MattechLab/monalisa/blob/main/demo/script_demo/script_recon_calls/chain_recon_calls_script.m>`_ to test *chain reconstructions* (multiple frames with one non-spatial dimension). 
     - The `sheet_recon_calls_script <https://github.com/MattechLab/monalisa/blob/main/demo/script_demo/script_recon_calls/sheet_recon_calls_script.m>`_ performs the tests for *sheet reconstructions* (multiple frames with two non-spatial dimension). 
 
-Use it to test rapidely our reconstruction framework.  
+Use it to test rapidly our reconstruction framework.  
 Find in `A mathematical Language for MRI Reconstructions <https://zenodo.org/record/8195815>`_ the mathematics behind our implementations, with references to the literature. 
 
 If you are here, you are probably considering our framework for image reconstruction. 
