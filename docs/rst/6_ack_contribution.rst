@@ -57,11 +57,13 @@ This work was supported by the following institutions and organizations:
 
 We sincerely thank all contributors and organizations whose support has made this project possible.
 
+.. image:: ../images/ack/MatTech_group_photo.jpeg
+   :width: 90 %
+
 .. container:: image-row
 
    .. image:: ../images/ack/SNF_logo_standard_web_color_pos_e-300x68.png
       :width: 45%
-
    .. image:: ../images/ack/en_hei.png
       :width: 45%
 
