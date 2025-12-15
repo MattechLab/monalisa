@@ -8,24 +8,27 @@ nSignal_to_select           = 20; % 1 manually, untrended, selected signal for r
 
 signal_exploration_level    = 'medium'; % 'leight' or 'medium' or 'heavy'
 
-nCh                         = 42; 
-N                           = 480; 
-nSeg                        = 22; 
-nShot                       = 2055;
+p = bmMriAcquisitionParam([]);
+p.nCh                         = 42; 
+p.N                           = 480; 
+p.nSeg                        = 22; 
+p.nShot                       = 652;
 
-nLine                       = nSeg*nShot; 
-nPt                         = N*nLine; 
+p.nLine                       = p.nSeg*p.nShot; 
+p.nPt                         = p.N*p.nLine; 
 
 
 %%
 
-reconDir = '/Users/mauroleidi/Desktop/recon_eva'; 
-f = [reconDir, '/raw_data/meas_MID00530_FID154908_BEAT_LIBREon_eye.dat']; 
+reconDir = '/Users/cag/Documents/Dataset/datasets/251114/exploreGradSp/'; 
+f = [reconDir, 'meas_MID00367_FID11419_yiwei_grad0.dat']; 
 
-SI = bmTwix_getFirstProjOfShot(f); 
-
+SI = bmTwix_getFirstProjOfShot(f, p); 
+% extract the SI projection from the raw data in Twix
+% bmIDF: from k-space to image space --> SI
 %% getting rmsSI from SI
-rmsSI = bmMriPhi_fromSI_rmsSI(SI, nCh, N, nShot); 
+rmsSI = bmMriPhi_fromSI_rmsSI(SI, p.nCh, p.N, p.nShot); 
+% normalized RMS of SI across nCh
 
 %% getting standart_reference_signal from SI
 
@@ -39,10 +42,13 @@ rmsSI = bmMriPhi_fromSI_rmsSI(SI, nCh, N, nShot);
  ind_SI_min, ...
  ind_SI_max, ... 
  s_reverse_flag   ] = bmMriPhi_fromSI_get_standart_reference_signal(   rmsSI, ...
-                                                                       nCh, ...
-                                                                       N, ...
-                                                                       nSeg, ...
-                                                                       nShot    ); 
+                                                                       p.nCh, ...
+                                                                       p.N, ...
+                                                                       p.nSeg, ...
+                                                                       p.nShot ); 
+% press s + click min: left click, max: right click: ind_shot 
+% press n + click min: left click, max: right click: ind_imNav
+% press x + click min: left click, max: right click: ind_N
 
 
 %% graphical frequency selector

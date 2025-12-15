@@ -1,6 +1,6 @@
 addpath(genpath('/usr/src/app/src'))
 % Complile the source code in the Docker
-compileScript()
+compile_mex_for_monalisa()
 % Run some reconstruction
 
 m = '/usr/src/app/recon_eva/mitosius'; 

@@ -3,7 +3,7 @@
 % Lausanne - Switzerland
 % May 2023
 
-function myLineList = bmTwix_getFirstProjOfShot(argFile)
+function myLineList = bmTwix_getFirstProjOfShot(argFile, p)
 
 myTwix = mapVBVD_JH_for_monalisa(argFile);
 if iscell(myTwix)
@@ -12,9 +12,13 @@ end
 
 y_raw = myTwix.image.unsorted();
 y_raw = permute(y_raw, [2, 1, 3]); 
- 
-nShot          = myTwix.image.NSeg; 
+
 nLine          = myTwix.image.NLin;
+if ~isempty(p)
+    nShot          = p.nShot; 
+else
+    nShot          = myTwix.image.NSeg;
+end
 nSeg           = nLine/nShot;
 
 mySize = size(y_raw); 

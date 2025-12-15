@@ -22,7 +22,7 @@
 ARG MATLAB_RELEASE=r2024a
 
 # Specify the list of products to install into MATLAB.
-ARG MATLAB_PRODUCT_LIST="MATLAB Statistics_and_Machine_Learning_Toolbox"
+ARG MATLAB_PRODUCT_LIST="MATLAB Statistics_and_Machine_Learning_Toolbox Curve_Fitting_Toolbox Image_Processing_Toolbox Optimization_Toolbox Signal_Processing_Toolbox"
 
 
 
@@ -34,7 +34,7 @@ ARG LICENSE_SERVER
 
 # When you start the build stage, this Dockerfile by default uses the Ubuntu-based matlab-deps image.
 # To check the available matlab-deps images, see: https://hub.docker.com/r/mathworks/matlab-deps
-FROM mathworks/matlab-deps:latest
+FROM mathworks/matlab-deps:r2024a
 
 # Declare build arguments to use at the current build stage.
 ARG MATLAB_RELEASE
@@ -50,11 +50,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     wget \
     unzip \
     ca-certificates \
-    g++ \
+    gcc-11 \
+    g++-11 \
     git \
     expect \
     libgtk2.0-0 \
-    build-essential \
+    # build-essential \
+    make \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -117,10 +121,10 @@ RUN chmod -R ugo+x /usr/src/app
 # Set the working directory to the folder containing your script
 WORKDIR /usr/src/app/examples/scripts
 # DEBUG LOGGING: Check if the directory /usr/src/app/src/bmFourierN exists
-RUN if [ -d "/usr/src/app/src/bmFourierN" ]; then \
-        echo "Directory /usr/src/app/src/bmFourierN exists"; \
+RUN if [ -d "/usr/src/app/src/fourierN" ]; then \
+        echo "Directory /usr/src/app/src/fourierN exists"; \
     else \
-        echo "Directory /usr/src/app/src/bmFourierN does not exist"; \
+        echo "Directory /usr/src/app/src/fourierN does not exist"; \
         exit 1; \
     fi
 
