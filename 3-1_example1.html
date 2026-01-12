@@ -14,8 +14,8 @@
     <link rel="stylesheet" type="text/css" href="_static/important.css?v=8e75c088" />
     <link rel="stylesheet" type="text/css" href="_static/tip.css?v=66ef22ed" />
     <script src="_static/documentation_options.js?v=01f34227"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/custom.js?v=35170ed4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,7 +56,7 @@ We’ll start with a set of files:</p>
 </dl>
 </li>
 </ul>
-<p>Some MATLAB scripts are provided to help us produce images step by step. While the process involves multiple stages illustrated in the figure below, we will walk you through each of them.</p>
+<p>Some MATLAB scripts are provided to help us produce images step by step. The reconstruction process involves multiple steps illustrated in the figure below, in this tutorial we will walk you through each of them.</p>
 <a class="reference internal image-reference" href="_images/reconSteps.png"><img alt="Reconstruction process flowchart." class="align-center" src="_images/reconSteps.png" style="width: 600px;" />
 </a>
 <p>For this tutorial we provide a folder organized as follows:</p>
@@ -72,20 +72,13 @@ We’ll start with a set of files:</p>
 │   ├── surfaceCoil.dat # this is the brain coil prescan
 </pre></div>
 </div>
-<p>To start working on this tutorial, and get the needed data you need to:
-If you haven’t done it already, clone monalisa</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:MattechLab/monalisa.git
-</pre></div>
-</div>
-<p>Download the data needed for tutorial 1, this can take a while depending on your internet connection:</p>
+<p>To start working on this tutorial, and get the needed data you need to:</p>
+<p>If you haven’t done it already, you fist need to follow the installation guidelines.</p>
+<p>Download the data needed for tutorial 1, this can take a while depending on your internet connection, and can be done with the downloadData.m script :</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make the folder writable (to download the data)</span>
 <span class="nb">cd</span><span class="w"> </span>monalisa/demo/data_demo/
-chmod<span class="w"> </span>u+w<span class="w"> </span>data_8_tutorial_1
-<span class="nb">cd</span><span class="w"> </span>data_8_tutorial_1
-<span class="c1"># Make the sh file executable</span>
-chmod<span class="w"> </span>+x<span class="w"> </span>downloadData.sh
-<span class="c1"># Execute the file: Download the data</span>
-./downloadData.sh
+<span class="c1"># Execute the script: Download the data</span>
+./downloadData.m
 </pre></div>
 </div>
 <p>Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.</p>
@@ -629,7 +622,7 @@ First we need to load the data prepared previously:</p>
       &#169;2024, MatTech Lab.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
