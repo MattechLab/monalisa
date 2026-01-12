@@ -18,8 +18,23 @@ classdef mleSiemensReader < mleRawDataReader
         % getRedouts: extract the readouts, returns a complex array
         % containing the data
         function rawdata = readRawData(obj, flagSS, flagExcludeSI)
-            % Handle default values for optional arguments: if no argument
-            % is passed there is no data filtering.
+            %READRAWDATA  Read raw data with optional filtering.
+            %
+            %   rawdata = readRawData(obj)
+            %   rawdata = readRawData(obj, flagSS)
+            %   rawdata = readRawData(obj, flagSS, flagExcludeSI)
+            %
+            %   INPUTS:
+            %     obj           - Reader object containing acquisition parameters
+            %                     and the raw file handle.
+            %
+            %     flagSS        - (logical, optional) If true, the initial
+            %                     non–steady-state readouts are filtered out.
+            %                     Default = false.
+            %
+            %     flagExcludeSI - (logical, optional) If true, the SI projection
+            %                     readouts (self-navigation lines) are excluded
+            %                     from the output. Default = false.
             if nargin < 2
                 flagSS = false;  % If true the non steady state readouts are filtered out
             end

@@ -77,18 +77,43 @@ function varargout = dhSiemensReadMetaData(obj)
         end
     end
 
+
+    myMriAcquisition_node = bmMriAcquisitionParam([]); 
+    myMriAcquisition_node.N = N;
+    myMriAcquisition_node.nLine = nLine;
+    myMriAcquisition_node.nShot = nShot;
+    myMriAcquisition_node.nSeg = nSeg;
+    myMriAcquisition_node.nCh = 1;
+    myMriAcquisition_node.nEcho = nEcho;
+    myMriAcquisition_node.FoV = FoV;
+    myMriAcquisition_node.timestamp = timestamp;
+    reconFoV = FoV;
+    % Find the shot where the standard deviation falls below the threshold
+    myMriAcquisition_node.nShot_off = 0;
+    
+    %% Set flags in myMriAcquisition_node (Maybe other way to handle them?)
+    myMriAcquisition_node.selfNav_flag = true;
+    myMriAcquisition_node.roosk_flag = false;
+
+
+    %% HERE STEP ONE: LET THE USER CORRECT THE AUTOMATICALLY EXTRACTED METADATA
+    if ~autoFlag || isequal(reconFoV, [-1, -1, -1])
+        [myMriAcquisition_node, reconFoV] = correctMetadataInteractive(myMriAcquisition_node, reconFoV);
+    end
+
+
     % unsorted() returns the unsorted data as an array [N, nCh, nLine]
-    y_raw = myTwix.image.unsorted();
+    y_raw = myTwix.image.unsorted(); % this is [N, nCh, nLine]
     
     if nEcho == 1
         % Change structure to [nCh, N, nLine] and seperate nLine into nSeg and
         % nShot
-        y_raw   = permute(y_raw, [2, 1, 3]);
+        y_raw   = permute(y_raw, [2, 1, 3]); % [nCh, N, nLine] 
         % Get nCh
         y_raw_size = size(y_raw); 
         y_raw_size = y_raw_size(:)'; 
-        nCh        = y_raw_size(1, 1); 
-        y_raw   = reshape(y_raw, [nCh, N, nSeg, nShot]);
+        myMriAcquisition_node.nCh        = y_raw_size(1, 1); 
+        y_raw   = reshape(y_raw, [myMriAcquisition_node.nCh, myMriAcquisition_node.N, myMriAcquisition_node.nSeg, myMriAcquisition_node.nShot]); % [nCh, N, nSeg, nShot] 
     else
         error('bmTwix_data : nEcho > 1, case not implemented, yet ');
     end
@@ -96,7 +121,7 @@ function varargout = dhSiemensReadMetaData(obj)
    
     % Reduce the array to a 3D array, only containing the values for the first
     % segment 
-    mySI = squeeze(y_raw(:, :, 1, :));
+    mySI = squeeze(y_raw(:, :, 1, :)); % [nCh, N, nShot] 
     
     % Calculate the inverse discret Fourier transform
     mySI = bmIDF(mySI, 1, [], 2);
@@ -127,27 +152,10 @@ function varargout = dhSiemensReadMetaData(obj)
     running_std = movstd(s_mean, window_size, 'Endpoints', 'discard');
     
     % Define a threshold for the std to consider steady state
-    threshold = prctile(running_std, 15);  % 10th percentile of std
-    %% Extract acquisition parameters
-    % Node for trajectory
-    myMriAcquisition_node = bmMriAcquisitionParam([]); 
-    myMriAcquisition_node.N = N;
-    myMriAcquisition_node.nLine = nLine;
-    myMriAcquisition_node.nShot = nShot;
-    myMriAcquisition_node.nSeg = nSeg;
-    myMriAcquisition_node.nCh = nCh;
-    myMriAcquisition_node.nEcho = nEcho;
-    myMriAcquisition_node.FoV = FoV;
-    myMriAcquisition_node.timestamp = timestamp;
+    threshold = prctile(running_std, 15);  % 15th percentile of std
+
     % Find the shot where the standard deviation falls below the threshold
     myMriAcquisition_node.nShot_off = find(running_std < threshold, 1);
-    
-    %% Set flags in myMriAcquisition_node (Maybe other way to handle them?)
-    myMriAcquisition_node.selfNav_flag = true;
-    myMriAcquisition_node.roosk_flag = false;
-
-    
-    reconFoV = FoV;
 
     if ~autoFlag || isequal(reconFoV, [-1, -1, -1])
     [myMriAcquisition_node, reconFoV] = checkMetadataInteractive(mySI, s_mean, ...
@@ -164,4 +172,3 @@ function varargout = dhSiemensReadMetaData(obj)
     end
 
 end
-
