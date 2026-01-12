@@ -2,7 +2,7 @@
 Tutorial 1: Reconstruct MRI rawdata
 =====================================
 
-Welcome to this tutorial! In this guide, we will use **Monalisa** to reconstruct MRI raw data. 
+Welcome to this tutorial! In this guide, we will use **Monalisa** to reconstruct MRI raw data. In this tutorial we will work with some 3D radial brain data.
 This tutorial aim to give you a first good experience with the toolbox, providing you with all the essential information to reconstruct your own data.
 We'll start with a set of files: 
 
@@ -48,14 +48,13 @@ Download the data needed for tutorial 1, this can take a while depending on your
     
 Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.
 
-
 Step 1: Compute Coil Sensitivity
 ================================
 
-The first step is to compute **coil sensitivity maps**, which describe how each coil "sees" the object being scanned. This is crucial for proper reconstruction.
+The first step is to compute **coil sensitivity maps**, which describe how each coil "sees" the object being scanned.
 
 For this step, we use the provided `coilSensitivityEstimation_script.m` script that can be found in monalisa/demo/script_demo/script_tutorial_1.  
-The only parameter you can adjust is the **virtual Cartesian grid size** (`N_u`).  
+The only parameter you can adjust is the **virtual Cartesian grid size** (`N_u`). Some pop-up windows will ask you to confirm the acquisition parameters (which are already correct), and to select a box around the brain.
 
 .. note::
 
@@ -126,12 +125,16 @@ This script performs three main function calls:
    A binary mask, ``mask``, is generated to filter out the contribution of noisy voxels from the estimation process.
 
 2. **Calculate reference coil sensitivity**  
-   The body coil is used to calculate a reference coil sensitivity, which serves as a baseline for comparison.
+   The body coil is used to calculate a reference coil sensitivity, which is an intermediate step in our computation.
 
 3. **Compute individual coil sensitivities**  
-   Using the reference coil sensitivity, the script computes the individual coil sensitivities.
+   Using the reference coil sensitivity, the script computes the individual coil sensitivities first estimate C_array_prime.
 
-After running the script, we can observe the generated maps. These maps represent how different coils perceive the imaging field.
+4. **Compute refined individual coil sensitivities**  
+    C_array_prime is further refined using an iterative optimization process.
+
+After running the script, you can take a look at the generated maps. These maps represent how different coils perceive the imaging field.
+Then you can also save the generated maps into a file that we will use during the reconsturctions.
 
 Step 2: Binning
 ================

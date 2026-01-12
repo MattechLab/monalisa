@@ -7,6 +7,11 @@ dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Dat
 resultsDir = fullfile(dataDir, 'results');  % Results folder
 srcDir = fullfile(baseDir,'..','..','..','src');
 
+% Ensure the results directory exists
+if ~exist(resultsDir,'dir')
+    mkdir(resultsDir);
+end
+
 %% Step 0: If you haven't done it already add src to your MATLAB PATH
 addpath(genpath(srcDir))
 
@@ -72,7 +77,7 @@ nIter = 5;
                                        C_ref, Gn, Gu, Gut, ve, nIter, false);
 
 %% Display Results
-bmImage(C);
+bmImage(cat(2,[C_array_prime,C]))
 
 %% Save Results
 % Generate a timestamped filename for saving
@@ -80,6 +85,7 @@ saveName = fullfile(resultsDir, 'coil_sensitivity_map.mat');
 
 save(saveName, 'C');
 disp(['Coil sensitivity map saved to: ', saveName]);
-
-%% Note that you can now simplify your life by simply running
-C2 = mlComputeCoilSensitivity(BCreader, HCreader, N_u, true, 5);
+disp('You can now go to the binning script');
+%% Note that in your future you can now simplify your life by simply running
+% that does everything in one go
+%C2 = mlComputeCoilSensitivity(bodyCoilreader, headCoilReader, N_u, true, 5);
