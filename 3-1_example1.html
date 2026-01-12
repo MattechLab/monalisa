@@ -42,7 +42,7 @@
             
   <section id="tutorial-1-reconstruct-mri-rawdata">
 <h1>Tutorial 1: Reconstruct MRI rawdata<a class="headerlink" href="#tutorial-1-reconstruct-mri-rawdata" title="Link to this heading">¶</a></h1>
-<p>Welcome to this tutorial! In this guide, we will use <strong>Monalisa</strong> to reconstruct MRI raw data.
+<p>Welcome to this tutorial! In this guide, we will use <strong>Monalisa</strong> to reconstruct MRI raw data. In this tutorial we will work with some 3D radial brain data.
 This tutorial aim to give you a first good experience with the toolbox, providing you with all the essential information to reconstruct your own data.
 We’ll start with a set of files:</p>
 <ul class="simple">
@@ -84,9 +84,9 @@ We’ll start with a set of files:</p>
 <p>Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.</p>
 <section id="step-1-compute-coil-sensitivity">
 <h2>Step 1: Compute Coil Sensitivity<a class="headerlink" href="#step-1-compute-coil-sensitivity" title="Link to this heading">¶</a></h2>
-<p>The first step is to compute <strong>coil sensitivity maps</strong>, which describe how each coil “sees” the object being scanned. This is crucial for proper reconstruction.</p>
+<p>The first step is to compute <strong>coil sensitivity maps</strong>, which describe how each coil “sees” the object being scanned.</p>
 <p>For this step, we use the provided <cite>coilSensitivityEstimation_script.m</cite> script that can be found in monalisa/demo/script_demo/script_tutorial_1.
-The only parameter you can adjust is the <strong>virtual Cartesian grid size</strong> (<cite>N_u</cite>).</p>
+The only parameter you can adjust is the <strong>virtual Cartesian grid size</strong> (<cite>N_u</cite>). Some pop-up windows will ask you to confirm the acquisition parameters (which are already correct), and to select a box around the brain.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We recommend setting <cite>N_u</cite> between <strong>48</strong> and <strong>96</strong> for optimal results.</p>
@@ -152,11 +152,17 @@ The only parameter you can adjust is the <strong>virtual Cartesian grid size</st
 <li><p><strong>Compute a binary mask</strong>
 A binary mask, <code class="docutils literal notranslate"><span class="pre">mask</span></code>, is generated to filter out the contribution of noisy voxels from the estimation process.</p></li>
 <li><p><strong>Calculate reference coil sensitivity</strong>
-The body coil is used to calculate a reference coil sensitivity, which serves as a baseline for comparison.</p></li>
+The body coil is used to calculate a reference coil sensitivity, which is an intermediate step in our computation.</p></li>
 <li><p><strong>Compute individual coil sensitivities</strong>
-Using the reference coil sensitivity, the script computes the individual coil sensitivities.</p></li>
+Using the reference coil sensitivity, the script computes the individual coil sensitivities first estimate C_array_prime.</p></li>
+<li><dl class="simple">
+<dt><strong>Compute refined individual coil sensitivities</strong></dt><dd><p>C_array_prime is further refined using an iterative optimization process.</p>
+</dd>
+</dl>
+</li>
 </ol>
-<p>After running the script, we can observe the generated maps. These maps represent how different coils perceive the imaging field.</p>
+<p>After running the script, you can take a look at the generated maps. These maps represent how different coils perceive the imaging field.
+Then you can also save the generated maps into a file that we will use during the reconsturctions.</p>
 </section>
 </section>
 <section id="step-2-binning">
