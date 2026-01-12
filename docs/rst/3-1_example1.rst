@@ -11,7 +11,7 @@ We'll start with a set of files:
     - A **body coil** prescan.
     - A **head coil** prescan.
 
-Some MATLAB scripts are provided to help us produce images step by step. While the process involves multiple stages illustrated in the figure below, we will walk you through each of them.
+Some MATLAB scripts are provided to help us produce images step by step. The reconstruction process involves multiple steps illustrated in the figure below, in this tutorial we will walk you through each of them.
 
 .. image:: ../images/reconSteps.png
    :alt: Reconstruction process flowchart.
@@ -33,26 +33,19 @@ For this tutorial we provide a folder organized as follows:
     │   ├── surfaceCoil.dat # this is the brain coil prescan
 
 To start working on this tutorial, and get the needed data you need to:
-If you haven't done it already, clone monalisa
 
-.. code-block:: bash
-
-    git clone git@github.com:MattechLab/monalisa.git
+If you haven't done it already, you fist need to follow the installation guidelines.
     
 
-Download the data needed for tutorial 1, this can take a while depending on your internet connection:
+Download the data needed for tutorial 1, this can take a while depending on your internet connection, and can be done with the downloadData.m script :
 
 .. code-block:: bash
     
     # Make the folder writable (to download the data)
     cd monalisa/demo/data_demo/
-    chmod u+w data_8_tutorial_1
-    cd data_8_tutorial_1
-    # Make the sh file executable
-    chmod +x downloadData.sh 
-    # Execute the file: Download the data
-    ./downloadData.sh
-
+    # Execute the script: Download the data
+    ./downloadData.m 
+    
 Make sure you add the /src folder to your matlab searchpath and you are now ready to follow the tutorial.
 
 
