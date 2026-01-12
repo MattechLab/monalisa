@@ -331,13 +331,6 @@ interp3
     :undoc-members:
     :show-inheritance:
 
-ISMRMRD
--------
-.. automodule:: ISMRMRD
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 linAlg2
 -------
 .. automodule:: linAlg2

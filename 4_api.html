@@ -3863,98 +3863,6 @@ MattechLab 2024</p>
 <dd></dd></dl>
 
 </section>
-<section id="ismrmrd">
-<h2>ISMRMRD<a class="headerlink" href="#ismrmrd" title="Link to this heading">¶</a></h2>
-<dl class="mat function" id="module-ISMRMRD">
-<dt class="sig sig-object mat" id="checkMetadataInteractive">
-<span class="sig-name descname"><span class="pre">checkMetadataInteractive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mySI</span></em>, <em class="sig-param"><span class="pre">s_mean</span></em>, <em class="sig-param"><span class="pre">s_center_mass</span></em>, <em class="sig-param"><span class="pre">myMriAcquisition_node</span></em>, <em class="sig-param"><span class="pre">reconFoV</span></em><span class="sig-paren">)</span><a class="headerlink" href="#checkMetadataInteractive" title="Link to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>[myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean,</dt><dd><p>s_center_mass, myMriAcquisition_node, reconFoV)</p>
-</dd>
-</dl>
-<p>This function plots the magnitude spectrum which shows at which shot the
-steady state is reached. It also opens an interactive figure showing the
-extracted metadata that will be used, and allowing modifications.
-This function should only be called when the automatic flag is set to
-true and will interrupt code execution.</p>
-<dl class="simple">
-<dt>Authors:</dt><dd><p>Dominik Helbing
-MattechLab 2024</p>
-</dd>
-<dt>Parameters:</dt><dd><p>mySI (array): The SI magnitude calculated for every shot.
-s_mean (list): The mean of mySI calculated for every shot.
-s_center_mass (list): The center of mass of mySI calculated for every
-shot.
-myMriAcquisition_node (bmMriAcquisitionParam): The extracted meta data.
-reconFoV (int): The extracted reconstruction FoV.</p>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>myMriAcquisition_node (bmMriAcquisitionParam): The extracted meta data,</dt><dd><p>possibly modified by the user.</p>
-</dd>
-<dt>reconFoV (int): The extracted reconstruction FoV, possibly modified by</dt><dd><p>the user.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="bmISMRMRD_data">
-<span class="sig-name descname"><span class="pre">bmISMRMRD_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">myData</span></em>, <em class="sig-param"><span class="pre">myMriAcquisition_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bmISMRMRD_data" title="Link to this definition">¶</a></dt>
-<dd><p>y_raw = bmISMRMRD_data(myData, myMriAcquisition_node)</p>
-<p>This function returns the raw MRI data from ISMRMRD file /dataset/data 
-struct based on acquisition parameters.</p>
-<dl class="simple">
-<dt>Authors:</dt><dd><p>Bastien Milani
-CHUV and UNIL
-Lausanne - Switzerland
-May 2023</p>
-</dd>
-<dt>Contributors:</dt><dd><p>Dominik Helbing (Documentation)</p>
-</dd>
-<dt>Parameters:</dt><dd><p>myData (struct): Struct containing MRI data in ISMRMRD style.
-myMriAcquisition_node (struct): Struct containing acquisition 
-parameters.</p>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>y_raw (array): Raw MRI data in the [nCh, N, nLine] shape, where nLine</dt><dd><p>is nShot * nSeg, which can change depending on the selfNav_flag and 
-nShot_off in myMriAcquisition_node. Given in single precision.</p>
-</dd>
-</dl>
-</dd>
-<dt>Notes:</dt><dd><p>This function reshapes and processes the raw data based on the
-acquisition parameters such as the number of segments, shots,
-channels, and echoes. It also handles optional flags for self
-navigation and ROOSK.</p>
-</dd>
-<dt>Example:</dt><dd><p>y_raw = bmISMRMRD_data(myData, myMriAcquisition_node);</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="mat function">
-<dt class="sig sig-object mat" id="ISMRMRD_readParam">
-<span class="sig-name descname"><span class="pre">ISMRMRD_readParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">argFile</span></em>, <em class="sig-param"><span class="pre">autoFlag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ISMRMRD_readParam" title="Link to this definition">¶</a></dt>
-<dd><p>varargout = ISMRMRD_readParam(argFile, automaticFlag)</p>
-<p>This function extracts the meta data from the ISMRM raw data file. Allows
-for user modification of the meta data if the flag is set to true. The
-code execution is interrupted during the modification.</p>
-<dl class="simple">
-<dt>Authors:</dt><dd><p>Dominik Helbing
-MattechLab 2024</p>
-</dd>
-<dt>Parameters:</dt><dd><p>argFile (Char): The path to the file.
-autoFlag (Logical): Flag; Does allow user modification if false.
-Simplifies use if true.</p>
-</dd>
-<dt>Returns:</dt><dd><p>varargout{1}: bmMriAcquisitionParam object containing the extracted
-meta data.
-varargout{2}: Double containing the extracted reconstruction FoV.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 <section id="linalg2">
 <h2>linAlg2<a class="headerlink" href="#linalg2" title="Link to this heading">¶</a></h2>
 <dl class="mat function" id="module-linAlg2">
@@ -4972,7 +4880,54 @@ Varargout = [unit, element_name].</p>
 </section>
 <section id="rawdatareader">
 <h2>rawDataReader<a class="headerlink" href="#rawdatareader" title="Link to this heading">¶</a></h2>
-<dl class="mat class" id="module-rawDataReader">
+<dl class="mat function" id="module-rawDataReader">
+<dt class="sig sig-object mat" id="checkMetadataInteractive">
+<span class="sig-name descname"><span class="pre">checkMetadataInteractive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mySI</span></em>, <em class="sig-param"><span class="pre">s_mean</span></em>, <em class="sig-param"><span class="pre">s_center_mass</span></em>, <em class="sig-param"><span class="pre">myMriAcquisition_node</span></em>, <em class="sig-param"><span class="pre">reconFoV</span></em><span class="sig-paren">)</span><a class="headerlink" href="#checkMetadataInteractive" title="Link to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>[myMriAcquisition_node, reconFoV] = ISMRMRD_info(mySI, s_mean,</dt><dd><p>s_center_mass, myMriAcquisition_node, reconFoV)</p>
+</dd>
+</dl>
+<p>This function plots the magnitude spectrum which shows at which shot the
+steady state is reached. It also opens an interactive figure showing the
+extracted metadata that will be used, and allowing modifications.
+This function should only be called when the automatic flag is set to
+true and will interrupt code execution.</p>
+<dl class="simple">
+<dt>Authors:</dt><dd><p>Dominik Helbing
+MattechLab 2024</p>
+</dd>
+<dt>Parameters:</dt><dd><p>mySI (array): The SI magnitude calculated for every shot.
+s_mean (list): The mean of mySI calculated for every shot.
+s_center_mass (list): The center of mass of mySI calculated for every
+shot.
+myMriAcquisition_node (bmMriAcquisitionParam): The extracted meta data.
+reconFoV (int): The extracted reconstruction FoV.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>myMriAcquisition_node (bmMriAcquisitionParam): The extracted meta data,</dt><dd><p>possibly modified by the user.</p>
+</dd>
+<dt>reconFoV (int): The extracted reconstruction FoV, possibly modified by</dt><dd><p>the user.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="correctMetadataInteractive">
+<span class="sig-name descname"><span class="pre">correctMetadataInteractive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">myMriAcquisition_node</span></em>, <em class="sig-param"><span class="pre">reconFoV</span></em><span class="sig-paren">)</span><a class="headerlink" href="#correctMetadataInteractive" title="Link to this definition">¶</a></dt>
+<dd><p>CORRECTMETADATAINTERACTIVE
+Opens the metadata editing window for user correction.
+Standalone version — only displays the parameter table.</p>
+<dl class="simple">
+<dt>Authors:</dt><dd><p>Dominik Helbing
+adapted and simplified by Mauro Leidi, 2024</p>
+</dd>
+</dl>
+<hr class="docutils" />
+</dd></dl>
+
+<dl class="mat class">
 <dt class="sig sig-object mat" id="mleRawDataReader">
 <span class="property"><span class="pre">class</span> </span><span class="sig-name descname"><span class="pre">mleRawDataReader</span></span><a class="headerlink" href="#mleRawDataReader" title="Link to this definition">¶</a></dt>
 <dd><p>The idea behind the RawData reader is that it acts as an intermediary
@@ -5038,9 +4993,9 @@ Author: Mauro Leidi
 Extract file extension</p>
 </dd></dl>
 
-<section id="module-rawDataReader.ismrmrd">
-<span id="id16"></span><h3>ismrmrd<a class="headerlink" href="#module-rawDataReader.ismrmrd" title="Link to this heading">¶</a></h3>
-<dl class="mat class">
+<section id="ismrmrd">
+<h3>ismrmrd<a class="headerlink" href="#ismrmrd" title="Link to this heading">¶</a></h3>
+<dl class="mat class" id="module-rawDataReader.ismrmrd">
 <dt class="sig sig-object mat" id="mleIsmrmrdReader">
 <span class="property"><span class="pre">class</span> </span><span class="sig-name descname"><span class="pre">mleIsmrmrdReader</span></span><a class="headerlink" href="#mleIsmrmrdReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mleRawDataReader" title="mleRawDataReader"><code class="xref mat mat-class docutils literal notranslate"><span class="pre">mleRawDataReader</span></code></a></p>
@@ -5096,6 +5051,62 @@ flagExcludeSI (Logical): Flag; Filter out SI projections if true.</p>
 </dd></dl>
 
 <dl class="mat function">
+<dt class="sig sig-object mat" id="bmISMRMRD_data">
+<span class="sig-name descname"><span class="pre">bmISMRMRD_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">myData</span></em>, <em class="sig-param"><span class="pre">myMriAcquisition_node</span></em><span class="sig-paren">)</span><a class="headerlink" href="#bmISMRMRD_data" title="Link to this definition">¶</a></dt>
+<dd><p>y_raw = bmISMRMRD_data(myData, myMriAcquisition_node)</p>
+<p>This function returns the raw MRI data from ISMRMRD file /dataset/data 
+struct based on acquisition parameters.</p>
+<dl class="simple">
+<dt>Authors:</dt><dd><p>Bastien Milani
+CHUV and UNIL
+Lausanne - Switzerland
+May 2023</p>
+</dd>
+<dt>Contributors:</dt><dd><p>Dominik Helbing (Documentation)</p>
+</dd>
+<dt>Parameters:</dt><dd><p>myData (struct): Struct containing MRI data in ISMRMRD style.
+myMriAcquisition_node (struct): Struct containing acquisition 
+parameters.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>y_raw (array): Raw MRI data in the [nCh, N, nLine] shape, where nLine</dt><dd><p>is nShot * nSeg, which can change depending on the selfNav_flag and 
+nShot_off in myMriAcquisition_node. Given in single precision.</p>
+</dd>
+</dl>
+</dd>
+<dt>Notes:</dt><dd><p>This function reshapes and processes the raw data based on the
+acquisition parameters such as the number of segments, shots,
+channels, and echoes. It also handles optional flags for self
+navigation and ROOSK.</p>
+</dd>
+<dt>Example:</dt><dd><p>y_raw = bmISMRMRD_data(myData, myMriAcquisition_node);</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
+<dt class="sig sig-object mat" id="ISMRMRD_readParam">
+<span class="sig-name descname"><span class="pre">ISMRMRD_readParam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">argFile</span></em>, <em class="sig-param"><span class="pre">autoFlag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ISMRMRD_readParam" title="Link to this definition">¶</a></dt>
+<dd><p>varargout = ISMRMRD_readParam(argFile, automaticFlag)</p>
+<p>This function extracts the meta data from the ISMRM raw data file. Allows
+for user modification of the meta data if the flag is set to true. The
+code execution is interrupted during the modification.</p>
+<dl class="simple">
+<dt>Authors:</dt><dd><p>Dominik Helbing
+MattechLab 2024</p>
+</dd>
+<dt>Parameters:</dt><dd><p>argFile (Char): The path to the file.
+autoFlag (Logical): Flag; Does allow user modification if false.
+Simplifies use if true.</p>
+</dd>
+<dt>Returns:</dt><dd><p>varargout{1}: bmMriAcquisitionParam object containing the extracted
+meta data.
+varargout{2}: Double containing the extracted reconstruction FoV.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat function">
 <dt class="sig sig-object mat" id="dhIsmrmrdReadMetaData">
 <span class="sig-name descname"><span class="pre">dhIsmrmrdReadMetaData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">obj</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dhIsmrmrdReadMetaData" title="Link to this definition">¶</a></dt>
 <dd><p>varargout = dhIsmrmrdReadMetaData(obj)</p>
@@ -5143,8 +5154,23 @@ Author: Mauro Leidi</p>
 <dl class="mat method">
 <dt class="sig sig-object mat" id="mleSiemensReader.readRawData">
 <span class="sig-name descname"><span class="pre">readRawData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">flagSS</span></em>, <em class="sig-param"><span class="pre">flagExcludeSI</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mleSiemensReader.readRawData" title="Link to this definition">¶</a></dt>
-<dd><p>Handle default values for optional arguments: if no argument
-is passed there is no data filtering.</p>
+<dd><p>READRAWDATA  Read raw data with optional filtering.</p>
+<p>rawdata = readRawData(obj)
+rawdata = readRawData(obj, flagSS)
+rawdata = readRawData(obj, flagSS, flagExcludeSI)</p>
+<dl class="simple">
+<dt>INPUTS:</dt><dd><dl class="simple">
+<dt>obj           - Reader object containing acquisition parameters</dt><dd><p>and the raw file handle.</p>
+</dd>
+<dt>flagSS        - (logical, optional) If true, the initial</dt><dd><p>non–steady-state readouts are filtered out.
+Default = false.</p>
+</dd>
+<dt>flagExcludeSI - (logical, optional) If true, the SI projection</dt><dd><p>readouts (self-navigation lines) are excluded
+from the output. Default = false.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd>
@@ -5345,7 +5371,7 @@ varargout{2}: Double containing the extracted reconstruction FoV.</p>
 <section id="sparsemat">
 <h2>sparseMat<a class="headerlink" href="#sparsemat" title="Link to this heading">¶</a></h2>
 <section id="module-sparseMat.m">
-<span id="id17"></span><h3>m<a class="headerlink" href="#module-sparseMat.m" title="Link to this heading">¶</a></h3>
+<span id="id16"></span><h3>m<a class="headerlink" href="#module-sparseMat.m" title="Link to this heading">¶</a></h3>
 <dl class="mat class">
 <dt class="sig sig-object mat" id="bmSparseMat">
 <span class="property"><span class="pre">class</span> </span><span class="sig-name descname"><span class="pre">bmSparseMat</span></span><a class="headerlink" href="#bmSparseMat" title="Link to this definition">¶</a></dt>
@@ -5688,8 +5714,8 @@ histcounts(out, (1:size(r_nJump, 2) + 1) - 0.5)</p>
 <dd></dd></dl>
 
 </section>
-<section id="id18">
-<h3>mex<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<section id="id17">
+<h3>mex<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
 <section id="bmsparsemat-help-function">
 <h4>bmSparseMat_help_function<a class="headerlink" href="#bmsparsemat-help-function" title="Link to this heading">¶</a></h4>
 </section>
