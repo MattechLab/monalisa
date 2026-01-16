@@ -60,14 +60,14 @@ end
 nShot_off = mriAcquisition_node.nShot_off; 
 flagSelfNav = mriAcquisition_node.selfNav_flag;
 
- if isprop(myMriAcquisParam, 'flagExcludeSI')
-        if isempty(myMriAcquisParam.flagExcludeSI)
-            flagExcludeSI = myMriAcquisParam.selfNav_flag;
+ if isprop(mriAcquisition_node, 'flagExcludeSI')
+        if isempty(mriAcquisition_node.flagExcludeSI)
+            flagExcludeSI = mriAcquisition_node.selfNav_flag;
         else
-        flagExcludeSI = myMriAcquisParam.flagExcludeSI;
+        flagExcludeSI = mriAcquisition_node.flagExcludeSI;
         end
 else
-     flagExcludeSI = myMriAcquisParam.selfNav_flag;
+     flagExcludeSI = mriAcquisition_node.selfNav_flag;
 end
 
 
