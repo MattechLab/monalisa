@@ -6180,13 +6180,19 @@ spiral</p>
 <dd><p>t = mlTrajFromPulseq(mriAcquisition_node)</p>
 <p>This function generates a k-space trajectory from a Pulseq sequence file.</p>
 <dl>
-<dt>Authors:</dt><dd><p>Mauro Leidi
+<dt>Authors:</dt><dd><blockquote>
+<div><p>Mauro Leidi
 HES-SO
 May 2025</p>
 <p>Yiwei Jia
 extract traj from pulseq seq file
 fixed the mismatch between pulseq and monalisa
-July 2025</p>
+—–July 2025</p>
+<p>Add ExcludeSI flag logic consistent with bmTraj_*:
+- default: flagExcludeSI = selfNav_flag
+- if flagExcludeSI (or flagExcludeSIFlag) exists and is non-empty, use it</p>
+</div></blockquote>
+<p>—–Jan 2026</p>
 </dd>
 <dt>Parameters:</dt><dd><p>mriAcquisition_node (struct): A struct that must contain the field
 ‘pulseq_path’ pointing to the Pulseq sequence file (filename.seq)</p>
