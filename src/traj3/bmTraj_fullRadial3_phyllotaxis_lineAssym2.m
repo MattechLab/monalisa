@@ -41,6 +41,15 @@ elseif isscalar(varargin)
     dK_n        = 1/mean(myMriAcquisParam.FoV(:)); 
     
     flagSelfNav = myMriAcquisParam.selfNav_flag;
+    if isprop(myMriAcquisParam, 'flagExcludeSI')
+        if isempty(myMriAcquisParam.flagExcludeSI)
+            flagExcludeSI = myMriAcquisParam.selfNav_flag;
+        else
+        flagExcludeSI = myMriAcquisParam.flagExcludeSI;
+        end
+    else
+         flagExcludeSI = myMriAcquisParam.selfNav_flag;
+    end
     nShot_off   = myMriAcquisParam.nShot_off;
     
 elseif length(varargin) == 6
@@ -81,7 +90,7 @@ z = reshape(R.*cos(theta),           [1, N_n, nSeg, nShot]);
 myTraj = cat(1, x, y, z)*N_n*dK_n; 
 
 % Remove first few shots and the first segments depending on the arguments
-if flagSelfNav
+if flagExcludeSI
    myTraj(:, :, 1, :) = [];  
 end
 if nShot_off > 0

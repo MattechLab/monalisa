@@ -11,8 +11,13 @@ function t = mlTrajFromPulseq(mriAcquisition_node)
 %   Yiwei Jia
 %   extract traj from pulseq seq file
 %   fixed the mismatch between pulseq and monalisa
-%   July 2025
+%   -----July 2025
 %
+%   Add ExcludeSI flag logic consistent with bmTraj_*:
+%   - default: flagExcludeSI = selfNav_flag
+%   - if flagExcludeSI (or flagExcludeSIFlag) exists and is non-empty, use it
+%  -----Jan 2026
+% 
 % Parameters:
 %   mriAcquisition_node (struct): A struct that must contain the field
 %   'pulseq_path' pointing to the Pulseq sequence file (filename.seq)
@@ -20,6 +25,7 @@ function t = mlTrajFromPulseq(mriAcquisition_node)
 % Returns:
 %   t (array): Normalized trajectory array of shape [3, N, nSeg, nShot],
 %   scaled to have maximum absolute value of 0.5*N*dk
+
 
 % 1) Assert existence of non-empty field 'pulseq_path'
 assert(isprop(mriAcquisition_node, 'pulseqTrajFile_name') && ...
@@ -44,12 +50,32 @@ nSeg            = mriAcquisition_node.nSeg;
 nShot           = mriAcquisition_node.nShot; 
 N               = mriAcquisition_node.N; 
 FoV             = mriAcquisition_node.FoV; 
+% If FoV is a vector/matrix, match bmTraj behavior: dK = 1/mean(FoV(:))
+if ~isscalar(FoV)
+    FoV_eff = mean(FoV(:));
+else
+    FoV_eff = FoV;
+end
+
 nShot_off = mriAcquisition_node.nShot_off; 
 flagSelfNav = mriAcquisition_node.selfNav_flag;
 
+ if isprop(myMriAcquisParam, 'flagExcludeSI')
+        if isempty(myMriAcquisParam.flagExcludeSI)
+            flagExcludeSI = myMriAcquisParam.selfNav_flag;
+        else
+        flagExcludeSI = myMriAcquisParam.flagExcludeSI;
+        end
+else
+     flagExcludeSI = myMriAcquisParam.selfNav_flag;
+end
 
-k_trj = reshape(kspace_traj, [size(kspace_traj,1), N, nSeg, nShot]);
 
+k_trj = reshape(kspace_traj, size(kspace_traj,1), [], nSeg, nShot);
+if size(k_trj,2)>N
+    k_fid= k_trj(:, 1:size(k_trj,2)-N, :, :);        
+    k_trj = k_trj(:, size(k_trj,2)-N+1:end, :, :);   
+end
 % 7) Normalize the trajectory 
 %   before eliminating non-steady state shots and self navigation segs
 %   to match the calculation with monalisa bmTraj*
@@ -60,10 +86,10 @@ distances = vecnorm(k_trj, 2,1);
 % R: the maximum distance of the point from the trajectory in k-space to
 % the center
 R = max(distances(:));
-k_trj = k_trj/R*0.5*N/FoV;
+k_trj = k_trj/R*0.5*N/FoV_eff;
 
 % 9) Filter out SI projections and non steady state readouts
-if flagSelfNav
+if flagExcludeSI
    k_trj(:, :, 1, :) = [];  
 end
 if nShot_off > 0
