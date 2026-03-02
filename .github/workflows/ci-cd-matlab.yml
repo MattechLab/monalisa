@@ -28,6 +28,7 @@ jobs:
             prepare_ci_data(fullfile('temp', 'ci_data'));
         env:
           MONALISA_TEST_DATA_URLS: ${{ vars.MONALISA_TEST_DATA_URLS }}
+          MONALISA_USE_TUTORIAL8_DATA: "true"
 
       - name: Run MATLAB test suites and generate reports
         uses: matlab-actions/run-command@v2
@@ -37,6 +38,7 @@ jobs:
             run_ci_test_suite(fullfile('temp', 'ci_data'), fullfile('temp', 'ci_reports'));
         env:
           MONALISA_TEST_DATA_URLS: ${{ vars.MONALISA_TEST_DATA_URLS }}
+          MONALISA_USE_TUTORIAL8_DATA: "true"
 
       - name: Upload MATLAB report artifacts
         uses: actions/upload-artifact@v4
@@ -52,6 +54,12 @@ jobs:
         shell: bash
         run: |
           cat temp/ci_reports/matlab_test_summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Cleanup temporary test data
+        if: always()
+        shell: bash
+        run: |
+          rm -rf temp/ci_data
 
   publish-test-report:
     name: Publish report to gh-pages (CD)

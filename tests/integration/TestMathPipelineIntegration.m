@@ -35,7 +35,35 @@ classdef TestMathPipelineIntegration < matlab.unittest.TestCase
         end
     end
 
+
     methods (Test)
+        function testTutorial8DataAvailableWhenEnabled(testCase)
+            useTutorial8 = strcmpi(strtrim(getenv('MONALISA_USE_TUTORIAL8_DATA')), 'true');
+            if ~useTutorial8
+                testCase.assumeFail('Tutorial-8 dataset check disabled by env.');
+            end
+
+            dataDir = getenv('MONALISA_CI_DATA_DIR');
+            if isempty(dataDir)
+                repoRoot = getenv('MONALISA_REPO_ROOT');
+                if isempty(repoRoot)
+                    thisFile = mfilename('fullpath');
+                    testsDir = fileparts(fileparts(thisFile)); % .../tests
+                    repoRoot = fileparts(testsDir);
+                end
+                dataDir = fullfile(repoRoot, 'temp', 'ci_data');
+            end
+
+            tutorialDir = fullfile(dataDir, 'tutorial8');
+            required = {'bodyCoil.dat', 'brainScan.dat', 'surfaceCoil.dat'};
+            for i = 1:numel(required)
+                p = fullfile(tutorialDir, required{i});
+                testCase.verifyTrue(exist(p, 'file') == 2, sprintf('Missing tutorial file: %s', p));
+                info = dir(p);
+                testCase.verifyGreaterThan(info.bytes, 0, sprintf('Tutorial file is empty: %s', p));
+            end
+        end
+
         function testWeightedSelfInnerProductPipeline(testCase)
             c = testCase.Cases(1);
             x = bmPointReshape(c.raw, c.nCh);
