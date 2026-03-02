@@ -36,7 +36,34 @@ classdef TestMathPipelineIntegration < matlab.unittest.TestCase
     end
 
 
-    methods (Test)
+    // methods (Test)
+    //     function testKaggleSampleAvailableWhenEnabled(testCase)
+    //         useKaggle = strcmpi(strtrim(getenv('MONALISA_USE_KAGGLE_DATA')), 'true');
+    //         if ~useKaggle
+    //             testCase.assumeFail('Kaggle dataset check disabled by env.');
+    //         end
+
+    //         dataDir = getenv('MONALISA_CI_DATA_DIR');
+    //         if isempty(dataDir)
+    //             repoRoot = getenv('MONALISA_REPO_ROOT');
+    //             if isempty(repoRoot)
+    //                 thisFile = mfilename('fullpath');
+    //                 testsDir = fileparts(fileparts(thisFile)); % .../tests
+    //                 repoRoot = fileparts(testsDir);
+    //             end
+    //             dataDir = fullfile(repoRoot, 'temp', 'ci_data');
+    //         end
+
+    //         kaggleDir = fullfile(dataDir, 'kaggle_lgg_sample');
+    //         testCase.verifyTrue(exist(kaggleDir, 'dir') == 7, ...
+    //             sprintf('Missing Kaggle sample directory: %s', kaggleDir));
+
+    //         files = dir(fullfile(kaggleDir, '*'));
+    //         files = files(~[files.isdir]);
+    //         testCase.verifyGreaterThan(numel(files), 0, ...
+    //             sprintf('No sampled Kaggle files in: %s', kaggleDir));
+    //     end
+
         function testTutorial8DataAvailableWhenEnabled(testCase)
             useTutorial8 = strcmpi(strtrim(getenv('MONALISA_USE_TUTORIAL8_DATA')), 'true');
             if ~useTutorial8

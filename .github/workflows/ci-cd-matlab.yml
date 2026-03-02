@@ -17,6 +17,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Python (Kaggle optional data)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Optional Kaggle dataset sampling (ephemeral)
+        if: always()
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install kagglehub
+          python tests/ci/prepare_kaggle_data.py --out temp/ci_data/kaggle_lgg_sample --max-files 24
+        env:
+          MONALISA_USE_KAGGLE_DATA: ${{ vars.MONALISA_USE_KAGGLE_DATA || 'false' }}
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2
 
@@ -29,6 +46,7 @@ jobs:
         env:
           MONALISA_TEST_DATA_URLS: ${{ vars.MONALISA_TEST_DATA_URLS }}
           MONALISA_USE_TUTORIAL8_DATA: "true"
+          MONALISA_USE_KAGGLE_DATA: ${{ vars.MONALISA_USE_KAGGLE_DATA || 'false' }}
 
       - name: Run MATLAB test suites and generate reports
         uses: matlab-actions/run-command@v2
@@ -39,6 +57,7 @@ jobs:
         env:
           MONALISA_TEST_DATA_URLS: ${{ vars.MONALISA_TEST_DATA_URLS }}
           MONALISA_USE_TUTORIAL8_DATA: "true"
+          MONALISA_USE_KAGGLE_DATA: ${{ vars.MONALISA_USE_KAGGLE_DATA || 'false' }}
 
       - name: Upload MATLAB report artifacts
         uses: actions/upload-artifact@v4
