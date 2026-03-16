@@ -6,8 +6,13 @@
 
 % Define paths for data and results
 [baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
-dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
-resultsDir = fullfile(dataDir, 'results');  % Results folderv
+monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
+
+addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
+
+dataDir = bmLocateTutorialDataDir(monalisaRoot, 'data_8_tutorial_1');   % Data folder
+resultsDir = fullfile(dataDir, 'results');  % Results folder
+srcDir = fullfile(baseDir,'..','..','..','src');
 
 %% Step 0: If you haven't done it already add src to your MATLAB PATH
 addpath(genpath(srcDir))
@@ -90,3 +95,24 @@ ve = bmVolumeElement(t, 'voronoi_full_radial3');  % Compute volume elements
 % Save the results
 bmMitosius_create(saveFolder, y, t, ve);
 disp(['Mitosius preparation complete. Data saved to: ', saveFolder]);
+
+% Export parity snapshot for mitosius-prepared data
+try
+    dataStruct = struct( ...
+        'y_tot', y_tot, ...
+        't_tot', t_tot, ...
+        've_tot', ve_tot, ...
+        'y', y, ...
+        't', t, ...
+        've', ve, ...
+        'C', C, ...
+        'N_u', N_u ...
+    );
+    meta = struct();
+    meta.description = 'Mitosius data preparation outputs (y, t, ve, C, N_u).';
+    meta.save_folder = saveFolder;
+    save_parity_snapshot(monalisaRoot, 'mitosius', 1, 'prepared_data', dataStruct, meta);
+catch ME
+    warning('mitosius_script:parityExportFailed', ...
+        'Failed to save parity snapshot for mitosius: %s', ME.message);
+end

@@ -15,8 +15,12 @@
 %% Load the data from the mitosius
 % Define paths for data and results
 [baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
-dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
-resultsDir = fullfile(dataDir, 'results');  % Results folderv
+monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
+
+addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
+
+dataDir = bmLocateTutorialDataDir(monalisaRoot, 'data_8_tutorial_1');   % Data folder
+resultsDir = fullfile(dataDir, 'results');  % Results folder
 srcDir = fullfile(baseDir,'..','..','..','src');
 %% Step 0: If you haven't done it already add src to your MATLAB PATH
 addpath(genpath(srcDir))
@@ -100,6 +104,27 @@ x_cs = bmTevaMorphosia_chain(  x1, ...
                             bmWitnessInfo('tevaMorphosia_d0p1_r1_nCGD4', witness_ind));
 
 bmImage(x_cs);
+
+% Export parity snapshot for reconstructed images
+try
+    dataStruct = struct( ...
+        'x0', x0, ...
+        'x1', {x1}, ...
+        'x_sensa', {x_sensa}, ...
+        'x_cs', x_cs, ...
+        'N_u', N_u, ...
+        'dK_u', dK_u, ...
+        'nFr', nFr ...
+    );
+    meta = struct();
+    meta.description = 'Reconstruction outputs (Mathilda, Sensa, TevaMorphosia).';
+    meta.data_dir = dataDir;
+    meta.results_dir = resultsDir;
+    save_parity_snapshot(monalisaRoot, 'reconstructions', 1, 'final_reconstructions', dataStruct, meta);
+catch ME
+    warning('reconstructions_script:parityExportFailed', ...
+        'Failed to save parity snapshot for reconstructions: %s', ME.message);
+end
 
 %% This reconstruction step could require high computing resources
 % depending on the parameters. If you encounter an Out-Of-Memory error (OOM), 

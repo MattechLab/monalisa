@@ -12,7 +12,11 @@
 
 % Define paths for data and results
 [baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
-dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
+monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
+
+addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
+
+dataDir = bmLocateTutorialDataDir(monalisaRoot, 'data_8_tutorial_1');   % Data folder
 resultsDir = fullfile(dataDir, 'results');  % Results folder
 srcDir = fullfile(baseDir,'..','..','..','src');
 
@@ -115,11 +119,21 @@ legend({'SI point (Orange)', 'Not steady-state points (Red)', 'Other points (Gre
 
 
 %% Save Results
-% Generate a timestamped filename for saving
 saveName = fullfile(resultsDir, 'allLinesBinning.mat');
-
 save(saveName, 'mask');
-disp(['All lines inning bins saved to: ', saveName]);
+disp(['All lines binning mask saved to: ', saveName]);
+
+% Export parity snapshot for all-lines binning
+try
+    dataStruct = struct('mask', mask, 'timestampMs', timestampMs);
+    meta = struct();
+    meta.description = 'All-lines binning mask and timestamps.';
+    meta.binning_strategy = 'AllLines';
+    save_parity_snapshot(monalisaRoot, 'binnings', 1, 'allLines', dataStruct, meta);
+catch ME
+    warning('binnings_script:parityExportAllLinesFailed', ...
+        'Failed to save parity snapshot for allLines: %s', ME.message);
+end
 
 %% Step 3: Medium Binning - Group Data into Bins of 5 Seconds
 % In this case, we will group the data into bins of 5 seconds. This strategy
@@ -188,11 +202,21 @@ binSelector = uicontrol('Style', 'popupmenu', ...
     'Callback', @(src, event) updatePlot(plotHandle, src.Value, mask));
 
 %% Save Results
-% Generate a timestamped filename for saving
 saveName = fullfile(resultsDir, 'sequentialBinning.mat');
-
 save(saveName, 'mask');
 disp(['Sequential bins saved to: ', saveName]);
+
+% Export parity snapshot for sequential binning
+try
+    dataStruct = struct('mask', mask, 'timestampMs', timestampMs);
+    meta = struct();
+    meta.description = 'Sequential binning mask and timestamps.';
+    meta.binning_strategy = 'Sequential';
+    save_parity_snapshot(monalisaRoot, 'binnings', 2, 'sequential', dataStruct, meta);
+catch ME
+    warning('binnings_script:parityExportSequentialFailed', ...
+        'Failed to save parity snapshot for sequential binning: %s', ME.message);
+end
 
 %% Step 4: Hard Binning - Use Cardiac Physio for Binning (To be filled later)
 % This step will use cardiac physiological data to group the data more accurately based on the cardiac cycle. We will skip the implementation details for now, but here is where you would use a more advanced binning strategy based on the physiological signals from the subject.

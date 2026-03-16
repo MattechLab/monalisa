@@ -3,13 +3,38 @@
 
 % Define paths for data and results
 [baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
-dataDir = fullfile(baseDir, '..','..', 'data_demo','data_8_tutorial_1');   % Data folder
+monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
+addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
+
+dataDir = bmLocateTutorialDataDir(monalisaRoot, 'data_8_tutorial_1');   % Data folder
 resultsDir = fullfile(dataDir, 'results');  % Results folder
 srcDir = fullfile(baseDir,'..','..','..','src');
 
 % Ensure the results directory exists
 if ~exist(resultsDir,'dir')
     mkdir(resultsDir);
+end
+
+function dataDir = locate_tutorial_data_dir(monalisaRoot, subFolder)
+    if nargin < 2, subFolder = 'data_8_tutorial_1'; end
+    candidates = {
+        fullfile(monalisaRoot, 'demo', 'data_demo', subFolder),
+        fullfile(monalisaRoot, 'src', 'sparseMat', 'mex', 'data_demo', subFolder),
+        fullfile(monalisaRoot, 'demo', 'data_demo', subFolder),
+        fullfile(baseDir, '..', '..', 'data_demo', subFolder)
+    };
+
+    requiredFiles = {'brainScan.dat', 'bodyCoil.dat', 'surfaceCoil.dat'};
+    for i = 1:numel(candidates)
+        cand = candidates{i};
+        if all(cellfun(@(f) exist(fullfile(cand, f), 'file') == 2, requiredFiles))
+            dataDir = cand;
+            return;
+        end
+    end
+
+    error('locate_tutorial_data_dir:MissingData', ...
+        'Could not locate tutorial data folder. Checked: %s', strjoin(candidates, ', '));
 end
 
 %% Step 0: If you haven't done it already add src to your MATLAB PATH
@@ -80,11 +105,33 @@ nIter = 5;
 bmImage(cat(2,[C_array_prime,C]))
 
 %% Save Results
-% Generate a timestamped filename for saving
+% Generate a filename for saving
 saveName = fullfile(resultsDir, 'coil_sensitivity_map.mat');
 
 save(saveName, 'C');
 disp(['Coil sensitivity map saved to: ', saveName]);
+
+% Export rich parity snapshot (data + metadata) for Python comparisons
+try
+    dataStruct = struct( ...
+        'C_array_prime', C_array_prime, ...
+        'C', C, ...
+        'x', x, ...
+        'y_ref', y_ref, ...
+        'C_ref', C_ref ...
+    );
+    meta = struct();
+    meta.description = 'Coil sensitivity estimation tutorial final outputs.';
+    meta.data_dir = dataDir;
+    meta.results_dir = resultsDir;
+    save_parity_snapshot(monalisaRoot, 'coilSensitivityEstimation', 1, 'final_outputs', dataStruct, meta);
+catch ME
+    warning('coilSensitivityEstimation:parityExportFailed', ...
+        'Failed to save parity snapshot: %s', ME.message);
+end
+
+disp('CoilSensitivityEstimation parity snapshot exported. You can now run Python parity comparisons.');
+
 disp('You can now go to the binning script');
 %% Note that in your future you can now simplify your life by simply running
 % that does everything in one go
