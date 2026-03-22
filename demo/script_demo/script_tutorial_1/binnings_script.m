@@ -11,7 +11,9 @@
 % 2. A regrouping to get the desired images
 
 % Define paths for data and results
-[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+thisScript = mfilename('fullpath');
+assert(~isempty(thisScript), 'binnings_script:Run this file from disk (not as pasted code).');
+[baseDir, ~, ~] = fileparts(thisScript);
 monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
 
 addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir

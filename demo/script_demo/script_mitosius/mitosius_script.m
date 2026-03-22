@@ -11,7 +11,8 @@ mitosiusPath = '/Users/cag/Documents/Dataset/241017_T1/Sub001/T1_LIBRE_Binning/m
 
 f = filePath;
 % These functions use a function not written by Bastien so they are outside the repo
-addpath('..\..\..\twix_for_monalisa\')
+monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
+addpath(genpath(fullfile(monalisaRoot, 'third_part')));
 
 autoFlag = false;             % Set whether the validation UI is shown
 % Create the appropriate reader based on the file extension

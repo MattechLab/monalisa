@@ -5,7 +5,9 @@
 % 3. Allowing the user to select a binning strategy (AllLines or Sequential).
 
 % Define paths for data and results
-[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+thisScript = mfilename('fullpath');
+assert(~isempty(thisScript), 'mitosius_script:Run this file from disk (not as pasted code).');
+[baseDir, ~, ~] = fileparts(thisScript);
 monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
 
 addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
@@ -52,10 +54,25 @@ temp_roi = roipoly;
 normalize_val = mean(temp_im(temp_roi(:))); 
 y_tot = y_tot / normalize_val;  % Normalize the raw data
 
-%% Step 4: Select Binning Strategy via User Interaction
-choice = questdlg('Select a binning strategy:', ...
-                  'Binning Selection', ...
-                  'AllLines', 'Sequential', 'Cancel', 'AllLines');
+%% Step 4: Select binning strategy (GUI) or from MONALISA_MITOSIUS_BINNING / non-interactive default
+envBin = lower(strtrim(getenv('MONALISA_MITOSIUS_BINNING')));
+if ~isempty(envBin)
+    switch envBin
+        case 'alllines'
+            choice = 'AllLines';
+        case 'sequential'
+            choice = 'Sequential';
+        otherwise
+            error('mitosius_script:InvalidEnv', ...
+                'MONALISA_MITOSIUS_BINNING must be allLines or sequential, got "%s".', getenv('MONALISA_MITOSIUS_BINNING'));
+    end
+elseif usejava('desktop')
+    choice = questdlg('Select a binning strategy:', ...
+        'Binning Selection', ...
+        'AllLines', 'Sequential', 'Cancel', 'AllLines');
+else
+    choice = 'AllLines';
+end
 
 switch choice
     case 'AllLines'

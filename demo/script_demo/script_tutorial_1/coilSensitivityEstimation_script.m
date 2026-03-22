@@ -2,7 +2,9 @@
 % This script demonstrates how to estimate coil sensitivity using the library.
 
 % Define paths for data and results
-[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+thisScript = mfilename('fullpath');
+assert(~isempty(thisScript), 'coilSensitivityEstimation_script:Run this file from disk (not as pasted code).');
+[baseDir, ~, ~] = fileparts(thisScript);
 monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
 addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
 

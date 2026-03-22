@@ -14,7 +14,9 @@
 
 %% Load the data from the mitosius
 % Define paths for data and results
-[baseDir, ~, ~] = fileparts(  matlab.desktop.editor.getActiveFilename  );
+thisScript = mfilename('fullpath');
+assert(~isempty(thisScript), 'reconstructions_script:Run this file from disk (not as pasted code).');
+[baseDir, ~, ~] = fileparts(thisScript);
 monalisaRoot = fileparts(fileparts(fileparts(baseDir)));
 
 addpath(genpath(fullfile(monalisaRoot, 'src')));  % include bmLocateTutorialDataDir
