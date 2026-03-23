@@ -5,6 +5,47 @@
   "step_name": "prepared_data",
   "variables": [
     {
+      "name": "x_tot",
+      "class": "single",
+      "size": [
+        80,
+        80,
+        80
+      ],
+      "sha256": "a62b0d513877f39c0d474f21ef777a21c5f349966ba3a6afe0e1c30150a26c7b",
+      "is_complex": true
+    },
+    {
+      "name": "temp_im",
+      "class": "single",
+      "size": [
+        80,
+        80
+      ],
+      "sha256": "f274f4f5437a9872b0f0e3c533adbf1701b743068b5e95cda0bc4419edd6241f",
+      "is_complex": false
+    },
+    {
+      "name": "temp_roi",
+      "class": "logical",
+      "size": [
+        80,
+        80
+      ],
+      "sha256": "70339eba4ebdc7b768204b3e168bcda0f54fdcba6d3984f9db9db3751480e3be",
+      "is_complex": false
+    },
+    {
+      "name": "normalize_val",
+      "class": "single",
+      "size": [
+        1,
+        1
+      ],
+      "sha256": "cb5a6334f4ad0a61746780def64da386b640e75230c818b67474e81960b1ef95",
+      "is_complex": false
+    },
+    {
       "name": "y_tot",
       "class": "single",
       "size": [

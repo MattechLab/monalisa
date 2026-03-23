@@ -3,13 +3,17 @@
   "script_name": "mitosius",
   "step_index": 1,
   "step_name": "prepared_data",
-  "timestamp": "2026-03-23T17:13:48.956",
+  "timestamp": "2026-03-23T17:53:34.848",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "hostname": "DELL-Andy",
   "parity_mat_policy": "split",
   "parity_max_variable_bytes": 5.24288E+7,
   "variables_in_mat": [
+    "x_tot",
+    "temp_im",
+    "temp_roi",
+    "normalize_val",
     "N_u"
   ],
   "variables_fingerprint_only": [
@@ -22,11 +26,52 @@
     "C"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "7365f797c389bda59c43cc0c56282096d140c598",
+  "git_commit": "01bca928a5fc438a8206e00625ec66d0b017fb96",
   "git_branch": "CI-CD-pipeline_ma",
   "git_dirty_worktree": true,
   "monalisa_env": {},
   "variables": [
+    {
+      "name": "x_tot",
+      "size": [
+        80,
+        80,
+        80
+      ],
+      "bytes_estimate": 4.096E+6,
+      "storage": "mat",
+      "fingerprint_sha256": "a62b0d513877f39c0d474f21ef777a21c5f349966ba3a6afe0e1c30150a26c7b"
+    },
+    {
+      "name": "temp_im",
+      "size": [
+        80,
+        80
+      ],
+      "bytes_estimate": 25600,
+      "storage": "mat",
+      "fingerprint_sha256": "f274f4f5437a9872b0f0e3c533adbf1701b743068b5e95cda0bc4419edd6241f"
+    },
+    {
+      "name": "temp_roi",
+      "size": [
+        80,
+        80
+      ],
+      "bytes_estimate": 6400,
+      "storage": "mat",
+      "fingerprint_sha256": "70339eba4ebdc7b768204b3e168bcda0f54fdcba6d3984f9db9db3751480e3be"
+    },
+    {
+      "name": "normalize_val",
+      "size": [
+        1,
+        1
+      ],
+      "bytes_estimate": 4,
+      "storage": "mat",
+      "fingerprint_sha256": "cb5a6334f4ad0a61746780def64da386b640e75230c818b67474e81960b1ef95"
+    },
     {
       "name": "y_tot",
       "size": [
@@ -114,6 +159,47 @@
     }
   ],
   "parity_fingerprints": [
+    {
+      "name": "x_tot",
+      "class": "single",
+      "size": [
+        80,
+        80,
+        80
+      ],
+      "sha256": "a62b0d513877f39c0d474f21ef777a21c5f349966ba3a6afe0e1c30150a26c7b",
+      "is_complex": true
+    },
+    {
+      "name": "temp_im",
+      "class": "single",
+      "size": [
+        80,
+        80
+      ],
+      "sha256": "f274f4f5437a9872b0f0e3c533adbf1701b743068b5e95cda0bc4419edd6241f",
+      "is_complex": false
+    },
+    {
+      "name": "temp_roi",
+      "class": "logical",
+      "size": [
+        80,
+        80
+      ],
+      "sha256": "70339eba4ebdc7b768204b3e168bcda0f54fdcba6d3984f9db9db3751480e3be",
+      "is_complex": false
+    },
+    {
+      "name": "normalize_val",
+      "class": "single",
+      "size": [
+        1,
+        1
+      ],
+      "sha256": "cb5a6334f4ad0a61746780def64da386b640e75230c818b67474e81960b1ef95",
+      "is_complex": false
+    },
     {
       "name": "y_tot",
       "class": "single",
