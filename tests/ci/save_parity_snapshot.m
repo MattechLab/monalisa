@@ -3,7 +3,7 @@ function save_parity_snapshot(rootDir, scriptName, stepIndex, stepName, dataStru
 %   Writes under ROOTDIR/parity/SCRIPTNAME/<STEPINDEX>_<STEPNAME>/:
 %     - fingerprints.json : SHA-256 per variable (stable layout; see below)
 %     - meta.json         : run metadata (unchanged fields + parity policy info)
-%     - data.mat          : optional small variables only (see policy)
+%     - data.mat[.gz]     : optional small variables only (see policy)
 %
 %   Environment (optional):
 %     MONALISA_PARITY_MAT_POLICY = split | full | off
@@ -68,6 +68,9 @@ else
         maxFileBytes = 50 * 1024 * 1024;
     end
 end
+gzipMat = getenv('MONALISA_PARITY_GZIP');
+useGzip = isempty(gzipMat) || strcmpi(strtrim(gzipMat), '1');
+
 parityRoot = fullfile(rootDir, 'parity', scriptName);
 if ~exist(parityRoot, 'dir')
     mkdir(parityRoot);
@@ -82,10 +85,10 @@ end
 % Remove any previously generated MAT artifacts so we don't accidentally
 % keep old huge blobs that violate GitHub file size limits.
 matBase = fullfile(snapshotDir, 'data.mat');
+matGz = fullfile(snapshotDir, 'data.mat.gz');
 if exist(matBase, 'file')
     delete(matBase);
 end
-matGz = fullfile(snapshotDir, 'data.mat.gz');
 if exist(matGz, 'file')
     delete(matGz);
 end
@@ -208,19 +211,35 @@ for k = 1:numel(userFields)
 end
 
 matBase = fullfile(snapshotDir, 'data.mat');
+matWritten = false;
 if ~isempty(fieldnames(smallStruct))
     save(matBase, '-struct', 'smallStruct', '-v7');
-    d = dir(matBase);
-    if ~isempty(d) && d.bytes > maxFileBytes
-        delete(matBase);
-        meta.data_file = '';
-        % The MAT blob cannot be stored (size limit). Make metadata
-        % reflect that everything is fingerprint-only.
-        matVars = inMat;
-        fpOnly = unique([fpOnly, matVars]);
-        inMat = {};
-        meta.variables_in_mat = inMat;
-        meta.variables_fingerprint_only = fpOnly;
+    matWritten = true;
+    if useGzip
+        gzFile = [matBase, '.gz'];
+        gzip(matBase);
+        if exist(matBase, 'file')
+            delete(matBase);
+        end
+        if exist(gzFile, 'file')
+            d = dir(gzFile);
+            if ~isempty(d) && d.bytes > maxFileBytes
+                delete(gzFile);
+                matWritten = false;
+                meta.data_file = '';
+                % The MAT blob cannot be stored (size limit). Make metadata
+                % reflect that everything is fingerprint-only.
+                matVars = inMat;
+                fpOnly = unique([fpOnly, matVars]);
+                inMat = {};
+                meta.variables_in_mat = inMat;
+                meta.variables_fingerprint_only = fpOnly;
+            else
+                meta.data_file = 'data.mat.gz';
+            end
+        else
+            meta.data_file = '';
+        end
     else
         meta.data_file = 'data.mat';
     end
