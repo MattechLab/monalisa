@@ -13,6 +13,8 @@ function save_parity_snapshot(rootDir, scriptName, stepIndex, stepName, dataStru
 %         off  — hashes only, no MAT file
 %     MONALISA_PARITY_MAX_VARIABLE_BYTES — per-variable byte budget for split
 %         (default 52428800 ≈ 50 MiB). Non-finite or <=0 falls back to default.
+%     MONALISA_PARITY_MAX_MAT_TOTAL_BYTES — split: total MAT byte budget (uncompressed est.)
+%         for all variables included in data.mat (default 47185920 ≈ 45 MiB).
 %     MONALISA_PARITY_GZIP = 0 | 1 — gzip data.mat when 1 (default 1)
 %
 %   Fingerprint rules (for reimplementation in Python/NumPy):
@@ -48,6 +50,24 @@ else
         maxVarBytes = 50 * 1024 * 1024;
     end
 end
+maxTotalStr = getenv('MONALISA_PARITY_MAX_MAT_TOTAL_BYTES');
+if isempty(maxTotalStr)
+    maxTotalBytes = 45 * 1024 * 1024;
+else
+    maxTotalBytes = str2double(maxTotalStr);
+    if ~isfinite(maxTotalBytes) || maxTotalBytes <= 0
+        maxTotalBytes = 45 * 1024 * 1024;
+    end
+end
+maxFileStr = getenv('MONALISA_PARITY_MAX_FILE_BYTES');
+if isempty(maxFileStr)
+    maxFileBytes = 50 * 1024 * 1024;
+else
+    maxFileBytes = str2double(maxFileStr);
+    if ~isfinite(maxFileBytes) || maxFileBytes <= 0
+        maxFileBytes = 50 * 1024 * 1024;
+    end
+end
 gzipMat = getenv('MONALISA_PARITY_GZIP');
 useGzip = isempty(gzipMat) || strcmpi(strtrim(gzipMat), '1');
 
@@ -62,6 +82,17 @@ if ~exist(snapshotDir, 'dir')
     mkdir(snapshotDir);
 end
 
+% Remove any previously generated MAT artifacts so we don't accidentally
+% keep old huge blobs that violate GitHub file size limits.
+matBase = fullfile(snapshotDir, 'data.mat');
+matGz = fullfile(snapshotDir, 'data.mat.gz');
+if exist(matBase, 'file')
+    delete(matBase);
+end
+if exist(matGz, 'file')
+    delete(matGz);
+end
+
 varNames = fieldnames(dataStruct);
 fpRoot = struct('version', 1, 'script_name', scriptName, ...
     'step_index', stepIndex, 'step_name', stepName, 'variables', []);
@@ -69,6 +100,7 @@ fpList = [];
 inMat = {};
 fpOnly = {};
 smallStruct = struct();
+totalEstBytes = 0;
 
 for k = 1:numel(varNames)
     vn = varNames{k};
@@ -87,15 +119,16 @@ for k = 1:numel(varNames)
         case 'off'
             includeInMat = false;
         case 'split'
-            includeInMat = est <= maxVarBytes;
+            includeInMat = est <= maxVarBytes && (totalEstBytes + est) <= maxTotalBytes;
         otherwise
             warning('save_parity_snapshot:UnknownPolicy', ...
                 'Unknown MONALISA_PARITY_MAT_POLICY "%s"; using split.', policy);
-            includeInMat = est <= maxVarBytes;
+            includeInMat = est <= maxVarBytes && (totalEstBytes + est) <= maxTotalBytes;
     end
     if includeInMat
         smallStruct.(vn) = val;
         inMat{end+1} = vn; %#ok<AGROW>
+        totalEstBytes = totalEstBytes + est;
     else
         fpOnly{end+1} = vn; %#ok<AGROW>
     end
@@ -132,7 +165,7 @@ try
 catch
 end
 
-varMeta = struct('name', {}, 'size', {}, 'bytes_estimate', {}, 'storage', {});
+varMeta = struct('name', {}, 'size', {}, 'bytes_estimate', {}, 'storage', {}, 'fingerprint_sha256', {});
 for k = 1:numel(varNames)
     vn = varNames{k};
     val = dataStruct.(vn);
@@ -145,9 +178,15 @@ for k = 1:numel(varNames)
     else
         vm.storage = 'fingerprint_only';
     end
+    % fpList is built in the same order as varNames.
+    vm.fingerprint_sha256 = fpList(k).sha256;
     varMeta(end+1) = vm; %#ok<AGROW>
 end
 meta.variables = varMeta;
+
+% Also keep the full fingerprint list inside meta.json so that the snapshot
+% is self-contained for comparison tooling that only reads meta.json.
+meta.parity_fingerprints = fpList;
 
 userFields = fieldnames(extraMeta);
 for k = 1:numel(userFields)
@@ -161,8 +200,30 @@ if ~isempty(fieldnames(smallStruct))
     save(matBase, '-struct', 'smallStruct', '-v7');
     matWritten = true;
     if useGzip
+        gzFile = [matBase, '.gz'];
         gzip(matBase);
-        meta.data_file = 'data.mat.gz';
+        if exist(matBase, 'file')
+            delete(matBase);
+        end
+        if exist(gzFile, 'file')
+            d = dir(gzFile);
+            if ~isempty(d) && d.bytes > maxFileBytes
+                delete(gzFile);
+                matWritten = false;
+                meta.data_file = '';
+                % The MAT blob cannot be stored (size limit). Make metadata
+                % reflect that everything is fingerprint-only.
+                matVars = inMat;
+                fpOnly = unique([fpOnly, matVars]);
+                inMat = {};
+                meta.variables_in_mat = inMat;
+                meta.variables_fingerprint_only = fpOnly;
+            else
+                meta.data_file = 'data.mat.gz';
+            end
+        else
+            meta.data_file = '';
+        end
     else
         meta.data_file = 'data.mat';
     end

@@ -50,8 +50,55 @@ x_tot = bmMathilda(y_tot, t_tot, ve_tot, C, N_u, N_u, [1, 1, 1] / 384);
 bmImage(x_tot);  % Display the reconstructed image
 temp_im = getimage(gca); 
 bmImage(temp_im);  % Display the ROI selection
-temp_roi = roipoly; 
-normalize_val = mean(temp_im(temp_roi(:))); 
+% ROI: interactive (roipoly) for manual runs, deterministic auto for batch/pre-push.
+roiMode = lower(strtrim(getenv('MONALISA_MITOSIUS_ROI_MODE')));
+useInteractiveRoi = strcmpi(roiMode, 'interactive');
+roiThreshFrac = str2double(getenv('MONALISA_MITOSIUS_ROI_THRESH_FRAC'));
+if isempty(roiThreshFrac) || ~isfinite(roiThreshFrac) || roiThreshFrac <= 0
+    roiThreshFrac = 0.25;
+end
+roiCenterFrac = str2double(getenv('MONALISA_MITOSIUS_ROI_CENTER_FRAC'));
+if isempty(roiCenterFrac) || ~isfinite(roiCenterFrac) || roiCenterFrac <= 0
+    roiCenterFrac = 0.30;
+end
+if isempty(roiMode)
+    useInteractiveRoi = usejava('desktop');
+end
+
+temp_im_mag = abs(temp_im);
+if useInteractiveRoi
+    temp_roi = roipoly;
+    roi_mode = 'interactive';
+    roi_thresh_frac = NaN;
+    roi_center_frac = NaN;
+else
+    mx = max(temp_im_mag(:));
+    if mx <= 0
+        temp_roi = true(size(temp_im_mag));
+    else
+        thresh = roiThreshFrac * mx;
+        temp_roi = temp_im_mag >= thresh;
+
+        % Avoid empty or tiny ROI: fallback to central box.
+        if nnz(temp_roi) < max(1, round(numel(temp_roi) * 0.01))
+            [nr, nc] = size(temp_im_mag);
+            halfSize = max(1, round(min(nr, nc) * roiCenterFrac / 2));
+            cr = round(nr / 2);  cc = round(nc / 2);
+            r1 = max(1, cr - halfSize + 1);  r2 = min(nr, cr + halfSize);
+            c1 = max(1, cc - halfSize + 1);  c2 = min(nc, cc + halfSize);
+            temp_roi = false(size(temp_im_mag));
+            temp_roi(r1:r2, c1:c2) = true;
+        end
+    end
+    roi_mode = 'auto_threshold';
+    roi_thresh_frac = roiThreshFrac;
+    roi_center_frac = roiCenterFrac;
+end
+
+normalize_val = mean(temp_im_mag(temp_roi(:)));
+if ~isfinite(normalize_val) || normalize_val == 0
+    normalize_val = 1;
+end
 y_tot = y_tot / normalize_val;  % Normalize the raw data
 
 %% Step 4: Select binning strategy (GUI) or from MONALISA_MITOSIUS_BINNING / non-interactive default
@@ -128,6 +175,16 @@ try
     meta = struct();
     meta.description = 'Mitosius data preparation outputs (y, t, ve, C, N_u).';
     meta.save_folder = saveFolder;
+    % ROI metadata used for deterministic normalization (used by parity export).
+    meta.roi_mode = roi_mode;
+    meta.roi_thresh_frac = roi_thresh_frac;
+    meta.roi_center_frac = roi_center_frac;
+    [roiRows, roiCols] = find(temp_roi);
+    if ~isempty(roiRows)
+        meta.roi_bbox = [min(roiRows), min(roiCols), max(roiRows), max(roiCols)];
+    else
+        meta.roi_bbox = [NaN, NaN, NaN, NaN];
+    end
     save_parity_snapshot(monalisaRoot, 'mitosius', 1, 'prepared_data', dataStruct, meta);
 catch ME
     warning('mitosius_script:parityExportFailed', ...
