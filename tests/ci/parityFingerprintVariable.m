@@ -22,14 +22,45 @@ if ~(isnumeric(val) || islogical(val))
     error('parityFingerprintVariable:UnsupportedType', ...
         'Variable "%s" has unsupported class "%s".', name, class(val));
 end
+fp.sha256 = parityHashArrayInChunks(val);
+end
+
+function hexStr = parityHashArrayInChunks(val)
+%PARITYHASHARRAYINCHUNKS Hash very large arrays without giant temporary buffers.
+import java.security.MessageDigest;
+md = MessageDigest.getInstance('SHA-256');
+
+chunkElements = 5e6;
+
 if islogical(val)
-    raw = uint8(val(:));
-elseif isreal(val)
-    raw = typecast(val(:), 'uint8');
+    v = val(:);
+    n = numel(v);
+    for s = 1:chunkElements:n
+        e = min(s + chunkElements - 1, n);
+        md.update(uint8(v(s:e)));
+    end
+elseif isnumeric(val) && isreal(val)
+    v = val(:);
+    n = numel(v);
+    for s = 1:chunkElements:n
+        e = min(s + chunkElements - 1, n);
+        md.update(typecast(v(s:e), 'uint8'));
+    end
 else
     re = real(val(:));
     im = imag(val(:));
-    raw = [typecast(re, 'uint8'); typecast(im, 'uint8')];
+    n = numel(re);
+    for s = 1:chunkElements:n
+        e = min(s + chunkElements - 1, n);
+        md.update(typecast(re(s:e), 'uint8'));
+    end
+    for s = 1:chunkElements:n
+        e = min(s + chunkElements - 1, n);
+        md.update(typecast(im(s:e), 'uint8'));
+    end
 end
-fp.sha256 = paritySha256Bytes(raw);
+
+digest = typecast(md.digest, 'uint8');
+h = dec2hex(double(digest), 2);
+hexStr = lower(reshape(h', 1, []));
 end

@@ -39,12 +39,15 @@ else
     steps = steps(~cellfun('isempty', steps));
 end
 
+failedSteps = {};
+
 % Run tutorial scripts with built-in parity snapshot export
 if ismember('coil', steps)
     try
         run(fullfile(monalisaRoot, 'demo', 'script_demo', 'script_tutorial_1', 'coilSensitivityEstimation_script.m'));
     catch ME
         warning('generate_parity_data:tutorialFailed', 'Tutorial script failed: %s', ME.message);
+        failedSteps{end+1} = sprintf('coil: %s', ME.message); %#ok<AGROW>
     end
     evalin('base', 'clear');
 end
@@ -54,6 +57,7 @@ if ismember('binnings', steps)
         run(fullfile(monalisaRoot, 'demo', 'script_demo', 'script_tutorial_1', 'binnings_script.m'));
     catch ME
         warning('generate_parity_data:binningsFailed', 'binnings_script.m failed: %s', ME.message);
+        failedSteps{end+1} = sprintf('binnings: %s', ME.message); %#ok<AGROW>
     end
     evalin('base', 'clear');
 end
@@ -63,6 +67,7 @@ if ismember('mitosius', steps)
         run(fullfile(monalisaRoot, 'demo', 'script_demo', 'script_tutorial_1', 'mitosius_script.m'));
     catch ME
         warning('generate_parity_data:mitosiusFailed', 'mitosius_script.m failed: %s', ME.message);
+        failedSteps{end+1} = sprintf('mitosius: %s', ME.message); %#ok<AGROW>
     end
     evalin('base', 'clear');
 end
@@ -72,8 +77,14 @@ if ismember('recon', steps)
         run(fullfile(monalisaRoot, 'demo', 'script_demo', 'script_tutorial_1', 'reconstructions_script.m'));
     catch ME
         warning('generate_parity_data:reconFailed', 'reconstructions_script.m failed: %s', ME.message);
+        failedSteps{end+1} = sprintf('recon: %s', ME.message); %#ok<AGROW>
     end
     evalin('base', 'clear');
+end
+
+if ~isempty(failedSteps)
+    error('generate_parity_data:FailedSteps', ...
+        'One or more parity steps failed:\n%s', strjoin(failedSteps, '\n'));
 end
 
 fprintf('generate_parity_data: parity snapshots generated under %s\n', fullfile(monalisaRoot, 'parity'));

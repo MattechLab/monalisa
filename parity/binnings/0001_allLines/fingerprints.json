@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "script_name": "binnings",
+  "step_index": 1,
+  "step_name": "allLines",
+  "variables": [
+    {
+      "name": "mask",
+      "class": "logical",
+      "size": [
+        1,
+        45210
+      ],
+      "sha256": "e6f9e18b9667758645e3054465b935f20e8fe7935663300cb1e945f21dc36ca6",
+      "is_complex": false
+    },
+    {
+      "name": "timestampMs",
+      "class": "double",
+      "size": [
+        1,
+        45210
+      ],
+      "sha256": "46cd7ce4f84f07429bc160e44ec603a83f33a583508240124af857bb5b6d2621",
+      "is_complex": false
+    }
+  ]
+}

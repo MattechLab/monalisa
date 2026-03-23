@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "script_name": "coilSensitivityEstimation",
+  "step_index": 1,
+  "step_name": "final_outputs",
+  "timestamp": "2026-03-23T10:15:44.575",
+  "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
+  "platform": "PCWIN64",
+  "parity_mat_policy": "split",
+  "parity_max_variable_bytes": 5.24288E+7,
+  "variables_in_mat": [
+    "C_array_prime",
+    "x",
+    "C_ref"
+  ],
+  "variables_fingerprint_only": [
+    "C",
+    "y_ref"
+  ],
+  "parity_fingerprints_file": "fingerprints.json",
+  "git_commit": "223d0a48a47bf7a87c2cbffa03d40e9340559bf9",
+  "variables": [
+    {
+      "name": "C_array_prime",
+      "size": [
+        48,
+        48,
+        48,
+        42
+      ],
+      "bytes_estimate": 3.7158912E+7,
+      "storage": "mat",
+      "fingerprint_sha256": "d020cda6689a798b5550034d4a0eba15d033c365e5463eb40b8ed175fbe13885"
+    },
+    {
+      "name": "C",
+      "size": [
+        48,
+        48,
+        48,
+        42
+      ],
+      "bytes_estimate": 3.7158912E+7,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "1816fdf32214312e9d858a8cc9b242821e5c3da22d0a17887a674d0ee3ce834a"
+    },
+    {
+      "name": "x",
+      "size": [
+        48,
+        48,
+        48
+      ],
+      "bytes_estimate": 884736,
+      "storage": "mat",
+      "fingerprint_sha256": "13c774a6c6987330e47984667af5dd57820bd976cee81bef7b2182d9873e63f4"
+    },
+    {
+      "name": "y_ref",
+      "size": [
+        437368,
+        1
+      ],
+      "bytes_estimate": 3.498944E+6,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "228414f061ca492d493d251371deb2c7849a0820f84b7cd0da5f2081e14bfa30"
+    },
+    {
+      "name": "C_ref",
+      "size": [
+        48,
+        48,
+        48
+      ],
+      "bytes_estimate": 442368,
+      "storage": "mat",
+      "fingerprint_sha256": "be7bd1be62936febcf18c69f9aa7da96bcf0eadb102cbbea9112004501c01f81"
+    }
+  ],
+  "parity_fingerprints": [
+    {
+      "name": "C_array_prime",
+      "class": "single",
+      "size": [
+        48,
+        48,
+        48,
+        42
+      ],
+      "sha256": "d020cda6689a798b5550034d4a0eba15d033c365e5463eb40b8ed175fbe13885",
+      "is_complex": true
+    },
+    {
+      "name": "C",
+      "class": "single",
+      "size": [
+        48,
+        48,
+        48,
+        42
+      ],
+      "sha256": "1816fdf32214312e9d858a8cc9b242821e5c3da22d0a17887a674d0ee3ce834a",
+      "is_complex": true
+    },
+    {
+      "name": "x",
+      "class": "single",
+      "size": [
+        48,
+        48,
+        48
+      ],
+      "sha256": "13c774a6c6987330e47984667af5dd57820bd976cee81bef7b2182d9873e63f4",
+      "is_complex": true
+    },
+    {
+      "name": "y_ref",
+      "class": "single",
+      "size": [
+        437368,
+        1
+      ],
+      "sha256": "228414f061ca492d493d251371deb2c7849a0820f84b7cd0da5f2081e14bfa30",
+      "is_complex": true
+    },
+    {
+      "name": "C_ref",
+      "class": "single",
+      "size": [
+        48,
+        48,
+        48
+      ],
+      "sha256": "be7bd1be62936febcf18c69f9aa7da96bcf0eadb102cbbea9112004501c01f81",
+      "is_complex": false
+    }
+  ],
+  "description": "Coil sensitivity estimation tutorial final outputs.",
+  "data_dir": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1",
+  "results_dir": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results",
+  "data_file": "data.mat.gz"
+}

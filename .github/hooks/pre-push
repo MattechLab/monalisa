@@ -22,6 +22,9 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
 
 export MONALISA_MITOSIUS_BINNING=allLines
 export MONALISA_MITOSIUS_ROI_MODE=auto_threshold
+# Default pre-push parity scope: keep stable and avoid recon dependency on
+# both allLines + sequential mitosius outputs. Override if needed.
+export MONALISA_GENERATE_PARITY_STEPS="${MONALISA_GENERATE_PARITY_STEPS:-coil,binnings,mitosius}"
 # Keep parity blobs GitHub-friendly on smaller machines.
 export MONALISA_PARITY_MAX_MAT_TOTAL_BYTES=40000000
 export MONALISA_PARITY_MAX_FILE_BYTES=50000000

@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "script_name": "binnings",
+  "step_index": 1,
+  "step_name": "allLines",
+  "timestamp": "2026-03-23T10:29:25.083",
+  "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
+  "platform": "PCWIN64",
+  "parity_mat_policy": "split",
+  "parity_max_variable_bytes": 5.24288E+7,
+  "variables_in_mat": [
+    "mask",
+    "timestampMs"
+  ],
+  "variables_fingerprint_only": [],
+  "parity_fingerprints_file": "fingerprints.json",
+  "git_commit": "223d0a48a47bf7a87c2cbffa03d40e9340559bf9",
+  "variables": [
+    {
+      "name": "mask",
+      "size": [
+        1,
+        45210
+      ],
+      "bytes_estimate": 45210,
+      "storage": "mat",
+      "fingerprint_sha256": "e6f9e18b9667758645e3054465b935f20e8fe7935663300cb1e945f21dc36ca6"
+    },
+    {
+      "name": "timestampMs",
+      "size": [
+        1,
+        45210
+      ],
+      "bytes_estimate": 361680,
+      "storage": "mat",
+      "fingerprint_sha256": "46cd7ce4f84f07429bc160e44ec603a83f33a583508240124af857bb5b6d2621"
+    }
+  ],
+  "parity_fingerprints": [
+    {
+      "name": "mask",
+      "class": "logical",
+      "size": [
+        1,
+        45210
+      ],
+      "sha256": "e6f9e18b9667758645e3054465b935f20e8fe7935663300cb1e945f21dc36ca6",
+      "is_complex": false
+    },
+    {
+      "name": "timestampMs",
+      "class": "double",
+      "size": [
+        1,
+        45210
+      ],
+      "sha256": "46cd7ce4f84f07429bc160e44ec603a83f33a583508240124af857bb5b6d2621",
+      "is_complex": false
+    }
+  ],
+  "description": "All-lines binning mask and timestamps.",
+  "binning_strategy": "AllLines",
+  "data_file": "data.mat.gz"
+}
