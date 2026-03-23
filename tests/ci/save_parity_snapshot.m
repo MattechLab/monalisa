@@ -151,6 +151,7 @@ meta.step_name = stepName;
 meta.timestamp = datestr(now, 'yyyy-mm-ddTHH:MM:SS.FFF');
 meta.matlab_version = version;
 meta.platform = computer;
+meta.hostname = char(java.net.InetAddress.getLocalHost.getHostName);
 meta.parity_mat_policy = policy;
 meta.parity_max_variable_bytes = maxVarBytes;
 meta.variables_in_mat = inMat;
@@ -164,6 +165,21 @@ try
     end
 catch
 end
+try
+    [stBranch, branchName] = system('git rev-parse --abbrev-ref HEAD');
+    if stBranch == 0
+        meta.git_branch = strtrim(branchName);
+    end
+catch
+end
+try
+    [stDirty, dirtyOut] = system('git status --porcelain');
+    if stDirty == 0
+        meta.git_dirty_worktree = ~isempty(strtrim(dirtyOut));
+    end
+catch
+end
+meta.monalisa_env = collectMonalisaEnv();
 
 varMeta = struct('name', {}, 'size', {}, 'bytes_estimate', {}, 'storage', {}, 'fingerprint_sha256', {});
 for k = 1:numel(varNames)
@@ -241,4 +257,23 @@ fwrite(fid2, jsonencode(meta, 'PrettyPrint', true), 'char');
 
 fprintf('save_parity_snapshot: saved snapshot in %s (mat policy=%s, mat variables=%d)\n', ...
     snapshotDir, policy, numel(inMat));
+end
+
+function envStruct = collectMonalisaEnv()
+%COLLECTMONALISAENV Capture MONALISA_* env vars for run reproducibility.
+envStruct = struct();
+try
+    envRaw = getenv();
+    if isstruct(envRaw)
+        names = fieldnames(envRaw);
+        for i = 1:numel(names)
+            key = names{i};
+            if startsWith(key, 'MONALISA_')
+                envStruct.(key) = envRaw.(key);
+            end
+        end
+    end
+catch
+    % Best effort only.
+end
 end

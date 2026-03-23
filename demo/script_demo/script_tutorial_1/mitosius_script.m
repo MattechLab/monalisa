@@ -69,6 +69,7 @@ temp_im_mag = abs(temp_im);
 if useInteractiveRoi
     temp_roi = roipoly;
     roi_mode = 'interactive';
+    roi_selection_source = 'user_popup';
     roi_thresh_frac = NaN;
     roi_center_frac = NaN;
 else
@@ -91,6 +92,7 @@ else
         end
     end
     roi_mode = 'auto_threshold';
+    roi_selection_source = 'env_or_non_interactive_default';
     roi_thresh_frac = roiThreshFrac;
     roi_center_frac = roiCenterFrac;
 end
@@ -132,6 +134,12 @@ switch choice
         disp('Sequential binning selected.');
     otherwise
         error('Binning selection canceled by user.');
+end
+binning_selection_source = 'default_non_interactive';
+if ~isempty(envBin)
+    binning_selection_source = 'env';
+elseif usejava('desktop')
+    binning_selection_source = 'user_popup';
 end
 
 
@@ -175,8 +183,31 @@ try
     meta = struct();
     meta.description = 'Mitosius data preparation outputs (y, t, ve, C, N_u).';
     meta.save_folder = saveFolder;
+    meta.inputs = struct( ...
+        'brain_scan_file', brainScanFile, ...
+        'coil_sensitivity_file', coilSensitivityPath, ...
+        'all_lines_binning_file', allLinesBinningspath, ...
+        'sequential_binning_file', seqBinningspath, ...
+        'traj_type', p.traj_type, ...
+        'FoV', FoV, ...
+        'matrix_size', matrix_size, ...
+        'N_u', N_u, ...
+        'autoFlag', autoFlag ...
+    );
+    meta.normalization = struct( ...
+        'method', 'mean(abs(x_tot(roi)))', ...
+        'normalize_val', normalize_val ...
+    );
+    meta.binning_choice = struct( ...
+        'selected', choice, ...
+        'selection_source', binning_selection_source ...
+    );
     % ROI metadata used for deterministic normalization (used by parity export).
     meta.roi_mode = roi_mode;
+    meta.roi_selection_source = roi_selection_source;
+    meta.roi_env_mode = getenv('MONALISA_MITOSIUS_ROI_MODE');
+    meta.roi_env_thresh_frac = getenv('MONALISA_MITOSIUS_ROI_THRESH_FRAC');
+    meta.roi_env_center_frac = getenv('MONALISA_MITOSIUS_ROI_CENTER_FRAC');
     meta.roi_thresh_frac = roi_thresh_frac;
     meta.roi_center_frac = roi_center_frac;
     [roiRows, roiCols] = find(temp_roi);
