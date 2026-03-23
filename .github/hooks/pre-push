@@ -114,7 +114,15 @@ if ! git diff --cached --quiet; then
     fi
 
     echo "Auto-pushing new parity commit without hooks..."
-    if git push --no-verify "$@"; then
+    REMOTE_NAME="$1"
+    if [ -n "$REMOTE_NAME" ]; then
+        git push --no-verify "$REMOTE_NAME"
+        PUSH_STATUS=$?
+    else
+        git push --no-verify
+        PUSH_STATUS=$?
+    fi
+    if [ $PUSH_STATUS -eq 0 ]; then
         echo "Auto-push completed."
         echo "Stopping the original push command to avoid a duplicate hook run."
         exit 1
