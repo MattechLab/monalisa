@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "script_name": "mitosius",
+  "step_index": 1,
+  "step_name": "prepared_data",
+  "timestamp": "2026-03-23T11:41:41.476",
+  "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
+  "platform": "PCWIN64",
+  "parity_mat_policy": "split",
+  "parity_max_variable_bytes": 5.24288E+7,
+  "variables_in_mat": [
+    "N_u"
+  ],
+  "variables_fingerprint_only": [
+    "y_tot",
+    "t_tot",
+    "ve_tot",
+    "y",
+    "t",
+    "ve",
+    "C"
+  ],
+  "parity_fingerprints_file": "fingerprints.json",
+  "git_commit": "244b2d87dfd73e44ef0335e69455a933d6a6aa8f",
+  "variables": [
+    {
+      "name": "y_tot",
+      "size": [
+        42,
+        480,
+        42630
+      ],
+      "bytes_estimate": 6.8753664E+9,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "98cc02007650395c2dd3ed544e92ad4fb263ae78aa2dbf138f9eca6dcd93bb08"
+    },
+    {
+      "name": "t_tot",
+      "size": [
+        3,
+        480,
+        42630
+      ],
+      "bytes_estimate": 4.910976E+8,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "43669ad68af48ee1d6130e018ac5b83b82e337f3bd6e85d5e93b5f5e36122652"
+    },
+    {
+      "name": "ve_tot",
+      "size": [
+        1,
+        2.04624E+7
+      ],
+      "bytes_estimate": 1.636992E+8,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "f2a94ed3dff8ed9affd15c7c43817577617b1444c9bec800617c628110d81805"
+    },
+    {
+      "name": "y",
+      "size": [
+        2.04624E+7,
+        42
+      ],
+      "bytes_estimate": 6.8753664E+9,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "b96ec7208fe4745dbfbb67255c4ebfbceb10ea57e750124a5ebf5de450c6d221"
+    },
+    {
+      "name": "t",
+      "size": [
+        3,
+        480,
+        42630
+      ],
+      "bytes_estimate": 4.910976E+8,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "43669ad68af48ee1d6130e018ac5b83b82e337f3bd6e85d5e93b5f5e36122652"
+    },
+    {
+      "name": "ve",
+      "size": [
+        1,
+        2.04624E+7
+      ],
+      "bytes_estimate": 1.636992E+8,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "f2a94ed3dff8ed9affd15c7c43817577617b1444c9bec800617c628110d81805"
+    },
+    {
+      "name": "C",
+      "size": [
+        80,
+        80,
+        80,
+        42
+      ],
+      "bytes_estimate": 3.44064E+8,
+      "storage": "fingerprint_only",
+      "fingerprint_sha256": "31a1036cb1c7314cd764ec7f36c7aea4a19ae8e7ca6784bd7569e3fb1d5ee41a"
+    },
+    {
+      "name": "N_u",
+      "size": [
+        1,
+        3
+      ],
+      "bytes_estimate": 24,
+      "storage": "mat",
+      "fingerprint_sha256": "1fae60d705949b80ee8699388f5cbcf77ef0857f762ea22dff6d3ccd8986e95c"
+    }
+  ],
+  "parity_fingerprints": [
+    {
+      "name": "y_tot",
+      "class": "single",
+      "size": [
+        42,
+        480,
+        42630
+      ],
+      "sha256": "98cc02007650395c2dd3ed544e92ad4fb263ae78aa2dbf138f9eca6dcd93bb08",
+      "is_complex": true
+    },
+    {
+      "name": "t_tot",
+      "class": "double",
+      "size": [
+        3,
+        480,
+        42630
+      ],
+      "sha256": "43669ad68af48ee1d6130e018ac5b83b82e337f3bd6e85d5e93b5f5e36122652",
+      "is_complex": false
+    },
+    {
+      "name": "ve_tot",
+      "class": "double",
+      "size": [
+        1,
+        2.04624E+7
+      ],
+      "sha256": "f2a94ed3dff8ed9affd15c7c43817577617b1444c9bec800617c628110d81805",
+      "is_complex": false
+    },
+    {
+      "name": "y",
+      "class": "single",
+      "size": [
+        2.04624E+7,
+        42
+      ],
+      "sha256": "b96ec7208fe4745dbfbb67255c4ebfbceb10ea57e750124a5ebf5de450c6d221",
+      "is_complex": true
+    },
+    {
+      "name": "t",
+      "class": "double",
+      "size": [
+        3,
+        480,
+        42630
+      ],
+      "sha256": "43669ad68af48ee1d6130e018ac5b83b82e337f3bd6e85d5e93b5f5e36122652",
+      "is_complex": false
+    },
+    {
+      "name": "ve",
+      "class": "double",
+      "size": [
+        1,
+        2.04624E+7
+      ],
+      "sha256": "f2a94ed3dff8ed9affd15c7c43817577617b1444c9bec800617c628110d81805",
+      "is_complex": false
+    },
+    {
+      "name": "C",
+      "class": "double",
+      "size": [
+        80,
+        80,
+        80,
+        42
+      ],
+      "sha256": "31a1036cb1c7314cd764ec7f36c7aea4a19ae8e7ca6784bd7569e3fb1d5ee41a",
+      "is_complex": true
+    },
+    {
+      "name": "N_u",
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "sha256": "1fae60d705949b80ee8699388f5cbcf77ef0857f762ea22dff6d3ccd8986e95c",
+      "is_complex": false
+    }
+  ],
+  "description": "Mitosius data preparation outputs (y, t, ve, C, N_u).",
+  "save_folder": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\mitosius_allLines",
+  "roi_mode": "auto_threshold",
+  "roi_thresh_frac": 0.25,
+  "roi_center_frac": 0.3,
+  "roi_bbox": [
+    17,
+    27,
+    53,
+    57
+  ],
+  "data_file": "data.mat.gz"
+}

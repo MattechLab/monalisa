@@ -96,11 +96,32 @@ shopt -u globstar nullglob
 
 git add -A parity
 
-# If parity outputs changed, they must be committed before pushing.
+# Auto-commit/push parity updates when pre-push produced new outputs.
+# Disable with MONALISA_PRE_PUSH_AUTO_COMMIT=0 if you prefer manual commits.
+AUTO_COMMIT=${MONALISA_PRE_PUSH_AUTO_COMMIT:-1}
 if ! git diff --cached --quiet; then
-    echo "Parity outputs are staged but not committed yet."
-    echo "Please commit the staged 'parity/' changes, then push again."
-    exit 1
+    if [ "$AUTO_COMMIT" = "0" ]; then
+        echo "Parity outputs are staged but not committed yet."
+        echo "Please commit the staged 'parity/' changes, then push again."
+        exit 1
+    fi
+
+    COMMIT_MSG="chore(parity): refresh generated parity snapshots"
+    echo "Committing staged parity outputs..."
+    if ! git commit -m "$COMMIT_MSG"; then
+        echo "Failed to auto-commit parity outputs. Push aborted."
+        exit 1
+    fi
+
+    echo "Auto-pushing new parity commit without hooks..."
+    if git push --no-verify "$@"; then
+        echo "Auto-push completed."
+        echo "Stopping the original push command to avoid a duplicate hook run."
+        exit 1
+    else
+        echo "Auto-push failed. Push aborted."
+        exit 1
+    fi
 fi
 
 exit 0
