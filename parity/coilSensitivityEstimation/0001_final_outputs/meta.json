@@ -3,7 +3,7 @@
   "script_name": "coilSensitivityEstimation",
   "step_index": 1,
   "step_name": "final_outputs",
-  "timestamp": "2026-03-23T17:27:11.705",
+  "timestamp": "2026-03-23T18:02:02.355",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "hostname": "DELL-Andy",
@@ -19,7 +19,7 @@
     "y_ref"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "01bca928a5fc438a8206e00625ec66d0b017fb96",
+  "git_commit": "e24252f027edc13ea1769d4e2e8dc1ede58f9843",
   "git_branch": "CI-CD-pipeline_ma",
   "git_dirty_worktree": true,
   "monalisa_env": {},
@@ -163,5 +163,5 @@
     "mask_method": "bmCoilSense_nonCart_mask_automatic"
   },
   "output_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\coil_sensitivity_map.mat",
-  "data_file": "data.mat"
+  "data_file": "data.mat.gz"
 }
