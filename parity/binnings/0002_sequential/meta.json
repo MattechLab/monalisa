@@ -3,7 +3,7 @@
   "script_name": "binnings",
   "step_index": 2,
   "step_name": "sequential",
-  "timestamp": "2026-03-23T11:55:45.857",
+  "timestamp": "2026-03-23T12:43:04.596",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "parity_mat_policy": "split",
@@ -14,7 +14,7 @@
   ],
   "variables_fingerprint_only": [],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "8c6b58837ba747fa70ab13e470812c61fa27b4de",
+  "git_commit": "2ef1c07590df1633ee792b13a311995facb53b7f",
   "variables": [
     {
       "name": "mask",

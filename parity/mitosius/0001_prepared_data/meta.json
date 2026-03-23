@@ -3,7 +3,7 @@
   "script_name": "mitosius",
   "step_index": 1,
   "step_name": "prepared_data",
-  "timestamp": "2026-03-23T12:13:23.767",
+  "timestamp": "2026-03-23T12:59:51.506",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "parity_mat_policy": "split",
@@ -21,7 +21,7 @@
     "C"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "8c6b58837ba747fa70ab13e470812c61fa27b4de",
+  "git_commit": "2ef1c07590df1633ee792b13a311995facb53b7f",
   "variables": [
     {
       "name": "y_tot",
