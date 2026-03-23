@@ -3,9 +3,10 @@
   "script_name": "mitosius",
   "step_index": 1,
   "step_name": "prepared_data",
-  "timestamp": "2026-03-23T12:59:51.506",
+  "timestamp": "2026-03-23T13:35:03.968",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
+  "hostname": "DELL-Andy",
   "parity_mat_policy": "split",
   "parity_max_variable_bytes": 5.24288E+7,
   "variables_in_mat": [
@@ -21,7 +22,10 @@
     "C"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "2ef1c07590df1633ee792b13a311995facb53b7f",
+  "git_commit": "8dd48b15bd9ffebc2c79cc31b6eb62ec8e70c85e",
+  "git_branch": "CI-CD-pipeline_ma",
+  "git_dirty_worktree": true,
+  "monalisa_env": {},
   "variables": [
     {
       "name": "y_tot",
@@ -198,7 +202,34 @@
   ],
   "description": "Mitosius data preparation outputs (y, t, ve, C, N_u).",
   "save_folder": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\mitosius_allLines",
+  "inputs": {
+    "brain_scan_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\brainScan.dat",
+    "coil_sensitivity_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\coil_sensitivity_map.mat",
+    "all_lines_binning_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\allLinesBinning.mat",
+    "sequential_binning_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\sequentialBinning.mat",
+    "traj_type": "full_radial3_phylotaxis",
+    "FoV": 240,
+    "matrix_size": 80,
+    "N_u": [
+      80,
+      80,
+      80
+    ],
+    "autoFlag": false
+  },
+  "normalization": {
+    "method": "mean(abs(x_tot(roi)))",
+    "normalize_val": 4.72691219E-9
+  },
+  "binning_choice": {
+    "selected": "AllLines",
+    "selection_source": "env"
+  },
   "roi_mode": "auto_threshold",
+  "roi_selection_source": "env_or_non_interactive_default",
+  "roi_env_mode": "auto_threshold",
+  "roi_env_thresh_frac": "",
+  "roi_env_center_frac": "",
   "roi_thresh_frac": 0.25,
   "roi_center_frac": 0.3,
   "roi_bbox": [

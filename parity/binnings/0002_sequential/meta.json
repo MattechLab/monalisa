@@ -3,9 +3,10 @@
   "script_name": "binnings",
   "step_index": 2,
   "step_name": "sequential",
-  "timestamp": "2026-03-23T12:43:04.596",
+  "timestamp": "2026-03-23T13:20:46.687",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
+  "hostname": "DELL-Andy",
   "parity_mat_policy": "split",
   "parity_max_variable_bytes": 5.24288E+7,
   "variables_in_mat": [
@@ -14,7 +15,10 @@
   ],
   "variables_fingerprint_only": [],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "2ef1c07590df1633ee792b13a311995facb53b7f",
+  "git_commit": "8dd48b15bd9ffebc2c79cc31b6eb62ec8e70c85e",
+  "git_branch": "CI-CD-pipeline_ma",
+  "git_dirty_worktree": true,
+  "monalisa_env": {},
   "variables": [
     {
       "name": "mask",
@@ -61,5 +65,25 @@
   ],
   "description": "Sequential binning mask and timestamps.",
   "binning_strategy": "Sequential",
+  "inputs": {
+    "brain_scan_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\brainScan.dat",
+    "nSeg": 22,
+    "nShotOff": 25,
+    "nMeasuresPerShot": 22,
+    "nExcludeMeasures": 550,
+    "nLines": 45210,
+    "costTime": 2.5
+  },
+  "algorithm": {
+    "temporalWindowSec": 5,
+    "temporalWindowMs": 5000,
+    "startTimeMs": 4405,
+    "endTimeMs": 362122.5,
+    "totalDurationMs": 357717.5,
+    "nMasks": 71,
+    "exclude_non_steady_state": true,
+    "exclude_si_projection_every_n_measures": 22
+  },
+  "output_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\sequentialBinning.mat",
   "data_file": "data.mat.gz"
 }

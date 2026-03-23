@@ -3,9 +3,10 @@
   "script_name": "coilSensitivityEstimation",
   "step_index": 1,
   "step_name": "final_outputs",
-  "timestamp": "2026-03-23T12:39:48.528",
+  "timestamp": "2026-03-23T13:17:28.601",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
+  "hostname": "DELL-Andy",
   "parity_mat_policy": "split",
   "parity_max_variable_bytes": 5.24288E+7,
   "variables_in_mat": [
@@ -18,7 +19,10 @@
     "y_ref"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "2ef1c07590df1633ee792b13a311995facb53b7f",
+  "git_commit": "8dd48b15bd9ffebc2c79cc31b6eb62ec8e70c85e",
+  "git_branch": "CI-CD-pipeline_ma",
+  "git_dirty_worktree": true,
+  "monalisa_env": {},
   "variables": [
     {
       "name": "C_array_prime",
@@ -138,5 +142,26 @@
   "description": "Coil sensitivity estimation tutorial final outputs.",
   "data_dir": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1",
   "results_dir": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results",
+  "inputs": {
+    "body_coil_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\bodyCoil.dat",
+    "head_coil_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\surfaceCoil.dat",
+    "traj_type": "full_radial3_phylotaxis",
+    "n_shot_off": 55
+  },
+  "reconstruction": {
+    "grid_size_N_u": [
+      48,
+      48,
+      48
+    ],
+    "dK_u": [
+      0.0041666666666666666,
+      0.0041666666666666666,
+      0.0041666666666666666
+    ],
+    "n_iter_secondary": 5,
+    "mask_method": "bmCoilSense_nonCart_mask_automatic"
+  },
+  "output_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\coil_sensitivity_map.mat",
   "data_file": "data.mat.gz"
 }
