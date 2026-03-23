@@ -3,7 +3,7 @@
   "script_name": "binnings",
   "step_index": 1,
   "step_name": "allLines",
-  "timestamp": "2026-03-23T13:20:45.755",
+  "timestamp": "2026-03-23T16:56:11.951",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "hostname": "DELL-Andy",
@@ -15,7 +15,7 @@
   ],
   "variables_fingerprint_only": [],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "8dd48b15bd9ffebc2c79cc31b6eb62ec8e70c85e",
+  "git_commit": "7365f797c389bda59c43cc0c56282096d140c598",
   "git_branch": "CI-CD-pipeline_ma",
   "git_dirty_worktree": true,
   "monalisa_env": {},
@@ -79,5 +79,5 @@
     "exclude_si_projection_every_n_measures": 22
   },
   "output_file": "C:\\Users\\andym\\hesso\\PA-Monalisa\\monalisa\\demo\\data_demo\\data_8_tutorial_1\\results\\allLinesBinning.mat",
-  "data_file": "data.mat.gz"
+  "data_file": "data.mat"
 }
