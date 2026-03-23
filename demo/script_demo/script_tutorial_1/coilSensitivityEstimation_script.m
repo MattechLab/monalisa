@@ -145,7 +145,7 @@ catch ME
         'Failed to save parity snapshot: %s', ME.message);
 end
 
-disp('CoilSensitivityEstimation parity snapshot exported. You can now run Python parity comparisons.');
+disp('CoilSensitivityEstimation parity snapshot exported.');
 
 disp('You can now go to the binning script');
 %% Note that in your future you can now simplify your life by simply running

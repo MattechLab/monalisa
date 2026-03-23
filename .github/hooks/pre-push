@@ -125,6 +125,7 @@ if ! git diff --cached --quiet; then
     if [ $PUSH_STATUS -eq 0 ]; then
         echo "Auto-push completed."
         echo "Stopping the original push command to avoid a duplicate hook run."
+        exit 1
     else
         echo "Auto-push failed. Push aborted."
         exit 1
