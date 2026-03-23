@@ -3,7 +3,7 @@
   "script_name": "coilSensitivityEstimation",
   "step_index": 1,
   "step_name": "final_outputs",
-  "timestamp": "2026-03-23T11:24:29.233",
+  "timestamp": "2026-03-23T11:53:16.562",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "parity_mat_policy": "split",
@@ -18,7 +18,7 @@
     "y_ref"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "244b2d87dfd73e44ef0335e69455a933d6a6aa8f",
+  "git_commit": "8c6b58837ba747fa70ab13e470812c61fa27b4de",
   "variables": [
     {
       "name": "C_array_prime",
