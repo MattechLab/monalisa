@@ -4,7 +4,7 @@
 #
 # Parity outputs are git-friendly by default (see tests/ci/save_parity_snapshot.m):
 #   - fingerprints.json : SHA-256 per array (compare across forks without huge blobs)
-#   - data.mat.gz       : only variables under MONALISA_PARITY_MAX_VARIABLE_BYTES
+#   - data.mat          : only variables under MONALISA_PARITY_MAX_VARIABLE_BYTES
 #
 # Environment (examples):
 #   MONALISA_SKIP_PRE_PUSH_PARITY=1     — skip parity generation entirely (still runs tests)
@@ -88,11 +88,6 @@ fi
 
 echo "All pre-push checks passed. Parity data generated for monalisa_py comparison. Proceeding with push."
 echo "Staging generated parity outputs (parity/)..."
-# Safety: remove uncompressed MAT blobs if old runs left them around.
-# (GitHub file size limits apply to tracked artifacts.)
-shopt -s globstar nullglob
-rm -f parity/**/data.mat
-shopt -u globstar nullglob
 
 git add -A parity
 
