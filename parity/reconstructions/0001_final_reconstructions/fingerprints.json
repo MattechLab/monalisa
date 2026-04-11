@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "script_name": "reconstructions",
+  "step_index": 1,
+  "step_name": "final_reconstructions",
+  "variables": [
+    {
+      "name": "x0",
+      "class": "single",
+      "size": [
+        80,
+        80,
+        80
+      ],
+      "sha256": "76839cafb6f400210ad7848437d553ff8beef7777e16ff65b18b5c60eeae93de",
+      "is_complex": true
+    },
+    {
+      "name": "x1",
+      "class": "cell",
+      "size": [
+        1,
+        1
+      ],
+      "sha256": "0f85235323ab2be925430a918948c8be7305fe14eb3a48972c35da7622dcacbb",
+      "is_complex": true
+    },
+    {
+      "name": "x_sensa",
+      "class": "cell",
+      "size": [
+        1,
+        1
+      ],
+      "sha256": "217577f0666475ec2ecb384df844f271542017303f2f720b7a48ccad953c804e",
+      "is_complex": true
+    },
+    {
+      "name": "x_cs",
+      "class": "single",
+      "size": [
+        80,
+        80,
+        80
+      ],
+      "sha256": "fb4211e789b34842933ae5f9b07df5136fb2042f20691bbc3b0630df57d61a1f",
+      "is_complex": true
+    },
+    {
+      "name": "N_u",
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "sha256": "1fae60d705949b80ee8699388f5cbcf77ef0857f762ea22dff6d3ccd8986e95c",
+      "is_complex": false
+    },
+    {
+      "name": "dK_u",
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "sha256": "836e6d21d19d5fb073871f450c08214862e718e0ac87551c8bba1919dad0687d",
+      "is_complex": false
+    },
+    {
+      "name": "nFr",
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "sha256": "6c3c396ed6b5c36dcae172271f462051b1266b851e92df3deea8ac65478fd712",
+      "is_complex": false
+    }
+  ]
+}

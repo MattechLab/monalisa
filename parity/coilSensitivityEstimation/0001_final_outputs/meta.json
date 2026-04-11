@@ -3,7 +3,7 @@
   "script_name": "coilSensitivityEstimation",
   "step_index": 1,
   "step_name": "final_outputs",
-  "timestamp": "2026-04-11T08:42:28.357",
+  "timestamp": "2026-04-11T10:40:59.746",
   "matlab_version": "25.2.0.3150157 (R2025b) Update 4",
   "platform": "PCWIN64",
   "hostname": "DELL-Andy",
@@ -19,7 +19,7 @@
     "y_ref"
   ],
   "parity_fingerprints_file": "fingerprints.json",
-  "git_commit": "e427ae942a5e8d1ed363cf1ca85a3441f5d5d8b6",
+  "git_commit": "53b3a4a3ba1999aa422da1ec2e5991b7ee6badbc",
   "git_branch": "CI-CD-pipeline_ma",
   "git_dirty_worktree": true,
   "monalisa_env": {},
