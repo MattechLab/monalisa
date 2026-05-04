@@ -54,13 +54,24 @@ C = bmImResize(C, [48, 48, 48], N_u);
 x0 = bmMathilda(y{1}, t{1}, ve{1}, C, N_u, n_u, dK_u, [], [], [], []);
 bmImage(x0)
 
-y   = bmMitosius_load(seqBinningspath, 'y');
-t   = bmMitosius_load(seqBinningspath, 't');
-ve  = bmMitosius_load(seqBinningspath, 've');
+% Load sequential binning if available (from full runs), otherwise use allLines
+try
+    seqBinnings_available = true;
+    y   = bmMitosius_load(seqBinningspath, 'y');
+    t   = bmMitosius_load(seqBinningspath, 't');
+    ve  = bmMitosius_load(seqBinningspath, 've');
+catch
+    % Fall back to allLines if sequential binning not available (e.g., pre-push parity)
+    seqBinnings_available = false;
+    fprintf('Sequential binning not available, using allLines for iterative reconstructions.\n');
+    y   = bmMitosius_load(allLinesBinningspath, 'y');
+    t   = bmMitosius_load(allLinesBinningspath, 't');
+    ve  = bmMitosius_load(allLinesBinningspath, 've');
+end
 
 nFr = size(y,1);
-% To speed things up limit the nFr to 8
-nFr = 8;
+% To speed things up limit the nFr to 8 (or available count if less)
+nFr = min(nFr, 8);
 x1 = cell(nFr, 1);
 for i = 1:nFr
     x1{i} = bmMathilda(y{i}, t{i}, ve{i}, C, N_u, n_u, dK_u, [], [], [], []);

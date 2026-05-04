@@ -9,7 +9,7 @@ function bmMitosius_save(mitosius_dir, file_name, var_name, arg_var, varargin)
 
 arg_var = arg_var(:); 
 
-temp_load           = load([mitosius_dir, '/mitosius_size']); 
+temp_load           = load(fullfile(mitosius_dir, 'mitosius_size')); 
 mitosius_size       = bmCol(temp_load.mitosius_size)';  
 mitosius_ndims      = size(mitosius_size(:), 1); 
 mitosius_length     = prod(mitosius_size(:)); 
@@ -21,7 +21,7 @@ if isempty(varargin)
     L = mitosius_ndims; 
     edge_list = cell(L, 1); 
     for i = 1:L
-        temp_edge = 1:in_mitosius_size(1, i);
+        temp_edge = 1:mitosius_size(1, i);
         edge_list{i, 1} = temp_edge(:)';
         sub_mitosius_size(1, i) = size(temp_edge(:), 1); 
     end
@@ -57,7 +57,7 @@ for i = 1:sub_mitosius_length
         num_id = cat(2, num_id, '_', num2str(multiIndex(1, j))  );
     end
     
-    curr_file   = [mitosius_dir, '/cell', num_id, '/', file_name]; 
+    curr_file   = fullfile(mitosius_dir, ['cell', num_id], file_name); 
     curr_var    = arg_var{i};     
     curr_name   = genvarname(var_name); 
     eval([curr_name, ' = curr_var; ']);

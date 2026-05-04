@@ -5,7 +5,7 @@
 
 function out = bmMitosius_load(mitosius_dir, arg_name, varargin)
 
-temp_load           = load([mitosius_dir, '/mitosius_size']); 
+temp_load           = load(fullfile(mitosius_dir, 'mitosius_size')); 
 in_mitosius_size    = bmCol(temp_load.mitosius_size)';  
 mitosius_ndims      = size(in_mitosius_size(:), 1); 
 out_mitosius_size   = zeros(1, mitosius_ndims); 
@@ -70,7 +70,7 @@ for i = 1:out_mitosius_length
         num_id = cat(2, num_id, '_', num2str(inMultiIndex(1, j))  );
     end
     
-    curr_file = [mitosius_dir, '/cell', num_id, '/' , arg_name, '.mat'];
+    curr_file = fullfile(mitosius_dir, ['cell', num_id], [arg_name, '.mat']);
     temp_load = load(curr_file);
     temp_name = fieldnames(temp_load);
     out{i, 1} = temp_load.(temp_name{1});
