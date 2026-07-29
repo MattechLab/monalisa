@@ -34,6 +34,18 @@ function compile_mex_for_monalisa()
     
     myCurrentDir = cd;
 
+    use_classic_linker = false;
+    if ismac
+        % Xcode 15 and newer use a linker that can fail to resolve the
+        % MATLAB C MEX gateway symbols. Use the classic linker only when
+        % the installed linker advertises support for it.
+        [~, linker_version] = system('ld -v 2>&1');
+        use_classic_linker = contains(linker_version, 'ld-classic');
+        if use_classic_linker
+            disp('Using the Xcode classic linker for MATLAB MEX files.')
+        end
+    end
+
     disp(argDir)
     myDirList = cat(1, argDir, bmDirList(argDir, true));
     for i = 1:length(myDirList)
@@ -70,6 +82,18 @@ function compile_mex_for_monalisa()
                 LIBOMP_ROOT = libomp_dirs(1).folder;
                 % Replace $LIBOMP_ROOT with actual value of LIBOMP_ROOT
                 myCommand = strrep(myCommand, '$LIBOMP_ROOT', LIBOMP_ROOT);
+
+                if use_classic_linker
+                    if contains(myCommand, 'LDFLAGS="$LDFLAGS')
+                        % Preserve flags already required by OpenMP commands.
+                        myCommand = strrep(myCommand, ...
+                            'LDFLAGS="$LDFLAGS', ...
+                            'LDFLAGS="$LDFLAGS -ld_classic');
+                    else
+                        myCommand = [myCommand, ...
+                            ' LDFLAGS="$LDFLAGS -ld_classic"'];
+                    end
+                end
             end
             if myCommand_flag
                 disp(myCommand);
